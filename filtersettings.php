@@ -90,7 +90,7 @@ if ($ADMIN->fulltree) {
         if (!get_config('filter_wiris', 'filter_standalone')) {
             $output = 
                 '<center><br />
-                <div style="border-style: solid; border-color: red;">A plugin dependency is broken:  WIRIS filter requires that either <a target="_blank" href="https://moodle.org/plugins/atto_wiris">WIRIS plugin for Atto</a> or <a target="_blank" href="https://moodle.org/plugins/tinymce_tiny_mce_wiris">WIRIS plugin for TinyMCE</a> is installed. For further information see our documentation page <a target="_blank" href="http://www.wiris.com/plugins/docs/moodle">'.
+                <div style="border-style: solid; border-color: red;">A plugin dependency is broken:  WIRIS filter requires that either <a target="_blank" href="https://moodle.org/plugins/atto_wiris">WIRIS plugin for Atto</a> or <a target="_blank" href="https://moodle.org/plugins/tinymce_tiny_mce_wiris">WIRIS plugin for TinyMCE</a> is installed. For further information see our documentation page <a target="_blank" href="http://www.wiris.com/plugins/docs/moodle/troubleshooting">'.
                 '<img style="vertical-align:-3px;" alt="" src="https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png" />'.
                 '</a>'.
                 '</div></center>';
