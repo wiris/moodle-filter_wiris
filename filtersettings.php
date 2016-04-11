@@ -78,7 +78,7 @@ if ($ADMIN->fulltree) {
         }
 
         if ($was_cas_enabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris_cas_enable', get_string('wiriscas', 'filter_wiris'), '', '1'));
+            $settings->add(new admin_setting_configcheckbox('filter_wiris_cas_enable', get_string('wiriscas', 'filter_wiris'), '', '0'));
         } else {
             if (isset($CFG->filter_wiris_cas_enable) && $CFG->filter_wiris_cas_enable) {
                 set_config('filter_wiris_cas_enable', 0, 'config');
@@ -88,7 +88,7 @@ if ($ADMIN->fulltree) {
 
     } else {
         if (!get_config('filter_wiris', 'filter_standalone')) {
-            $output = 
+            $output =
                 '<center><br />
                 <div style="border-style: solid; border-color: red;">A plugin dependency is broken:  WIRIS filter requires that either <a target="_blank" href="https://moodle.org/plugins/atto_wiris">WIRIS plugin for Atto</a> or <a target="_blank" href="https://moodle.org/plugins/tinymce_tiny_mce_wiris">WIRIS plugin for TinyMCE</a> is installed. For further information see our documentation page <a target="_blank" href="http://www.wiris.com/plugins/docs/moodle/troubleshooting">'.
                 '<img style="vertical-align:-3px;" alt="" src="https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png" />'.
@@ -120,7 +120,7 @@ if ($ADMIN->fulltree) {
     if ($CFG->version>=2012120300) {
         $settings->add(new admin_setting_configcheckbox('filter_wiris/clear_cache', get_string('clearcache', 'filter_wiris'), get_string('clearcachedesc', 'filter_wiris'), false, true, false));
     }
-    
+
 
     //$output = '<a href="../filter/wiris/info.php">Visit plugin test page.</a>';
     //$settings->add(new admin_setting_heading('filter_wiris_link_test', '', $output));

@@ -25,7 +25,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		}
 		$tech = null;
 		try {
-			$tech = com_wiris_system_Storage::newResourceStorage("tech.txt")->read();
+			$tech = str_replace("\x0A", "", com_wiris_system_Storage::newResourceStorage("tech.txt")->read());
+			$tech = str_replace("\x0D", "", $tech);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex2 = $_ex_;
