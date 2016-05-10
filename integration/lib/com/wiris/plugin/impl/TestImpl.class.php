@@ -94,6 +94,15 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		}
 		$reportText = "Checking if WIRIS server is reachable";
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+			$condition = true;
+			$testName = "Testing integrated services";
+			$reportText = "WIRIS Services installed";
+			$solutionLink = "";
+			$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
+		} else {
+			$reportText = "WIRIS Services not installed";
+		}
 		$debug = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$DEBUG, "false") === "true";
 		if($debug) {
 			$testName = "Font family";

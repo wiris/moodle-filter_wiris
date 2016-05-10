@@ -166,7 +166,11 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncTextServiceImpl($this);
 	}
 	public function newTextService() {
-		return new com_wiris_plugin_impl_TextServiceImpl($this);
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+			return new com_wiris_plugin_impl_TextServiceImplIntegratedServices($this);
+		} else {
+			return new com_wiris_plugin_impl_TextServiceImpl($this);
+		}
 	}
 	public function newCas() {
 		return new com_wiris_plugin_impl_CasImpl($this);
@@ -181,7 +185,11 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncRenderImpl($this);
 	}
 	public function newRender() {
-		return new com_wiris_plugin_impl_RenderImpl($this);
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+			return new com_wiris_plugin_impl_RenderImplIntegratedServices($this);
+		} else {
+			return new com_wiris_plugin_impl_RenderImpl($this);
+		}
 	}
 	public function setStorageAndCache($store) {
 		$this->store = $store;

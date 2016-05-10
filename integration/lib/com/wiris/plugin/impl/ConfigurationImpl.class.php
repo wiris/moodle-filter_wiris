@@ -26,7 +26,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$this->appendVarJs($sb, "_wrs_conf_CASMathmlAttribute", "'" . $this->getProperty("wiriscasmathmlattribute", null) . "'", "Specifies the image tag where we should save the WIRIS cas mathml code");
 		$this->appendVarJs($sb, "_wrs_conf_CASAttributes", "'" . $this->getProperty("wiriscaswindowattributes", null) . "'", "Specifies WIRIS cas window options");
 		$this->appendVarJs($sb, "_wrs_conf_hostPlatform", "'" . $this->getProperty("wirishostplatform", null) . "'", "Specifies host platform");
-		$this->appendVarJs($sb, "_wrs_conf_versionPlatform", "'" . $this->getProperty("wirisversionplatform", null) . "'", "Specifies host version platform");
+		$this->appendVarJs($sb, "_wrs_conf_versionPlatform", "'" . $this->getProperty("wirisversionplatform", "unknown") . "'", "Specifies host version platform");
 		$this->appendVarJs($sb, "_wrs_conf_enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null), "Specifies whether accessibility is enabled");
 		$this->appendVarJs($sb, "_wrs_conf_setSize", $this->getProperty("wiriseditorsetsize", null), "Specifies whether to set the size of the images at edition time");
 		$this->appendVarJs($sb, "_wrs_conf_editorToolbar", "'" . $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null) . "'", "Toolbar definition");

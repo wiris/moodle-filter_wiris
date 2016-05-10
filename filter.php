@@ -43,10 +43,13 @@ defined('MOODLE_INTERNAL') || die();
 // Replaces all substrings '«math ... «/math»' by the corresponding MathML      //
 // code: '<math ... </math>'                                                    //
 //------------------------------------------------------------------------------//
+require_once "$CFG->dirroot/filter/wiris/lib.php";
 
 class filter_wiris extends moodle_text_filter {
 
 	public function filter($text, array $options = array()) {
+		global $CFG;
+
 		$n0 = stripos($text, '«math');
 		$n1 = stripos($text, '<math');
 		$n2 = stripos($text, '«applet');
@@ -82,6 +85,12 @@ class filter_wiris extends moodle_text_filter {
 		$prop['savemode'] = 'xml'; // xml filtering.
 		$text = $textservice->filter($text, $prop);
 		$wirisplugin->end();
+		// Since Moodle2.7 (2014051200), filters have cache.
+		if ($CFG->version >= 2014051200 && $n2)  {
+			if (core_useragent::check_browser_version('Chrome')) {
+				$text = wrs_filterAppletToJnlp($text);
+			}
+		}
 		return $text;
 	}
 }
