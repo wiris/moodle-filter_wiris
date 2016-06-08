@@ -59,6 +59,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 			}
 			$this->appendVarJs($sb, "_wrs_conf_editorParameters", "{" . $attributes->b . "}", "Editor parameters");
 		}
+		$this->appendVarJs($sb, "_wrs_conf_wirisPluginPerformance", $this->getProperty("wirispluginperformance", null), "Experimental settings to improve performance");
 		$sb->add("var _wrs_conf_configuration_loaded = true;\x0D\x0A");
 		$sb->add("if (typeof _wrs_conf_core_loaded != 'undefined') _wrs_conf_plugin_loaded = true;\x0D\x0A");
 		$version = null;

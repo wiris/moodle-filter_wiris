@@ -120,6 +120,39 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 	public function getMathml($digest) {
 		return null;
 	}
+	public function showImageJson($digest, $lang) {
+		$store = $this->plugin->getStorageAndCache();
+		$bs = null;
+		$bs = $store->retreiveData($digest, $this->plugin->getConfiguration()->getProperty("wirisimageformat", "png"));
+		$jsonOutput = new Hash();
+		if($bs !== null) {
+			$jsonOutput->set("status", "ok");
+			$jsonResult = new Hash();
+			$by = haxe_io_Bytes::ofData($bs);
+			$b64 = _hx_deref(new com_wiris_system_Base64())->encodeBytes($by);
+			$metrics = array();;
+			$this->getMetricsFromBytes($bs, $metrics);
+			if($lang === null) {
+				$lang = "en";
+			}
+			$s = $store->retreiveData($digest, $lang);
+			$hashMetrics = com_wiris_system_PropertiesTools::fromProperties($metrics);
+			$keys = $hashMetrics->keys();
+			while($keys->hasNext()) {
+				$currentKey = $keys->next();
+				$jsonResult->set($currentKey, $hashMetrics->get($currentKey));
+				unset($currentKey);
+			}
+			if($s !== null) {
+				$jsonResult->set("alt", com_wiris_system_Utf8::fromBytes($s));
+			}
+			$jsonResult->set("pngBase64", $b64->toString());
+			$jsonOutput->set("result", $jsonResult);
+		} else {
+			$jsonOutput->set("status", "warning");
+		}
+		return com_wiris_util_json_JSon::encode($jsonOutput);
+	}
 	public function showImage($digest, $mml, $param) {
 		if($digest === null && $mml === null) {
 			throw new HException("Missing parameters 'formula' or 'mml'.");

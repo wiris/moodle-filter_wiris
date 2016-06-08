@@ -44,6 +44,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $IMAGE_FORMAT = "wirisimageformat";
 	static $EXTERNAL_PLUGIN = "wirisexternalplugin";
 	static $EXTERNAL_REFERER = "wirisexternalreferer";
+	static $IMPROVE_PERFORMANCE = "wirispluginperformance";
 	static $imageConfigProperties;
 	static $imageConfigPropertiesInv;
 	static function computeInverse($dict) {

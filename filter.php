@@ -85,12 +85,13 @@ class filter_wiris extends moodle_text_filter {
 		$prop['savemode'] = 'xml'; // xml filtering.
 		$text = $textservice->filter($text, $prop);
 		$wirisplugin->end();
-		// Since Moodle2.7 (2014051200), filters have cache.
-		if ($CFG->version >= 2014051200 && $n2)  {
-			if (core_useragent::check_browser_version('Chrome')) {
-				$text = wrs_filterAppletToJnlp($text);
-			}
+
+		// If a CAS session has been filtered
+		// We need to create a JNLP link for browsers non supporting JAVA
+		if ($n2) {
+			$text = wrs_filterAppletToJnlp($text);
 		}
+
 		return $text;
 	}
 }

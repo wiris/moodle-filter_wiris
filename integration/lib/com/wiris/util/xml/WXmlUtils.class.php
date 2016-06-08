@@ -283,8 +283,18 @@ class com_wiris_util_xml_WXmlUtils {
 		while($i < $n) {
 			$c = com_wiris_util_xml_WXmlUtils::getUtf8Char($s, $i);
 			if($c > 127) {
-				$sb->add("&#x" . com_wiris_common_WInteger::toHex($c, 0) . ";");
-				$i += strlen((com_wiris_util_xml_WXmlUtils_5($c, $i, $n, $s, $sb)));
+				$hex = com_wiris_common_WInteger::toHex($c, 5);
+				$j = 0;
+				while($j < strlen($hex)) {
+					if(!(_hx_substr($hex, $j, 1) === "0")) {
+						$hex = _hx_substr($hex, $j, null);
+						break;
+					}
+					++$j;
+				}
+				$sb->add("&#x" . $hex . ";");
+				$i += strlen((com_wiris_util_xml_WXmlUtils_5($c, $hex, $i, $j, $n, $s, $sb)));
+				unset($j,$hex);
 			} else {
 				$sb->b .= chr($c);
 				$i++;
@@ -472,7 +482,7 @@ class com_wiris_util_xml_WXmlUtils {
 						if($cdata->match($aux)) {
 							$res->add($aux);
 						} else {
-							haxe_Log::trace("WARNING! malformed XML at character " . _hx_string_rec($end, "") . ":" . $xml, _hx_anonymous(array("fileName" => "WXmlUtils.hx", "lineNumber" => 576, "className" => "com.wiris.util.xml.WXmlUtils", "methodName" => "indentXml")));
+							haxe_Log::trace("WARNING! malformed XML at character " . _hx_string_rec($end, "") . ":" . $xml, _hx_anonymous(array("fileName" => "WXmlUtils.hx", "lineNumber" => 583, "className" => "com.wiris.util.xml.WXmlUtils", "methodName" => "indentXml")));
 							$res->add($aux);
 						}
 					}
@@ -532,7 +542,7 @@ function com_wiris_util_xml_WXmlUtils_4(&$c, &$dec, &$i, &$n, &$sb, &$text) {
 		return $s->toString();
 	}
 }
-function com_wiris_util_xml_WXmlUtils_5(&$c, &$i, &$n, &$s, &$sb) {
+function com_wiris_util_xml_WXmlUtils_5(&$c, &$hex, &$i, &$j, &$n, &$s, &$sb) {
 	{
 		$s1 = new haxe_Utf8(null);
 		$s1->addChar($c);

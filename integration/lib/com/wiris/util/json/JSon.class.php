@@ -371,6 +371,8 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 		else
 			throw new HException('Unable to call «'.$m.'»');
 	}
+	static function sb() { $»args = func_get_args(); return call_user_func_array(self::$sb, $»args); }
+	static $sb;
 	static function encode($o) {
 		$js = new com_wiris_util_json_JSon();
 		return $js->encodeObject($o);
@@ -451,6 +453,97 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 	}
 	static function getHash($a) {
 		return $a;
+	}
+	static function compare($a, $b, $eps) {
+		if(com_wiris_system_TypeTools::isHash($a)) {
+			$isBHash = com_wiris_system_TypeTools::isHash($b);
+			if(!$isBHash) {
+				return false;
+			}
+			$ha = $a;
+			$hb = $b;
+			$it = $ha->keys();
+			while($it->hasNext()) {
+				$key = $it->next();
+				if(!$hb->exists($key) || !com_wiris_util_json_JSon::compare($ha->get($key), $hb->get($key), $eps)) {
+					return false;
+				}
+				unset($key);
+			}
+			return true;
+		} else {
+			if(com_wiris_system_TypeTools::isArray($a)) {
+				$isBArray = com_wiris_system_TypeTools::isArray($b);
+				if(!$isBArray) {
+					return false;
+				}
+				$aa = $a;
+				$ab = $b;
+				if($aa->length !== $ab->length) {
+					return false;
+				}
+				$i = null;
+				{
+					$_g1 = 0; $_g = $aa->length;
+					while($_g1 < $_g) {
+						$i1 = $_g1++;
+						if(!com_wiris_util_json_JSon::compare($aa[$i1], $ab[$i1], $eps)) {
+							return false;
+						}
+						unset($i1);
+					}
+				}
+				return true;
+			} else {
+				if(Std::is($a, _hx_qtype("String"))) {
+					if(!Std::is($b, _hx_qtype("String"))) {
+						return false;
+					}
+					return _hx_equal($a, $b);
+				} else {
+					if(Std::is($a, _hx_qtype("Int"))) {
+						if(!Std::is($b, _hx_qtype("Int"))) {
+							return false;
+						}
+						return _hx_equal($a, $b);
+					} else {
+						if(Std::is($a, _hx_qtype("haxe.Int64"))) {
+							$isBLong = Std::is($b, _hx_qtype("haxe.Int64"));
+							if(!$isBLong) {
+								return false;
+							}
+							return _hx_equal($a, $b);
+						} else {
+							if(Std::is($a, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
+								if(!Std::is($b, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
+									return false;
+								}
+								$ja = $a;
+								$jb = $b;
+								return $ja->toString() === $jb->toString();
+							} else {
+								if(Std::is($a, _hx_qtype("Bool"))) {
+									if(!Std::is($b, _hx_qtype("Bool"))) {
+										return false;
+									}
+									return _hx_equal($a, $b);
+								} else {
+									if(Std::is($a, _hx_qtype("Float"))) {
+										if(!Std::is($b, _hx_qtype("Float"))) {
+											return false;
+										}
+										$da = com_wiris_util_json_JSon::getFloat($a);
+										$db = com_wiris_util_json_JSon::getFloat($b);
+										return $da >= $db - $eps && $da <= $db + $eps;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	function __toString() { return 'com.wiris.util.json.JSon'; }
 }

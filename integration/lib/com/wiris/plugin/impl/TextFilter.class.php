@@ -5,6 +5,7 @@ class com_wiris_plugin_impl_TextFilter {
 		if(!php_Boot::$skip_constructor) {
 		$this->plugin = $plugin;
 		$this->render = $plugin->newRender();
+		$this->service = $plugin->newTextService();
 		$this->fixUrl = null;
 	}}
 	public function save_xml_encode($str) {
@@ -37,12 +38,43 @@ class com_wiris_plugin_impl_TextFilter {
 		$prop["centerbaseline"] = "false";
 		$prop["accessible"] = "true";
 		$prop["metrics"] = "true";
-		$src = $this->render->createImage($str, $prop, $output);
-		$img .= " src=\"" . $src . "\"";
-		$alt = com_wiris_system_PropertiesTools::getProperty($output, "alt", null);
-		$width = com_wiris_system_PropertiesTools::getProperty($output, "width", null);
-		$height = com_wiris_system_PropertiesTools::getProperty($output, "height", null);
-		$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
+		$src = null;
+		$alt = null;
+		$width = null;
+		$height = null;
+		$baseline = null;
+		if($this->plugin->getConfiguration()->getProperty("wirispluginperformance", "false") === "false") {
+			$src = $this->render->createImage($str, $prop, $output);
+			$img .= " src=\"" . $src . "\"";
+			$alt = com_wiris_system_PropertiesTools::getProperty($output, "alt", null);
+			$width = com_wiris_system_PropertiesTools::getProperty($output, "width", null);
+			$height = com_wiris_system_PropertiesTools::getProperty($output, "height", null);
+			$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
+		} else {
+			$digest = $this->render->computeDigest($str, $prop);
+			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null)));
+			$hashImage = $json;
+			if(_hx_equal($hashImage->get("status"), "warning")) {
+				$this->render->showImage(null, $str, $prop);
+			}
+			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, "en"));
+			$hashImage = $json;
+			if(_hx_equal($hashImage->get("status"), "ok")) {
+				$result = $hashImage->get("result");
+				$base64 = $result->get("pngBase64");
+				$img .= " src=\"data:image/png;base64," . $base64 . "\"";
+				if($result->exists("alt")) {
+					$alt = $result->get("alt");
+				} else {
+					$alt = $this->service->mathml2accessible($str, null, $prop);
+				}
+				$width = $result->get("width");
+				$height = $result->get("height");
+				$baseline = $result->get("baseline");
+			} else {
+				throw new HException("Image can't be rendererd");
+			}
+		}
 		$dpi = Std::parseFloat($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$WIRIS_DPI, "96"));
 		if($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null) !== null) {
 			$json = com_wiris_util_json_JSon::decode($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null));
@@ -182,6 +214,7 @@ class com_wiris_plugin_impl_TextFilter {
 		return $str;
 	}
 	public $fixUrl;
+	public $service;
 	public $render;
 	public $plugin;
 	public function __call($m, $a) {

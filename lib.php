@@ -8,13 +8,14 @@ defined('MOODLE_INTERNAL') || die();
  * @param  String  $name       tag name.
  * @param  String  $autoClosed indicates if the tag is autoclosed.
  * @param  boolean $all        indicates if the array should contain all the tags or only the first one.
+ * @param  int     $offset      search will start this number of characters counted from the beginning of the string
  * @return array
  */
-function wrs_getElementsByNameFromString($code, $name, $autoClosed, $all = false) {
+function wrs_getElementsByNameFromString($code, $name, $autoClosed, $all = false, $offset = 0) {
     $elements = array();
     $code = strtolower($code);
     $name = strtolower($name);
-    $start = strpos($code, "<" . $name . " ");
+    $start = strpos($code, "<" . $name . " ", $offset);
 
     $i = 0;
     while ($start) {
@@ -86,7 +87,8 @@ function wrs_setInitialSession($sessionId, $xml) {
 }
 
 /**
- * Replaces all the <APPLET> on a text with an image linking a WIRIS cas jnlp containing the applet session.
+ * Includes a <nonapplet> tag on all the <APPLET> tags with an image linking a WIRIS cas jnlp containing the applet session. 
+ * This allows to download WIRIS cas jnlp for chrome browsers.
  * @param  String $text with <APPLET_TAGS>
  * @return String Filtered text.
  */
@@ -115,9 +117,16 @@ function wrs_filterAppletToJnlp($text) {
 			}
 			$output .= $img;
 			$output .= html_writer::end_tag('a');
+			// We add noapplet tag in order to see CAS image on Chrome browser.
+			$output = '<noapplet>' . $output . '</noapplet>' . '</APPLET>';
+			// Searching applet without </applet> close tag.
+			$appletSubstring = substr($text, $appletlist[$i]['start'], $appletlist[$i]['end'] - $appletlist[$i]['start']-9);
+			// Applet substring to be replaced.
 			$search = substr($text, $appletlist[$i]['start'], $appletlist[$i]['end'] - $appletlist[$i]['start']);
+			$output = $appletSubstring . $output;
 			$text = str_replace($search, $output, $text);
-			$appletlist = wrs_getElementsByNameFromString($text, 'applet', false, false);
+			$appletlist = wrs_getElementsByNameFromString($text, 'applet', false, false, $appletlist[$i]['end']);
+
 		}
 		if (strpos($appletCode, 'value="<session')) {
 			$xmlStart = strpos($appletCode, 'value="<session');
