@@ -24,6 +24,14 @@ class com_wiris_plugin_web_PhpConfigurationUpdater implements com_wiris_plugin_c
 		if($v === null) {
 			$configuration[com_wiris_plugin_api_ConfigurationKeys::$SHOWCASIMAGE_PATH] = "integration/showcasimage.php?formula=";
 		}
+		$v = com_wiris_system_PropertiesTools::getProperty($configuration, com_wiris_plugin_api_ConfigurationKeys::$CLEAN_CACHE_PATH, null);
+		if($v === null) {
+			$configuration[com_wiris_plugin_api_ConfigurationKeys::$CLEAN_CACHE_PATH] = "cleancache.php";
+		}
+		$v = com_wiris_system_PropertiesTools::getProperty($configuration, com_wiris_plugin_api_ConfigurationKeys::$RESOURCE_PATH, null);
+		if($v === null) {
+			$configuration[com_wiris_plugin_api_ConfigurationKeys::$RESOURCE_PATH] = "resource.php";
+		}
 		$v = com_wiris_system_PropertiesTools::getProperty($configuration, com_wiris_plugin_api_ConfigurationKeys::$CONTEXT_PATH, null);
 		if($v === null) {
 			$filePath = dirname(dirname($_SERVER['SCRIPT_NAME']));

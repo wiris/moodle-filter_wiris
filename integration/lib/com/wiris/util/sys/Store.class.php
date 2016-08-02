@@ -81,6 +81,42 @@ class com_wiris_util_sys_Store {
 	static function getCurrentPath() {
 		return com_wiris_util_sys_Store_1();
 	}
+	static function deleteDirectory($folder, $included) {
+		if($folder === null || !file_exists($folder)) {
+			return;
+		}
+		$path = com_wiris_util_sys_Store_2($folder, $included);
+		$files = sys_FileSystem::readDirectory($folder);
+		$i = 0;
+		{
+			$_g1 = 0; $_g = $files->length;
+			while($_g1 < $_g) {
+				$i1 = $_g1++;
+				$file = $files[$i1];
+				$file = $path . "/" . $file;
+				if(is_dir($file)) {
+					com_wiris_util_sys_Store::deleteDirectory($file, $included);
+				} else {
+					$includedIterator = $included->iterator();
+					if($included !== null) {
+						while($includedIterator->hasNext()) {
+							if(StringTools::endsWith($file, $includedIterator->next())) {
+								@unlink($file);
+							}
+						}
+					} else {
+						@unlink($file);
+					}
+					unset($includedIterator);
+				}
+				unset($i1,$file);
+			}
+		}
+		$files = sys_FileSystem::readDirectory($folder);
+		if($files->length === 0) {
+			@rmdir($folder);
+		}
+	}
 	function __toString() { return 'com.wiris.util.sys.Store'; }
 }
 function com_wiris_util_sys_Store_0(&$»this) {
@@ -97,6 +133,17 @@ function com_wiris_util_sys_Store_0(&$»this) {
 function com_wiris_util_sys_Store_1() {
 	{
 		$p = realpath(".");
+		if(($p === false)) {
+			return null;
+		} else {
+			return $p;
+		}
+		unset($p);
+	}
+}
+function com_wiris_util_sys_Store_2(&$folder, &$included) {
+	{
+		$p = realpath($folder);
 		if(($p === false)) {
 			return null;
 		} else {

@@ -4,6 +4,19 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 	public function __construct() {
 		;
 	}
+	public function deleteCache() {
+		$formulaFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER);
+		$cacheFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER);
+		$includes = new _hx_array(array());
+		$includes->push("png");
+		$includes->push("csv");
+		$includes->push("txt");
+		if(!(com_wiris_system_PropertiesTools::getProperty($this->config, com_wiris_plugin_api_ConfigurationKeys::$SAVE_MODE, "xml") === "image")) {
+			$includes->push("ini");
+		}
+		com_wiris_util_sys_Store::deleteDirectory($formulaFolder, $includes);
+		com_wiris_util_sys_Store::deleteDirectory($cacheFolder, $includes);
+	}
 	public function isFormulaFileName($name) {
 		$i = _hx_index_of($name, ".", null);
 		if($i === -1) {

@@ -10,6 +10,27 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$this->configuration = $ci;
 		$ci->setPluginBuilderImpl($this);
 	}}
+	public function isEditorLicensed() {
+		$licenseClass = Type::resolveClass("com.wiris.util.sys.License");
+		if($licenseClass !== null) {
+			$init = Reflect::field($licenseClass, "init");
+			$initMethodParams = new _hx_array(array());
+			$initMethodParams->push($this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_KEY, ""));
+			$initMethodParams->push("");
+			$initMethodParams->push(new _hx_array(array(4, 5, 9, 10)));
+			Reflect::callMethod($licenseClass, $init, $initMethodParams);
+			$isLicensedMethod = Reflect::field($licenseClass, "isLicensed");
+			$isLicensedObject = Reflect::callMethod($licenseClass, $isLicensedMethod, null);
+			$isLicensed = null;
+			if(_hx_index_of(Type::getClassName(Type::getClass($isLicensedObject)), "Boolean", null) !== -1) {
+				$isLicensed = _hx_string_call($isLicensedObject, "toString", array());
+			} else {
+				$isLicensed = $isLicensedObject;
+			}
+			return $isLicensed;
+		}
+		return false;
+	}
 	public function addStats($url) {
 		$saveMode = $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SAVE_MODE, "xml");
 		$externalPlugin = $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EXTERNAL_PLUGIN, "false");
@@ -31,7 +52,7 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex2 = $_ex_;
 			{
-				$tech = "Missing tech";
+				$tech = "MissingTech";
 			}
 		}
 		if(_hx_index_of($url, "?", null) !== -1) {
@@ -83,6 +104,11 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$port = null;
 		$url = null;
 		$config = $this->getConfiguration();
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+			if($config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_HOST, null) === "www.wiris.net") {
+				return $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CONTEXT_PATH, "/") . "/editor";
+			}
+		}
 		$protocol = $config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_PROTOCOL, null);
 		$port = $config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_PORT, null);
 		$url = $config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$INTEGRATION_PATH, null);
@@ -127,6 +153,12 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		}
 		return $protocol . "://" . $domain . $port . $path;
 	}
+	public function newResourceLoader() {
+		return new com_wiris_plugin_impl_ServiceResourceLoaderImpl();
+	}
+	public function newCleanCache() {
+		return new com_wiris_plugin_impl_CleanCacheImpl($this);
+	}
 	public function setStorageAndCacheInitObject($obj) {
 		$this->storageAndCacheInitObject = $obj;
 	}
@@ -166,11 +198,10 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncTextServiceImpl($this);
 	}
 	public function newTextService() {
-		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null && $this->isEditorLicensed()) {
 			return new com_wiris_plugin_impl_TextServiceImplIntegratedServices($this);
-		} else {
-			return new com_wiris_plugin_impl_TextServiceImpl($this);
 		}
+		return new com_wiris_plugin_impl_TextServiceImpl($this);
 	}
 	public function newCas() {
 		return new com_wiris_plugin_impl_CasImpl($this);
@@ -185,11 +216,10 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncRenderImpl($this);
 	}
 	public function newRender() {
-		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
+		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null && $this->isEditorLicensed()) {
 			return new com_wiris_plugin_impl_RenderImplIntegratedServices($this);
-		} else {
-			return new com_wiris_plugin_impl_RenderImpl($this);
 		}
+		return new com_wiris_plugin_impl_RenderImpl($this);
 	}
 	public function setStorageAndCache($store) {
 		$this->store = $store;

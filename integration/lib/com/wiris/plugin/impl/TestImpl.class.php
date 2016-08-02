@@ -100,6 +100,11 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 			$reportText = "WIRIS Services installed";
 			$solutionLink = "";
 			$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
+			$isLicensed = $this->plugin->isEditorLicensed();
+			$condition = false;
+			$testName = "WIRIS editor license";
+			$reportText = "Checking WIRIS editor valid license";
+			$output .= $this->createTableRow($testName, $reportText, $solutionLink, $isLicensed);
 		} else {
 			$reportText = "WIRIS Services not installed";
 		}

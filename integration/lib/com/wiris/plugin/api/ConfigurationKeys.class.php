@@ -23,6 +23,8 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $CAS_HEIGHT = "wiriscasheight";
 	static $SHOWIMAGE_PATH = "wirishowimagepath";
 	static $SHOWCASIMAGE_PATH = "wirishowcasimagepath";
+	static $CLEAN_CACHE_PATH = "wiriscleancachepath";
+	static $RESOURCE_PATH = "wirisresourcespath";
 	static $LATEX_TO_MATHML_URL = "wirislatextomathmlurl";
 	static $SAVE_MODE = "wiriseditorsavemode";
 	static $EDITOR_TOOLBAR = "wiriseditortoolbar";
@@ -45,6 +47,9 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $EXTERNAL_PLUGIN = "wirisexternalplugin";
 	static $EXTERNAL_REFERER = "wirisexternalreferer";
 	static $IMPROVE_PERFORMANCE = "wirispluginperformance";
+	static $EDITOR_KEY = "wiriseditorkey";
+	static $CLEAN_CACHE_TOKEN = "wiriscleancachetoken";
+	static $CLEAN_CACHE_GUI = "wiriscleancachegui";
 	static $imageConfigProperties;
 	static $imageConfigPropertiesInv;
 	static function computeInverse($dict) {

@@ -4,6 +4,8 @@ class com_wiris_plugin_impl_FileStorageAndCache implements com_wiris_plugin_stor
 	public function __construct() {
 		;
 	}
+	public function deleteCache() {
+	}
 	public function getExtension($service) {
 		if($service === "png") {
 			return ".png";

@@ -3,6 +3,15 @@
 class com_wiris_plugin_api_PluginBuilder {
 	public function __construct() { 
 	}
+	public function isEditorLicensed() {
+		return false;
+	}
+	public function newResourceLoader() {
+		return null;
+	}
+	public function newCleanCache() {
+		return null;
+	}
 	public function addCorsHeaders($response, $origin) {
 	}
 	public function newEditor() {
