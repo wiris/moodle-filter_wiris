@@ -31,12 +31,13 @@ class filter_wiris_filter_testcase extends advanced_testcase
 {   protected $filter;
     protected $safexml;
     protected $xml;
+    protected $image;
 
     protected function setUp() {
         parent::setUp();
         $this->resetAfterTest(true);
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
-        $this->safeXml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
+        $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
         $this->image = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->image .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
