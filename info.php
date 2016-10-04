@@ -118,6 +118,7 @@ $output .= html_writer::end_tag('tr');
 $output .= html_writer::start_tag('tr');
 echo $output;
 $output = '';
+$plugin = new stdClass();
 require('version.php');
 $testname = 'Looking for WIRIS plugin filter version';
 if (isset($plugin->release)) {

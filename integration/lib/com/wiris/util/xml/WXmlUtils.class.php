@@ -413,6 +413,44 @@ class com_wiris_util_xml_WXmlUtils {
 		}
 		return $n;
 	}
+	static function copyXmlNamespace($elem, $customNamespace) {
+		return com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem, $elem, $customNamespace);
+	}
+	static function importXmlNamespace($elem, $model, $customNamespace) {
+		$n = null;
+		if($elem->nodeType == Xml::$Element) {
+			$n = Xml::createElement($customNamespace . ":" . $elem->getNodeName());
+			$keys = $elem->attributes();
+			while($keys->hasNext()) {
+				$key = $keys->next();
+				$keyNamespaced = $key;
+				if(_hx_index_of($key, ":", null) === -1) {
+					$keyNamespaced = $customNamespace . ":" . $key;
+				}
+				$n->set($keyNamespaced, $elem->get($key));
+				unset($keyNamespaced,$key);
+			}
+			$children = $elem->iterator();
+			while($children->hasNext()) {
+				$n->addChild(com_wiris_util_xml_WXmlUtils::importXmlNamespace($children->next(), $model, $customNamespace));
+			}
+		} else {
+			if($elem->nodeType == Xml::$Document) {
+				$n = com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem->firstElement(), $model, $customNamespace);
+			} else {
+				if($elem->nodeType == Xml::$CData) {
+					$n = Xml::createCData($elem->getNodeValue());
+				} else {
+					if($elem->nodeType == Xml::$PCData) {
+						$n = Xml::createPCData($elem->getNodeValue());
+					} else {
+						throw new HException("Unsupported node type: " . Std::string($elem->nodeType));
+					}
+				}
+			}
+		}
+		return $n;
+	}
 	static function indentXml($xml, $space) {
 		$depth = 0;
 		$opentag = new EReg("^<([\\w-_]+)[^>]*>\$", "");
@@ -482,7 +520,7 @@ class com_wiris_util_xml_WXmlUtils {
 						if($cdata->match($aux)) {
 							$res->add($aux);
 						} else {
-							haxe_Log::trace("WARNING! malformed XML at character " . _hx_string_rec($end, "") . ":" . $xml, _hx_anonymous(array("fileName" => "WXmlUtils.hx", "lineNumber" => 583, "className" => "com.wiris.util.xml.WXmlUtils", "methodName" => "indentXml")));
+							haxe_Log::trace("WARNING! malformed XML at character " . _hx_string_rec($end, "") . ":" . $xml, _hx_anonymous(array("fileName" => "WXmlUtils.hx", "lineNumber" => 616, "className" => "com.wiris.util.xml.WXmlUtils", "methodName" => "indentXml")));
 							$res->add($aux);
 						}
 					}
