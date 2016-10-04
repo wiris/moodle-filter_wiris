@@ -3,5 +3,5 @@
 interface com_wiris_plugin_api_CleanCache {
 	function getContentType();
 	function getCacheOutput();
-	function init($param);
+	function init($provider);
 }

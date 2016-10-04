@@ -1,9 +1,9 @@
 function get_firstchild(n){
-	x=n.firstChild;
-	while (x.nodeType!=1){
-		x=x.nextSibling;
-	}
-	return x;
+    x = n.firstChild;
+    while (x.nodeType != 1){
+        x = x.nextSibling;
+    }
+    return x;
 }
 
 var div = document.createElement('div');

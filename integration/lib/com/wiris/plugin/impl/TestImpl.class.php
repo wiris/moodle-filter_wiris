@@ -51,7 +51,8 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$solutionLink = "";
 		$param = array();;
 		$outp = array();;
-		$imageUrl = $this->plugin->newRender()->createImage($mml, $param, $outp);
+		$provider = $this->plugin->newGenericParamsProvider($param);
+		$imageUrl = $this->plugin->newRender()->createImage($mml, $provider, $outp);
 		$reportText = "<a href=\"" . $imageUrl . "\" />" . $imageUrl . "</a>";
 		$condition = true;
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
@@ -74,9 +75,9 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$p = null;
 		$p = array();;
 		$p["savemode"] = "safeXml";
-		$s2 = str_replace("<", com_wiris_plugin_impl_TestImpl_0($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $random, $reportText, $solutionLink, $testName), $mml);
-		$s2 = str_replace(">", com_wiris_plugin_impl_TestImpl_1($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $random, $reportText, $s2, $solutionLink, $testName), $s2);
-		$s2 = str_replace("\"", com_wiris_plugin_impl_TestImpl_2($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $random, $reportText, $s2, $solutionLink, $testName), $s2);
+		$s2 = str_replace("<", com_wiris_plugin_impl_TestImpl_0($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $provider, $random, $reportText, $solutionLink, $testName), $mml);
+		$s2 = str_replace(">", com_wiris_plugin_impl_TestImpl_1($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $provider, $random, $reportText, $s2, $solutionLink, $testName), $s2);
+		$s2 = str_replace("\"", com_wiris_plugin_impl_TestImpl_2($this, $condition, $ex, $imageUrl, $mml, $outp, $output, $p, $param, $platform, $provider, $random, $reportText, $s2, $solutionLink, $testName), $s2);
 		$reportText = $this->plugin->newTextService()->filter("square root: " . $s2, $p);
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
 		$testName = "Connecting to www.wiris.net";
@@ -183,21 +184,21 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 	}
 	function __toString() { return 'com.wiris.plugin.impl.TestImpl'; }
 }
-function com_wiris_plugin_impl_TestImpl_0(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$random, &$reportText, &$solutionLink, &$testName) {
+function com_wiris_plugin_impl_TestImpl_0(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$provider, &$random, &$reportText, &$solutionLink, &$testName) {
 	{
 		$s = new haxe_Utf8(null);
 		$s->addChar(171);
 		return $s->toString();
 	}
 }
-function com_wiris_plugin_impl_TestImpl_1(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$random, &$reportText, &$s2, &$solutionLink, &$testName) {
+function com_wiris_plugin_impl_TestImpl_1(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$provider, &$random, &$reportText, &$s2, &$solutionLink, &$testName) {
 	{
 		$s = new haxe_Utf8(null);
 		$s->addChar(187);
 		return $s->toString();
 	}
 }
-function com_wiris_plugin_impl_TestImpl_2(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$random, &$reportText, &$s2, &$solutionLink, &$testName) {
+function com_wiris_plugin_impl_TestImpl_2(&$퍁his, &$condition, &$ex, &$imageUrl, &$mml, &$outp, &$output, &$p, &$param, &$platform, &$provider, &$random, &$reportText, &$s2, &$solutionLink, &$testName) {
 	{
 		$s = new haxe_Utf8(null);
 		$s->addChar(168);

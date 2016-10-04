@@ -9,7 +9,7 @@ class com_wiris_plugin_impl_EditorImpl implements com_wiris_plugin_api_Editor{
 		$output->add($s);
 		$output->add("\x0D\x0A");
 	}
-	public function editor($language, $prop) {
+	public function editor($language, $provider) {
 		$output = new StringBuf();
 		if($language === null || strlen($language) === 0) {
 			$language = "en";
@@ -56,7 +56,7 @@ class com_wiris_plugin_impl_EditorImpl implements com_wiris_plugin_api_Editor{
 			$script->add("};</script>");
 		}
 		$editorUrl = $this->plugin->getImageServiceURL("editor", false);
-		$isSegure = com_wiris_system_PropertiesTools::getProperty($prop, "secure", "false") === "true";
+		$isSegure = $provider->getParameter("secure", "false") === "true";
 		if(StringTools::startsWith($editorUrl, "http:") && $isSegure) {
 			$editorUrl = "https:" . _hx_substr($editorUrl, 5, null);
 		}

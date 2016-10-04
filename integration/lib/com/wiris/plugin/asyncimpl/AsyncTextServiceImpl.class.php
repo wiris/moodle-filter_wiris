@@ -11,7 +11,7 @@ class com_wiris_plugin_asyncimpl_AsyncTextServiceImpl implements com_wiris_plugi
 	public function onData($data) {
 		if($this->digest !== null) {
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($this->serviceName, $this->param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($this->serviceName, $this->provider);
 			$store->storeData($this->digest, $ext, com_wiris_system_Utf8::toBytes($data));
 		}
 		$this->response->returnString($data);
@@ -21,17 +21,18 @@ class com_wiris_plugin_asyncimpl_AsyncTextServiceImpl implements com_wiris_plugi
 			$param["lang"] = $lang;
 		}
 		$param["mml"] = $mml;
-		$this->service("mathml2accessible", $param, $response);
+		$provider = $this->plugin->newGenericParamsProvider($param);
+		$this->service("mathml2accessible", $provider, $response);
 	}
-	public function service($serviceName, $param, $response) {
+	public function service($serviceName, $provider, $response) {
 		$this->serviceName = $serviceName;
-		$this->param = $param;
+		$this->provider = $provider;
 		$this->response = $response;
 		$this->digest = null;
 		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
-			$this->digest = $this->plugin->newRender()->computeDigest(null, $param);
+			$this->digest = $this->plugin->newRender()->computeDigest(null, $provider->getRenderParameters($this->plugin->getConfiguration()));
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $this->provider);
 			$s = $store->retreiveData($this->digest, $ext);
 			if($s !== null) {
 				$response->returnString(com_wiris_system_Utf8::fromBytes($s));
@@ -42,8 +43,8 @@ class com_wiris_plugin_asyncimpl_AsyncTextServiceImpl implements com_wiris_plugi
 		$h = new com_wiris_plugin_impl_HttpImpl($url, $this);
 		$this->plugin->addReferer($h);
 		$this->plugin->addProxy($h);
-		if($param !== null) {
-			$ha = com_wiris_system_PropertiesTools::fromProperties($param);
+		if($this->param !== null) {
+			$ha = com_wiris_system_PropertiesTools::fromProperties($this->param);
 			$iter = $ha->keys();
 			while($iter->hasNext()) {
 				$k = $iter->next();
@@ -54,6 +55,7 @@ class com_wiris_plugin_asyncimpl_AsyncTextServiceImpl implements com_wiris_plugi
 		$h->request(true);
 	}
 	public $response;
+	public $provider;
 	public $param;
 	public $serviceName;
 	public $digest;

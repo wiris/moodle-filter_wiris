@@ -120,7 +120,7 @@ class com_wiris_plugin_impl_CasImpl implements com_wiris_plugin_api_Cas{
 		}
 		return $output;
 	}
-	public function showCasImage($f, $outProp) {
+	public function showCasImage($f, $provider) {
 		$formula = $f;
 		if(StringTools::endsWith($formula, ".png")) {
 			$formula = _hx_substr($formula, 0, strlen($formula) - 4);

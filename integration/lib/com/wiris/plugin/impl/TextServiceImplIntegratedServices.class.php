@@ -4,7 +4,7 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 	public function __construct($plugin) { if(!php_Boot::$skip_constructor) {
 		parent::__construct($plugin);
 	}}
-	public function serviceText($serviceName, $param) {
+	public function serviceText($serviceName, $provider) {
 		$servicesClass = Type::resolveClass("com.wiris.editor.services.PublicServices");
 		$getInstance = Reflect::field($servicesClass, "getInstance");
 		$publicServices = Reflect::callMethod($servicesClass, $getInstance, null);
@@ -12,49 +12,49 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 		$args = new _hx_array(array());
 		try {
 			if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
-				$mml = com_wiris_system_PropertiesTools::getProperty($param, "mml", null);
+				$mml = $provider->getParameter("mml", null);
 				if($mml === null) {
 					throw new HException("Missing mml");
 				} else {
 					$args->push($mml);
 				}
-				$lang = com_wiris_system_PropertiesTools::getProperty($param, "lang", "en");
+				$lang = $provider->getParameter("lang", "en");
 				$args->push($lang);
-				$args->push($param);
+				$args->push($provider->getParameters());
 				$serviceText = Reflect::callMethod($publicServices, $serviceMethod, $args);
 				return $serviceText;
 			} else {
 				if(_hx_index_of($serviceName, "mathml2latex", null) !== -1) {
-					$mml = com_wiris_system_PropertiesTools::getProperty($param, "mml", null);
+					$mml = $provider->getParameter("mml", null);
 					if($mml === null) {
 						throw new HException("Missing mml");
 					} else {
 						$args->push($mml);
 					}
-					$keepMathml = com_wiris_system_PropertiesTools::getProperty($param, "keepMathml", "false");
+					$keepMathml = $provider->getParameter("keepMathml", "false");
 					if(_hx_index_of($keepMathml, "true", null) !== -1) {
 						$args->push(true);
 					} else {
 						$args->push(false);
 					}
-					$args->push($param);
+					$args->push($provider->getParameters());
 					$serviceText = Reflect::callMethod($publicServices, $serviceMethod, $args);
 					return $serviceText;
 				} else {
 					if(_hx_index_of($serviceName, "latex2mathml", null) !== -1) {
-						$latex = com_wiris_system_PropertiesTools::getProperty($param, "latex", null);
+						$latex = $provider->getParameter("latex", null);
 						if($latex === null) {
 							throw new HException("Missing LaTeX");
 						} else {
 							$args->push($latex);
 						}
-						$keepLatex = com_wiris_system_PropertiesTools::getProperty($param, "saveLatex", "false");
+						$keepLatex = $provider->getParameter("saveLatex", "false");
 						if(_hx_index_of($keepLatex, "false", null) !== -1) {
 							$args->push(false);
 						} else {
 							$args->push(true);
 						}
-						$args->push($param);
+						$args->push($provider->getParameters());
 						$serviceText = Reflect::callMethod($publicServices, $serviceMethod, $args);
 						return $serviceText;
 					} else {
@@ -66,25 +66,29 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
 			{
-				throw new HException($e->getMessage());
+				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
+					return "Error converting from MathML to accessible text.";
+				} else {
+					throw new HException($e->getMessage());
+				}
 			}
 		}
 	}
-	public function service($serviceName, $param) {
+	public function service($serviceName, $provider) {
 		$digest = null;
 		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
-			$digest = $this->plugin->newRender()->computeDigest(null, $param);
+			$digest = $this->plugin->newRender()->computeDigest(null, $provider->getRenderParameters($this->plugin->getConfiguration()));
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$s = $store->retreiveData($digest, $ext);
 			if($s !== null) {
 				return com_wiris_system_Utf8::fromBytes($s);
 			}
 		}
-		$result = $this->serviceText($serviceName, $param);
+		$result = $this->serviceText($serviceName, $provider);
 		if($digest !== null) {
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($result));
 		}
 		return $result;

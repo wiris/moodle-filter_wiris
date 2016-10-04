@@ -78,10 +78,10 @@ class com_wiris_plugin_impl_CleanCacheImpl implements com_wiris_plugin_api_Clean
 	}
 	public function init($param) {
 		$this->storage = $this->plugin->getStorageAndCache();
-		$this->token = com_wiris_system_PropertiesTools::getProperty($param, "token", null);
-		$this->newToken = com_wiris_system_PropertiesTools::getProperty($param, "newtoken", null);
+		$this->token = $param->getParameter("token", null);
+		$this->newToken = $param->getParameter("newtoken", null);
 		$this->wirisCleanCacheToken = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CLEAN_CACHE_TOKEN, null);
-		$this->accept = ((com_wiris_system_PropertiesTools::getProperty($param, "accept", null) !== null && com_wiris_system_PropertiesTools::getProperty($param, "accept", "") === "application/json") ? true : false);
+		$this->accept = (($param->getParameter("accept", null) !== null && $param->getParameter("accept", "") === "application/json") ? true : false);
 		$this->gui = $this->isGui();
 		$this->validToken = $this->validateToken($this->wirisCleanCacheToken, $this->token);
 		$this->cleanCachePath = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CLEAN_CACHE_PATH, "");

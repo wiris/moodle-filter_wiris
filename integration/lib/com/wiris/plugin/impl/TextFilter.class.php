@@ -38,13 +38,14 @@ class com_wiris_plugin_impl_TextFilter {
 		$prop["centerbaseline"] = "false";
 		$prop["accessible"] = "true";
 		$prop["metrics"] = "true";
+		$provider = $this->plugin->newGenericParamsProvider($prop);
 		$src = null;
 		$alt = null;
 		$width = null;
 		$height = null;
 		$baseline = null;
 		if($this->plugin->getConfiguration()->getProperty("wirispluginperformance", "false") === "false") {
-			$src = $this->render->createImage($str, $prop, $output);
+			$src = $this->render->createImage($str, $provider, $output);
 			$img .= " src=\"" . $src . "\"";
 			$alt = com_wiris_system_PropertiesTools::getProperty($output, "alt", null);
 			$width = com_wiris_system_PropertiesTools::getProperty($output, "width", null);
@@ -55,7 +56,7 @@ class com_wiris_plugin_impl_TextFilter {
 			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null)));
 			$hashImage = $json;
 			if(_hx_equal($hashImage->get("status"), "warning")) {
-				$this->render->showImage(null, $str, $prop);
+				$this->render->showImage(null, $str, $provider);
 			}
 			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, "en"));
 			$hashImage = $json;

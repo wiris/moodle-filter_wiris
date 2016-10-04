@@ -3,6 +3,17 @@
 class com_wiris_plugin_api_PluginBuilder {
 	public function __construct() { 
 	}
+	public function getCustomParamsProvider() {
+		return null;
+	}
+	public function setCustomParamsProvider($provider) {
+	}
+	public function newGenericParamsProvider($properties) {
+		return null;
+	}
+	public function getImageFormatController() {
+		return null;
+	}
 	public function isEditorLicensed() {
 		return false;
 	}

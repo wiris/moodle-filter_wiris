@@ -39,26 +39,30 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 	public function latex2mathml($latex) {
 		$param = array();;
 		$param["latex"] = $latex;
-		return $this->service("latex2mathml", $param);
+		$provider = $this->plugin->newGenericParamsProvider($param);
+		return $this->service("latex2mathml", $provider);
 	}
 	public function mathml2latex($mml) {
 		$param = array();;
 		$param["mml"] = $mml;
-		return $this->service("mathml2latex", $param);
+		$provider = $this->plugin->newGenericParamsProvider($param);
+		return $this->service("mathml2latex", $provider);
 	}
 	public function mathml2accessible($mml, $lang, $param) {
 		if($lang !== null) {
 			$param["lang"] = $lang;
 		}
 		$param["mml"] = $mml;
-		return $this->service("mathml2accessible", $param);
+		$provider = $this->plugin->newGenericParamsProvider($param);
+		return $this->service("mathml2accessible", $provider);
 	}
-	public function service($serviceName, $param) {
+	public function service($serviceName, $provider) {
 		$digest = null;
+		$renderParams = $provider->getRenderParameters($this->plugin->getConfiguration());
 		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
-			$digest = $this->plugin->newRender()->computeDigest(null, $param);
+			$digest = $this->plugin->newRender()->computeDigest(null, $renderParams);
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$s = $store->retreiveData($digest, $ext);
 			if($s !== null) {
 				return com_wiris_system_Utf8::fromBytes($s);
@@ -68,20 +72,18 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 		$h = new com_wiris_plugin_impl_HttpImpl($url, null);
 		$this->plugin->addReferer($h);
 		$this->plugin->addProxy($h);
-		if($param !== null) {
-			$ha = com_wiris_system_PropertiesTools::fromProperties($param);
-			$iter = $ha->keys();
-			while($iter->hasNext()) {
-				$k = $iter->next();
-				$h->setParameter($k, $ha->get($k));
-				unset($k);
-			}
+		$ha = com_wiris_system_PropertiesTools::fromProperties($provider->getServiceParameters());
+		$iter = $ha->keys();
+		while($iter->hasNext()) {
+			$k = $iter->next();
+			$h->setParameter($k, $ha->get($k));
+			unset($k);
 		}
 		$h->request(true);
 		$r = $h->getData();
 		if($digest !== null) {
 			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $param);
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($r));
 		}
 		return $r;
@@ -109,8 +111,8 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 		}
 		return false;
 	}
-	static function getDigestExtension($serviceName, $param) {
-		$lang = com_wiris_system_PropertiesTools::getProperty($param, "lang", "en");
+	static function getDigestExtension($serviceName, $provider) {
+		$lang = $provider->getParameter("lang", "en");
 		if($lang !== null && strlen($lang) === 0) {
 			return "en";
 		}

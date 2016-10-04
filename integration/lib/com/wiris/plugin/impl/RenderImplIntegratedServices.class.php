@@ -37,7 +37,7 @@ class com_wiris_plugin_impl_RenderImplIntegratedServices extends com_wiris_plugi
 			}
 		}
 	}
-	public function showImage($digest, $mml, $param) {
+	public function showImage($digest, $mml, $provider) {
 		if($digest === null && $mml === null) {
 			throw new HException("Missing parameters 'formula' or 'mml'.");
 		}
@@ -46,7 +46,7 @@ class com_wiris_plugin_impl_RenderImplIntegratedServices extends com_wiris_plugi
 		}
 		$atts = false;
 		if($digest === null && $mml !== null) {
-			$digest = $this->computeDigest($mml, $param);
+			$digest = $this->computeDigest($mml, $provider->getRenderParameters($this->plugin->getConfiguration()));
 		}
 		$formula = $this->plugin->getStorageAndCache()->decodeDigest($digest);
 		if($formula === null) {
@@ -57,26 +57,29 @@ class com_wiris_plugin_impl_RenderImplIntegratedServices extends com_wiris_plugi
 		}
 		$iniFile = com_wiris_util_sys_IniFile::newIniFileFromString($formula);
 		$renderParams = $iniFile->getProperties();
-		$i = null;
 		$ss = $this->getEditorParametersList();
-		if($param !== null) {
-			$_g1 = 0; $_g = $ss->length;
-			while($_g1 < $_g) {
-				$i1 = $_g1++;
-				$key = $ss[$i1];
-				$value = com_wiris_system_PropertiesTools::getProperty($param, $key, null);
-				if($value !== null) {
-					$atts = true;
-					$renderParams->set($key, $value);
+		$i = null;
+		if($provider !== null) {
+			$renderParameters = $provider->getRenderParameters($this->plugin->getConfiguration());
+			{
+				$_g1 = 0; $_g = $ss->length;
+				while($_g1 < $_g) {
+					$i1 = $_g1++;
+					$key = $ss[$i1];
+					$value = com_wiris_system_PropertiesTools::getProperty($renderParameters, $key, null);
+					if($value !== null) {
+						$atts = true;
+						$renderParams->set($key, $value);
+					}
+					unset($value,$key,$i1);
 				}
-				unset($value,$key,$i1);
 			}
-		}
-		if($atts) {
-			if($mml !== null) {
-				$digest = $this->computeDigest($mml, com_wiris_system_PropertiesTools::toProperties($renderParams));
-			} else {
-				$digest = $this->computeDigest($renderParams->get("mml"), com_wiris_system_PropertiesTools::toProperties($renderParams));
+			if($atts) {
+				if($mml !== null) {
+					$digest = $this->computeDigest($mml, com_wiris_system_PropertiesTools::toProperties($renderParams));
+				} else {
+					$digest = $this->computeDigest($renderParams->get("mml"), com_wiris_system_PropertiesTools::toProperties($renderParams));
+				}
 			}
 		}
 		$store = $this->plugin->getStorageAndCache();

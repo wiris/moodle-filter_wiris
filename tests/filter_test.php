@@ -28,9 +28,9 @@ global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
 class filter_wiris_filter_testcase extends advanced_testcase
-{	protected $filter;
-	protected $safeXml;
-	protected $xml;
+{   protected $filter;
+    protected $safexml;
+    protected $xml;
 
     protected function setUp() {
         parent::setUp();
@@ -38,17 +38,21 @@ class filter_wiris_filter_testcase extends advanced_testcase
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->safeXml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
+        $this->image = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
+        $this->image .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
+        $this->image .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
+        $this->image .= ' data-mathml="«math ';
+        $this->image .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
+
     }
 
-    public function test_filter_safeXml() {
-    	$image = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0" class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px" data-mathml="«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
-    	$output = $this->wirisfilter->filter($this->safeXml);
-    	$this->assertEquals($output, $image);
+    public function test_filter_safexml() {
+        $output = $this->wirisfilter->filter($this->safexml);
+        $this->assertEquals($output, $this->image);
     }
 
     public function test_filter_xml() {
-    	$image = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0" class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px" data-mathml="«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
-    	$output = $this->wirisfilter->filter($this->xml);
-    	$this->assertEquals($output, $image);
+        $output = $this->wirisfilter->filter($this->xml);
+        $this->assertEquals($output, $this->image);
     }
 }

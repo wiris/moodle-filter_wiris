@@ -10,6 +10,18 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$this->configuration = $ci;
 		$ci->setPluginBuilderImpl($this);
 	}}
+	public function newGenericParamsProvider($properties) {
+		return new com_wiris_plugin_impl_GenericParamsProviderImpl($properties);
+	}
+	public function getImageFormatController() {
+		$imageFormatController = null;
+		if($this->configuration->getProperty(com_wiris_plugin_api_ConfigurationKeys::$IMAGE_FORMAT, "png") === "svg") {
+			$imageFormatController = new com_wiris_plugin_impl_ImageFormatControllerSvg();
+		} else {
+			$imageFormatController = new com_wiris_plugin_impl_ImageFormatControllerPng();
+		}
+		return $imageFormatController;
+	}
 	public function isEditorLicensed() {
 		$licenseClass = Type::resolveClass("com.wiris.util.sys.License");
 		if($licenseClass !== null) {
@@ -106,7 +118,7 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$config = $this->getConfiguration();
 		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
 			if($config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_HOST, null) === "www.wiris.net") {
-				return $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CONTEXT_PATH, "/") . "/editor";
+				return $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CONTEXT_PATH, "/") . "/editor/editor";
 			}
 		}
 		$protocol = $config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_PROTOCOL, null);
@@ -224,9 +236,16 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 	public function setStorageAndCache($store) {
 		$this->store = $store;
 	}
+	public function getCustomParamsProvider() {
+		return $this->customParamsProvider;
+	}
+	public function setCustomParamsProvider($provider) {
+		$this->customParamsProvider = $provider;
+	}
 	public function addConfigurationUpdater($conf) {
 		$this->updaterChain->push($conf);
 	}
+	public $customParamsProvider;
 	public $storageAndCacheInitObject;
 	public $updaterChain;
 	public $store;

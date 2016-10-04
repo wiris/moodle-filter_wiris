@@ -1,225 +1,231 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <?php
+// This file is part of Moodle - http://moodle.org/
 //
-//  Copyright (c) 2011, Maths for More S.L. http://www.wiris.com
-//  This file is part of Moodle WIRIS Plugin.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-//  Moodle WIRIS Plugin is free software: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-//  Moodle WIRIS Plugin is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with Moodle WIRIS Plugin. If not, see <http://www.gnu.org/licenses/>.
-//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-include '../../config.php';
-include '../../lib/editor/tinymce/lib.php';
+require('../../config.php');
+require('../../lib/editor/tinymce/lib.php');
 
-function wrs_assert($condition, $report_text, $solution_link) {
-	if ($condition){
-		return $report_text;
-	}
-	else{
-		return '<span class="error">' . $report_text . '</span>' . '<a target="_blank" href="' . $solution_link . '"><img alt="" src="img/help.gif" /></a>';
-	}
+function wrs_assert($condition, $reporttext, $solutionlink) {
+    if ($condition) {
+        return $reporttext;
+    } else {
+        $result = '<span class="error">' . $reporttext . '</span>' . '<a target="_blank" href="';
+        $result .= $solutionlink . '"><img alt="" src="img/help.gif" /></a>';
+        return $result;
+    }
 }
 
-function wrs_getStatus($condition){
-	if($condition){
-		return '<span class="ok">OK</span>';
-	}else{
-		return '<span class="error">ERROR</span>';
-	}
+function wrs_getstatus($condition) {
+    if ($condition) {
+        return '<span class="ok">OK</span>';
+    } else {
+        return '<span class="error">ERROR</span>';
+    }
 }
 
-function wrs_createTableRow($test_name, $report_text, $solution_link, $condition){
-	$output = '<td>' . $test_name . '</td>';
-	$output .= '<td>' . wrs_assert($condition, $report_text, $solution_link) . '</td>';
-	$output .= '<td>' . wrs_getStatus($condition) . '</td>';
-	return $output;
+function wrs_createtablerow($testname, $reporttext, $solutionlink, $condition) {
+    $output = '<td>' . $testname . '</td>';
+    $output .= '<td>' . wrs_assert($condition, $reporttext, $solutionlink) . '</td>';
+    $output .= '<td>' . wrs_getstatus($condition) . '</td>';
+    return $output;
 }
 
-//Used to find the position of WIRIS plugin (Starting from Moodle 2.4 it changes the folder used to install the plugins)
-$tinyEditor = new tinymce_texteditor();
-$tiny_ver = $tinyEditor->version;
+// Used to find the position of WIRIS plugin (Starting from Moodle 2.4 it changes the folder used to install the plugins).
+$tinyeditor = new tinymce_texteditor();
+$tinyversion = $tinyeditor->version;
 
 
-$wiris_plugin_base = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-$wiris_plugin_base_string = 'TinyMCE';
+$wirispluginbase = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+$wirispluginbasestring = 'TinyMCE';
 if ($CFG->version >= 2014051200) {
-	$editors =  array_flip(explode(',', $CFG->texteditors));
-	if (array_key_exists('atto', $editors) && (($editors['atto'] < $editors['tinymce'])) || !array_key_exists('tinymce', $editors)) {
-		$wiris_plugin_base = '../../lib/editor/atto/plugins/wiris';
-		$wiris_plugin_base_string = 'Atto';
-	}
+    $editors = array_flip(explode(',', $CFG->texteditors));
+    if (array_key_exists('atto', $editors) && (($editors['atto'] < $editors['tinymce'])) ||
+        !array_key_exists('tinymce', $editors)) {
+        $wirispluginbase = '../../lib/editor/atto/plugins/wiris';
+        $wirispluginbasestring = 'Atto';
+    }
 } else if ($CFG->version < 2012120300) {
-	$wiris_plugin_base = '../../lib/editor/tinymce/tiny_mce/' . $tiny_ver . '/plugins/tiny_mce_wiris';
+    $wirispluginbase = '../../lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
 }
-?>
-
-<html>
-<head>
-	<title>Moodle 2.x WIRIS plugin filter test page</title>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<style type="text/css">
-		body{font-family: Arial;}
-		span{font-weight: bold;}
-		span.ok {color: #009900;}
-		span.error {color: #dd0000;}
-		table, th, td, tr {
-			border: solid 1px #000000;
-			border-collapse:collapse;
-			padding: 5px;
-		}
-		th{background-color: #eeeeee;}
-		img{border:none;}
-	</style>
-</head>
-<body>
-	<h1>Moodle 2.x WIRIS plugin filter test page</h1>
-	<table id="wrs_filter_info_table">
-			<tr>
-				<th>Test</th>
-				<th>Report</th>
-				<th>Status</th>
-			</tr>
-			<tr>
-				<?php
-					$test_name = 'Looking for correct folder';
-					$report_text = 'Filter must be installed in Moodle filter folder.';
-					$solution_link = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
-					$actual_folder = realpath(dirname(__FILE__));
-					$correct_folder = realpath($CFG->dirroot . '/filter/wiris');
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $actual_folder == $correct_folder);
-				?>
-			</tr>
-			<tr>
-				<?php
-					$test_name = 'Looking for filter files';
-					$report_text = 'WIRIS plugin filter for Moodle 2.x must be installed.';
-					$solution_link = 'http://www.wiris.com/plugins/moodle/download';
-					$filter_files = Array('filter.php', 'MoodleConfigurationUpdater.php', 'version.php');
-					$exist = true;
-					foreach ($filter_files as $value){
-						$condition = file_exists($value);
-						if (!$condition){
-							$exist = false;
-						}
-					}
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $exist);
-				?>			
-			</tr>				
-			<tr>	
-				<?php
-					@include 'version.php';				
-					$test_name = 'Looking for WIRIS plugin filter version';
-					if (isset($plugin->release)){
-						$report_text = '<span>' . $plugin->release . '</span>';
-						$condition = true;
-					}else{
-						$report_text = 'Impossible to find WIRIS plugin filter version file.';
-						$condition = false;
-					}
-					$solution_link = 'http://www.wiris.com/plugins/moodle/download';
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $condition);
-				?>				
-			</tr>
-			<tr>			
-				<?php
-					$test_name = 'WIRIS plugin filter';
-					$solution_link = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
-                    $filter_enabled = filter_is_enabled('filter/wiris');
-                    if ($filter_enabled){
-                        $report_text = 'ENABLED';
-                    }else{
-                        $report_text = 'DISABLED';
-                    }
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $filter_enabled);
-				?>			
-			</tr>			
-			<tr>			
-				<?php
-					$test_name = 'Looking for WIRIS plugin for ' . $wiris_plugin_base_string;
-					$report_text = 'WIRIS plugin for ' . $wiris_plugin_base_string .' must be installed.';
-					$solution_link = 'http://www.wiris.com/plugins/moodle/download';
-					$wiris_plugin = $wiris_plugin_base. '/core';
-					$condition = file_exists($wiris_plugin);					
-					if (!$condition){
-						$wiris_plugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/core';    
-						$condition = file_exists($wiris_plugin);    
-					}
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $condition);
-				?>			 
-			</tr>
-			<tr>	
-				<?php
-					@include 'wirispluginwrapper.php';
-					$wirisplugin = WIRISpluginWrapper::get_wiris_plugin();
-					$test_name = 'Matching WIRIS plugin filter and WIRIS plugin for '.$wiris_plugin_base_string.' versions';
-					if (isset($plugin->release)){
-						$filter_version = $plugin->release;
-					}else{
-						$report_text = '';
-					}
-
-					// Using version.php to check release number
-
-					if (strtolower($wiris_plugin_base_string) == 'tinymce') {
-						include $wiris_plugin_base . '/../version.php';
-					} else {
-						include $wiris_plugin_base . '/version.php';
-					}
-					if (isset($plugin->release)) {
-						$plugin_version = $plugin->release;
-					} else {
-						$plugin_version = "";
-					}
 
 
-					// $file = $wiris_plugin_base . '/VERSION';
-					// if (@fopen($file, 'r')){
-					// 	$content = file($file);
-					// 	$plugin_version = $content[0];
-					// }else{
-					// 	$plugin_version = "";
-					// }
-					if ($filter_version == $plugin_version){
-						$report_text = 'WIRIS plugin filter and WIRIS plugin for '.$wiris_plugin_base_string.' have the same version';
-						$condition = true;
-					}else{
-						$report_text = 'WIRIS plugin filter and WIRIS plugin for '.$wiris_plugin_base_string.' versions don\'t match';
-						$condition = false;
-					}
-					$solution_link = 'http://www.wiris.com/plugins/moodle/download';
-					echo wrs_createTableRow($test_name, $report_text, $solution_link, $condition);
-				?>				
-			</tr>			
-	</table>
+$PAGE->set_context(context_system::instance());
+$PAGE->set_title('Moodle 2.x WIRIS plugin filter test page');
+$PAGE->set_url('/filter/wiris/info.php', array());
+echo $OUTPUT->header();
 
-	<p>
-	<br/>
-	
-	<?php
-		echo "Click the following button to test if the WIRIS plugin is correctly installed.<br/>";
-		$link = 'integration/test.php';
-		echo '<input type="button" value="WIRIS plugin for tests" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
+$output = '';
+$output .= html_writer::start_tag('h1');
+$output .= "Moodle 2.x WIRIS plugin filter test page";
+$output .= html_writer::end_tag('h1');
 
-		$wqversion = get_config('qtype_wq', 'version');
-		if (!empty($wqversion)) {
-			echo "Click the following button to test if the WIRIS quizzes is correctly installed.<br/>";
-			$link = '../../question/type/wq/info.php';
-			echo '<input type="button" value="WIRIS quizzes tests" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
-		}
+$output .= html_writer::start_tag('table', array('id' => 'wrs_filter_info_table'));
 
-	?>
-	</p>
-	<p><br/><span style="font-size:14px; font-weight:normal;">For more information or if you have any doubt contact WIRIS Support: (<a href="mailto:support@wiris.com">support@wiris.com</a>)</span></p>
-</body>
-<script src="info.js"></script>
-</html>
+$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('th');
+$output .= "Test";
+$output .= html_writer::end_tag('th');
+$output .= html_writer::start_tag('th');
+$output .= "Report";
+$output .= html_writer::end_tag('th');
+$output .= html_writer::start_tag('th');
+$output .= "Status";
+$output .= html_writer::end_tag('th');
+$output .= html_writer::end_tag('tr');
+
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+
+$testname = 'Looking for correct folder';
+$reporttext = 'Filter must be installed in Moodle filter folder.';
+$solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
+$actualfolder = realpath(dirname(__FILE__));
+$correctfolder = realpath($CFG->dirroot . '/filter/wiris');
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $actualfolder == $correctfolder);
+$output .= html_writer::end_tag('tr');
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+$testname = 'Looking for filter files';
+$reporttext = 'WIRIS plugin filter for Moodle 2.x must be installed.';
+$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$filterfiles = Array('filter.php', 'MoodleConfigurationUpdater.php', 'version.php');
+$exist = true;
+foreach ($filterfiles as $value) {
+    $condition = file_exists($value);
+    if (!$condition) {
+        $exist = false;
+    }
+}
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $exist);
+$output .= html_writer::end_tag('tr');
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+$plugin = new stdClass();
+require('version.php');
+$testname = 'Looking for WIRIS plugin filter version';
+if (isset($plugin->release)) {
+    $reporttext = '<span>' . $plugin->release . '</span>';
+    $condition = true;
+} else {
+    $reporttext = 'Impossible to find WIRIS plugin filter version file.';
+    $condition = false;
+}
+$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
+$output .= html_writer::end_tag('tr');
+
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+$testname = 'WIRIS plugin filter';
+$solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
+$filterenabled = filter_is_enabled('filter/wiris');
+if ($filterenabled) {
+        $reporttext = 'ENABLED';
+} else {
+        $reporttext = 'DISABLED';
+}
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $filterenabled);
+$output .= html_writer::end_tag('tr');
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+$testname = 'Looking for WIRIS plugin for ' . $wirispluginbasestring;
+$reporttext = 'WIRIS plugin for ' . $wirispluginbasestring .' must be installed.';
+$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$wirisplugin = $wirispluginbase. '/core';
+$condition = file_exists($wirisplugin);
+if (!$condition) {
+    $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/core';
+    $condition = file_exists($wirisplugin);
+}
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
+$output .= html_writer::end_tag('tr');
+
+$output .= html_writer::start_tag('tr');
+echo $output;
+$output = '';
+require('wirispluginwrapper.php');
+$wirisplugin = WIRISpluginWrapper::get_wiris_plugin();
+$testname = 'Matching WIRIS plugin filter and WIRIS plugin for '.$wirispluginbasestring.' versions';
+if (isset($plugin->release)) {
+    $filterversion = $plugin->release;
+} else {
+    $reporttext = '';
+}
+
+// Using version.php to check release number.
+if (strtolower($wirispluginbasestring) == 'tinymce') {
+    require($wirispluginbase . '/../version.php');
+} else {
+    require($wirispluginbase . '/version.php');
+}
+
+if (isset($plugin->release)) {
+    $pluginversion = $plugin->release;
+} else {
+    $pluginversion = "";
+}
+
+if ($filterversion == $pluginversion) {
+    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '.$wirispluginbasestring.' have the same version';
+    $condition = true;
+} else {
+    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '.$wirispluginbasestring.' versions don\'t match';
+    $condition = false;
+}
+
+$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
+$output .= html_writer::end_tag('tr');
+
+$output .= html_writer::end_tag('table');
+
+$output .= html_writer::start_tag('p');
+$output .= html_writer::start_tag('br');
+echo $output;
+$output = '';
+echo "Click the following button to test if the WIRIS plugin is correctly installed.<br/>";
+$link = 'integration/test.php';
+echo '<input type="button" value="WIRIS plugin for tests" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
+
+$wqversion = get_config('qtype_wq', 'version');
+if (!empty($wqversion)) {
+    echo "Click the following button to test if the WIRIS quizzes is correctly installed.<br/>";
+    $link = '../../question/type/wq/info.php';
+    echo '<input type="button" value="WIRIS quizzes tests" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
+}
+$output .= html_writer::end_tag('br');
+$output .= html_writer::end_tag('p');
+
+$output .= html_writer::start_tag('p');
+$output .= html_writer::start_tag('br');
+$output .= html_writer::start_tag('span', array(
+                                    'style' => 'font-size:14px; font-weight:normal;'));
+$output .= "For more information or if you have any doubt contact WIRIS Support:";
+$output .= " (<a href=\"mailto:support@wiris.com\">support@wiris.com</a>)";
+$output .= html_writer::end_tag('span');
+$output .= html_writer::end_tag('br');
+$output .= html_writer::end_tag('p');
+
+echo $output;
