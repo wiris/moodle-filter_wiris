@@ -6,26 +6,46 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-php:
- - 5.4
- - 5.5
+php: 
  - 5.6
  - 7.0
 
-env:
- global:
-  - MOODLE_BRANCH=MOODLE_31_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_30_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_29_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_28_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_27_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_26_STABLE IGNORE_PATHS=integration
-  - MOODLE_BRANCH=MOODLE_25_STABLE IGNORE_PATHS=integration
+env: 
+  - MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
+  - MOODLE_BRANCH=MOODLE_30_STABLE DB=pgsql  IGNORE_PATHS=integration
+  - MOODLE_BRANCH=MOODLE_29_STABLE DB=mysqli IGNORE_PATHS=integration
+  - MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
+  - MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
 
-
- matrix:
-  - DB=pgsql
-  - DB=mysqli
+matrix:
+  exclude:
+    - php: 7.0
+      env: MOODLE_BRANCH=MOODLE_29_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 7.0
+      env: MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
+    - php: 7.0
+      env: MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_30_STABLE DB=pgsql  IGNORE_PATHS=integration
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_29_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
+    - php: 5.6
+      env: MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
+  include:
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_30_STABLE DB=pgsql  IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_29_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
 
 before_install:
   - phpenv config-rm xdebug.ini
@@ -35,7 +55,7 @@ before_install:
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
-	- moodle-plugin-ci install
+  - moodle-plugin-ci install
 script:
   - moodle-plugin-ci phplint
   - moodle-plugin-ci phpcpd
