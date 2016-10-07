@@ -421,9 +421,6 @@ class com_wiris_util_xml_WCharacterBase {
 		if($c >= 8304 && $c <= 8351) {
 			return true;
 		}
-		if($c >= 8352 && $c <= 8399) {
-			return true;
-		}
 		if($c >= 8400 && $c <= 8447) {
 			return true;
 		}
