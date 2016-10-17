@@ -21,24 +21,24 @@ function wrs_assert($condition, $reporttext, $solutionlink) {
     if ($condition) {
         return $reporttext;
     } else {
-        $result = '<span class="error">' . $reporttext . '</span>' . '<a target="_blank" href="';
-        $result .= $solutionlink . '"><img alt="" src="img/help.gif" /></a>';
+        $result = '<span class="error wrs_plugin wrs_filter">' . $reporttext . '</span>' . '<a target="_blank" href="';
+        $result .= $solutionlink . '"><img class="wrs_plugin wrs_filter" alt="" src="img/help.gif" /></a>';
         return $result;
     }
 }
 
 function wrs_getstatus($condition) {
     if ($condition) {
-        return '<span class="ok">OK</span>';
+        return '<span class="ok wrs_plugin wrs_filter">OK</span>';
     } else {
-        return '<span class="error">ERROR</span>';
+        return '<span class="error wrs_plugin wrs_filter">ERROR</span>';
     }
 }
 
 function wrs_createtablerow($testname, $reporttext, $solutionlink, $condition) {
-    $output = '<td>' . $testname . '</td>';
-    $output .= '<td>' . wrs_assert($condition, $reporttext, $solutionlink) . '</td>';
-    $output .= '<td>' . wrs_getstatus($condition) . '</td>';
+    $output = '<td class="wrs_plugin wrs_filter">' . $testname . '</td>';
+    $output .= '<td class="wrs_plugin wrs_filter">' . wrs_assert($condition, $reporttext, $solutionlink) . '</td>';
+    $output .= '<td class="wrs_plugin wrs_filter">' . wrs_getstatus($condition) . '</td>';
     return $output;
 }
 
@@ -71,22 +71,22 @@ $output .= html_writer::start_tag('h1');
 $output .= "Moodle 2.x WIRIS plugin filter test page";
 $output .= html_writer::end_tag('h1');
 
-$output .= html_writer::start_tag('table', array('id' => 'wrs_filter_info_table'));
+$output .= html_writer::start_tag('table', array('id' => 'wrs_filter_info_table', 'class' => 'wrs_plugin wrs_filter'));
 
-$output .= html_writer::start_tag('tr');
-$output .= html_writer::start_tag('th');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
+$output .= html_writer::start_tag('th', array('class' => 'wrs_plugin wrs_filter'));
 $output .= "Test";
 $output .= html_writer::end_tag('th');
-$output .= html_writer::start_tag('th');
+$output .= html_writer::start_tag('th', array('class' => 'wrs_plugin wrs_filter'));
 $output .= "Report";
 $output .= html_writer::end_tag('th');
-$output .= html_writer::start_tag('th');
+$output .= html_writer::start_tag('th', array('class' => 'wrs_plugin wrs_filter'));
 $output .= "Status";
 $output .= html_writer::end_tag('th');
 $output .= html_writer::end_tag('tr');
 
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 
@@ -98,7 +98,7 @@ $correctfolder = realpath($CFG->dirroot . '/filter/wiris');
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $actualfolder == $correctfolder);
 $output .= html_writer::end_tag('tr');
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 $testname = 'Looking for filter files';
@@ -115,7 +115,7 @@ foreach ($filterfiles as $value) {
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $exist);
 $output .= html_writer::end_tag('tr');
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 $plugin = new stdClass();
@@ -133,7 +133,7 @@ echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 $testname = 'WIRIS plugin filter';
@@ -147,7 +147,7 @@ if ($filterenabled) {
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $filterenabled);
 $output .= html_writer::end_tag('tr');
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 $testname = 'Looking for WIRIS plugin for ' . $wirispluginbasestring;
@@ -162,7 +162,7 @@ if (!$condition) {
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 
-$output .= html_writer::start_tag('tr');
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
 $output = '';
 require('wirispluginwrapper.php');

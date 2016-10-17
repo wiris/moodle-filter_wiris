@@ -1,0 +1,30 @@
+
+/*
+  clase wrs_plugin.
+  clase wrs_filter.
+  Tambien mirar las del quizzes
+ */
+
+body.wrs_plugin.wrs_filter {
+    font-family: Arial;
+}
+span.wrs_plugin.wrs_filter {
+    font-weight: bold;
+}
+span.ok.wrs_plugin.wrs_filter {
+    color: #009900;
+}
+span.error.wrs_plugin.wrs_filter {
+    color: #dd0000;
+}
+table.wrs_plugin.wrs_filter, th.wrs_plugin.wrs_filter, td.wrs_plugin.wrs_filter, tr.wrs_plugin.wrs_filter {
+    border: solid 1px #000000;
+    border-collapse:collapse;
+    padding: 5px;
+}
+th.wrs_plugin.wrs_filter {
+    background-color: #eeeeee;
+}
+img.wrs_plugin.wrs_filter {
+    border:none;
+}
