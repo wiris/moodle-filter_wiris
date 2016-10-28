@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Library functions for WIRIS filter.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -109,12 +118,12 @@ function wrs_filterapplettojnlp($text) {
     // An array containing the first applet tag. Don't get all because we use recursion on
     // $text and the long of the $text changes dynamically.
     $appletlist = wrs_getelementsbynamefromstring($text, 'applet', false, false);
-    $carry = 0;
+
     $i = 0;
     while (count($appletlist) != 0) {
         $output = '';
-        $appletcode = htmlspecialchars_decode(substr($text, $appletlist[$i]['start'] + $carry, $appletlist[$i]['end'] + $carry));
-        if (strpos($appletcode, ' src="')) {
+        $appletcode = htmlspecialchars_decode(substr($text, $appletlist[$i]['start'] + $carry, $appletlist[$i]['end']));
+        if (strpos($appletcode, ' src="') && strpos($appletcode, 'value="<session')) {
             $sessionid = wrs_createsessionid();
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
             $srcend = strpos($appletcode, '.png"', 0);
@@ -138,15 +147,30 @@ function wrs_filterapplettojnlp($text) {
             $search = substr($text, $appletlist[$i]['start'], $appletlist[$i]['end'] - $appletlist[$i]['start']);
             $output = $appletsubstring . $output;
             $text = str_replace($search, $output, $text);
-            $appletlist = wrs_getelementsbynamefromstring($text, 'applet', false, false, $appletlist[$i]['end']);
 
-        }
-        if (strpos($appletcode, 'value="<session')) {
             $xmlstart = strpos($appletcode, 'value="<session');
             $xmlend = strpos($appletcode, '/session>"');
             $xml = substr($appletcode, $xmlstart + 7, $xmlend - $xmlstart + 2);
+
+            wrs_setinitialsession($sessionid, $xml);
         }
-        wrs_setinitialsession($sessionid, $xml);
+        $appletlist = wrs_getelementsbynamefromstring($text, 'applet', false, false, $appletlist[$i]['end']);
     }
     return $text;
+}
+
+/**
+ * Automatic class loading not avaliable for Moodle 2.4 and 2.5.
+ * This method loads all files under "classes" folder.
+ *
+ */
+function wrs_loadclasses() {
+    global $CFG;
+
+    if ($CFG->version < 2013111800) {
+        require_once('classes/pluginwrapper.php');
+        require_once('classes/paramsprovider.php');
+        require_once('classes/configurationupdater.php');
+        require_once('classes/storageandcache.php');
+    }
 }

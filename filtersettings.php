@@ -14,17 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * WIRIS Filter settings.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
     global $CFG;
     global $wirisconfigurationclass;
 
-    require_once('wirispluginwrapper.php');
+    require_once("$CFG->dirroot/filter/wiris/lib.php");
+    // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
+    wrs_loadclasses();
+    $wirisplugin = new filter_wiris_pluginwrapper();
 
-    $wirisplugin = new WIRISpluginWrapper();
-
-    $editorplugininstalled = WIRISpluginWrapper::get_wiris_plugin();
+    $editorplugininstalled = filter_wiris_pluginwrapper::get_wiris_plugin();
     if (!empty($editorplugininstalled)) {
         // Editor and CAS checkbox.
         $output = '';
@@ -33,11 +43,9 @@ if ($ADMIN->fulltree) {
         $wascasenabled = $wirisplugin->was_cas_enabled();
         $waschemeditorenabled = $wirisplugin->was_chem_editor_enabled();
         $conf = $wirisplugin->get_instance()->getConfiguration();
-        $cache = $conf->getProperty("wiriscachedirectory", null);
-        $formula = $conf->getProperty("wirisformuladirectory", null);
         $wirisplugin->end();
 
-        if ($oldconfile = WIRISpluginWrapper::get_old_configuration()) {
+        if ($oldconfile = filter_wiris_pluginwrapper::get_old_configuration()) {
             $warningoutput = '<center><br />
                 <div style="border-style: solid; border-color: red;">'.
                 'An old configuration.ini file has been detected on ' . $oldconfile .
@@ -109,29 +117,6 @@ if ($ADMIN->fulltree) {
                                                         'filter_wiris'),
                                                         get_string('filter_standalonedesc',
                                                         'filter_wiris'), false, true, false));
-    }
-
-    // Clearing cache.
-    if (get_config('filter_wiris', 'clear_cache')) {
-        if (isset($cache) && !is_null($cache)) {
-            $wirisplugin->clear_folder($cache);
-        }
-        if (isset($formula) && !is_null($formula)) {
-            $wirisplugin->clear_folder($formula);
-        }
-        reset_text_filters_cache();
-
-        // Disabling the cache clearing for the next request.
-        set_config('clear_cache', false, 'filter_wiris');
-        $CFG->filter_wiris_clear_cache = false;
-    }
-
-    if ($CFG->version >= 2012120300) {
-        $settings->add(new admin_setting_configcheckbox('filter_wiris/clear_cache',
-                                                        get_string('clearcache',
-                                                        'filter_wiris'),
-                                                        get_string('clearcachedesc', 'filter_wiris'),
-                                                        false, true, false));
     }
 
     $wirisquizzes = dirname(__FILE__) . '/../../question/type/wq/';

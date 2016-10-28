@@ -58,8 +58,12 @@ class com_wiris_plugin_api_PluginBuilder {
 	}
 	public function addConfigurationUpdater($conf) {
 	}
+	static $pb = null;
 	static function getInstance() {
-		return new com_wiris_plugin_impl_PluginBuilderImpl();
+		if(com_wiris_plugin_api_PluginBuilder::$pb === null) {
+			com_wiris_plugin_api_PluginBuilder::$pb = new com_wiris_plugin_impl_PluginBuilderImpl();
+		}
+		return com_wiris_plugin_api_PluginBuilder::$pb;
 	}
 	function __toString() { return 'com.wiris.plugin.api.PluginBuilder'; }
 }

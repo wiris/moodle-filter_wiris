@@ -14,9 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * This class loads the environment that WIRIS filter needs to work.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
-class WIRISpluginWrapper {
+class filter_wiris_pluginwrapper {
     private $isinit = false;
     private $installed = false;
     private $moodleconfig;
@@ -46,19 +55,20 @@ class WIRISpluginWrapper {
             global $CFG;
             // Init haxe environment.
             if (!class_exists('com_wiris_system_CallWrapper')) {
-                require_once('integration/lib/com/wiris/system/CallWrapper.class.php');
+                require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/CallWrapper.class.php');
             }
             com_wiris_system_CallWrapper::getInstance()->init($CFG->dirroot . '/filter/wiris/integration');
 
             // Start haxe environment.
             $this->begin();
             // Create PluginBuilder with Moodle specific configuration.
-            require_once('MoodleConfigurationUpdater.php');
-            $this->moodleConfig = new com_wiris_plugin_configuration_MoodleConfigurationUpdater();
-
+            $this->moodleConfig = new filter_wiris_configurationupdater();
             $this->instance = com_wiris_plugin_api_PluginBuilder::getInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+            $storage = new filter_wiris_storageandcache();
+            $storage->init(null, $this->instance->getConfiguration()->getFullConfiguration());
+            $this->instance->setStorageAndCache($storage);
             // Stop haxe environment.
             $this->end();
         }

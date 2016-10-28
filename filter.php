@@ -15,6 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+/**
+ * It is a filter that allows to visualize applets that use WIRIS CAS and
+ * images (of formulas) generated through the WIRIS Formula Image Service.
+ *
+ * Replaces all substrings  '«applet ... «/applet»' and '<applet ... </applet>'
+ * generated  with WIRIS CAS by the corresponding WIRIS
+ * applet image.
+ * Replaces all substrings '«math ... «/math»' '<math ... </math>'
+ * generated with WIRIS Editor by the corresponding image.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 /* ---------------------------------------------------------------------------- */
@@ -41,12 +57,18 @@ defined('MOODLE_INTERNAL') || die();
 // Replaces all substrings '«math ... «/math»' by the corresponding MathML      //
 // code: '<math ... </math>'                                                    //
 /* ---------------------------------------------------------------------------- */
-require_once("$CFG->dirroot/filter/wiris/lib.php");
+
+
 
 class filter_wiris extends moodle_text_filter {
 
     public function filter($text, array $options = array()) {
+
         global $CFG;
+        require_once("$CFG->dirroot/filter/wiris/lib.php");
+
+        // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
+        wrs_loadclasses();
 
         $n0 = stripos($text, '«math');
         $n1 = stripos($text, '<math');
@@ -57,12 +79,10 @@ class filter_wiris extends moodle_text_filter {
             return $text;
         }
 
-        require_once("wirispluginwrapper.php");
+        $wirispluginwrapper = new filter_wiris_pluginwrapper();
 
-        $wirisplugin = new WIRISpluginWrapper();
-
-        $wirisplugin->begin();
-        $textservice = $wirisplugin->get_instance()->newTextService();
+        $wirispluginwrapper->begin();
+        $textservice = $wirispluginwrapper->get_instance()->newTextService();
 
         $query = '';
 
@@ -82,7 +102,7 @@ class filter_wiris extends moodle_text_filter {
         $text = $textservice->filter($text, $prop);
         $prop['savemode'] = 'xml'; // ...xml filtering.
         $text = $textservice->filter($text, $prop);
-        $wirisplugin->end();
+        $wirispluginwrapper->end();
 
         // If a CAS session has been filtered.
         // We need to create a JNLP link for browsers non supporting JAVA.

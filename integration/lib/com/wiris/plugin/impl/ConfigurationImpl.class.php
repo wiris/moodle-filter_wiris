@@ -5,18 +5,40 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		if(!php_Boot::$skip_constructor) {
 		$this->props = array();;
 	}}
+	public function setConfigurations($configurationKeys, $configurationValues) {
+		$configurationKeysArray = _hx_explode(",", $configurationKeys);
+		$configurationValuesArray = _hx_explode(",", $configurationValues);
+		$keysIterator = $configurationKeysArray->iterator();
+		$valuesIterator = $configurationValuesArray->iterator();
+		while($keysIterator->hasNext() && $valuesIterator->hasNext()) {
+			$key = $keysIterator->next();
+			$value = $valuesIterator->next();
+			if($this->getProperty($key, null) !== null) {
+				$this->setProperty($key, $value);
+			}
+			unset($value,$key);
+		}
+	}
 	public function getJsonConfiguration($configurationKeys) {
 		$configurationKeysArray = _hx_explode(",", $configurationKeys);
 		$iterator = $configurationKeysArray->iterator();
 		$jsonOutput = new Hash();
 		$jsonVariables = new Hash();
+		$thereIsNullValue = false;
 		while($iterator->hasNext()) {
 			$key = $iterator->next();
 			$value = $this->getProperty($key, "null");
+			if($value === "null") {
+				$thereIsNullValue = true;
+			}
 			$jsonVariables->set($key, $value);
 			unset($value,$key);
 		}
-		$jsonOutput->set("status", "ok");
+		if(!$thereIsNullValue) {
+			$jsonOutput->set("status", "ok");
+		} else {
+			$jsonOutput->set("status", "warning");
+		}
 		$jsonOutput->set("result", $jsonVariables);
 		return com_wiris_util_json_JSon::encode($jsonOutput);
 	}
@@ -131,9 +153,6 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		}
 	}
 	public function setInitObject($context) {
-		if($this->initialized) {
-			throw new HException("Already initialized.");
-		}
 		$this->initObject = $context;
 	}
 	public function setProperty($key, $value) {

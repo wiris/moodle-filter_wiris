@@ -62,7 +62,7 @@ class com_wiris_plugin_impl_TextFilter {
 			$hashImage = $json;
 			if(_hx_equal($hashImage->get("status"), "ok")) {
 				$result = $hashImage->get("result");
-				$base64 = $result->get("pngBase64");
+				$base64 = $result->get("base64");
 				$img .= " src=\"data:image/png;base64," . $base64 . "\"";
 				if($result->exists("alt")) {
 					$alt = $result->get("alt");

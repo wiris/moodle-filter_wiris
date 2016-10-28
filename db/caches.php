@@ -14,14 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-function writeconfiguration() {
-    global $CFG;
-    $configfile = $CFG->dataroot . "/cache/wiris/configuration.ini";
-    $path = $CFG->wwwroot . "/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce/integration";
-    if (!file_exists($configfile)) {
-        $config = "wiriscontextpath=" . $path . "\r\n";
-        $config .= 'wiriscachedirectory=' . $CFG->dataroot . '/filter/wiris/cache' . "\r\n";
-        $config .= 'wirisformuladirectory=' . $CFG->dataroot . '/filter/wiris/formulas' . "\r\n";
-        file_put_contents($configfile, $config);
-    }
-}
+/**
+ * Cache definition for WIRIS plugin.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$definitions = array(
+    'wirisformulas' => array(
+        'mode' => cache_store::MODE_APPLICATION
+    )
+);

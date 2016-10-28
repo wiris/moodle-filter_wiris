@@ -15,9 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+/**
+ * This class implements WIRIS com_wiris_plugin_configuration_ConfigurationUpdater interface
+ * to use a custom Moodle configuration.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  Maths for More S.L. <info@wiris.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
-class com_wiris_plugin_configuration_MoodleConfigurationUpdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
+require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
+
+class filter_wiris_configurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
 
     public $waseditorenabled;
     public $wascasenabled;
@@ -36,9 +48,8 @@ class com_wiris_plugin_configuration_MoodleConfigurationUpdater implements com_w
 
         global $CFG;
 
-        require_once('wirispluginwrapper.php');
-        $this->editorplugin = WIRISpluginWrapper::get_wiris_plugin();
-        $this->oldconfiguration = WIRISpluginWrapper::get_old_configuration();
+        $this->editorplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
+        $this->oldconfiguration = filter_wiris_pluginwrapper::get_old_configuration();
 
     }
 
@@ -69,24 +80,16 @@ class com_wiris_plugin_configuration_MoodleConfigurationUpdater implements com_w
             $configuration['wirisconfigurationpath'] = $this->editorplugin->path;
         }
 
-        // Cache folder.
-        $configuration['wiriscachedirectory'] = $CFG->dataroot . '/filter/wiris/cache';
-        if (!file_exists($configuration['wiriscachedirectory'])) {
-            @mkdir($configuration['wiriscachedirectory'], 0755, true);
-        }
-        // Formulas folder.
-        $configuration['wirisformuladirectory'] = $CFG->dataroot . '/filter/wiris/formulas';
-        if (!file_exists($configuration['wirisformuladirectory'])) {
-            @mkdir($configuration['wirisformuladirectory'], 0755, true);
-        }
         $scriptname = explode('/', $_SERVER["SCRIPT_FILENAME"]);
         $scriptname = array_pop($scriptname);
 
         if ($scriptname == 'showimage.php') { // Minimal conf showing images.
+            com_wiris_system_CallWrapper::getInstance()->stop();
             if (optional_param('refererquery', null, PARAM_RAW) != null) {
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));
                 $configuration['wirisreferer'] = $CFG->wwwroot . $refererquery;
             }
+            com_wiris_system_CallWrapper::getInstance()->start();
             return;
         }
 
