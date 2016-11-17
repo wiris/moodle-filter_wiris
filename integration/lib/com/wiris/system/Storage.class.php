@@ -7,6 +7,19 @@ class com_wiris_system_Storage {
 		$location = str_replace("\\", com_wiris_system_Storage::getDirectorySeparator(), $location);
 		$this->location = $location;
 	}}
+	public function hlist() {
+		return sys_FileSystem::readDirectory($this->location);
+	}
+	public function isDirectory() {
+		return is_dir($this->location);
+	}
+	public function delete() {
+		if(is_dir($this->location)) {
+			@rmdir($this->location);
+		} else {
+			@unlink($this->location);
+		}
+	}
 	public function toString() {
 		return $this->location;
 	}

@@ -34,6 +34,10 @@ class com_wiris_plugin_api_PluginBuilder {
 	public function newTest() {
 		return null;
 	}
+	public function setStorageAndCacheCacheFormulaObject($cache) {
+	}
+	public function setStorageAndCacheCacheObject($cache) {
+	}
 	public function setStorageAndCacheInitObject($obj) {
 	}
 	public function getStorageAndCache() {

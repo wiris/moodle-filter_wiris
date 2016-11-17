@@ -44,7 +44,7 @@ class com_wiris_plugin_impl_FileStorageAndCache implements com_wiris_plugin_stor
 		$store->write($content);
 		return $digest;
 	}
-	public function init($obj, $config) {
+	public function init($obj, $config, $cache, $cacheFormula) {
 		$this->config = $config;
 	}
 	public $config;

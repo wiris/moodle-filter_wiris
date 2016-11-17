@@ -4,42 +4,17 @@ class com_wiris_system_CallWrapper {
 	public function __construct() {
 		;
 	}
-	public function enabledCustomAutoloaders() {
-		if (spl_autoload_functions()) {
-			foreach (spl_autoload_functions() as $autoloadFunction) {
-				spl_autoload_unregister($autoloadFunction);
-			}
-		}
-		if ($this->autoloadFunctions) {
-			foreach ($this->autoloadFunctions as $function) {
-				spl_autoload_register($function);
-			}
-		}
-		;
-	}
-	public function disableCustomAutoloaders() {
-		if (spl_autoload_functions()) {
-			foreach (spl_autoload_functions() as $autoloadFunction) {
-				spl_autoload_unregister($autoloadFunction);
-				$this->autoloadFunctions[] = $autoloadFunction;
-			}
-		}
-		;
-	}
 	public function autoload($className) {
 		if(function_exists('__autoload')) {
 			__autoload($className);
 		}
 	}
 	public function phpStop() {
-		$this->enabledCustomAutoloaders();
-		{
-			spl_autoload_unregister('_hx_autoload');
-			spl_autoload_register(array($this, 'autoload'));
-			restore_exception_handler();
-			restore_error_handler();
-			error_reporting($this->errorReportingLevel);
-		}
+		spl_autoload_unregister('_hx_autoload');
+		spl_autoload_register(array($this, 'autoload'));
+		restore_exception_handler();
+		restore_error_handler();
+		error_reporting($this->errorReportingLevel);
 	}
 	public function setErrorReporting($level) {
 		$this->errorReportingLevel = $level;
@@ -65,7 +40,6 @@ class com_wiris_system_CallWrapper {
 	}
 	public function init($haxelib) {
 		if(!class_exists('php_Boot', false)) {
-			$this->disableCustomAutoloaders();
 			$this->setErrorReporting(error_reporting());
 			require_once($haxelib . '/lib/php/Boot.class.php');;
 			$this->phpStop();
@@ -114,7 +88,6 @@ class com_wiris_system_CallWrapper {
 			}
 		}
 	}
-	public $autoloadFunctions;
 	public $errorReportingLevel;
 	public $isRunning = false;
 	public function __call($m, $a) {

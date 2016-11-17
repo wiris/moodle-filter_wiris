@@ -46,4 +46,4 @@ $string['button1'] = 'WIRIS plugin for tests';
 $string['textBeforeButton2'] = 'Click the following button to test if the WIRIS quizzes is correctly installed.';
 $string['button2'] = 'WIRIS quizzes tests';
 $string['contact'] = 'For more information or if you have any doubt contact WIRIS Support:';
-$string['cachedef_wirisformulas'] = 'WIRIS formulas';
+$string['cachedef_images'] = 'WIRIS Plugin images';

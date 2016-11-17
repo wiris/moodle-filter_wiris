@@ -25,6 +25,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// This classes are shared between WIRIS Quizzes and WIRIS Plugins
+// Avoid loading twice.
+if (!class_exists('moodlefilecache')) {
+    require_once('moodlefilecache.php');
+}
+
+if (!class_exists('moodledbcache')) {
+    require_once('moodledbcache.php');
+}
+
 class filter_wiris_pluginwrapper {
     private $isinit = false;
     private $installed = false;
@@ -66,9 +76,12 @@ class filter_wiris_pluginwrapper {
             $this->instance = com_wiris_plugin_api_PluginBuilder::getInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
-            $storage = new filter_wiris_storageandcache();
-            $storage->init(null, $this->instance->getConfiguration()->getFullConfiguration());
-            $this->instance->setStorageAndCache($storage);
+            // Class to manage file cache.
+            $cachefile = new moodlefilecache('filter_wiris', 'images');
+            $this->instance->setStorageAndCacheCacheObject($cachefile);
+            // Class to manage formulas (i.e plain text) cache.
+            $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
+            $this->instance->setStorageAndCacheCacheFormulaObject($cachedb);
             // Stop haxe environment.
             $this->end();
         }

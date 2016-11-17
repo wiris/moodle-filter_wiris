@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $definitions = array(
-    'wirisformulas' => array(
+    'images' => array(
         'mode' => cache_store::MODE_APPLICATION
     )
 );

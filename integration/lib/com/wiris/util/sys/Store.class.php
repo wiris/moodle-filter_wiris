@@ -4,6 +4,36 @@ class com_wiris_util_sys_Store {
 	public function __construct() {
 		;
 	}
+	public function deleteFolderContents() {
+		if($this->exists() && is_dir($this->getFile())) {
+			$files = $this->hlist();
+			$i = null;
+			{
+				$_g1 = 0; $_g = $files->length;
+				while($_g1 < $_g) {
+					$i1 = $_g1++;
+					if(!($files[$i1] === "." || $files[$i1] === "..")) {
+						$f = com_wiris_util_sys_Store::newStoreWithParent($this, $files[$i1]);
+						if(is_dir($f->getFile())) {
+							$f->deleteFolderContents();
+							@rmdir($f->getFile());
+						} else {
+							@unlink($f->getFile());
+						}
+						unset($f);
+					}
+					unset($i1);
+				}
+			}
+		}
+	}
+	public function delete() {
+		if(is_dir($this->file)) {
+			@rmdir($this->file);
+		} else {
+			@unlink($this->file);
+		}
+	}
 	public function moveTo($dest) {
 		rename($this->file, $dest->getFile());
 	}
@@ -49,7 +79,7 @@ class com_wiris_util_sys_Store {
 	}
 	public function mkdirs() {
 		$parent = $this->getParent();
-		if(!$parent->exists()) {
+		if(!$parent->exists() && !($parent->getFile() === $this->file)) {
 			$parent->mkdirs();
 		}
 		if(!$this->exists()) {

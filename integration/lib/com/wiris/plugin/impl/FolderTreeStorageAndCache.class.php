@@ -5,64 +5,16 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		;
 	}
 	public function deleteCache() {
-		$formulaFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER);
-		$cacheFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER);
-		$includes = new _hx_array(array());
-		$includes->push("png");
-		$includes->push("csv");
-		$includes->push("txt");
-		if(!(com_wiris_system_PropertiesTools::getProperty($this->config, com_wiris_plugin_api_ConfigurationKeys::$SAVE_MODE, "xml") === "image")) {
-			$includes->push("ini");
-		}
-		com_wiris_util_sys_Store::deleteDirectory($formulaFolder, $includes);
-		com_wiris_util_sys_Store::deleteDirectory($cacheFolder, $includes);
-	}
-	public function isFormulaFileName($name) {
-		$i = _hx_index_of($name, ".", null);
-		if($i === -1) {
-			return null;
-		}
-		$digest = _hx_substr($name, 0, $i);
-		if(strlen($digest) !== 32) {
-			return null;
-		}
-		return $digest;
-	}
-	public function updateFolderStructure($dir) {
-		$folder = com_wiris_util_sys_Store::newStore($dir);
-		$files = $folder->hlist();
-		if($files !== null) {
-			$i = null;
+		$cache = new com_wiris_plugin_impl_CacheImpl($this->config);
+		try {
+			$cache->deleteAll();
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+			$e = $_ex_;
 			{
-				$_g1 = 0; $_g = $files->length;
-				while($_g1 < $_g) {
-					$i1 = $_g1++;
-					$digest = $this->isFormulaFileName($files[$i1]);
-					if($digest !== null) {
-						$newFolder = $this->getFolderStore($dir, $digest);
-						$newFolder->mkdirs();
-						$newFile = $this->getFileStoreWithParent($newFolder, $digest, _hx_substr($files[$i1], _hx_index_of($files[$i1], ".", null) + 1, null));
-						$file = com_wiris_util_sys_Store::newStoreWithParent($folder, $files[$i1]);
-						$file->moveTo($newFile);
-						unset($newFolder,$newFile,$file);
-					}
-					unset($i1,$digest);
-				}
+				throw new HException("Error: can't delete cache: " . Std::string($e->getMessage()));
 			}
 		}
-	}
-	public function updateFoldersStructure() {
-		$this->updateFolderStructure($this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER));
-		$this->updateFolderStructure($this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER));
-	}
-	public function getFileStore($dir, $digest, $extension) {
-		return $this->getFileStoreWithParent($this->getFolderStore($dir, $digest), $digest, $extension);
-	}
-	public function getFileStoreWithParent($parent, $digest, $extension) {
-		return com_wiris_util_sys_Store::newStoreWithParent($parent, _hx_substr($digest, 4, null) . "." . $extension);
-	}
-	public function getFolderStore($dir, $digest) {
-		return com_wiris_util_sys_Store::newStore($dir . "/" . _hx_substr($digest, 0, 2) . "/" . _hx_substr($digest, 2, 2));
 	}
 	public function getExtension($service) {
 		if($service === "png") {
@@ -73,64 +25,53 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		}
 		return $service . ".txt";
 	}
-	public function getAndCheckFolder($key) {
-		$folder = com_wiris_system_PropertiesTools::getProperty($this->config, $key, null);
-		if($folder === null || strlen(trim($folder)) === 0) {
-			throw new HException("Missing configuration value: " . $key);
-		}
-		return $folder;
-	}
 	public function storeData($digest, $service, $stream) {
-		$formula = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER);
-		$parent = $this->getFolderStore($formula, $digest);
-		$parent->mkdirs();
-		$store = $this->getFileStoreWithParent($parent, $digest, $this->getExtension($service));
-		$store->writeBinary(haxe_io_Bytes::ofData($stream));
+		try {
+			$this->cache->set($digest . "." . $this->getExtension($service), haxe_io_Bytes::ofData($stream));
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+			$e = $_ex_;
+			{
+				throw new HException("Error: can't write on cache: " . Std::string($e->getMessage()));
+			}
+		}
 	}
 	public function retreiveData($digest, $service) {
-		$formula = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER);
-		$store = $this->getFileStore($formula, $digest, $this->getExtension($service));
-		if(com_wiris_plugin_impl_FolderTreeStorageAndCache::$backwards_compat) {
-			if(!$store->exists()) {
-				$oldstore = com_wiris_util_sys_Store::newStore($formula . "/" . $digest . "." . $this->getExtension($service));
-				if(!$oldstore->exists()) {
-					return null;
-				}
-				$parent = $store->getParent();
-				$parent->mkdirs();
-				$oldstore->moveTo($store);
-			}
+		$data = $this->cache->get($digest . "." . $this->getExtension($service));
+		if($data !== null) {
+			return $data->b;
 		} else {
-			if(!$store->exists()) {
-				return null;
-			}
+			return null;
 		}
-		return $store->readBinary()->b;
 	}
 	public function decodeDigest($digest) {
-		$formula = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER);
-		$store = $this->getFileStore($formula, $digest, "ini");
-		if(com_wiris_plugin_impl_FolderTreeStorageAndCache::$backwards_compat) {
-			if(!$store->exists()) {
-				$oldstore = com_wiris_util_sys_Store::newStore($formula . "/" . $digest . ".ini");
-				$parent = $store->getParent();
-				$parent->mkdirs();
-				$oldstore->moveTo($store);
-			}
+		$data = $this->cacheFormula->get($digest . ".ini");
+		if($data !== null) {
+			return com_wiris_system_Utf8::fromBytes($data->b);
+		} else {
+			return null;
 		}
-		return $store->read();
 	}
 	public function codeDigest($content) {
 		$digest = com_wiris_system_Md5Tools::encodeString($content);
-		$parent = $this->getFolderStore($this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER), $digest);
-		$parent->mkdirs();
-		$store = $this->getFileStoreWithParent($parent, $digest, "ini");
-		$store->write($content);
+		try {
+			$this->cacheFormula->set($digest . ".ini", haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($content)));
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+			$e = $_ex_;
+			{
+				throw new HException("Error: can't write on cache: " . Std::string($e->getMessage()));
+			}
+		}
 		return $digest;
 	}
-	public function init($obj, $config) {
+	public function init($obj, $config, $cache, $cacheFormula) {
 		$this->config = $config;
+		$this->cache = $cache;
+		$this->cacheFormula = $cacheFormula;
 	}
+	public $cacheFormula;
+	public $cache;
 	public $config;
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))

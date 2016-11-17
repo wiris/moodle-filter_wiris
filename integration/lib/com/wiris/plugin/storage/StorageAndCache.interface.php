@@ -6,5 +6,5 @@ interface com_wiris_plugin_storage_StorageAndCache {
 	function retreiveData($digest, $service);
 	function decodeDigest($digest);
 	function codeDigest($content);
-	function init($obj, $config);
+	function init($obj, $config, $cache, $cacheFormula);
 }

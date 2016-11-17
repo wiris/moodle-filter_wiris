@@ -171,6 +171,5 @@ function wrs_loadclasses() {
         require_once('classes/pluginwrapper.php');
         require_once('classes/paramsprovider.php');
         require_once('classes/configurationupdater.php');
-        require_once('classes/storageandcache.php');
     }
 }
