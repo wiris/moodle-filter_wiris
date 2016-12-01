@@ -168,8 +168,8 @@ function wrs_loadclasses() {
     global $CFG;
 
     if ($CFG->version < 2013111800) {
-        require_once('classes/pluginwrapper.php');
-        require_once('classes/paramsprovider.php');
-        require_once('classes/configurationupdater.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/paramsprovider.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/configurationupdater.php');
     }
 }
