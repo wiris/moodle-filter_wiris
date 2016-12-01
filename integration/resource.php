@@ -1,8 +1,8 @@
 <?php
 
 // ${license.statement}
-
-require_once 'pluginbuilder.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 $resource = $provider->getRequiredParameter('resourcefile');
