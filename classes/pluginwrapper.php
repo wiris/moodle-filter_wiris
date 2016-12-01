@@ -28,11 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 // This classes are shared between WIRIS Quizzes and WIRIS Plugins
 // Avoid loading twice.
 if (!class_exists('moodlefilecache')) {
-    require_once('moodlefilecache.php');
+    require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
 }
 
 if (!class_exists('moodledbcache')) {
-    require_once('moodledbcache.php');
+    require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
 }
 
 class filter_wiris_pluginwrapper {
@@ -116,7 +116,7 @@ class filter_wiris_pluginwrapper {
             if (is_array($dirstructure)) {
                 foreach ($dirstructure as $direlement) {
                     if (is_file($direlement)) {
-                            unlink($direlement);
+                        unlink($direlement);
                     } else if (is_dir($direlement)) {
                         $this->clear_folder($direlement);
                     }
