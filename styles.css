@@ -12,12 +12,12 @@ span.error.wrs_plugin.wrs_filter {
 }
 table.wrs_plugin.wrs_filter, th.wrs_plugin.wrs_filter, td.wrs_plugin.wrs_filter, tr.wrs_plugin.wrs_filter {
     border: solid 1px #000000;
-    border-collapse:collapse;
+    border-collapse: collapse;
     padding: 5px;
 }
 th.wrs_plugin.wrs_filter {
     background-color: #eeeeee;
 }
 img.wrs_plugin.wrs_filter {
-    border:none;
+    border: none;
 }
