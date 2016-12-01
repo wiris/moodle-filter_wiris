@@ -76,7 +76,7 @@ if ($ADMIN->fulltree) {
 
         if ($waschemeditorenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
-                                                            get_string('wirischemeditor', 'filter_wiris'), '', '0'));
+                get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         } else {
             if (isset($CFG->filter_wiris_chem_editor_enable) && $CFG->filter_wiris_chem_editor_enable) {
                 set_config('filter_wiris_chem_editor_enable', 0, 'config');
@@ -86,7 +86,7 @@ if ($ADMIN->fulltree) {
 
         if ($wascasenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris_cas_enable',
-                                                            get_string('wiriscas', 'filter_wiris'), '', '0'));
+                get_string('wiriscas', 'filter_wiris'), '', '0'));
         } else {
             if (isset($CFG->filter_wiris_cas_enable) && $CFG->filter_wiris_cas_enable) {
                 set_config('filter_wiris_cas_enable', 0, 'config');
@@ -113,10 +113,8 @@ if ($ADMIN->fulltree) {
             }
         }
         $settings->add(new admin_setting_configcheckbox('filter_wiris/filter_standalone',
-                                                        get_string('filter_standalone',
-                                                        'filter_wiris'),
-                                                        get_string('filter_standalonedesc',
-                                                        'filter_wiris'), false, true, false));
+            get_string('filter_standalone', 'filter_wiris'),
+            get_string('filter_standalonedesc', 'filter_wiris'), false, true, false));
     }
 
     $wirisquizzes = dirname(__FILE__) . '/../../question/type/wq/';
