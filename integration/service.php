@@ -1,8 +1,8 @@
 <?php
 
 // ${license.statement}
-
-require_once 'pluginbuilder.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 
@@ -14,7 +14,7 @@ $lang = $provider->getParameter('lang', 'en');
 $render = $pluginBuilder->newTextService();
 
 if (get_magic_quotes_gpc() == 1) {
-	$params = array_map('stripslashes', $params);
+    $params = array_map('stripslashes', $params);
 }
 
 // Adding - if necessary - CORS headers
