@@ -1,13 +1,13 @@
 <?php
 
 // ${license.statement}
-
-require_once 'pluginbuilder.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 
 $digest = $provider->getParameter('digest', null);
-if ($digest ==null) {
+if ($digest == null) {
     $digest = $provider->getParameter('md5', null);
 }
 
