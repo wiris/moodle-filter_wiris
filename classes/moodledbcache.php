@@ -72,7 +72,7 @@ class moodledbcache {
         global $DB;
 
         if ($DB->record_exists($this->cachetable, array($this->keyfield => $key))) {
-                $record = $DB->get_record($this->cachetable, array($this->keyfield => $key));
+            $record = $DB->get_record($this->cachetable, array($this->keyfield => $key));
             // Cache interface returns an array of Bytes. When we are using the database to
             // store cache the data should be converted to a Bytes object.
             $valuefield = $this->valuefield;
