@@ -3,7 +3,8 @@ session_start();
 $_SESSION["pluginbuilder"] = NULL;
 $_SESSION["issetter"] = true;
 // Loaded from configuration
-require_once 'pluginbuilder.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 $variableKeys = $provider->getRequiredParameter('variablekeys');
