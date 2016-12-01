@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php
 // ${license.statement}
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
-require_once 'pluginbuilder.php';
 $provider = $pluginBuilder->getCustomParamsProvider();
 $lang = $provider->getParameter('lang', 'en');
 
