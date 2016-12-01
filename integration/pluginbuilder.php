@@ -1,14 +1,16 @@
 <?php
 // ${license.statement}
-require_once 'plugin.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/plugin.php';
 
 $wrap = com_wiris_system_CallWrapper::getInstance();
 $wrap->start();
-if(!isset($_SESSION)) session_start();
+if(!isset($_SESSION)) {
+    session_start();
+}
 if (isset($_SESSION["pluginbuilder"])) {
     $pluginBuilder = $_SESSION["pluginbuilder"];
-}
-else {
+} else {
     if (!isset($_SESSION["issetter"])) {
         session_destroy();
         // It's required to set time in the past in order to delete the current
@@ -23,26 +25,25 @@ $wrap->stop();
 $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
 
 if ($moodle) {
-    require_once('../../../' . 'config.php');
-    require_once('../lib.php');
+    require_once($CFG->dirroot . '/filter/wiris/lib.php');
     if (!class_exists('moodlefilecache')) {
-        require_once('../classes/moodlefilecache.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
     }
     if (!class_exists('moodledbcache')) {
-        require_once('../classes/moodledbcache.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
     }
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
     wrs_loadclasses();
-   // define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
-     $scriptName = explode('/', $_SERVER["SCRIPT_FILENAME"]);
-        $scriptName = array_pop($scriptName);
+    // define('NO_MOODLE_COOKIES', true); // Because it interferes with caching
+    $scriptName = explode('/', $_SERVER["SCRIPT_FILENAME"]);
+    $scriptName = array_pop($scriptName);
 
-        if ($scriptName == 'showimage.php') {
-            define('ABORT_AFTER_CONFIG', true);
-            if (!defined('MOODLE_INTERNAL')) {
-                define('MOODLE_INTERNAL', true); // Moodle 2.2 - 2.5 min config doesn't define 'MOODLE_INTERNAL'.
-            }
+    if ($scriptName == 'showimage.php') {
+        define('ABORT_AFTER_CONFIG', true);
+        if (!defined('MOODLE_INTERNAL')) {
+            define('MOODLE_INTERNAL', true); // Moodle 2.2 - 2.5 min config doesn't define 'MOODLE_INTERNAL'.
         }
+    }
     $wrap->start();
     $pluginBuilder->addConfigurationUpdater(new filter_wiris_configurationupdater());
     $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
@@ -57,7 +58,7 @@ if ($moodle) {
 
 } else {
     $wrap->start();
-    require_once('phpparamsprovider.php');
+    require_once($CFG->dirroot . '/filter/wiris/integration/phpparamsprovider.php');
     $pluginBuilder->setCustomParamsProvider(new PhpParamsProvider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
 }
