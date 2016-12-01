@@ -3,7 +3,8 @@
 // ${license.statement}
 
 // Loaded from configuration
-require_once 'pluginbuilder.php';
+require_once '../../../config.php';
+require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
 
 // Adding - if necessary - CORS headers
 $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
