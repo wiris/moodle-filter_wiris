@@ -1,8 +1,6 @@
 <?php
-
 // ${license.statement}
-require_once '../../../config.php';
-require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
+require_once ('pluginbuilder.php');
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 
@@ -18,7 +16,7 @@ if (get_magic_quotes_gpc() == 1) {
 }
 
 // Adding - if necessary - CORS headers
-$origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : "";
 $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
