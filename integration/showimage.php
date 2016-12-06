@@ -1,7 +1,6 @@
 <?php
 // ${license.statement}
-require_once '../../../config.php';
-require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
+require_once ('pluginbuilder.php');
 
 $provider = $pluginBuilder->getCustomParamsProvider();
 
@@ -11,8 +10,8 @@ $render = $pluginBuilder->newRender();
 $jsonformat = $provider->getParameter('jsonformat', null);
 $lang = $provider->getParameter('lang', 'en');
 
-// Backwards compatibility
-// showimage.php?formula.png --> showimage.php?formula
+// Backwards compatibility.
+// showimage.php?formula.png --> showimage.php?formula.
 // because formula is md5 string, remove all extensions.
 if (!is_null($digest)) {
     $a = explode(".", $digest);
@@ -20,7 +19,7 @@ if (!is_null($digest)) {
 }
 
 // Adding - if necessary - CORS headers
-$origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN'] : "";
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : "";
 $res = new com_wiris_system_service_HttpResponse();
 $pluginBuilder->addCorsHeaders($res, $origin);
 
@@ -32,8 +31,8 @@ if ($pluginBuilder->getConfiguration()->getProperty("wirispluginperformance", "f
     header("Cache-Control: max-age=$secondsToCache");
     // If digest == null formula is not in cache.
     if (is_null($digest)) {
-	$render->showImage(null, $mml, $provider);
-	$digest = $render->computeDigest($mml, $provider->getRenderParameters($pluginBuilder->getConfiguration()));
+        $render->showImage(null, $mml, $provider);
+        $digest = $render->computeDigest($mml, $provider->getRenderParameters($pluginBuilder->getConfiguration()));
     }
     $r = $render->showImageJson($digest, $lang);
 } else {
