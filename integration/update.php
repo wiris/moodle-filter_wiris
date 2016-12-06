@@ -13,11 +13,12 @@
  
 // WARNING: Comment the following line before using this script, and re-comment
 // it once done.
-header('HTTP/1.0 403 Forbidden'); echo '<h3>Forbidden</h3><p>If you are the server administrator, comment the first code line in update.php script.</p>'; die();
+header('HTTP/1.0 403 Forbidden'); 
+echo '<h3>Forbidden</h3><p>If you are the server administrator, comment the first code line in update.php script.</p>'; 
+die();
   
-// Load WIRIS plugin
-require_once '../../../config.php';
-require_once $CFG->dirroot . '/filter/wiris/integration/pluginbuilder.php';
+// Load WIRIS plugin.
+require_once ('pluginbuilder.php');
 // Set PHP environment.
 set_time_limit(0); 
 error_reporting(E_ALL); 
