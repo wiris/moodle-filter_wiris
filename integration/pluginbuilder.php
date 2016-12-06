@@ -1,7 +1,6 @@
 <?php
 // ${license.statement}
-require_once '../../../config.php';
-require_once $CFG->dirroot . '/filter/wiris/integration/plugin.php';
+require_once ('plugin.php');
 
 $wrap = com_wiris_system_CallWrapper::getInstance();
 $wrap->start();
