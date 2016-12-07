@@ -24,6 +24,7 @@ $wrap->stop();
 $moodle = file_exists(".." . DIRECTORY_SEPARATOR . "version.php");
 
 if ($moodle) {
+    require_once('../../../' . 'config.php');
     require_once($CFG->dirroot . '/filter/wiris/lib.php');
     if (!class_exists('moodlefilecache')) {
         require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
@@ -57,7 +58,7 @@ if ($moodle) {
 
 } else {
     $wrap->start();
-    require_once($CFG->dirroot . '/filter/wiris/integration/phpparamsprovider.php');
+    require_once('phpparamsprovider.php');
     $pluginBuilder->setCustomParamsProvider(new PhpParamsProvider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
 }
