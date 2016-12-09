@@ -110,22 +110,6 @@ class filter_wiris_pluginwrapper {
         return $this->moodleConfig->waschemeditorenabled;
     }
 
-    public function clear_folder($folder) {
-        if (!is_null($folder)) {
-            $dirstructure = (glob(rtrim($folder, "/").'/*'));
-            if (is_array($dirstructure)) {
-                foreach ($dirstructure as $direlement) {
-                    if (is_file($direlement)) {
-                        unlink($direlement);
-                    } else if (is_dir($direlement)) {
-                        $this->clear_folder($direlement);
-                    }
-                }
-            }
-            rmdir($folder);
-        }
-    }
-
     /**
      * Returns WIRIS plugin data from the plugin installed in the default Moodle
      * HTML editor (or the first available), or false if none found.
