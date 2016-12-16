@@ -413,10 +413,10 @@ class com_wiris_util_xml_WXmlUtils {
 		}
 		return $n;
 	}
-	static function copyXmlNamespace($elem, $customNamespace) {
-		return com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem, $elem, $customNamespace);
+	static function copyXmlNamespace($elem, $customNamespace, $prefixAttributes) {
+		return com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem, $elem, $customNamespace, $prefixAttributes);
 	}
-	static function importXmlNamespace($elem, $model, $customNamespace) {
+	static function importXmlNamespace($elem, $model, $customNamespace, $prefixAttributes) {
 		$n = null;
 		if($elem->nodeType == Xml::$Element) {
 			$n = Xml::createElement($customNamespace . ":" . $elem->getNodeName());
@@ -424,7 +424,7 @@ class com_wiris_util_xml_WXmlUtils {
 			while($keys->hasNext()) {
 				$key = $keys->next();
 				$keyNamespaced = $key;
-				if(_hx_index_of($key, ":", null) === -1) {
+				if($prefixAttributes && _hx_index_of($key, ":", null) === -1 && _hx_index_of($key, "xmlns", null) === -1) {
 					$keyNamespaced = $customNamespace . ":" . $key;
 				}
 				$n->set($keyNamespaced, $elem->get($key));
@@ -432,11 +432,11 @@ class com_wiris_util_xml_WXmlUtils {
 			}
 			$children = $elem->iterator();
 			while($children->hasNext()) {
-				$n->addChild(com_wiris_util_xml_WXmlUtils::importXmlNamespace($children->next(), $model, $customNamespace));
+				$n->addChild(com_wiris_util_xml_WXmlUtils::importXmlNamespace($children->next(), $model, $customNamespace, $prefixAttributes));
 			}
 		} else {
 			if($elem->nodeType == Xml::$Document) {
-				$n = com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem->firstElement(), $model, $customNamespace);
+				$n = com_wiris_util_xml_WXmlUtils::importXmlNamespace($elem->firstElement(), $model, $customNamespace, $prefixAttributes);
 			} else {
 				if($elem->nodeType == Xml::$CData) {
 					$n = Xml::createCData($elem->getNodeValue());

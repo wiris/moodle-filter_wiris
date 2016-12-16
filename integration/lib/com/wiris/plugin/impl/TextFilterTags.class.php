@@ -4,17 +4,21 @@ class com_wiris_plugin_impl_TextFilterTags {
 	public function __construct() {
 		;
 	}
-	public function init($tags) {
+	public function init($tags, $mathNamespace) {
+		if($mathNamespace !== null) {
+			$tags->mathTag = $mathNamespace . ":" . $tags->mathTag;
+		}
 		$tags->in_appletopen = $this->in_open . "APPLET";
 		$tags->in_appletclose = $this->in_open . "/APPLET" . $this->in_close;
-		$tags->in_mathopen = $this->in_open . "math";
-		$tags->in_mathclose = $this->in_open . "/math" . $this->in_close;
+		$tags->in_mathopen = $this->in_open . $this->mathTag;
+		$tags->in_mathclose = $this->in_open . "/" . $this->mathTag . $this->in_close;
 		$tags->out_open = "<";
 		$tags->out_close = ">";
 		$tags->out_entity = "&";
 		$tags->out_quote = "'";
 		$tags->out_double_quote = "\"";
 	}
+	public $mathTag;
 	public $in_appletclose;
 	public $in_appletopen;
 	public $out_quote;
@@ -46,17 +50,19 @@ class com_wiris_plugin_impl_TextFilterTags {
 		$tags->in_entity = com_wiris_plugin_impl_TextFilterTags_2($tags);
 		$tags->in_quote = "`";
 		$tags->in_double_quote = com_wiris_plugin_impl_TextFilterTags_3($tags);
-		$tags->init($tags);
+		$tags->mathTag = "math";
+		$tags->init($tags, null);
 		return $tags;
 	}
-	static function newXml() {
+	static function newXml($mathNamespace) {
 		$tags = new com_wiris_plugin_impl_TextFilterTags();
 		$tags->in_open = "<";
 		$tags->in_close = ">";
 		$tags->in_entity = "&";
 		$tags->in_quote = "'";
 		$tags->in_double_quote = "\"";
-		$tags->init($tags);
+		$tags->mathTag = "math";
+		$tags->init($tags, $mathNamespace);
 		return $tags;
 	}
 	function __toString() { return 'com.wiris.plugin.impl.TextFilterTags'; }

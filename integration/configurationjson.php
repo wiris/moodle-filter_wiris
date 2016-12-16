@@ -1,4 +1,5 @@
 <?php
+
 // Loaded from configuration
 require_once ('pluginbuilder.php');
 

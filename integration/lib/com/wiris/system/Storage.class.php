@@ -7,6 +7,8 @@ class com_wiris_system_Storage {
 		$location = str_replace("\\", com_wiris_system_Storage::getDirectorySeparator(), $location);
 		$this->location = $location;
 	}}
+	public function setResourceObject($obj) {
+	}
 	public function hlist() {
 		return sys_FileSystem::readDirectory($this->location);
 	}

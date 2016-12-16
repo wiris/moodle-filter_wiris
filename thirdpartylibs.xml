@@ -2,7 +2,7 @@
 <libraries>
     <library>
         <location>integration</location>
-        <name>WIRIS PLUGIN engine</name>
+        <name>WIRIS PLUGIN Engine</name>
         <version>3.62.1</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>
