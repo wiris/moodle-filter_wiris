@@ -31,6 +31,10 @@ if (!class_exists('moodlefilecache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
 }
 
+if (!class_exists('moodledbjsoncache')) {
+    require_once($CFG->dirroot . '/filter/wiris/classes/moodledbjsoncache.php');
+}
+
 if (!class_exists('moodledbcache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
 }
@@ -76,8 +80,13 @@ class filter_wiris_pluginwrapper {
             $this->instance = com_wiris_plugin_api_PluginBuilder::getInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+
             // Class to manage file cache.
-            $cachefile = new moodlefilecache('filter_wiris', 'images');
+            if ($this->get_instance()->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false') {
+                $cachefile = new moodlefilecache('filter_wiris', 'images');
+            } else {
+                $cachefile = new moodledbjsoncache('filter_wiris_formulas', 'md5', 'jsoncontent');
+            }
             $this->instance->setStorageAndCacheCacheObject($cachefile);
             // Class to manage formulas (i.e plain text) cache.
             $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
@@ -94,19 +103,19 @@ class filter_wiris_pluginwrapper {
 
     public function was_cas_enabled() {
         // Force configuration load.
-        $this->get_instance()->getConfiguration()->getProperty("wiriscasenabled", null);
+        $this->get_instance()->getConfiguration()->getProperty('wiriscasenabled', null);
         return $this->moodleConfig->wascasenabled;
     }
 
     public function was_editor_enabled() {
         // Force configuration load.
-        $this->get_instance()->getConfiguration()->getProperty("wiriseditorenabled", null);
+        $this->get_instance()->getConfiguration()->getProperty('wiriseditorenabled', null);
         return $this->moodleConfig->waseditorenabled;
     }
 
     public function was_chem_editor_enabled() {
         // Force configuration load.
-        $this->get_instance()->getConfiguration()->getProperty("wirischemeditorenabled", null);
+        $this->get_instance()->getConfiguration()->getProperty('wirischemeditorenabled', null);
         return $this->moodleConfig->waschemeditorenabled;
     }
 

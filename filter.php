@@ -65,10 +65,6 @@ class filter_wiris extends moodle_text_filter {
     public function filter($text, array $options = array()) {
 
         global $CFG, $DB;
-        require_once("$CFG->dirroot/filter/wiris/lib.php");
-
-        // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
-        wrs_loadclasses();
 
         $n0 = stripos($text, '«math');
         $n1 = stripos($text, '<math');
@@ -79,11 +75,15 @@ class filter_wiris extends moodle_text_filter {
             return $text;
         }
 
+        require_once("$CFG->dirroot/filter/wiris/lib.php");
+
+        // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
+        wrs_loadclasses();
+
         // MathJax and MathML
         // Not filter if MathJax filter order < WIRIS filter order.
-        if ($n1 !== false) {
+        if ($n1 !== false && $wirisfilter = $DB->get_record('filter_active', array('filter' => 'wiris'))) {
             if ($mathjaxfilter = $DB->get_record('filter_active', array('filter' => 'mathjaxloader', 'active' => '1'))) {
-                $wirisfilter = $DB->get_record('filter_active', array('filter' => 'wiris'));
                 if ($mathjaxfilter->sortorder < $wirisfilter->sortorder) {
                     return $text;
                 }

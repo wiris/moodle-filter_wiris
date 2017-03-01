@@ -223,37 +223,13 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 		$sb->add("" . _hx_string_rec($i, ""));
 	}
 	public function encodeString($sb, $s) {
+		$s = str_replace("\\", "\\\\", $s);
+		$s = str_replace("\"", "\\\"", $s);
+		$s = str_replace("\x0D", "\\\x0D", $s);
+		$s = str_replace("\x0A", "\\\x0A", $s);
+		$s = str_replace("\x09", "\\\x09", $s);
 		$sb->add("\"");
-		$i = null;
-		{
-			$_g1 = 0; $_g = strlen($s);
-			while($_g1 < $_g) {
-				$i1 = $_g1++;
-				$c = _hx_char_code_at($s, $i1);
-				if($c === 34) {
-					$sb->add("\\\"");
-				} else {
-					if($c === 13) {
-						$sb->add("\\r");
-					} else {
-						if($c === 10) {
-							$sb->add("\\n");
-						} else {
-							if($c === 9) {
-								$sb->add("\\t");
-							} else {
-								if($c === 92) {
-									$sb->add("\\\\");
-								} else {
-									$sb->add(_hx_char_at($s, $i1));
-								}
-							}
-						}
-					}
-				}
-				unset($i1,$c);
-			}
-		}
+		$sb->add($s);
 		$sb->add("\"");
 	}
 	public function encodeArray($sb, $v) {

@@ -83,8 +83,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $scriptname = explode('/', $_SERVER["SCRIPT_FILENAME"]);
         $scriptname = array_pop($scriptname);
 
+        com_wiris_system_CallWrapper::getInstance()->stop();
         if ($scriptname == 'showimage.php') { // Minimal conf showing images.
-            com_wiris_system_CallWrapper::getInstance()->stop();
             if (optional_param('refererquery', null, PARAM_RAW) != null) {
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));
                 $configuration['wirisreferer'] = $CFG->wwwroot . $refererquery;
@@ -159,5 +159,6 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wirisproxy_user'] = $proxyuserenabled ? $CFG->proxyuser : null;
             $configuration['wirisproxy_password'] = $proxypassenabled ? $CFG->proxypassword : null;
         }
+        com_wiris_system_CallWrapper::getInstance()->start();
     }
 }

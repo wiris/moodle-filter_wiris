@@ -52,5 +52,28 @@ function xmldb_filter_wiris_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2016101701, 'filter', 'wiris');
 
     }
+
+    if ($oldversion < 2017030100) {
+
+        // Define field jsoncontent to be added to filter_wiris_formulas.
+        $table = new xmldb_table('filter_wiris_formulas');
+        $field = new xmldb_field('jsoncontent', XMLDB_TYPE_TEXT, null, null, null, null, null, 'content');
+
+        // Conditionally launch add field jsoncontent.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('alt', XMLDB_TYPE_TEXT, null, null, null, null, null, 'jsoncontent');
+
+        // Conditionally launch add field alt.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Wiris savepoint reached.
+        upgrade_plugin_savepoint(true, 2017030100, 'filter', 'wiris');
+    }
+
     return true;
 }

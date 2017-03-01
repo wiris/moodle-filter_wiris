@@ -27,33 +27,115 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
+
+// Be careful. There is a conflicts between tests with performance enabled and not. You HAVE TO run the tests
+// independently using the groups annotations "performance_enabled" and "performance_disabled"
 class filter_wiris_filter_testcase extends advanced_testcase
-{   protected $filter;
+{   protected $wirisfilter;
     protected $safexml;
     protected $xml;
     protected $image;
+    protected $instance;
+    protected $cachetable;
 
     protected function setUp() {
         parent::setUp();
         $this->resetAfterTest(true);
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
+        $this->cachetable = 'filter_wiris_formulas';
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
-        $this->image = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
-        $this->image .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
-        $this->image .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
-        $this->image .= ' data-mathml="«math ';
-        $this->image .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
 
+        // Simple images of "1+2".
+
+        // Png format.
+        $this->imagepng = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
+        $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
+        $this->imagepng .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
+        $this->imagepng .= ' data-mathml="«math ';
+        $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
+
+        // Svg format.
+        $this->imagesvg = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
+        $this->imagesvg .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
+        $this->imagesvg .= ' class="Wirisformula" alt="1 plus 2" width="34" height="20" style="vertical-align:-4px"';
+        $this->imagesvg .= ' data-mathml="«math ';
+        $this->imagesvg .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
+
+        $wirispluginwrapper = new filter_wiris_pluginwrapper();
+        $this->instance = $wirispluginwrapper->get_instance();
     }
 
-    public function test_filter_safexml() {
+
+    /**
+     * @group performance_disabled
+     * @group imageformat_png
+     */
+    public function test_filter_safexml_without_performance_png() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'png');
         $output = $this->wirisfilter->filter($this->safexml);
-        $this->assertEquals($output, $this->image);
+        $this->assertEquals($output, $this->imagepng);
     }
 
-    public function test_filter_xml() {
+    /**
+     * @group performance_disabled
+     * @group imageformat_png
+     */
+    public function test_filter_xml_without_performance_png() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'png');
         $output = $this->wirisfilter->filter($this->xml);
-        $this->assertEquals($output, $this->image);
+        $this->assertEquals($output, $this->imagepng);
+    }
+
+    /**
+     * @group performance_disabled
+     * @group imageformat_svg
+     */
+    public function test_filter_safexml_without_performance_svg() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+        $output = $this->wirisfilter->filter($this->safexml);
+        $this->assertEquals($output, $this->imagesvg);
+    }
+
+    /**
+     * @group performance_disabled
+     * @group imageformat_svg
+     */
+    public function test_filter_xml_without_performance_svg() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+        $output = $this->wirisfilter->filter($this->xml);
+        $this->assertEquals($output, $this->imagesvg);
+    }
+
+    /**
+     * @group performance_disabled
+     * @group imageformat_png
+     */
+    public function test_filter_safexml_without_performance_png_cache() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'png');
+        $output = $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $md5 = 'cd345a63d1346d7a11b5e73bb97e5bb7';
+        $data = $cachefile->get($md5);
+        $this->assertEquals($output, $this->imagepng);
+    }
+
+    /**
+     * @group performance_disabled
+     * @group imageformat_svg
+     */
+    public function test_filter_safexml_without_performance_svg_cache() {
+        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'false');
+        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+        $output = $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $md5 = 'cd345a63d1346d7a11b5e73bb97e5bb7';
+        $data = $cachefile->get($md5);
+        $this->assertEquals($output, $this->imagesvg);
     }
 }

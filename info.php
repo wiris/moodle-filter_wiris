@@ -26,6 +26,8 @@
 require_once('../../config.php');
 require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
 require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
+
+// BEGIN HELPERS FUNCTIONS.
 function wrs_assert($condition, $reporttext, $solutionlink) {
     if ($condition) {
         return $reporttext;
@@ -51,23 +53,79 @@ function wrs_createtablerow($testname, $reporttext, $solutionlink, $condition) {
     return $output;
 }
 
-// Used to find the position of WIRIS plugin (Starting from Moodle 2.4 it changes the folder used to install the plugins).
-$tinyeditor = new tinymce_texteditor();
-$tinyversion = $tinyeditor->version;
+function get_current_editor_data() {
+    global $CFG;
+    $data = [];
 
-$wirispluginbase = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-$wirispluginbasestring = 'TinyMCE';
-if ($CFG->version >= 2014051200) {
-    $editors = array_flip(explode(',', $CFG->texteditors));
-    if (array_key_exists('atto', $editors) && (($editors['atto'] < $editors['tinymce'])) ||
-            !array_key_exists('tinymce', $editors)) {
-        $wirispluginbase = '../../lib/editor/atto/plugins/wiris';
-        $wirispluginbasestring = 'Atto';
+    $tinyeditor = new tinymce_texteditor();
+
+    if ($CFG->version < 2012120300) {
+        $data['plugin_path'] = '../../lib/editor/tinymce/tiny_mce/' . $tinyeditor->version . '/plugins/tiny_mce_wiris';
+        $data['plugin_name'] = 'TinyMCE';
+        return $data;
     }
-} else if ($CFG->version < 2012120300) {
-    $wirispluginbase = '../../lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
+
+    if ($CFG->version >= 2012120300 && $CFG->version < 2014051200) {
+        $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+        $data['plugin_name'] = 'TinyMCE';
+        return $data;
+    }
+
+    if ($CFG->version >= 2014051200) {
+        $editors = array_flip(explode(',', $CFG->texteditors));
+        if (count($editors) <= 0) {
+            throw new Exception("There are not editors plugins installed", 1);
+        }
+        if (count($editors) == 1) {
+            if (array_key_exists('textarea', $editors)) {
+                throw new Exception("There are only a textarea editors plugin installed", 1);
+            }
+        }
+
+        foreach ($editors as $editor => $value) {
+            switch ($editor) {
+                case 'atto':
+                    $data['plugin_path'] = '../../lib/editor/atto/plugins/wiris';
+                    $data['plugin_name'] = 'Atto';
+                return $data;
+                case 'tinymce':
+                    $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+                    $data['plugin_name'] = 'TinyMCE';
+                return $data;
+            }
+        }
+    }
+
+    return $data;
 }
 
+function check_if_wiris_button_are_in_toolbar($editor = null) {
+    if ( is_null($editor) ) {
+        throw new Exception("Editor name is expected on check_if_wiris_button_are_in_toolbar", 1);
+    }
+
+    switch ($editor) {
+        case 'Atto':
+            return check_if_wiris_button_are_in_atto_toolbar();
+        case 'TinyMCE':
+            return check_if_wiris_button_are_in_tinymce_toolbar();
+        default:
+            throw new Exception($editor . " is not a supported editor on check_if_wiris_button_are_in_toolbar", 1);
+    }
+}
+
+function check_if_wiris_button_are_in_atto_toolbar() {
+    $configvalue = get_config('editor_atto', 'toolbar');
+    return (strpos($configvalue, 'wiris') !== false);
+}
+
+function check_if_wiris_button_are_in_tinymce_toolbar() {
+    $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
+    return (strpos($configvalue, 'tiny_mce_wiris') === false);
+}
+// END HELPERS FUNCTIONS.
+
+// BEGUIN PAGE PROLOGUE.
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('title', 'filter_wiris'));
 $PAGE->set_url('/filter/wiris/info.php', array());
@@ -91,12 +149,15 @@ $output .= html_writer::start_tag('th', array('class' => 'wrs_plugin wrs_filter'
 $output .= "Status";
 $output .= html_writer::end_tag('th');
 $output .= html_writer::end_tag('tr');
-
-
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
-$output = '';
+// END PAGE PROLOGUE.
 
+// PREPARE TESTS.
+$currenteditordata = get_current_editor_data();
+
+// BEGIN TEST 1.
+$output = '';
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('test1', 'filter_wiris');
 $reporttext = get_string('report1', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
@@ -104,10 +165,12 @@ $actualfolder = realpath(dirname(__FILE__));
 $correctfolder = realpath($CFG->dirroot . '/filter/wiris');
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $actualfolder == $correctfolder);
 $output .= html_writer::end_tag('tr');
-
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
+// END TEST 1.
+
+// BEGIN TEST 2.
 $output = '';
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('test2', 'filter_wiris');
 $reporttext = get_string('report2', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
@@ -121,9 +184,11 @@ foreach ($filterfiles as $value) {
 }
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $exist);
 $output .= html_writer::end_tag('tr');
-
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
+// END TEST 2.
+
+// BEGIN TEST 3.
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $output = '';
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
@@ -138,10 +203,12 @@ if (isset($plugin->release)) {
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
-
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
+// END TEST 4.
+
+// BEGIN TEST 5.
 $output = '';
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('test4', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
 $filterenabled = filter_is_enabled('filter/wiris');
@@ -155,11 +222,12 @@ $output .= html_writer::end_tag('tr');
 
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
+
 $output = '';
-$testname = get_string('test5', 'filter_wiris') . $wirispluginbasestring;
-$reporttext = get_string('report5.1', 'filter_wiris') . $wirispluginbasestring . get_string('report5.2', 'filter_wiris');
+$testname = get_string('test5', 'filter_wiris') . $currenteditordata['plugin_name'];
+$reporttext = get_string('report5.1', 'filter_wiris') . $currenteditordata['plugin_name'] . get_string('report5.2', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
-$wirisplugin = $wirispluginbase. '/core';
+$wirisplugin = $currenteditordata['plugin_path'] . '/core';
 $condition = file_exists($wirisplugin);
 if (!$condition) {
     $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/core';
@@ -167,13 +235,14 @@ if (!$condition) {
 }
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
-
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 echo $output;
-$output = '';
+// END TEST 5.
 
+// BEGIN TEST 6.
+$output = '';
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-$testname = get_string('test6', 'filter_wiris').$wirispluginbasestring.' versions';
+$testname = get_string('test6', 'filter_wiris') . $currenteditordata['plugin_name'] . ' versions';
 if (isset($plugin->release)) {
     $filterversion = $plugin->release;
 } else {
@@ -181,10 +250,10 @@ if (isset($plugin->release)) {
 }
 
 // Using version.php to check release number.
-if (strtolower($wirispluginbasestring) == 'tinymce') {
-    require($wirispluginbase . '/../version.php');
+if (strtolower($currenteditordata['plugin_name']) == 'tinymce') {
+    require($currenteditordata['plugin_path'] . '/../version.php');
 } else {
-    require($wirispluginbase . '/version.php');
+    require($currenteditordata['plugin_path'] . '/version.php');
 }
 
 if (isset($plugin->release)) {
@@ -194,17 +263,37 @@ if (isset($plugin->release)) {
 }
 
 if ($filterversion == $pluginversion) {
-    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '.$wirispluginbasestring.' have the same version';
+    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '. $currenteditordata['plugin_name'] .' have the same version';
     $condition = true;
 } else {
-    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '.$wirispluginbasestring.' versions don\'t match';
+    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '. $currenteditordata['plugin_name'] .' versions don\'t match';
     $condition = false;
 }
 
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
+echo $output;
+// END TEST 6.
 
+// BEGIN TEST 7.
+$output = '';
+$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
+
+$testname = get_string('test7', 'filter_wiris') . $currenteditordata['plugin_name'];
+try {
+    $condition = check_if_wiris_button_are_in_toolbar($currenteditordata['plugin_name']);
+    $reporttext = ($condition) ? get_string('enabled', 'filter_wiris') : get_string('disabled', 'filter_wiris');
+} catch (Exception $e) {
+    $condition = false;
+    $reporttext = $e->getMessage();
+}
+
+echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
+$output .= html_writer::end_tag('tr');
+// END TEST 7.
+
+// START PAGE EPILOGUE.
 $output .= html_writer::end_tag('table');
 
 $output .= html_writer::start_tag('p');
@@ -234,3 +323,4 @@ $output .= html_writer::end_tag('br');
 $output .= html_writer::end_tag('p');
 
 echo $output;
+// END PAGE EPILOGUE.

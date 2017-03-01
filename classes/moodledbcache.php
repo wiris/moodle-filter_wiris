@@ -69,10 +69,12 @@ class moodledbcache {
      * @return Bytes The data retrieved from the cache. Returns null on cache miss or error.
      */
     public function get($key) {
-        global $DB;
 
-        if ($DB->record_exists($this->cachetable, array($this->keyfield => $key))) {
-            $record = $DB->get_record($this->cachetable, array($this->keyfield => $key));
+        $parsedkey = $this->parse_key($key);
+
+        global $DB;
+        if ($DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
+            $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
             // Cache interface returns an array of Bytes. When we are using the database to
             // store cache the data should be converted to a Bytes object.
             $valuefield = $this->valuefield;
@@ -84,22 +86,34 @@ class moodledbcache {
     }
 
     /**
+     * Retrieves the name of the key for the cache without the extension.
+     * @key The key with a extension.
+     */
+    private function parse_key($key) {
+        $separatedkey = explode(".", $key);
+        return $separatedkey[0];
+    }
+
+    /**
      * Stores a (key, value) pair to the cache. If the key exists, updates the value.
      * @param key The key for the data being requested.
      * @param value The data to set against the key.
      * @throw Error On unexpected exception storing the value.
      */
     public function set($key, $value) {
+
+        $parsedkey = $this->parse_key($key);
+
         global $DB;
-        if (!$DB->record_exists($this->cachetable, array($this->keyfield => $key))) {
+        if (!$DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
             // Variable $value is a a array of bytes, we need the content of the array.
             try {
-                $DB->insert_record($this->cachetable, array($this->keyfield => $key, $this->valuefield => $value->b));
+                $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->valuefield => $value->b));
             } catch (dml_exception $ex) {
                 throw $ex;
             }
         } else {
-            $record = $DB->get_record($this->cachetable, array($this->keyfield => $key));
+            $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
             $record->value = $value->b;
             $DB->update_record($this->cachetable, $record);
         }

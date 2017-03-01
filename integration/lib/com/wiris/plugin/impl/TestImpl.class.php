@@ -24,6 +24,7 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$random = "" . _hx_string_rec(Math::floor(Math::random() * 9999), "");
 		$mml = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msqrt><mn>" . $random . "</mn></msqrt></mrow></math>";
 		$testName = null; $reportText = null; $solutionLink = null;
+		$this->conf = $this->plugin->getConfiguration();
 		$condition = null;
 		$output = "";
 		$output .= "<html><head>\x0D\x0A";
@@ -58,7 +59,21 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
 		$testName = "Retrieving data";
 		$solutionLink = "";
-		$reportText = "<img src=\"" . $imageUrl . "\" />";
+		if($this->conf->getProperty("wirispluginperformance", "false") === "true") {
+			$this->plugin->newRender()->showImage(null, $mml, $provider);
+			$digest = $this->plugin->newRender()->computeDigest($mml, $provider->getRenderParameters($this->plugin->getConfiguration()));
+			$imageUrlJson = $this->plugin->newRender()->showImageJson($digest, "en");
+			$imageJson = com_wiris_util_json_JSon::decode($imageUrlJson);
+			$result = $imageJson->get("result");
+			$content = $result->get("content");
+			if($this->conf->getProperty("wirisimageformat", "svg") === "svg") {
+				$reportText = "<img src=\"" . "data:image/svg+xml;charset=utf8," . rawurlencode($content) . "\" />";
+			} else {
+				$reportText = "<img src='" . "data:image/png;base64," . $content . "' />";
+			}
+		} else {
+			$reportText = "<img src='" . $imageUrl . "' />";
+		}
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
 		$testName = "JavaScript MathML filter";
 		$solutionLink = "";
@@ -171,6 +186,7 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$output .= "<div id=\"haxe:trace\"></div>";
 		return $output;
 	}
+	public $conf;
 	public $plugin;
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))

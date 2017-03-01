@@ -80,7 +80,6 @@ class moodlefilecache {
      * @throw moodle_exception when the data can't be written to the cache.
      */
     public function set($key, $value) {
-        $bytes = haxe_io_Bytes::ofData($value);
         if (!$this->cache->set($key, $value)) {
             throw new moodle_exception('Error saving cache on ' . $this->area . ' area', $this->module);
         }

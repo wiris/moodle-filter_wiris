@@ -53,7 +53,8 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		}
 	}
 	public function codeDigest($content) {
-		$parsedContentLt = str_replace("\"<\"", "\"&lt;\"", $content);
+		$parsedContentQuotes = str_replace(">\"<", ">&#34<", $content);
+		$parsedContentLt = str_replace("\"<\"", "\"&lt;\"", $parsedContentQuotes);
 		$parsedContent = str_replace("\">\"", "\"&gt;\"", $parsedContentLt);
 		$digest = com_wiris_system_Md5Tools::encodeString($parsedContent);
 		try {

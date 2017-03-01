@@ -99,17 +99,17 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 	public function getMathml($digest) {
 		return null;
 	}
-	public function showImageJson($digest, $lang) {
+	public function showImageHash($digest, $lang) {
 		$imageFormat = $this->plugin->getConfiguration()->getProperty("wirisimageformat", "png");
 		$store = $this->plugin->getStorageAndCache();
 		$bs = null;
 		$bs = $store->retreiveData($digest, $imageFormat);
-		$jsonOutput = new Hash();
 		if($bs !== null) {
-			$jsonOutput->set("status", "ok");
 			$jsonResult = new Hash();
-			$by = haxe_io_Bytes::ofData($bs);
-			$b64 = _hx_deref(new com_wiris_system_Base64())->encodeBytes($by);
+			$content = haxe_io_Bytes::ofData($bs);
+			if($imageFormat === "png") {
+				$content = _hx_deref(new com_wiris_system_Base64())->encodeBytes($content);
+			}
 			$metrics = array();;
 			$this->getMetrics($digest, $metrics);
 			if($lang === null) {
@@ -126,13 +126,38 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			if($s !== null) {
 				$jsonResult->set("alt", com_wiris_system_Utf8::fromBytes($s));
 			}
-			$jsonResult->set("base64", $b64->toString());
+			$jsonResult->set("content", $content->toString());
 			$jsonResult->set("format", $imageFormat);
-			$jsonOutput->set("result", $jsonResult);
+			return $jsonResult;
 		} else {
-			$jsonOutput->set("status", "warning");
+			return null;
 		}
-		return com_wiris_util_json_JSon::encode($jsonOutput);
+	}
+	public function showImageJson($digest, $lang) {
+		$jsonResult = $this->showImageHash($digest, $lang);
+		if($jsonResult !== null) {
+			$jsonSb = new StringBuf();
+			$iter = $jsonResult->keys();
+			$jsonSb->add("{\"status\":\"ok\",\"result\":{");
+			while($iter->hasNext()) {
+				$key = $iter->next();
+				$value = $jsonResult->get($key);
+				$value = str_replace("\\", "\\\\", $value);
+				$value = str_replace("\"", "\\\"", $value);
+				$value = str_replace("\x0D", "\\\x0D", $value);
+				$value = str_replace("\x0A", "\\\x0A", $value);
+				$value = str_replace("\x09", "\\\x09", $value);
+				$jsonSb->add("\"" . $key . "\":" . "\"" . $value . "\"");
+				if($iter->hasNext()) {
+					$jsonSb->add(",");
+				}
+				unset($value,$key);
+			}
+			$jsonSb->add("}}");
+			return $jsonSb->b;
+		} else {
+			return "{\"status\":\"warning\"}";
+		}
 	}
 	public function showImage($digest, $mml, $provider) {
 		if($digest === null && $mml === null) {

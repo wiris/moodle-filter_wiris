@@ -53,28 +53,25 @@ class com_wiris_plugin_impl_TextFilter {
 			$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
 		} else {
 			$digest = $this->render->computeDigest($str, $prop);
-			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null)));
-			$hashImage = $json;
-			if(_hx_equal($hashImage->get("status"), "warning")) {
+			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
+			if($hashImage === null) {
 				$this->render->showImage(null, $str, $provider);
 			}
-			$json = com_wiris_util_json_JSon::decode($this->render->showImageJson($digest, "en"));
-			$hashImage = $json;
-			if(_hx_equal($hashImage->get("status"), "ok")) {
-				$result = $hashImage->get("result");
-				$base64 = $result->get("base64");
-				$img .= " src=\"data:image/png;base64," . $base64 . "\"";
-				if($result->exists("alt")) {
-					$alt = $result->get("alt");
-				} else {
-					$alt = $this->service->mathml2accessible($str, null, $prop);
-				}
-				$width = $result->get("width");
-				$height = $result->get("height");
-				$baseline = $result->get("baseline");
+			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
+			$content = $hashImage->get("content");
+			if($this->plugin->getConfiguration()->getProperty("wirisimageformat", "png") === "png") {
+				$img .= "src=\"data:image/png;base64," . $content . "\"";
 			} else {
-				throw new HException("Image can't be rendererd");
+				$img .= " src='data:image/svg+xml;charset=utf8," . rawurlencode($content) . "'";
 			}
+			if($hashImage->exists("alt")) {
+				$alt = $hashImage->get("alt");
+			} else {
+				$alt = $this->service->mathml2accessible($str, null, $prop);
+			}
+			$width = $hashImage->get("width");
+			$height = $hashImage->get("height");
+			$baseline = $hashImage->get("baseline");
 		}
 		$dpi = Std::parseFloat($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$WIRIS_DPI, "96"));
 		if($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null) !== null) {

@@ -27,6 +27,9 @@ class com_wiris_system_Utf8 {
 		$bs = haxe_io_Bytes::ofData($s);
 		return $bs->toString();
 	}
+	static function getIterator($s) {
+		return new com_wiris_system__Utf8_StringIterator($s);
+	}
 	function __toString() { return 'com.wiris.system.Utf8'; }
 }
 function com_wiris_system_Utf8_0(&$i, &$s) {

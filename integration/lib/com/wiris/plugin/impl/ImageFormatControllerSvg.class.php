@@ -5,11 +5,17 @@ class com_wiris_plugin_impl_ImageFormatControllerSvg implements com_wiris_plugin
 	}
 	public function getMetrics($bytes, &$output) {
 		$svg = $bytes->toString();
+		$svgRoot = _hx_substr($svg, 0, _hx_index_of($svg, ">", null));
+		$firstIndex = _hx_index_of($svgRoot, "height=", null) + 8;
+		$endIndex = _hx_index_of($svgRoot, "\"", $firstIndex);
+		$height = _hx_substr($svgRoot, $firstIndex, $endIndex - $firstIndex);
+		$firstIndex = _hx_index_of($svgRoot, "width=", null) + 7;
+		$endIndex = _hx_index_of($svgRoot, "\"", $firstIndex);
+		$width = _hx_substr($svgRoot, $firstIndex, $endIndex - $firstIndex);
+		$firstIndex = _hx_index_of($svgRoot, "wrs:baseline=", null) + 14;
+		$endIndex = _hx_index_of($svgRoot, "\"", $firstIndex);
+		$baseline = _hx_substr($svgRoot, $firstIndex, $endIndex - $firstIndex);
 		$output = $output;
-		$svgXml = com_wiris_util_xml_WXmlUtils::parseXML($svg);
-		$width = $svgXml->firstElement()->get("width");
-		$height = $svgXml->firstElement()->get("height");
-		$baseline = $svgXml->firstElement()->get("wrs:baseline");
 		$r = null;
 		if($output !== null) {
 			$output["width"] = "" . $width;

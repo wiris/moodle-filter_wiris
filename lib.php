@@ -122,7 +122,7 @@ function wrs_filterapplettojnlp($text) {
     $i = 0;
     while (count($appletlist) != 0) {
         $output = '';
-        $appletcode = htmlspecialchars_decode(substr($text, $appletlist[$i]['start'] + $carry, $appletlist[$i]['end']));
+        $appletcode = htmlspecialchars_decode(substr($text, $appletlist[$i]['start'], $appletlist[$i]['end']));
         if (strpos($appletcode, ' src="') && strpos($appletcode, 'value="<session')) {
             $sessionid = wrs_createsessionid();
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
