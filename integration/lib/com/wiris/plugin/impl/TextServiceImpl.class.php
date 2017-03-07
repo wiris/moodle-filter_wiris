@@ -79,7 +79,19 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 			$h->setParameter($k, $ha->get($k));
 			unset($k);
 		}
-		$h->request(true);
+		try {
+			$h->request(true);
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+			$e = $_ex_;
+			{
+				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
+					return "Error converting from MathML to accessible text.";
+				} else {
+					throw new HException($e->getMessage());
+				}
+			}
+		}
 		$r = $h->getData();
 		if($digest !== null) {
 			$store = $this->plugin->getStorageAndCache();

@@ -12,27 +12,41 @@ class Std {
 		return intval($x);
 	}
 	static function parseInt($x) {
-		if(!is_numeric($x)) {
-			$matches = null;
-			preg_match("/^-?\\d+/", $x, $matches);
-			return ((count($matches) === 0) ? null : intval($matches[0]));
+		$x = ltrim($x);
+		$firstCharIndex = ((_hx_char_at($x, 0) === "-") ? 1 : 0);
+		$firstCharCode = _hx_char_code_at($x, $firstCharIndex);
+		if(!($firstCharCode !== null && $firstCharCode >= 48 && $firstCharCode <= 57)) {
+			return null;
+		}
+		$secondChar = _hx_char_at($x, $firstCharIndex + 1);
+		if($secondChar === "x" || $secondChar === "X") {
+			return intval($x, 0);
 		} else {
-			return ((strtolower(_hx_substr($x, 0, 2)) === "0x") ? (int) hexdec(substr($x, 2)) : intval($x));
+			return intval($x, 10);
 		}
 	}
 	static function parseFloat($x) {
-		$v = floatval($x);
-		if($v === 0.0) {
-			$x = rtrim($x);
-			$v = floatval($x);
-			if($v === 0.0 && !is_numeric($x)) {
-				$v = acos(1.01);
-			}
+		$result = floatval($x);
+		if($result != 0) {
+			return $result;
 		}
-		return $v;
+		$x = ltrim($x);
+		$firstCharIndex = ((_hx_char_at($x, 0) === "-") ? 1 : 0);
+		$charCode = _hx_char_code_at($x, $firstCharIndex);
+		if($charCode === 46) {
+			$charCode = _hx_char_code_at($x, $firstCharIndex + 1);
+		}
+		if($charCode !== null && $charCode >= 48 && $charCode <= 57) {
+			return 0.0;
+		} else {
+			return Math::$NaN;
+		}
 	}
 	static function random($x) {
 		return mt_rand(0, $x - 1);
+	}
+	static function isDigitCode($charCode) {
+		return $charCode !== null && $charCode >= 48 && $charCode <= 57;
 	}
 	function __toString() { return 'Std'; }
 }
