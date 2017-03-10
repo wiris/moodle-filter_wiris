@@ -78,8 +78,6 @@ class moodledbjsoncache {
         if ($DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
 
             $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
-            // print_object($key);
-            // print_object(com_wiris_system_Utf8::toBytes($record->$jsonfield));
             if (strpos($key, '.svg') !== false) {
                 return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$jsonfield));;
             } else {
@@ -101,7 +99,6 @@ class moodledbjsoncache {
                 } else {
                     $jsonfield = $this->jsonfield;
                     $json = com_wiris_util_json_JSon::decode($record->$jsonfield, true)->get('result')->get('alt');
-                    // decodeBytes() needs to have an object with a 'b' parameter with the value.
                     $jsontodecode = new StdClass();
                     $jsontodecode->b = $json;
 
@@ -165,7 +162,7 @@ class moodledbjsoncache {
             if (strpos($key, '.txt') === false) {
                 $record->$jsonfield = $testvalue;
                 $DB->update_record($this->cachetable, $record);
-            } else {  // .txt otherwise
+            } else {  // ... .txt otherwise.
                 $record->alt = $testvalue;
                 $DB->update_record($this->cachetable, $record);
             }

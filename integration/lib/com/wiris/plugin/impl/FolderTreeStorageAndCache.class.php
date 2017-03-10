@@ -53,12 +53,9 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		}
 	}
 	public function codeDigest($content) {
-		$parsedContentQuotes = str_replace(">\"<", ">&#34<", $content);
-		$parsedContentLt = str_replace("\"<\"", "\"&lt;\"", $parsedContentQuotes);
-		$parsedContent = str_replace("\">\"", "\"&gt;\"", $parsedContentLt);
-		$digest = com_wiris_system_Md5Tools::encodeString($parsedContent);
+		$digest = com_wiris_system_Md5Tools::encodeString($content);
 		try {
-			$this->cacheFormula->set($digest . ".ini", haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($parsedContent)));
+			$this->cacheFormula->set($digest . ".ini", haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($content)));
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;

@@ -91,6 +91,19 @@ class com_wiris_util_xml_WCharacterBase {
 	static $DOUBLE_STRUCK_ITALIC_SMALL_I = 8520;
 	static $EPSILON = 949;
 	static $VAREPSILON = 1013;
+	static $DIGIT_ZERO = 48;
+	static $DIGIT_NINE = 57;
+	static $LATIN_CAPITAL_LETTER_A = 65;
+	static $LATIN_CAPITAL_LETTER_Z = 90;
+	static $LATIN_SMALL_LETTER_A = 97;
+	static $LATIN_SMALL_LETTER_Z = 122;
+	static $MATHEMATICAL_SCRIPT_CAPITAL_A = 119964;
+	static $MATHEMATICAL_SCRIPT_SMALL_A = 119990;
+	static $MATHEMATICAL_FRAKTUR_CAPITAL_A = 120068;
+	static $MATHEMATICAL_FRAKTUR_SMALL_A = 120094;
+	static $MATHEMATICAL_DOUBLE_STRUCK_CAPITAL_A = 120120;
+	static $MATHEMATICAL_DOUBLE_STRUCK_SMALL_A = 120146;
+	static $MATHEMATICAL_DOUBLE_STRUCK_DIGIT_ZERO = 120792;
 	static function isDigit($c) {
 		if(48 <= $c && $c <= 57) {
 			return true;
@@ -578,6 +591,135 @@ class com_wiris_util_xml_WCharacterBase {
 			return true;
 		}
 		return false;
+	}
+	static function latinToDoublestruck($codepoint) {
+		if($codepoint === 67) {
+			return 8450;
+		} else {
+			if($codepoint === 72) {
+				return 8461;
+			} else {
+				if($codepoint === 78) {
+					return 8469;
+				} else {
+					if($codepoint === 80) {
+						return 8473;
+					} else {
+						if($codepoint === 81) {
+							return 8474;
+						} else {
+							if($codepoint === 82) {
+								return 8477;
+							} else {
+								if($codepoint === 90) {
+									return 8484;
+								} else {
+									if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_Z) {
+										return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_DOUBLE_STRUCK_CAPITAL_A - com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A);
+									} else {
+										if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_Z) {
+											return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_DOUBLE_STRUCK_SMALL_A - com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A);
+										} else {
+											if($codepoint >= com_wiris_util_xml_WCharacterBase::$DIGIT_ZERO && $codepoint <= com_wiris_util_xml_WCharacterBase::$DIGIT_NINE) {
+												return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_DOUBLE_STRUCK_DIGIT_ZERO - com_wiris_util_xml_WCharacterBase::$DIGIT_ZERO);
+											} else {
+												return $codepoint;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	static function latinToScript($codepoint) {
+		if($codepoint === 66) {
+			return 8492;
+		} else {
+			if($codepoint === 69) {
+				return 8496;
+			} else {
+				if($codepoint === 70) {
+					return 8497;
+				} else {
+					if($codepoint === 72) {
+						return 8459;
+					} else {
+						if($codepoint === 73) {
+							return 8464;
+						} else {
+							if($codepoint === 76) {
+								return 8466;
+							} else {
+								if($codepoint === 77) {
+									return 8499;
+								} else {
+									if($codepoint === 82) {
+										return 8475;
+									} else {
+										if($codepoint === 101) {
+											return 8495;
+										} else {
+											if($codepoint === 103) {
+												return 8458;
+											} else {
+												if($codepoint === 111) {
+													return 8500;
+												} else {
+													if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_Z) {
+														return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_SCRIPT_CAPITAL_A - com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A);
+													} else {
+														if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_Z) {
+															return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_SCRIPT_SMALL_A - com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A);
+														} else {
+															return $codepoint;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	static function latinToFraktur($codepoint) {
+		if($codepoint === 67) {
+			return 8493;
+		} else {
+			if($codepoint === 72) {
+				return 8460;
+			} else {
+				if($codepoint === 73) {
+					return 8465;
+				} else {
+					if($codepoint === 82) {
+						return 8476;
+					} else {
+						if($codepoint === 90) {
+							return 8488;
+						} else {
+							if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_Z) {
+								return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_FRAKTUR_CAPITAL_A - com_wiris_util_xml_WCharacterBase::$LATIN_CAPITAL_LETTER_A);
+							} else {
+								if($codepoint >= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A && $codepoint <= com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_Z) {
+									return $codepoint + (com_wiris_util_xml_WCharacterBase::$MATHEMATICAL_FRAKTUR_SMALL_A - com_wiris_util_xml_WCharacterBase::$LATIN_SMALL_LETTER_A);
+								} else {
+									return $codepoint;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	function __toString() { return 'com.wiris.util.xml.WCharacterBase'; }
 }
