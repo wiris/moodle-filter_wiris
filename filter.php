@@ -108,7 +108,7 @@ class filter_wiris extends moodle_text_filter {
         }
 
         $prop['refererquery'] = $query;
-
+        $prop['lang'] = current_language();
         $prop['savemode'] = 'safeXml'; // ...safeXml filtering.
         $text = $textservice->filter($text, $prop);
         $prop['savemode'] = 'xml'; // ...xml filtering.

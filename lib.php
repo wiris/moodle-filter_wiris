@@ -128,7 +128,7 @@ function wrs_filterapplettojnlp($text) {
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
             $srcend = strpos($appletcode, '.png"', 0);
             $src = substr($appletcode, $srcstart, $srcend - $srcstart + 4);
-            $hreflink = 'http://www.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid;
+            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid;
             $output .= html_writer::start_tag('a', array('href' => $hreflink));
             $img = '';
             if (method_exists('html_writer', 'img')) {
