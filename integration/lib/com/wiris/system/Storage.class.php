@@ -127,6 +127,10 @@ class com_wiris_system_Storage {
 		$sep = DIRECTORY_SEPARATOR;
 		com_wiris_system_Storage::$directorySeparator = $sep;
 	}
+	static function getCurrentPath() {
+		throw new HException("Not implemented!");
+		return null;
+	}
 	function __toString() { return $this->toString(); }
 }
 function com_wiris_system_Storage_0(&$»this, &$path) {

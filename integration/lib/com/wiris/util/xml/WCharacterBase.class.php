@@ -120,7 +120,7 @@ class com_wiris_util_xml_WCharacterBase {
 		return false;
 	}
 	static function isIdentifier($c) {
-		return com_wiris_util_xml_WCharacterBase::isLetter($c) || $c === 95;
+		return com_wiris_util_xml_WCharacterBase::isLetter($c) || com_wiris_util_xml_WCharacterBase::isCombiningCharacter($c) || $c === 95;
 	}
 	static function isLarge($c) {
 		return com_wiris_util_xml_WCharacterBase::binarySearch(com_wiris_util_xml_WCharacterBase::$largeOps, $c);
@@ -268,6 +268,9 @@ class com_wiris_util_xml_WCharacterBase {
 			$i += 2;
 		}
 		return -1;
+	}
+	static function isCombiningCharacter($c) {
+		return $c >= 768 && $c <= 879 || $c >= 6832 && $c <= 6911 || $c >= 7616 && $c <= 7679 && ($c >= 8400 && $c <= 8447) && ($c >= 65056 && $c <= 65071);
 	}
 	static function isLetter($c) {
 		if(com_wiris_util_xml_WCharacterBase::isDigit($c)) {

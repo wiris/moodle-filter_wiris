@@ -225,9 +225,9 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 	public function encodeString($sb, $s) {
 		$s = str_replace("\\", "\\\\", $s);
 		$s = str_replace("\"", "\\\"", $s);
-		$s = str_replace("\x0D", "\\\x0D", $s);
-		$s = str_replace("\x0A", "\\\x0A", $s);
-		$s = str_replace("\x09", "\\\x09", $s);
+		$s = str_replace("\x0D", "\\r", $s);
+		$s = str_replace("\x0A", "\\n", $s);
+		$s = str_replace("\x09", "\\t", $s);
 		$sb->add("\"");
 		$sb->add($s);
 		$sb->add("\"");
