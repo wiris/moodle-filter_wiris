@@ -55,7 +55,7 @@ function wrs_createtablerow($testname, $reporttext, $solutionlink, $condition) {
 
 function get_current_editor_data() {
     global $CFG;
-    $data = array();
+    $data = [];
 
     $tinyeditor = new tinymce_texteditor();
 
@@ -267,8 +267,6 @@ if ($filterversion == $pluginversion) {
     $condition = true;
 } else {
     $reporttext = 'WIRIS plugin filter and WIRIS plugin for '. $currenteditordata['plugin_name'] .' versions don\'t match';
-    $reporttext .= "<br>" . "WIRIS Filter version =  " . $filterversion;
-    $reporttext .= "<br> WIRIS Plugin for " .  $currenteditordata['plugin_name'] . 'version = ' . $pluginversion;
     $condition = false;
 }
 
@@ -304,17 +302,13 @@ echo $output;
 $output = '';
 echo get_string('textBeforeButton1', 'filter_wiris') . "<br/>";
 $link = 'integration/test.php';
-$input = '<input type="button" value="' . get_string('button1', 'filter_wiris');
-$input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
-echo $input;
+echo '<input type="button" value="' . get_string('button1', 'filter_wiris') . '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
 
 $wqversion = get_config('qtype_wq', 'version');
 if (!empty($wqversion)) {
     echo get_string('textBeforeButton2', 'filter_wiris') . "<br/>";
     $link = '../../question/type/wq/info.php';
-    $input = '<input type="button" value="' . get_string('button2', 'filter_wiris');
-    $input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
-    echo $input;
+    echo '<input type="button" value="' . get_string('button2', 'filter_wiris') . '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
 }
 $output .= html_writer::end_tag('br');
 $output .= html_writer::end_tag('p');

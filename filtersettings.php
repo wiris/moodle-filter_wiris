@@ -36,10 +36,11 @@ if ($ADMIN->fulltree) {
 
     $editorplugininstalled = filter_wiris_pluginwrapper::get_wiris_plugin();
     if (!empty($editorplugininstalled)) {
-        // Editor checkbox.
+        // Editor and CAS checkbox.
         $output = '';
         $wirisplugin->begin();
         $waseditorenabled = $wirisplugin->was_editor_enabled();
+        $wascasenabled = $wirisplugin->was_cas_enabled();
         $waschemeditorenabled = $wirisplugin->was_chem_editor_enabled();
         $conf = $wirisplugin->get_instance()->getConfiguration();
         $wirisplugin->end();
@@ -71,6 +72,11 @@ if ($ADMIN->fulltree) {
         if ($waschemeditorenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
+        }
+
+        if ($wascasenabled) {
+            $settings->add(new admin_setting_configcheckbox('filter_wiris_cas_enable',
+                                                            get_string('wiriscas', 'filter_wiris'), '', '0'));
         }
 
     } else {
