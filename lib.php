@@ -98,7 +98,7 @@ function wrs_createsessionid() {
 function wrs_setinitialsession($sessionid, $xml) {
     $wrap = com_wiris_system_CallWrapper::getInstance();
     $wrap->start();
-    $h = new com_wiris_plugin_impl_HttpImpl('http://www.wiris.net/demo/wiris/set', null);
+    $h = new com_wiris_plugin_impl_HttpImpl('https://stateful.wiris.net/wiris/set', null);
     $h->setParameter('session_id', $sessionid);
     $h->setParameter('value', $xml);
     $h->setParameter('revision', 1);
@@ -171,5 +171,6 @@ function wrs_loadclasses() {
         require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
         require_once($CFG->dirroot . '/filter/wiris/classes/paramsprovider.php');
         require_once($CFG->dirroot . '/filter/wiris/classes/configurationupdater.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapperconfigurationupdater.php');
     }
 }

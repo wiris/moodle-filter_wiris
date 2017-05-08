@@ -31,6 +31,7 @@ class moodledbjsoncache {
     private $cachetable;
     private $keyfield;
     private $jsonfield;
+    private $timecreatedfield;
 
     /**
      * Constructores for WIRIS file cache.
@@ -41,6 +42,7 @@ class moodledbjsoncache {
         $this->cachetable = $tablename;
         $this->keyfield = $keyfield;
         $this->jsonfield = $jsonfield;
+        $this->timecreatedfield = 'timecreated';
     }
 
     /**
@@ -79,7 +81,9 @@ class moodledbjsoncache {
 
             $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
             if (strpos($key, '.svg') !== false) {
-                return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$jsonfield));;
+                return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$jsonfield));
+            } else if (strpos($key, '.txt') !== false) {
+                return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->alt));
             } else {
                 return null;
             }
@@ -137,7 +141,7 @@ class moodledbjsoncache {
         $innerhash->set('alt', '');
         $jsonhash->set('result', $innerhash);
         $parsedkey = $this->parse_key($key);
-        $testvalue = com_wiris_system_Utf8::toBytes($value)->b;
+        $bytevalue = com_wiris_system_Utf8::toBytes($value)->b;
         global $DB;
         if (!$DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
 
@@ -145,12 +149,21 @@ class moodledbjsoncache {
             try {
                 // Accesibility (alt field).
                 if (strpos($key, '.txt') === false) {
-                    $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->alt => $testvalue));
+                    $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->alt => $bytevalue,
+                                         $this->timecreatedfield => time()));
                 } else {
                     // Image (svg or base64 format).
-                    $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->jsonfield => $testvalue));
+                    $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->jsonfield => $bytevalue,
+                                         $this->timecreatedfield => time()));
                 }
             } catch (dml_exception $ex) {
+                // Concurrent write access to the same - unexisting - md5
+                // are possible in some scenarios (like a quiz)
+                // if a write_exception occurs, formula has been created
+                // is not a real exception.
+                if ($ex instanceof dml_write_exception) {
+                    return;
+                }
                 throw $ex;
             }
 
@@ -160,10 +173,10 @@ class moodledbjsoncache {
             $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
 
             if (strpos($key, '.txt') === false) {
-                $record->$jsonfield = $testvalue;
+                $record->$jsonfield = $bytevalue;
                 $DB->update_record($this->cachetable, $record);
             } else {  // ... .txt otherwise.
-                $record->alt = $testvalue;
+                $record->alt = $bytevalue;
                 $DB->update_record($this->cachetable, $record);
             }
         }

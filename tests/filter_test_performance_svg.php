@@ -26,22 +26,21 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
+require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/CallWrapper.class.php');
 
-
-// Be careful. There is a conflicts between tests with performance enabled and not. You HAVE TO run the tests
-// independently using the groups annotations "performance_enabled" and "performance_disabled"
 class filter_wiris_filter_performance_testcase extends advanced_testcase
 {   protected $wirisfilter;
     protected $safexml;
     protected $xml;
     protected $image;
     protected $base64image;
-    protected $instance;
     protected $cachetable;
 
     protected function setUp() {
         parent::setUp();
         $this->resetAfterTest(true);
+        filter_wiris_pluginwrapper::set_configuration(array('wirispluginperformance' => 'true',
+                                                            'wirisimageformat' => 'svg'));
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->cachetable = 'filter_wiris_formulas';
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
@@ -62,6 +61,13 @@ class filter_wiris_filter_performance_testcase extends advanced_testcase
 
         // Simple images of "1+2".
 
+        // Png format.
+        $this->imagepng = '<img src="http://www.example.com/moodle/filter/wiris/integration/showimage.php';
+        $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
+        $this->imagepng .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
+        $this->imagepng .= ' data-mathml="«math ';
+        $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
+
         // Svg performance.
         $this->imagesvgperformance = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3';
         $this->imagesvgperformance .= 'Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2220';
@@ -80,42 +86,23 @@ class filter_wiris_filter_performance_testcase extends advanced_testcase
         $this->svg .= ' width="34" wrs:baseline="16"><!--MathML: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>';
         $this->svg .= '+</mo><mn>2</mn></math>--><defs><style type="text/css">@font-face{font-family:';
 
-        $wirispluginwrapper = new filter_wiris_pluginwrapper();
-        $this->instance = $wirispluginwrapper->get_instance();
     }
 
-    /**
-     * @group performance_enabled
-     * @group imageformat_svg
-     */
-    public function test_filter_safexml_with_performance() {
-        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'true');
-        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+    public function test_filter_safexml_with_performance_svg() {
         $output = $this->wirisfilter->filter($this->safexml);
         $assertion = strrpos($output, $this->imagesvgperformance) !== false;
         $this->assertTrue($assertion);
     }
 
-    /**
-     * @group performance_enabled
-     * @group imageformat_svg
-     */
     public function test_filter_xml_with_performance() {
-        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'true');
-        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
         $output = $this->wirisfilter->filter($this->xml);
         $assertion = strrpos($output, $this->imagesvgperformance) !== false;
         $this->assertTrue($assertion);
     }
 
-    /**
-     * @group performance_enabled
-     * @group imageformat_svg
-     */
     public function test_filter_safexml_with_performance_jsonconent_db() {
 
-        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'true');
-        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+        $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->safexml);
 
         global $DB;
@@ -125,14 +112,9 @@ class filter_wiris_filter_performance_testcase extends advanced_testcase
         $this->assertTrue($assertion);
     }
 
-    /**
-     * @group performance_enabled
-     * @group imageformat_svg
-     */
     public function test_filter_safexml_with_performance_alt_db() {
 
-        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'true');
-        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
+        $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
         global $DB;
@@ -141,17 +123,10 @@ class filter_wiris_filter_performance_testcase extends advanced_testcase
         $this->assertEquals($this->specialcharsalt, $record->alt);
     }
 
-    /**
-     * @group performance_enabled
-     * @gropu imageformat_svg
-     */
     public function test_filter_xml_with_performance_special_chars() {
-        $this->instance->getConfiguration()->setProperty("wirispluginperformance", 'true');
-        $this->instance->getConfiguration()->setProperty("wirisimageformat", 'svg');
         $output = $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
         $assertion = strrpos($output, $this->imagesvgspecialchars) !== false;
         $this->assertTrue($assertion);
     }
-
 }

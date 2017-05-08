@@ -31,6 +31,7 @@ class moodledbcache {
     private $cachetable;
     private $keyfield;
     private $valuefield;
+    private $timecreatedfield;
 
     /**
      * Constructor for db cache class.
@@ -42,6 +43,7 @@ class moodledbcache {
         $this->cachetable = $tablename;
         $this->keyfield = $keyfield;
         $this->valuefield = $valuefield;
+        $this->timecreatedfield = 'timecreated';
     }
 
     /**
@@ -108,8 +110,16 @@ class moodledbcache {
         if (!$DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
             // Variable $value is a a array of bytes, we need the content of the array.
             try {
-                $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->valuefield => $value->b));
+                $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->valuefield => $value->b,
+                                    $this->timecreatedfield => time()));
             } catch (dml_exception $ex) {
+                // Concurrent write access to the same - unexisting - md5
+                // are possible in some scenarios (like a quiz)
+                // if a write_exception occurs, formula has been created
+                // is not a real exception.
+                if ($ex instanceof dml_write_exception) {
+                    return;
+                }
                 throw $ex;
             }
         } else {

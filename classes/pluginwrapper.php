@@ -44,6 +44,11 @@ class filter_wiris_pluginwrapper {
     private $installed = false;
     private $moodleconfig;
     private $instance;
+    private static $pluginwrapperconfig;
+
+    public static function set_configuration($config) {
+        self::$pluginwrapperconfig = $config;
+    }
 
     public function __construct() {
         $this->init();
@@ -64,6 +69,7 @@ class filter_wiris_pluginwrapper {
 
     private function init() {
         if (!$this->isinit) {
+
             $this->isinit = true;
 
             global $CFG;
@@ -80,9 +86,11 @@ class filter_wiris_pluginwrapper {
             $this->instance = com_wiris_plugin_api_PluginBuilder::getInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
+            $this->instance->addConfigurationUpdater(new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig));
 
             // Class to manage file cache.
-            if ($this->get_instance()->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false') {
+            if ($this->get_instance()->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false' ||
+                $this->get_instance()->getConfiguration()->getProperty('wirisimageformat', 'png') == 'png') {
                 $cachefile = new moodlefilecache('filter_wiris', 'images');
             } else {
                 $cachefile = new moodledbjsoncache('filter_wiris_formulas', 'md5', 'jsoncontent');

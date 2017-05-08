@@ -59,6 +59,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$this->appendVarJs($sb, "_wrs_conf_editorAttributes", "'" . $this->getProperty("wiriseditorwindowattributes", null) . "'", "Specifies formula editor window options");
 		$this->appendVarJs($sb, "_wrs_conf_editorUrl", "'" . $this->plugin->getImageServiceURL("editor", false) . "'", "WIRIS editor");
 		$this->appendVarJs($sb, "_wrs_conf_modalWindow", $this->getProperty("wiriseditormodalwindow", null), "Editor modal window");
+		$this->appendVarJs($sb, "_wrs_conf_modalWindowFullScreen", $this->getProperty("wiriseditormodalwindowfullscreen", null), "Editor modal window with fullscreen mode by default");
 		$this->appendVarJs($sb, "_wrs_conf_CASEnabled", $this->getProperty("wiriscasenabled", null), "Specifies if WIRIS cas is enabled");
 		$this->appendVarJs($sb, "_wrs_conf_CASMathmlAttribute", "'" . $this->getProperty("wiriscasmathmlattribute", null) . "'", "Specifies the image tag where we should save the WIRIS cas mathml code");
 		$this->appendVarJs($sb, "_wrs_conf_CASAttributes", "'" . $this->getProperty("wiriscaswindowattributes", null) . "'", "Specifies WIRIS cas window options");

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="filter/wiris/db" VERSION="20170220" COMMENT="XMLDB file for Moodle filter/wiris"
+<XMLDB PATH="filter/wiris/db" VERSION="20170413" COMMENT="XMLDB file for Moodle filter/wiris"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -7,10 +7,11 @@
     <TABLE NAME="filter_wiris_formulas" COMMENT="Default comment for filter_wiris, please edit me">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="md5"/>
-        <FIELD NAME="md5" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" NEXT="content" PREVIOUS="id"/>
-        <FIELD NAME="content" TYPE="text" NOTNULL="true" SEQUENCE="false" NEXT="jsoncontent" PREVIOUS="md5"/>
-        <FIELD NAME="jsoncontent" TYPE="text" NOTNULL="false" SEQUENCE="false" NEXT="alt" PREVIOUS="content" COMMENT="Field to keep json requests."/>
-        <FIELD NAME="alt" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="jsoncontent"/>
+        <FIELD NAME="md5" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="content"/>
+        <FIELD NAME="content" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="md5" NEXT="jsoncontent"/>
+        <FIELD NAME="jsoncontent" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Field to keep json requests." PREVIOUS="content" NEXT="alt"/>
+        <FIELD NAME="alt" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="jsoncontent" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when the formula was added" PREVIOUS="alt"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="md5"/>

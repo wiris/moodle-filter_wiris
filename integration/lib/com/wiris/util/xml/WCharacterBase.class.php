@@ -269,6 +269,15 @@ class com_wiris_util_xml_WCharacterBase {
 		}
 		return -1;
 	}
+	static function isCombining($s) {
+		$it = com_wiris_system_Utf8::getIterator($s);
+		while($it->hasNext()) {
+			if(!com_wiris_util_xml_WCharacterBase::isCombiningCharacter($it->next())) {
+				return false;
+			}
+		}
+		return true;
+	}
 	static function isCombiningCharacter($c) {
 		return $c >= 768 && $c <= 879 || $c >= 6832 && $c <= 6911 || $c >= 7616 && $c <= 7679 && ($c >= 8400 && $c <= 8447) && ($c >= 65056 && $c <= 65071);
 	}
