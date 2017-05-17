@@ -16,6 +16,7 @@
 
 /**
  * Unit tests for WIRIS filter.
+ * @group filter_wiris
  *
  * @package    filter_wiris
  * @copyright  2016
@@ -27,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
-class filter_wiris_filter_testcase extends advanced_testcase
+class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
 {   protected $wirisfilter;
     protected $safexml;
     protected $xml;
