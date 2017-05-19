@@ -182,10 +182,21 @@ class com_wiris_plugin_impl_TextFilter {
 					$sub = str_replace($tags->in_entity, $tags->out_entity, $sub);
 					$sub = str_replace($tags->in_quote, $tags->out_quote, $sub);
 				}
-				$sub = $this->math2Img($sub, $prop);
+				$subtext = null;
+				try {
+					$subtext = $this->math2Img($sub, $prop);
+				}catch(Exception $»e) {
+					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+					$e = $_ex_;
+					{
+						$subtext = $sub;
+					}
+				}
+				$sub = $subtext;
 				$n0 = $n1;
 				$output->add($sub);
 				$n1 = _hx_index_of($text, $tags->in_mathopen, $n0);
+				unset($subtext,$e);
 			}
 		}
 		$output->add(_hx_substr($text, $n0, null));
