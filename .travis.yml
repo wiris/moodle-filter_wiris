@@ -37,11 +37,11 @@ matrix:
       env: MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
     - php: 5.6
       env: MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
-  include:
-    - php: 5.4
-      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration
     - php: 5.4
       env: MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration
+  include:
     - php: 5.4
       env: MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
     - php: 5.4
