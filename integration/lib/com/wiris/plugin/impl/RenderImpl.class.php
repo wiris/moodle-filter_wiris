@@ -144,9 +144,9 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 				$value = $jsonResult->get($key);
 				$value = str_replace("\\", "\\\\", $value);
 				$value = str_replace("\"", "\\\"", $value);
-				$value = str_replace("\x0D", "\\\x0D", $value);
-				$value = str_replace("\x0A", "\\\x0A", $value);
-				$value = str_replace("\x09", "\\\x09", $value);
+				$value = str_replace("\x0D", "\\r", $value);
+				$value = str_replace("\x0A", "\\n", $value);
+				$value = str_replace("\x09", "\\t", $value);
 				$jsonSb->add("\"" . $key . "\":" . "\"" . $value . "\"");
 				if($iter->hasNext()) {
 					$jsonSb->add(",");
