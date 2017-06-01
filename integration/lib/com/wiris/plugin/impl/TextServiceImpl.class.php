@@ -1,10 +1,17 @@
 <?php
 
-class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_TextService{
+class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_HttpListener, com_wiris_plugin_api_TextService{
 	public function __construct($plugin) {
 		if(!php_Boot::$skip_constructor) {
 		$this->plugin = $plugin;
 	}}
+	public function onError($msg) {
+		$this->error = $msg;
+		$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR;
+	}
+	public function onData($msg) {
+		$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_OK;
+	}
 	public function filter($str, $prop) {
 		return _hx_deref(new com_wiris_plugin_impl_TextFilter($this->plugin))->filter($str, $prop);
 	}
@@ -40,7 +47,8 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 		$param = array();;
 		$param["latex"] = $latex;
 		$provider = $this->plugin->newGenericParamsProvider($param);
-		return $this->service("latex2mathml", $provider);
+		$mathml = $this->service("latex2mathml", $provider);
+		return ((_hx_index_of($mathml, "Error converting", null) !== -1) ? $mathml : $latex);
 	}
 	public function mathml2latex($mml) {
 		$param = array();;
@@ -57,6 +65,7 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 		return $this->service("mathml2accessible", $provider);
 	}
 	public function service($serviceName, $provider) {
+		$this->serviceName = $serviceName;
 		$digest = null;
 		$renderParams = $provider->getRenderParameters($this->plugin->getConfiguration());
 		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
@@ -69,7 +78,7 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 			}
 		}
 		$url = $this->plugin->getImageServiceURL($serviceName, com_wiris_plugin_impl_TextServiceImpl::hasStats($serviceName));
-		$h = new com_wiris_plugin_impl_HttpImpl($url, null);
+		$h = new com_wiris_plugin_impl_HttpImpl($url, $this);
 		$this->plugin->addReferer($h);
 		$this->plugin->addProxy($h);
 		$ha = com_wiris_system_PropertiesTools::fromProperties($provider->getServiceParameters());
@@ -79,6 +88,7 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 			$h->setParameter($k, $ha->get($k));
 			unset($k);
 		}
+		$h->setParameter("httpstatus", "true");
 		try {
 			$h->request(true);
 		}catch(Exception $»e) {
@@ -98,8 +108,19 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_api_Text
 			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($r));
 		}
-		return $r;
+		$jsonResponse = new com_wiris_util_json_JsonAPIResponse();
+		if($this->status === com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR) {
+			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR);
+			$jsonResponse->addError($this->error);
+		} else {
+			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
+			$jsonResponse->addResult("text", $r);
+		}
+		return $jsonResponse->getResponse();
 	}
+	public $error;
+	public $status;
+	public $serviceName;
 	public $plugin;
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
