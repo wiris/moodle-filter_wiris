@@ -60,7 +60,7 @@ class com_wiris_plugin_impl_TextFilter {
 			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
 			$content = $hashImage->get("content");
 			if($this->plugin->getConfiguration()->getProperty("wirisimageformat", "png") === "png") {
-				$img .= "src=\"data:image/png;base64," . $content . "\"";
+				$img .= " src=\"data:image/png;base64," . $content . "\"";
 			} else {
 				$img .= " src='data:image/svg+xml;charset=utf8," . rawurlencode($content) . "'";
 			}

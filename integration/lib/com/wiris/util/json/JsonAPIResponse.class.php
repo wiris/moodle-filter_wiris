@@ -10,6 +10,9 @@ class com_wiris_util_json_JsonAPIResponse {
 	public function toString() {
 		return $this->getResponse();
 	}
+	public function getStatus() {
+		return $this->status;
+	}
 	public function setStatus($status) {
 		if($status !== com_wiris_util_json_JsonAPIResponse::$STATUS_OK && $status !== com_wiris_util_json_JsonAPIResponse::$STATUS_WARNING && $status !== com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR) {
 			throw new HException("Invalid status code");
@@ -21,6 +24,13 @@ class com_wiris_util_json_JsonAPIResponse {
 	}
 	public function addWarning($warning) {
 		$this->warnings->push($warning);
+	}
+	public function getResult() {
+		if($this->status === com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR) {
+			return null;
+		} else {
+			return $this->result;
+		}
 	}
 	public function setResult($obj) {
 		$this->result = $obj;

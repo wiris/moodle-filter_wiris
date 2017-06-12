@@ -118,6 +118,7 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$config = $this->getConfiguration();
 		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
 			if($config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_HOST, null) === "www.wiris.net") {
+				return $this->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CONTEXT_PATH, "/") . "/editor/editor";
 			}
 		}
 		$protocol = $config->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SERVICE_PROTOCOL, null);

@@ -6,8 +6,13 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		$this->plugin = $plugin;
 	}}
 	public function onError($msg) {
-		$this->error = $msg;
-		$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR;
+		if($this->serviceName === "mathml2accessible") {
+			$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_WARNING;
+			$this->data = "Error converting from MathML to accessible text.";
+		} else {
+			$this->error = $msg;
+			$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR;
+		}
 	}
 	public function onData($msg) {
 		$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_OK;
@@ -62,21 +67,18 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		}
 		$param["mml"] = $mml;
 		$provider = $this->plugin->newGenericParamsProvider($param);
-		return $this->service("mathml2accessible", $provider);
-	}
-	public function service($serviceName, $provider) {
-		$this->serviceName = $serviceName;
-		$digest = null;
-		$renderParams = $provider->getRenderParameters($this->plugin->getConfiguration());
-		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
-			$digest = $this->plugin->newRender()->computeDigest(null, $renderParams);
-			$store = $this->plugin->getStorageAndCache();
-			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
-			$s = $store->retreiveData($digest, $ext);
-			if($s !== null) {
-				return com_wiris_system_Utf8::fromBytes($s);
-			}
+		$jsonResponse = $this->jsonResponse("mathml2accessible", $provider);
+		if($jsonResponse->getStatus() === com_wiris_util_json_JsonAPIResponse::$STATUS_OK) {
+			$result = $jsonResponse->getResult();
+			return $result->get("text");
+		} else {
+			return "Error converting from mathml to text";
 		}
+	}
+	public function jsonResponse($serviceName, $provider) {
+		$renderParams = $provider->getRenderParameters($this->plugin->getConfiguration());
+		$digest = $this->plugin->newRender()->computeDigest(null, $renderParams);
+		$this->serviceName = $serviceName;
 		$url = $this->plugin->getImageServiceURL($serviceName, com_wiris_plugin_impl_TextServiceImpl::hasStats($serviceName));
 		$h = new com_wiris_plugin_impl_HttpImpl($url, $this);
 		$this->plugin->addReferer($h);
@@ -96,13 +98,13 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			$e = $_ex_;
 			{
 				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
-					return "Error converting from MathML to accessible text.";
+					return null;
 				} else {
 					throw new HException($e->getMessage());
 				}
 			}
 		}
-		$r = $h->getData();
+		$r = com_wiris_plugin_impl_TextServiceImpl_0($this, $digest, $e, $h, $ha, $iter, $provider, $renderParams, $serviceName, $url);
 		if($digest !== null) {
 			$store = $this->plugin->getStorageAndCache();
 			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
@@ -116,8 +118,24 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
 			$jsonResponse->addResult("text", $r);
 		}
-		return $jsonResponse->getResponse();
+		return $jsonResponse;
 	}
+	public function service($serviceName, $provider) {
+		$this->serviceName = $serviceName;
+		$digest = null;
+		$renderParams = $provider->getRenderParameters($this->plugin->getConfiguration());
+		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
+			$digest = $this->plugin->newRender()->computeDigest(null, $renderParams);
+			$store = $this->plugin->getStorageAndCache();
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
+			$s = $store->retreiveData($digest, $ext);
+			if($s !== null) {
+				return com_wiris_system_Utf8::fromBytes($s);
+			}
+		}
+		return $this->jsonResponse($serviceName, $provider)->getResponse();
+	}
+	public $data;
 	public $error;
 	public $status;
 	public $serviceName;
@@ -152,4 +170,11 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		return $lang;
 	}
 	function __toString() { return 'com.wiris.plugin.impl.TextServiceImpl'; }
+}
+function com_wiris_plugin_impl_TextServiceImpl_0(&$»this, &$digest, &$e, &$h, &$ha, &$iter, &$provider, &$renderParams, &$serviceName, &$url) {
+	if($»this->data !== null) {
+		return $»this->data;
+	} else {
+		return $h->getData();
+	}
 }
