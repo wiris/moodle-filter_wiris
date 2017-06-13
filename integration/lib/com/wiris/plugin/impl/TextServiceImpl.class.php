@@ -67,9 +67,9 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		}
 		$param["mml"] = $mml;
 		$provider = $this->plugin->newGenericParamsProvider($param);
-		$jsonResponse = $this->jsonResponse("mathml2accessible", $provider);
-		if($jsonResponse->getStatus() === com_wiris_util_json_JsonAPIResponse::$STATUS_OK) {
-			$result = $jsonResponse->getResult();
+		$reponse = $this->jsonResponse("mathml2accessible", $provider);
+		if($reponse->getStatus() === com_wiris_util_json_JsonAPIResponse::$STATUS_OK) {
+			$result = $reponse->getResult();
 			return $result->get("text");
 		} else {
 			return "Error converting from mathml to text";
@@ -105,20 +105,20 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			}
 		}
 		$r = com_wiris_plugin_impl_TextServiceImpl_0($this, $digest, $e, $h, $ha, $iter, $provider, $renderParams, $serviceName, $url);
+		$response = new com_wiris_util_json_JsonAPIResponse();
+		if($this->status === com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR) {
+			$response->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR);
+			$response->addError($this->error);
+		} else {
+			$response->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
+			$response->addResult("text", $r);
+		}
 		if($digest !== null) {
 			$store = $this->plugin->getStorageAndCache();
 			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
-			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($r));
+			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($response->getResponse()));
 		}
-		$jsonResponse = new com_wiris_util_json_JsonAPIResponse();
-		if($this->status === com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR) {
-			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_ERROR);
-			$jsonResponse->addError($this->error);
-		} else {
-			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
-			$jsonResponse->addResult("text", $r);
-		}
-		return $jsonResponse;
+		return $response;
 	}
 	public function service($serviceName, $provider) {
 		$this->serviceName = $serviceName;
