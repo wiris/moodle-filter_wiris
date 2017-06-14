@@ -57,7 +57,7 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         $this->imagesvgspecialchars .= '%3D%2221%22%20width%3D%22117%22%20wrs%3Abaseline%3D%2216%22%3E%3C%21--MathML%3A%20%3Cmat';
 
         // Special chars alt
-        $this->specialcharsalt = 'p r i n t left parenthesis " a s d " right parenthesis semicolon divided by divided by';
+        $this->specialcharsalt = '{"result":{"text":"p r i n t left parenthesis \" a s d \" right parenthesis semicolon divided by divided by"},"status":"ok"}';
 
         // Simple images of "1+2".
 

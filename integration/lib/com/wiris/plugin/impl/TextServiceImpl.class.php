@@ -129,8 +129,23 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			$store = $this->plugin->getStorageAndCache();
 			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
 			$s = $store->retreiveData($digest, $ext);
+			$test = null;
+			$test = "adasadasd";
 			if($s !== null) {
-				return com_wiris_system_Utf8::fromBytes($s);
+				$cachedServiceText = $test;
+				try {
+					com_wiris_util_json_JSon::decode($cachedServiceText);
+				}catch(Exception $»e) {
+					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+					$e = $_ex_;
+					{
+						$cachedJsonResponse = new com_wiris_util_json_JsonAPIResponse();
+						$cachedJsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
+						$cachedJsonResponse->addResult("text", $cachedServiceText);
+						return $cachedJsonResponse->getResponse();
+					}
+				}
+				return $cachedServiceText;
 			}
 		}
 		return $this->jsonResponse($serviceName, $provider)->getResponse();

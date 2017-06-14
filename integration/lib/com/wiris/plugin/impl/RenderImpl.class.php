@@ -124,9 +124,19 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 				unset($currentKey);
 			}
 			if($s !== null) {
-				$altJson = com_wiris_util_json_JSon::decode(com_wiris_system_Utf8::fromBytes($s));
-				$result = $altJson->get("result");
-				$jsonResult->set("alt", $result->get("text"));
+				$cachedServiceText = com_wiris_system_Utf8::fromBytes($s);
+				try {
+					com_wiris_util_json_JSon::decode($cachedServiceText);
+					$altJson = com_wiris_util_json_JSon::decode($cachedServiceText);
+					$result = $altJson->get("result");
+					$jsonResult->set("alt", $result->get("text"));
+				}catch(Exception $»e) {
+					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+					$e = $_ex_;
+					{
+						$jsonResult->set("alt", $cachedServiceText);
+					}
+				}
 			}
 			$jsonResult->set("content", $content->toString());
 			$jsonResult->set("format", $imageFormat);
