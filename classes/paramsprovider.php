@@ -44,14 +44,14 @@ class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider
 
     public function getrequiredparameter($paramname) {
         $this->wrap->stop();
-        $param = required_param($paramname, PARAM_CLEAN);
+        $param = required_param($paramname, PARAM_RAW);
         $this->wrap->start();
         return $param;
     }
 
     public function getparameter($paramname, $dflt) {
         $this->wrap->stop();
-        $param = optional_param($paramname, $dflt, PARAM_CLEAN);
+        $param = optional_param($paramname, $dflt, PARAM_RAW);
         $this->wrap->start();
         return $param;
     }
@@ -64,7 +64,7 @@ class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider
         $this->wrap->stop();
         $serviceparams = array();
         foreach ($this->serviceparamlist as $key) {
-            if ($serviceparam = optional_param($key, false, PARAM_CLEAN)) {
+            if ($serviceparam = optional_param($key, false, PARAM_RAW)) {
                 $serviceparams[$key] = $serviceparam;
             }
         }
@@ -82,7 +82,7 @@ class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider
         // @codingStandardsIgnoreEnd
         $i = null;
         foreach ($renderparameterlist as $key) {
-            if ($renderparam = optional_param($key, false, PARAM_CLEAN)) {
+            if ($renderparam = optional_param($key, false, PARAM_RAW)) {
                 $renderparams[$key] = $renderparam;
             }
         }
