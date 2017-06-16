@@ -6,11 +6,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-php: 
+php:
  - 5.6
  - 7.0
 
-env: 
+env:
+  - MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration
+  - MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration
   - MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
   - MOODLE_BRANCH=MOODLE_30_STABLE DB=pgsql  IGNORE_PATHS=integration
   - MOODLE_BRANCH=MOODLE_29_STABLE DB=mysqli IGNORE_PATHS=integration
@@ -35,6 +37,10 @@ matrix:
       env: MOODLE_BRANCH=MOODLE_28_STABLE DB=pgsql  IGNORE_PATHS=integration
     - php: 5.6
       env: MOODLE_BRANCH=MOODLE_27_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration
+    - php: 5.4
+      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration
   include:
     - php: 5.4
       env: MOODLE_BRANCH=MOODLE_31_STABLE DB=mysqli IGNORE_PATHS=integration
@@ -61,7 +67,6 @@ script:
   - moodle-plugin-ci phpcpd
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci codechecker
-  - moodle-plugin-ci shifter
   - moodle-plugin-ci validate
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat
