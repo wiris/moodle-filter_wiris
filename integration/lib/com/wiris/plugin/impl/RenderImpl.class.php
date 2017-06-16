@@ -124,7 +124,19 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 				unset($currentKey);
 			}
 			if($s !== null) {
-				$jsonResult->set("alt", com_wiris_system_Utf8::fromBytes($s));
+				$cachedServiceText = com_wiris_system_Utf8::fromBytes($s);
+				try {
+					com_wiris_util_json_JSon::decode($cachedServiceText);
+					$altJson = com_wiris_util_json_JSon::decode($cachedServiceText);
+					$result = $altJson->get("result");
+					$jsonResult->set("alt", $result->get("text"));
+				}catch(Exception $»e) {
+					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+					$e = $_ex_;
+					{
+						$jsonResult->set("alt", $cachedServiceText);
+					}
+				}
 			}
 			$jsonResult->set("content", $content->toString());
 			$jsonResult->set("format", $imageFormat);
@@ -144,9 +156,9 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 				$value = $jsonResult->get($key);
 				$value = str_replace("\\", "\\\\", $value);
 				$value = str_replace("\"", "\\\"", $value);
-				$value = str_replace("\x0D", "\\\x0D", $value);
-				$value = str_replace("\x0A", "\\\x0A", $value);
-				$value = str_replace("\x09", "\\\x09", $value);
+				$value = str_replace("\x0D", "\\r", $value);
+				$value = str_replace("\x0A", "\\n", $value);
+				$value = str_replace("\x09", "\\t", $value);
 				$jsonSb->add("\"" . $key . "\":" . "\"" . $value . "\"");
 				if($iter->hasNext()) {
 					$jsonSb->add(",");

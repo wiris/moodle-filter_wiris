@@ -18,6 +18,7 @@
  * Unit tests for WIRIS filter.
  *
  * @package    filter_wiris
+ * @group filter_wiris
  * @copyright  2016
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
@@ -27,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
-class filter_wiris_filter_testcase extends advanced_testcase
+class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
 {   protected $wirisfilter;
     protected $safexml;
     protected $xml;

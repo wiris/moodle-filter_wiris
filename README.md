@@ -1,6 +1,9 @@
 WIRIS plugin for Moodle
 ==========
-[![Build Status](https://travis-ci.org/wiris/moodle-atto_wiris.svg?branch=master)](https://travis-ci.org/wiris/moodle-atto_wiris)
+### Master Build Status
+[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=master)](https://travis-ci.org/wiris/moodle-atto_wiris)
+### Development Build Status
+[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=development)](https://travis-ci.org/wiris/moodle-atto_wiris)
 
 Add a fully WYSIWYG editor for scientific expressions ([WIRIS EDITOR](http://www.wiris.com/editor)) and, optionally, an advanced calculator tool ([WIRIS CAS](http://www.wiris.com/cas)). Enabled editing to STEM related topics (Science, Technology, Engineering and Mathematics). 
 
