@@ -3,7 +3,7 @@
     <library>
         <location>integration</location>
         <name>WIRIS PLUGIN Engine</name>
-        <version>4.4.1.1368</version>
+        <version>4.4.1.1370</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>
     </library>

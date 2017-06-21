@@ -62,7 +62,7 @@ class com_wiris_plugin_impl_TextFilter {
 			if($this->plugin->getConfiguration()->getProperty("wirisimageformat", "png") === "png") {
 				$img .= " src=\"data:image/png;base64," . $content . "\"";
 			} else {
-				$img .= " src='data:image/svg+xml;charset=utf8," . rawurlencode($content) . "'";
+				$img .= " src='data:image/svg+xml;charset=utf8," . com_wiris_util_type_UrlUtils::urlComponentEncode($content) . "'";
 			}
 			if($hashImage->exists("alt")) {
 				$alt = $hashImage->get("alt");
