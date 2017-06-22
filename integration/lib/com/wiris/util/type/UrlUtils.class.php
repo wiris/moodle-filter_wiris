@@ -9,7 +9,7 @@ class com_wiris_util_type_UrlUtils {
 	static $charCode0;
 	static $charCode9;
 	static function isAllowed($c) {
-		$allowedChars = _hx_index_of("_-.~", com_wiris_util_type_UrlUtils_0($c), null) !== -1;
+		$allowedChars = _hx_index_of("-_.!~*'()", com_wiris_util_type_UrlUtils_0($c), null) !== -1;
 		return $c >= com_wiris_util_type_UrlUtils::$charCodeA && $c <= com_wiris_util_type_UrlUtils::$charCodeZ || $c >= com_wiris_util_type_UrlUtils::$charCodea && $c <= com_wiris_util_type_UrlUtils::$charCodez || $c >= com_wiris_util_type_UrlUtils::$charCode0 && $c <= com_wiris_util_type_UrlUtils::$charCode9 || $allowedChars;
 	}
 	static function urlComponentEncode($uriComponent) {
