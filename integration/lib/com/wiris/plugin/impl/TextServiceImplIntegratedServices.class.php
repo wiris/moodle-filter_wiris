@@ -4,6 +4,23 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 	public function __construct($plugin) { if(!php_Boot::$skip_constructor) {
 		parent::__construct($plugin);
 	}}
+	public function mathml2accessible($mml, $lang, $param) {
+		$servicesClass = Type::resolveClass("com.wiris.editor.services.PublicServices");
+		$getInstance = Reflect::field($servicesClass, "getInstance");
+		$publicServices = Reflect::callMethod($servicesClass, $getInstance, null);
+		$serviceMethod = Reflect::field($publicServices, "mathml2accessible");
+		$args = new _hx_array(array());
+		if($mml === null) {
+			throw new HException("Missing mml");
+		} else {
+			$args->push($mml);
+		}
+		$args->push($lang);
+		$args->push($param);
+		$serviceText = null;
+		$serviceText = Reflect::callMethod($publicServices, $serviceMethod, $args);
+		return $serviceText;
+	}
 	public function serviceText($serviceName, $provider) {
 		$servicesClass = Type::resolveClass("com.wiris.editor.services.PublicServices");
 		$getInstance = Reflect::field($servicesClass, "getInstance");

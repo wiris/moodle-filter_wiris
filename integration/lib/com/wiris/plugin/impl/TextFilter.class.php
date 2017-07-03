@@ -95,7 +95,7 @@ class com_wiris_plugin_impl_TextFilter {
 		$img .= " style=\"vertical-align:" . _hx_string_rec($d, "") . "px\"";
 		if($mml) {
 			$tag = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_MATHML_ATTRIBUTE, "data-mathml");
-			$img .= " " . $tag . "='" . $str . "'";
+			$img .= " " . $tag . "='" . $this->save_xml_encode($str) . "'";
 		}
 		$img .= "/>";
 		return $img;
