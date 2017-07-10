@@ -184,6 +184,12 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return $this->updaterChain;
 	}
 	public function initialize($sac, $conf) {
+		if($this->storageAndCacheCacheObject === null) {
+			$this->storageAndCacheCacheObject = new com_wiris_plugin_impl_CacheImpl($conf);
+		}
+		if($this->storageAndCacheCacheFormulaObject === null) {
+			$this->storageAndCacheCacheFormulaObject = new com_wiris_plugin_impl_CacheFormulaImpl($conf);
+		}
 		$sac->init($this->storageAndCacheInitObject, $conf, $this->storageAndCacheCacheObject, $this->storageAndCacheCacheFormulaObject);
 	}
 	public function getStorageAndCache() {
@@ -252,8 +258,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$this->updaterChain->push($conf);
 	}
 	public $customParamsProvider;
-	public $storageAndCacheCacheFormulaObject;
-	public $storageAndCacheCacheObject;
+	public $storageAndCacheCacheFormulaObject = null;
+	public $storageAndCacheCacheObject = null;
 	public $storageAndCacheInitObject;
 	public $updaterChain;
 	public $store;

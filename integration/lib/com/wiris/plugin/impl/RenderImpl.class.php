@@ -282,7 +282,7 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			$lang = $provider->getParameter("lang", "en");
 			$text = $this->safeMath2Accessible($mml, $lang, $provider->getParameters());
 			if($output === null) {
-				$a = "&text=" . rawurlencode($text);
+				$a = "&text=" . com_wiris_util_type_UrlUtils::urlComponentEncode($text);
 			} else {
 				$output["alt"] = $text;
 			}
@@ -299,7 +299,7 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			$imageContentType = $this->plugin->getImageFormatController()->getContentType();
 			return "data:" . $imageContentType . ";base64," . $b64->toString();
 		} else {
-			return com_wiris_plugin_impl_RenderImpl::concatPath($contextPath, $showImagePath) . rawurlencode($digest) . $s . $a . $rparam;
+			return com_wiris_plugin_impl_RenderImpl::concatPath($contextPath, $showImagePath) . com_wiris_util_type_UrlUtils::urlComponentEncode($digest) . $s . $a . $rparam;
 		}
 	}
 	public function computeDigest($mml, $param) {
