@@ -69,5 +69,8 @@ class com_wiris_plugin_api_PluginBuilder {
 		}
 		return com_wiris_plugin_api_PluginBuilder::$pb;
 	}
+	static function newInstance() {
+		return new com_wiris_plugin_impl_PluginBuilderImpl();
+	}
 	function __toString() { return 'com.wiris.plugin.api.PluginBuilder'; }
 }
