@@ -101,17 +101,19 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $filterenabled = filter_is_enabled('filter/wiris');
         $this->waseditorenabled = $this->eval_parameter($configuration['wiriseditorenabled']);
         if (isset($CFG->filter_wiris_editor_enable)) {
+            // We need to convert all boolean values to text because $configuration object expects as values
+            // the same objects as configuration.ini (i.e strings). This is mandatory due to cross-technology.
             $wiriseditorenabled = ($this->waseditorenabled &&
                                    $this->eval_parameter($CFG->filter_wiris_editor_enable) &&
-                                   $filterenabled);
+                                   $filterenabled) ? "true" : "false";
             $configuration['wiriseditorenabled'] = $wiriseditorenabled;
         } else {
-            $configuration['wiriseditorenabled'] = false;
+            $configuration['wiriseditorenabled'] = "false";
         }
         // WIRIS cas.
         $this->wascasenabled = $this->eval_parameter($configuration['wiriscasenabled']);
         if (isset($CFG->filter_wiris_cas_enable)) {
-            $wiriscasenabled = ($this->wascasenabled && $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled);
+            $wiriscasenabled = ($this->wascasenabled && $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
             $configuration['wiriscasenabled'] = $wiriscasenabled;
         } else {
             $configuration['wiriscasenabled'] = false;
@@ -122,7 +124,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         if (isset($CFG->filter_wiris_chem_editor_enable)) {
             $wirischemeditorenabled = $this->waschemeditorenabled &&
                                       $this->eval_parameter($CFG->filter_wiris_chem_editor_enable) &&
-                                      $filterenabled;
+                                      $filterenabled ? "true" : "false";
             $configuration['wirischemeditorenabled'] = $wirischemeditorenabled;
         } else {
             $configuration['wirischemeditorenabled'] = false;
