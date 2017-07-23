@@ -1,0 +1,10 @@
+{
+    "name": "wiris/moodle-filter_wiris",
+    "type": "moodle-filter",
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "installer-name": "wiris"
+    }
+}
