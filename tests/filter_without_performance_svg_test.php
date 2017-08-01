@@ -32,9 +32,7 @@ class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
 {   protected $wirisfilter;
     protected $safexml;
     protected $xml;
-    protected $image;
     protected $instance;
-    protected $cachetable;
 
     protected function setUp() {
         global $CFG;
@@ -43,26 +41,17 @@ class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
         filter_wiris_pluginwrapper::set_configuration(array('wirispluginperformance' => 'false',
                                                             'wirisimageformat' => 'svg'));
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
-        $this->cachetable = 'filter_wiris_formulas';
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
 
-        // Simple images of "1+2".
-
-        // Png format.
         $testsiteprotocol = strrpos($CFG->wwwroot, 'https') !== false ? 'https' : 'http';
-        $this->imagepng = '<img src="' . $testsiteprotocol . '://www.example.com/moodle/filter/wiris/integration/showimage.php';
-        $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
-        $this->imagepng .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
-        $this->imagepng .= ' data-mathml="«math ';
-        $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
-
+        // Simple image "1+2".
         // Svg format.
         $this->imagesvg = '<img src="' . $testsiteprotocol . '://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagesvg .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
         $this->imagesvg .= ' class="Wirisformula" alt="1 plus 2" width="34" height="20" style="vertical-align:-4px"';
-        $this->imagesvg .= ' data-mathml="«math ';
-        $this->imagesvg .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»"/>';
+        $this->imagesvg .= ' data-mathml=\'«math ';
+        $this->imagesvg .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 
         $wirispluginwrapper = new filter_wiris_pluginwrapper();
         $this->instance = $wirispluginwrapper->get_instance();
