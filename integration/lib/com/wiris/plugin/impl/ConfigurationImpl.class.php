@@ -75,10 +75,10 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("_wrs_conf_chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
 		$javaScriptHash->set("_wrs_conf_imageFormat", $this->getProperty("wirisimageformat", "png"));
 		if($this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null) !== null) {
-			$javaScriptHash->set("_wrs_conf_editorParameters", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null));
+			$javaScriptHash->set("_wrs_conf_editorParameters", com_wiris_util_json_JSon::decode($this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null)));
 		} else {
 			$h = com_wiris_plugin_api_ConfigurationKeys::$imageConfigPropertiesInv;
-			$attributes = new StringBuf();
+			$attributes = new Hash();
 			$confVal = "";
 			$i = 0;
 			$it = $h->keys();
@@ -86,21 +86,13 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 			while($it->hasNext()) {
 				$value = $it->next();
 				if($this->getProperty($value, null) !== null) {
-					if($i !== 0) {
-						$attributes->add(",");
-					}
-					$i++;
 					$confVal = $this->getProperty($value, null);
 					str_replace("-", "_", $confVal);
 					str_replace("-", "_", $confVal);
-					$attributes->add("'");
-					$attributes->add(com_wiris_plugin_api_ConfigurationKeys::$imageConfigPropertiesInv->get($value));
-					$attributes->add("' : '");
-					$attributes->add($confVal);
-					$attributes->add("'");
+					$attributes->set($confVal, $value);
 				}
 			}
-			$javaScriptHash->set("_wrs_conf_editorParameters", "{" . $attributes->b . "}");
+			$javaScriptHash->set("_wrs_conf_editorParameters", $attributes);
 		}
 		$javaScriptHash->set("_wrs_conf_wirisPluginPerformance", $this->getProperty("wirispluginperformance", null) === "true");
 		$version = null;
