@@ -193,8 +193,8 @@ $output = '';
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
 $testname = get_string('test3', 'filter_wiris');
-if (isset($plugin->release)) {
-    $reporttext = '<span>' . $plugin->release . '</span>';
+if (isset($plugin->version)) {
+    $reporttext = '<span>' . $plugin->version . '</span>';
     $condition = true;
 } else {
     $reporttext = get_string('report3', 'filter_wiris');
@@ -243,8 +243,8 @@ $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
 $testname = get_string('test6', 'filter_wiris') . $currenteditordata['plugin_name'] . ' versions';
-if (isset($plugin->release)) {
-    $filterversion = $plugin->release;
+if (isset($plugin->version)) {
+    $filterversion = $plugin->version;
 } else {
     get_string('report6', 'filter_wiris');
 }
@@ -256,8 +256,8 @@ if (strtolower($currenteditordata['plugin_name']) == 'tinymce') {
     require($currenteditordata['plugin_path'] . '/version.php');
 }
 
-if (isset($plugin->release)) {
-    $pluginversion = $plugin->release;
+if (isset($plugin->version)) {
+    $pluginversion = $plugin->version;
 } else {
     $pluginversion = "";
 }

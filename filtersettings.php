@@ -73,6 +73,11 @@ if ($ADMIN->fulltree) {
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
+        // Allow WIRIS Editor plugin be enabled despite of the filter is disabled on a course.
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/allow_editorplugin_active_course',
+                                                            get_string('alloweditorpluginactive', 'filter_wiris'),
+                                                            get_string('alloweditorpluginactive_help', 'filter_wiris'), '0'));
+
     } else {
         if (!get_config('filter_wiris', 'filter_standalone')) {
             $output = '<center><br />' .
