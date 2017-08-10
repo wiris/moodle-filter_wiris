@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+$string['button1'] = 'WIRIS plugin for tests';
+$string['button2'] = 'WIRIS quizzes tests';
+$string['contact'] = 'For more information or if you have any doubt contact WIRIS Support:';
 $string['filtername'] = 'Math & Science by WIRIS';
 $string['filter_standalone'] = 'WIRIS filter only';
 $string['filter_standalonedesc'] = 'You will be able to display existing formulas but creation of new formulas is not available. It also removes the warning message.';
@@ -45,10 +48,13 @@ $string['report5.1'] = 'WIRIS plugin for ';
 $string['report5.2'] = ' must be installed.';
 $string['report6'] = '';
 $string['textBeforeButton1'] = 'Click the following button to test if the WIRIS plugin is correctly installed.';
-$string['button1'] = 'WIRIS plugin for tests';
 $string['textBeforeButton2'] = 'Click the following button to test if the WIRIS quizzes is correctly installed.';
-$string['button2'] = 'WIRIS quizzes tests';
-$string['contact'] = 'For more information or if you have any doubt contact WIRIS Support:';
 $string['cachedef_images'] = 'WIRIS Plugin images';
 $string['enabled'] = 'ENABLED';
 $string['disabled'] = 'DISABLED';
+$string['wirispluginforatto'] = 'WIRIS PLUGIN for Atto ';
+$string['wirispluginfortinymce'] = 'WIRIS PLUGIN for TinyMCE ';
+$string['arenotinstalled'] = 'are not installed. ';
+$string['furtherinformation'] = 'For further information see our documentation page ';
+$string['or'] = 'or ';
+$string['oldconfiguration'] = 'An old configuration.ini file has been detected on {$a}. Please move it to /filter/wiris/configuration.ini.';
