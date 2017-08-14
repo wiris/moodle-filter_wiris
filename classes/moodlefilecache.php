@@ -55,7 +55,7 @@ class moodlefilecache {
     public function deleteAll() {
     // @codingStandardsIgnoreEnd
         if (!$this->cache->purgue()) {
-            throw new moodle_exception('Error deleting cache on ' . $this->area . ' area', $this->module);
+            throw new moodle_exception(get_string('errordeletingcache', 'filter_wiris', $this->area), $this->module);
         }
 
     }
@@ -80,8 +80,8 @@ class moodlefilecache {
      * @throw moodle_exception when the data can't be written to the cache.
      */
     public function set($key, $value) {
-        if (!$this->cache->set($key, $value)) {
-            throw new moodle_exception('Error saving cache on ' . $this->area . ' area', $this->module);
+        if ($this->cache->set($key, $value)) {
+            throw new moodle_exception(get_string('errorsavingcache', 'filter_wiris', $this->area), $this->module);
         }
     }
 }

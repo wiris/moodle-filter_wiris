@@ -77,17 +77,21 @@ if ($ADMIN->fulltree) {
                 // Due to Moodle doesn't support circular dependencies between plugins, if any editor plugin is installed
                 // a warning message is shown as a notification.
                 $message = '';
-                $message .= html_writer::link('https://moodle.org/plugins/atto_wiris', get_string('wirispluginforatto', 'filter_wiris'), array('target' => '_blank'));
+                $tinyurl = 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
+                $attourl = 'https://moodle.org/plugins/atto_wiris';
+                $linkattributes = array('target' => '_blank');
+                $message .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
                 $message .= get_string('or', 'filter_wiris');
-                $message .= html_writer::link('https://moodle.org/plugins/tinymce_tiny_mce_wiris', get_string('wirispluginfortinymce', 'filter_wiris'), array('target' => '_blank'));
+                $message .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
                 $message .= get_string('arenotinstalled', 'filter_wiris');
                 $message .= get_string('furtherinformation', 'filter_wiris');
 
                 $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
                 $image = html_writer::empty_tag('img', array('src' => $imageurl, 'style' => 'vertical-align:-3px;'));
-                $image_link = html_writer::link('http://www.wiris.com/plugins/docs/moodle/troubleshooting', $image, array('target' => '_blank'));
+                $troubleshootingurl = 'http://www.wiris.com/plugins/docs/moodle/troubleshooting';
+                $imagelink = html_writer::link($troubleshootingurl, $image, $linkattributes);
 
-                $message .= $image_link;
+                $message .= $imagelink;
 
                 // Moodle notification API: https://docs.moodle.org/dev/Notifications.
                 \core\notification::warning($message);
