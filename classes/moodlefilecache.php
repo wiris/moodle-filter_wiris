@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 class moodlefilecache {
 
     private $cache;
+    public $area;
+    public $module;
 
     /**
      * Constructores for WIRIS file cache.
@@ -36,6 +38,8 @@ class moodlefilecache {
      * @param String $module cache definition.
      */
     public function __construct($area, $module) {
+        $this->area = $area;
+        $this->module = $module;
         $this->cache = cache::make($area, $module);
     }
 
@@ -80,7 +84,7 @@ class moodlefilecache {
      * @throw moodle_exception when the data can't be written to the cache.
      */
     public function set($key, $value) {
-        if ($this->cache->set($key, $value)) {
+        if (!$this->cache->set($key, $value)) {
             throw new moodle_exception(get_string('errorsavingcache', 'filter_wiris', $this->area), $this->module);
         }
     }
