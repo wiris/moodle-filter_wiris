@@ -70,7 +70,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("_wrs_conf_hostPlatform", $this->getProperty("wirishostplatform", null));
 		$javaScriptHash->set("_wrs_conf_versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
 		$javaScriptHash->set("_wrs_conf_enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
-		$javaScriptHash->set("_wrs_conf_setSize", $this->getProperty("wiriseditorsetsize", null));
+		$javaScriptHash->set("_wrs_conf_setSize", $this->getProperty("wiriseditorsetsize", "false") === "true");
 		$javaScriptHash->set("_wrs_conf_editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
 		$javaScriptHash->set("_wrs_conf_chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
 		$javaScriptHash->set("_wrs_conf_imageFormat", $this->getProperty("wirisimageformat", "png"));
