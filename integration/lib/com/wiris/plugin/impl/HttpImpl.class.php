@@ -12,10 +12,10 @@ class com_wiris_plugin_impl_HttpImpl extends haxe_Http {
 		$this->listener = $listener;
 	}
 	public function setProxy($proxy) {
-		_hx_qtype("haxe.Http")->{"proxy"} = $proxy;
+		_hx_qtype("haxe.Http")->{"PROXY"} = $proxy;
 	}
 	public function getProxy() {
-		$proxy = Reflect::field(_hx_qtype("haxe.Http"), "proxy");
+		$proxy = Reflect::field(_hx_qtype("haxe.Http"), "PROXY");
 		if($proxy === null) {
 			return null;
 		}
