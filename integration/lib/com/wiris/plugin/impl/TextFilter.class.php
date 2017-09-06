@@ -53,11 +53,11 @@ class com_wiris_plugin_impl_TextFilter {
 			$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
 		} else {
 			$digest = $this->render->computeDigest($str, $prop);
-			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
+			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "lang", null));
 			if($hashImage === null) {
 				$this->render->showImage(null, $str, $provider);
+				$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "lang", null));
 			}
-			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
 			$content = $hashImage->get("content");
 			if($this->plugin->getConfiguration()->getProperty("wirisimageformat", "png") === "png") {
 				$img .= " src=\"data:image/png;base64," . $content . "\"";

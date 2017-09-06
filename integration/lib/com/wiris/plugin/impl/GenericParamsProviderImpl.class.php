@@ -49,7 +49,7 @@ class com_wiris_plugin_impl_GenericParamsProviderImpl implements com_wiris_plugi
 		if($parameter !== null) {
 			return $parameter;
 		} else {
-			throw new HException("Error: parameter" . $param . "is required");
+			throw new HException("Error: parameter " . $param . " is required");
 		}
 	}
 	public function getParameter($param, $dflt) {

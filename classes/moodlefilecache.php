@@ -29,6 +29,8 @@ defined('MOODLE_INTERNAL') || die();
 class moodlefilecache {
 
     private $cache;
+    public $area;
+    public $module;
 
     /**
      * Constructores for WIRIS file cache.
@@ -36,6 +38,8 @@ class moodlefilecache {
      * @param String $module cache definition.
      */
     public function __construct($area, $module) {
+        $this->area = $area;
+        $this->module = $module;
         $this->cache = cache::make($area, $module);
     }
 
@@ -55,7 +59,7 @@ class moodlefilecache {
     public function deleteAll() {
     // @codingStandardsIgnoreEnd
         if (!$this->cache->purgue()) {
-            throw new moodle_exception('Error deleting cache on ' . $this->area . ' area', $this->module);
+            throw new moodle_exception(get_string('errordeletingcache', 'filter_wiris', $this->area), $this->module);
         }
 
     }
@@ -81,7 +85,7 @@ class moodlefilecache {
      */
     public function set($key, $value) {
         if (!$this->cache->set($key, $value)) {
-            throw new moodle_exception('Error saving cache on ' . $this->area . ' area', $this->module);
+            throw new moodle_exception(get_string('errorsavingcache', 'filter_wiris', $this->area), $this->module);
         }
     }
 }
