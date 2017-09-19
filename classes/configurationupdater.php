@@ -84,6 +84,11 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $scriptname = array_pop($scriptname);
 
         com_wiris_system_CallWrapper::getInstance()->stop();
+        // By default Moodle have the accessprovider enabled.
+        // We need to set this variable here, we need to add it to
+        // shoimage configuration.
+        $configuration['wirisaccessproviderenabled'] = 'true';
+
         if ($scriptname == 'showimage.php') { // Minimal conf showing images.
             if (optional_param('refererquery', null, PARAM_RAW) != null) {
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));

@@ -172,5 +172,6 @@ function wrs_loadclasses() {
         require_once($CFG->dirroot . '/filter/wiris/classes/paramsprovider.php');
         require_once($CFG->dirroot . '/filter/wiris/classes/configurationupdater.php');
         require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapperconfigurationupdater.php');
+        require_once($CFG->dirroot . '/filter/wiris/classes/accessprovider.php');
     }
 }

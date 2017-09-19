@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * This class implements com_wiris_plugin_api_Accesprovider interface
+ * to use Moodle access methods to control access to services.
  *
  * @package    filter
  * @subpackage wiris
@@ -25,9 +26,22 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2017092000;
+global $CFG;
 
-$plugin->requires = 2011120511;
-$plugin->maturity = MATURITY_BETA;
-$plugin->component = 'filter_wiris';
-$plugin->dependencies = array();
+require_once($CFG->dirroot . '/lib/moodlelib.php');
+require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/api/AccessProvider.interface.php');
+
+class filter_wiris_accessprovider implements com_wiris_plugin_api_AccessProvider {
+    /**
+     * This method is called before all service. We use it as a wrapper to call
+     * Moodle require_login() method. Any WIRIS service can't be called without a
+     * login.
+     */
+    function requireAccess() {
+        // Moodle require_login() method.
+        require_login();
+        // Not logged in: require_login throws and exception or exit so if we reach this point
+        // user is logged.
+        return true;
+    }
+}
