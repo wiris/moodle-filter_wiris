@@ -37,7 +37,10 @@ class filter_wiris_accessprovider implements com_wiris_plugin_api_AccessProvider
      * Moodle require_login() method. Any WIRIS service can't be called without a
      * login.
      */
+
+    // @codingStandardsIgnoreStart
     function requireAccess() {
+    // @codingStandardsIgnoreEnd
         // Moodle require_login() method.
         require_login();
         // Not logged in: require_login throws and exception or exit so if we reach this point
