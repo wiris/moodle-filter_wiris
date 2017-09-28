@@ -60,7 +60,7 @@ if ($ADMIN->fulltree) {
         }
 
         if ($waschemeditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
@@ -68,6 +68,11 @@ if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_configcheckbox('filter_wiris/allow_editorplugin_active_course',
                                                             get_string('alloweditorpluginactive', 'filter_wiris'),
                                                             get_string('alloweditorpluginactive_help', 'filter_wiris'), '0'));
+
+        // Access Provider: If enabled WIRIS PLUGIN services can not be accessed from non logged users.
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/access_provider_enabled',
+                                                            get_string('accessproviderenabled', 'filter_wiris'),
+                                                            get_string('accessproviderenabled_help', 'filter_wiris'), '0'));
 
     } else {
         if (!get_config('filter_wiris', 'filter_standalone')) {

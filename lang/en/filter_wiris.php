@@ -15,7 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-$string['alloweditorpluginactive'] = 'Allow WIRIS Editor always active';
+$string['accessproviderenabled'] = 'Access control';
+$string['accessproviderenabled_help'] = 'If enabled ony authenticated users can access WIRIS services.';
+$string['alloweditorpluginactive'] = 'WIRIS Editor always active';
 $string['alloweditorpluginactive_help'] = 'WIRIS Editor plugin would be enabled regardless of WIRIS filter is disabled at course or activity level. By default if WIRIS filter is disabled in a course/activity, WIRIS Editor is also disabled in the same course/activity.';
 $string['area'] = 'area';
 $string['arenotinstalled'] = 'are not installed. ';
