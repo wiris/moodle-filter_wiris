@@ -84,8 +84,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $scriptname = array_pop($scriptname);
 
         com_wiris_system_CallWrapper::getInstance()->stop();
-        
-		// Enabling access provider if has been setted on WIRIS filter settings.
+
+        // Enabling access provider if has been setted on WIRIS filter settings.
         if (get_config('filter_wiris', 'access_provider_enabled')) {
             $configuration['wirisaccessproviderenabled'] = 'true';
         }
