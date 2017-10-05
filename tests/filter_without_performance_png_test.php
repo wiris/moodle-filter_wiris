@@ -57,6 +57,9 @@ class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
         $this->imagepng .= ' data-mathml=\'«math ';
         $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 
+        // Special chars alt
+        $this->specialcharsalt = '{"result":{"text":"1 plus 2"},"status":"ok"}';
+
         // Svg format.
         $this->imagesvg = '<img src="' . $testsiteprotocol . ' ://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagesvg .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
@@ -77,12 +80,25 @@ class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
         $output = $this->wirisfilter->filter($this->xml);
         $this->assertEquals($output, $this->imagepng);
     }
-
+    public function test_filter_safexml_without_performance_png_cache_formula() {
+        $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
+        $assertion = strrpos($fileresult, $this->xml) !== false;
+        $this->assertTrue($assertion);
+    }
+    public function test_filter_safexml_without_performance_png_alt_cache() {
+        $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.en.txt');
+        $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
+        $this->assertTrue($assertion);
+    }
     public function test_filter_safexml_without_performance_png_cache() {
         $output = $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
-        $md5 = 'cd345a63d1346d7a11b5e73bb97e5bb7';
-        $data = $cachefile->get($md5);
-        $this->assertEquals($output, $this->imagepng);
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.png');
+        $assertion = strrpos($fileresult, $this->xml) !== false;
+        $this->assertTrue($assertion);
     }
 }

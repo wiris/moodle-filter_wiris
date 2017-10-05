@@ -85,26 +85,36 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_jsonconent_db() {
+    public function test_filter_safexml_with_performance_cache_svg() {
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
 
-        global $DB;
-        $record = $DB->get_record($this->cachetable, array('md5' => 'cd345a63d1346d7a11b5e73bb97e5bb7'));
-        $assertion = strrpos($record->jsoncontent, $this->svg) !== false;
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.svg');
+        $assertion = strrpos($fileresult, $this->svg) !== false;
 
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_alt_db() {
+    public function test_filter_safexml_with_performance_cache_formula() {
+        $this->wirisfilter = new filter_wiris(context_system::instance(), array());
+        $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
+
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
+        $assertion = strrpos($fileresult, $this->xml) !== false;
+        $this->assertTrue($assertion);
+    }
+
+    public function test_filter_safexml_with_performance_alt_cache() {
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
-        global $DB;
-        $record = $DB->get_record($this->cachetable, array('md5' => 'fc13b6ac6aec34845457b164dd4af76a'));
-
-        $this->assertEquals($this->specialcharsalt, $record->alt);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $fileresult = $cachefile->get('fc13b6ac6aec34845457b164dd4af76a.en.txt');
+        $this->assertEquals($this->specialcharsalt, $fileresult);
     }
+
 
     public function test_filter_xml_with_performance_special_chars() {
         $output = $this->wirisfilter->filter($this->specialcharsimagesafexml);
