@@ -54,13 +54,17 @@ if ($ADMIN->fulltree) {
             $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
         }
 
+        $settings->add(new admin_setting_heading('filter_wiris/editorsettings',
+                                                            get_string('editorsettings', 'filter_wiris'),
+                                                            get_string('editorsettings_text', 'filter_wiris')));
+
         if ($waseditorenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris_editor_enable',
                                                             get_string('wirismatheditor', 'filter_wiris'), '', '1'));
         }
 
         if ($waschemeditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
@@ -68,6 +72,79 @@ if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_configcheckbox('filter_wiris/allow_editorplugin_active_course',
                                                             get_string('alloweditorpluginactive', 'filter_wiris'),
                                                             get_string('alloweditorpluginactive_help', 'filter_wiris'), '0'));
+
+        // Configuration.ini wrapper.
+
+
+        // Connection properties.
+        $settings->add(new admin_setting_heading('filter_wiris/connectionsettings',
+                                                            get_string('connectionsettings', 'filter_wiris'),
+                                                            get_string('connectionsettings_text', 'filter_wiris')));
+
+        $settings->add(new admin_setting_configtext('filter_wiris/imageservicehost',
+                                                            get_string('imageservicehost', 'filter_wiris'),
+                                                            get_string('imageservicehost_help', 'filter_wiris'),
+                                                            'www.wiris.net',
+                                                            PARAM_URL));
+
+        $settings->add(new admin_setting_configtext('filter_wiris/imageservicepath',
+                                                            get_string('imageservicepath', 'filter_wiris'),
+                                                            get_string('imageservicepath_help', 'filter_wiris'),
+                                                            '/demo/editor/render',
+                                                            PARAM_LOCALURL));
+
+        $settings->add(new admin_setting_configtext('filter_wiris/imageserviceport',
+                                                            get_string('imageserviceport', 'filter_wiris'),
+                                                            get_string('imageserviceport_help', 'filter_wiris'),
+                                                            80,
+                                                            PARAM_INT,
+                                                            4));
+
+        $settings->add(new admin_setting_configselect('filter_wiris/imageserviceprotocol',
+                                                            get_string('imageserviceprotocol', 'filter_wiris'),
+                                                            get_string('imageserviceprotocol_help', 'filter_wiris'),
+                                                            'http',
+                                                            array('http', 'https')));
+
+        // Image properties
+
+        $settings->add(new admin_setting_heading('filter_wiris/imagesettings',
+                                                            get_string('imagesettings', 'filter_wiris'),
+                                                            get_string('imagesettings_text', 'filter_wiris')));
+
+        $settings->add(new admin_setting_configselect('filter_wiris/imageformat',
+                                                            get_string('imageformat', 'filter_wiris'),
+                                                            get_string('imageformat_help', 'filter_wiris'),
+                                                            'svg',
+                                                            array('svg' => 'svg', 'png' => 'png')));
+
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/pluginperformance',
+                                                            get_string('pluginperformance', 'filter_wiris'),
+                                                            get_string('pluginperformance_help', 'filter_wiris'), '1'));
+
+        // Window properties
+
+        $settings->add(new admin_setting_heading('filter_wiris/windowsettings',
+                                                            get_string('windowsettings', 'filter_wiris'),
+                                                            get_string('windowsettings_text', 'filter_wiris')));
+
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/editormodalwindow',
+                                                            get_string('editormodalwindow', 'filter_wiris'),
+                                                            get_string('editormodalwindow_help', 'filter_wiris'), '1'));
+
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/editormodalwindowfullscreen',
+                                                            get_string('editormodalwindowfullscreen', 'filter_wiris'),
+                                                            get_string('editormodalwindowfullscreen_help', 'filter_wiris'), '0'));
+
+        // Access Provider: If enabled WIRIS PLUGIN services can not be accessed from non logged users.
+
+        $settings->add(new admin_setting_heading('securitysettings',
+                                                            get_string('securitysettings', 'filter_wiris'),
+                                                            get_string('securitysettings_text', 'filter_wiris')));
+
+        $settings->add(new admin_setting_configcheckbox('filter_wiris/access_provider_enabled',
+                                                            get_string('accessproviderenabled', 'filter_wiris'),
+                                                            get_string('accessproviderenabled_help', 'filter_wiris'), '0'));
 
     } else {
         if (!get_config('filter_wiris', 'filter_standalone')) {

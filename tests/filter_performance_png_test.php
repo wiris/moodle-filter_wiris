@@ -42,13 +42,30 @@ class filter_wiris_filter_performance_png_testcase extends advanced_testcase
         filter_wiris_pluginwrapper::set_configuration(array('wirispluginperformance' => 'true',
                                                             'wirisimageformat' => 'png'));
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
-        $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
+        $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»-«/mo»«mn»2«/mn»«/math»';
+        $this->minusxml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>-</mo><mn>2</mn></math>';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
 
         // Simple images of "1+2".
 
         // Png format.
         $testsiteprotocol = strrpos($CFG->wwwroot, 'https') !== false ? 'https' : 'http';
+
+        $this->minuspngbase64uri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4bA';
+        $this->minuspngbase64uri .= 'AAABGJhU0UAAAAMyZLetQAAAJxJREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5Ws';
+        $this->minuspngbase64uri .= 'B8VGoGF5AS0dhA/JAfGmwOQoEfgw2R1lCo3DQOIoDiE9CMwDFjvpPBCYEBIF4AxC7MRBpIa2BEtRBKsRqoLWjNIB4NhBzk';
+        $this->minuspngbase64uri .= 'aKJlo4SB+JVQMxCqkZaOmoLNKRIcgypiZUcD/+nk13UAwALiDAoXaNIwQAAAF10RVh0TWF0aE1MADxtYXRoIHhtbG5zPSJ';
+        $this->minuspngbase64uri .= 'odHRwOi8vd3d3LnczLm9yZy8xOTk4L01hdGgvTWF0aE1MIj48bW4+MTwvbW4+PG1vPi08L21vPjxtbj4yPC9tbj48L21hdG';
+        $this->minuspngbase64uri .= 'g+Ja9qWgAAAABJRU5ErkJggg==';
+
+        // Special chars alt
+        $this->specialcharsalt = '{"result":{"text":"1 minus 2"},"status":"ok"}';
+
+        $this->pluspngbase64uri = 'iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAABGJhU0UAAAAMyZLetQAAA';
+        $this->pluspngbase64uri .= 'J1JREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5WsB8VGoGF5AjqMo8Yg8EF8abI4Cg';
+        $this->pluspngbase64uri .= 'R+DzVGW0CgcNI7iAOKT0AxAsQX/icCEgCAQbwBiN1r5mlQ9SlAHqdAyKkjRowHEs4GYi9bpg1g94kC8CohZ6JFoidWzBRpSJ';
+        $this->pluspngbase64uri .= 'BlMamIlx/H/6WQX9QAAJxI4ILfeWLsAAABddEVYdE1hdGhNTAA8bWF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5O';
+        $this->pluspngbase64uri .= 'C9NYXRoL01hdGhNTCI+PG1uPjE8L21uPjxtbz4rPC9tbz48bW4+MjwvbW4+PC9tYXRoPshlGCAAAAAASUVORK5CYII=';
 
         $this->imagepng = '<img src="' . $testsiteprotocol. '://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
@@ -61,19 +78,36 @@ class filter_wiris_filter_performance_png_testcase extends advanced_testcase
     public function test_filter_safexml_with_performance_png() {
         global $CFG;
         $output = $this->wirisfilter->filter($this->safexml);
-        $this->assertEquals($output, $this->imagepng);
+        $assertion = strrpos($output, $this->minuspngbase64uri) !== false;
+        $this->assertTrue($assertion);
     }
 
     public function test_filter_xml_with_performance_png() {
         $output = $this->wirisfilter->filter($this->xml);
-        $this->assertEquals($output, $this->imagepng);
+        $assertion = strrpos($output, $this->pluspngbase64uri) !== false;
+        $this->assertTrue($assertion);
     }
+    public function test_filter_safexml_with_performance_png_cache_formula() {
+        $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
 
-    public function test_filter_safexml_with_performance_png_cache() {
-        $output = $this->wirisfilter->filter($this->safexml);
+        $fileresult = $cachefile->get('c77c09fe164db49c5c7aea508ffead95.ini');
+        $assertion = strrpos($fileresult, $this->minusxml) !== false;
+        $this->assertTrue($assertion);
+    }
+    public function test_filter_safexml_with_performance_png_alt_cache() {
+        $this->wirisfilter->filter($this->safexml);
+
         $cachefile = new moodlefilecache('filter_wiris', 'images');
-        $md5 = 'cd345a63d1346d7a11b5e73bb97e5bb7';
-        $data = $cachefile->get($md5);
-        $this->assertEquals($output, $this->imagepng);
+        $fileresult = $cachefile->get('c77c09fe164db49c5c7aea508ffead95.en.txt');
+        $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
+        $this->assertTrue($assertion);
+    }
+    public function test_filter_safexml_with_performance_png_cache() {
+        $this->wirisfilter->filter($this->xml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.png');
+        $assertion = strrpos($fileresult, $this->xml) !== false;
+        $this->assertTrue($assertion);
     }
 }

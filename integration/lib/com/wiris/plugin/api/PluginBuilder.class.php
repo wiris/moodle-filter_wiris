@@ -3,6 +3,11 @@
 class com_wiris_plugin_api_PluginBuilder {
 	public function __construct() { 
 	}
+	public function getAccessProvider() {
+		return null;
+	}
+	public function setAccessProvider($provider) {
+	}
 	public function getCustomParamsProvider() {
 		return null;
 	}

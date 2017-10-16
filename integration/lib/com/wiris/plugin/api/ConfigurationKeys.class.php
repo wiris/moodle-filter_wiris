@@ -10,6 +10,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $STORAGE_CLASS = "wirisstorageclass";
 	static $CONFIGURATION_CLASS = "wirisconfigurationclass";
 	static $CONFIGURATION_PATH = "wirisconfigurationpath";
+	static $ACCESSPROVIDER_CLASS = "wirisaccessproviderclass";
 	static $CONTEXT_PATH = "wiriscontextpath";
 	static $SERVICE_PROTOCOL = "wirisimageserviceprotocol";
 	static $SERVICE_PORT = "wirisimageserviceport";

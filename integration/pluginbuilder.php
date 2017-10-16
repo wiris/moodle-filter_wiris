@@ -38,18 +38,16 @@ if ($moodle) {
     $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
+    if ($pluginBuilder->getConfiguration()->getProperty('wirisaccessproviderenabled', 'false') == 'true') {
+        $pluginBuilder->setAccessProvider(new filter_wiris_accessprovider());
+    }
     // Class to manage file cache.
-    if ($pluginBuilder->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false' || 
-            $pluginBuilder->getConfiguration()->getProperty('wirisimageformat', 'png') == 'png') {
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
-    }
-    else {
-        $cachefile = new moodledbjsoncache('filter_wiris_formulas', 'md5', 'jsoncontent');
-    }
+    $cachefile = new moodlefilecache('filter_wiris', 'images');
+    $cacheformula = new moodlefilecache('filter_wiris', 'formulas');
+
     $pluginBuilder->setStorageAndCacheCacheObject($cachefile);
     // Class to manage formulas (i.e plain text) cache.
-    $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
-    $pluginBuilder->setStorageAndCacheCacheFormulaObject($cachedb);
+    $pluginBuilder->setStorageAndCacheCacheFormulaObject($cacheformula);
 
 } else {
     $wrap->start();
@@ -59,3 +57,13 @@ if ($moodle) {
     $pluginBuilder->setStorageAndCacheCacheObject(new com_wiris_plugin_impl_CacheImpl($pluginBuilder->getConfiguration()->getFullConfiguration()));
     $pluginBuilder->setStorageAndCacheCacheFormulaObject(new com_wiris_plugin_impl_CacheFormulaImpl($pluginBuilder->getConfiguration()->getFullConfiguration()));
 }
+
+// AccessProvider is called here. All services includes this file
+// before its execution.
+$accessprovider = $pluginBuilder->getAccessProvider();
+
+if ($accessprovider != null && !$accessprovider->requireAccess()) {
+    // Stop execution.
+    exit();
+}
+

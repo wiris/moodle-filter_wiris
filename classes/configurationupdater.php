@@ -84,6 +84,53 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $scriptname = array_pop($scriptname);
 
         com_wiris_system_CallWrapper::getInstance()->stop();
+
+        // configuration.ini wrapper
+
+        // Connection properties
+
+        if (get_config('filter_wiris', 'imageservicehost')) {
+            $configuration['wirisimageservicehost'] = get_config('filter_wiris', 'imageservicehost');
+        }
+
+        if (get_config('filter_wiris', 'imageservicepath')) {
+            $configuration['wirisimageservicepath'] = get_config('filter_wiris', 'imageservicepath');
+        }
+
+        if (get_config('filter_wiris', 'imageserviceport')) {
+            $configuration['wirisimageserviceport'] = get_config('filter_wiris', 'imageserviceport');
+        }
+
+        if (get_config('filter_wiris', 'imageserviceprotocol')) {
+            $configuration['wirisimageserviceprotocol'] = get_config('filter_wiris', 'imageserviceprotocol');
+        }
+
+        // Image properties.
+
+        if (get_config('filter_wiris', 'imageformat')) {
+            $configuration['wirisimageformat'] = get_config('filter_wiris', 'imageformat');
+        }
+
+        if (!get_config('filter_wiris', 'pluginperformance')) {
+            $configuration['wirispluginperformance'] = 'false';
+        }
+
+        // Window Properties
+
+        if (!get_config('filter_wiris', 'editormodalwindow')) {
+            $configuration['wiriseditormodalwindow'] = 'false';
+        }
+
+        if (get_config('filter_wiris', 'editormodalwindowfullscreen')) {
+            $configuration['wiriseditormodalwindowfullscreen'] = 'true';
+        }
+
+        // Enabling access provider if has been setted on WIRIS filter settings.
+
+        if (get_config('filter_wiris', 'access_provider_enabled')) {
+            $configuration['wirisaccessproviderenabled'] = 'true';
+        }
+
         if ($scriptname == 'showimage.php') { // Minimal conf showing images.
             if (optional_param('refererquery', null, PARAM_RAW) != null) {
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));

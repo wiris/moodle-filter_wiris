@@ -248,6 +248,12 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 	public function setStorageAndCache($store) {
 		$this->store = $store;
 	}
+	public function getAccessProvider() {
+		return $this->accessProvider;
+	}
+	public function setAccessProvider($provider) {
+		$this->accessProvider = $provider;
+	}
 	public function getCustomParamsProvider() {
 		return $this->customParamsProvider;
 	}
@@ -257,7 +263,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 	public function addConfigurationUpdater($conf) {
 		$this->updaterChain->push($conf);
 	}
-	public $customParamsProvider;
+	public $accessProvider = null;
+	public $customParamsProvider = null;
 	public $storageAndCacheCacheFormulaObject = null;
 	public $storageAndCacheCacheObject = null;
 	public $storageAndCacheInitObject;
