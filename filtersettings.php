@@ -104,7 +104,7 @@ if ($ADMIN->fulltree) {
                                                             get_string('imageserviceprotocol', 'filter_wiris'),
                                                             get_string('imageserviceprotocol_help', 'filter_wiris'),
                                                             'http',
-                                                            array('http', 'https')));
+                                                            array('http' => 'http', 'https' => 'https')));
 
         // Image properties
 
