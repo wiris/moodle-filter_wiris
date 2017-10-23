@@ -64,7 +64,7 @@ if ($ADMIN->fulltree) {
         }
 
         if ($waschemeditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
@@ -104,7 +104,7 @@ if ($ADMIN->fulltree) {
                                                             get_string('imageserviceprotocol', 'filter_wiris'),
                                                             get_string('imageserviceprotocol_help', 'filter_wiris'),
                                                             'http',
-                                                            array('http', 'https')));
+                                                            array('http' => 'http', 'https' => 'https')));
 
         // Image properties
 
