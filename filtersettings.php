@@ -64,7 +64,7 @@ if ($ADMIN->fulltree) {
         }
 
         if ($waschemeditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
