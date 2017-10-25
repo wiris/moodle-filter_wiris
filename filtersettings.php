@@ -59,12 +59,12 @@ if ($ADMIN->fulltree) {
                                                             get_string('editorsettings_text', 'filter_wiris')));
 
         if ($waseditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris/editor_enable',
                                                             get_string('wirismatheditor', 'filter_wiris'), '', '1'));
         }
 
         if ($waschemeditorenabled) {
-            $settings->add(new admin_setting_configcheckbox('filter_wiris_chem_editor_enable',
+            $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 

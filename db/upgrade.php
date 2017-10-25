@@ -110,5 +110,12 @@ function xmldb_filter_wiris_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2017050800, 'filter', 'wiris');
     }
 
+    if ($oldversion < 2017102400) {
+        unset_config('filter_wiris_editor_enable');
+        unset_config('filter_wiris_chem_editor_enable');
+        // Wiris savepoint reached.
+        upgrade_plugin_savepoint(true, 2017102400, 'filter', 'wiris');
+    }
+
     return true;
 }

@@ -147,11 +147,11 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         // WIRIS editor.
         $filterenabled = filter_is_enabled('filter/wiris');
         $this->waseditorenabled = $this->eval_parameter($configuration['wiriseditorenabled']);
-        if (isset($CFG->filter_wiris_editor_enable)) {
+        if (get_config('filter_wiris', 'editor_enable')) {
             // We need to convert all boolean values to text because $configuration object expects as values
             // the same objects as configuration.ini (i.e strings). This is mandatory due to cross-technology.
             $wiriseditorenabled = ($this->waseditorenabled &&
-                                   $this->eval_parameter($CFG->filter_wiris_editor_enable) &&
+                                   $this->eval_parameter(get_config('filter_wiris', 'editor_enable')) &&
                                    $filterenabled) ? "true" : "false";
             $configuration['wiriseditorenabled'] = $wiriseditorenabled;
         } else {
@@ -168,9 +168,9 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         // WIRIS Chem editor.
         $this->waschemeditorenabled = $this->eval_parameter($configuration['wirischemeditorenabled']);
-        if (isset($CFG->filter_wiris_chem_editor_enable)) {
+        if (get_config('filter_wiris', 'chem_editor_enable')) {
             $wirischemeditorenabled = $this->waschemeditorenabled &&
-                                      $this->eval_parameter($CFG->filter_wiris_chem_editor_enable) &&
+                                      $this->eval_parameter(get_config('filter_wiris', 'chem_editor_enable')) &&
                                       $filterenabled ? "true" : "false";
             $configuration['wirischemeditorenabled'] = $wirischemeditorenabled;
         } else {
