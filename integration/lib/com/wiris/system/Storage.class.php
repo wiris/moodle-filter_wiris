@@ -70,12 +70,12 @@ class com_wiris_system_Storage {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
+			return call_user_func_array($this->ï¿½dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
 	}
 	static $directorySeparator;
 	static $resourcesDir;
@@ -133,9 +133,9 @@ class com_wiris_system_Storage {
 	}
 	function __toString() { return $this->toString(); }
 }
-function com_wiris_system_Storage_0(&$»this, &$path) {
+function com_wiris_system_Storage_0(&$ï¿½this, &$path) {
 	{
-		$p = realpath($»this->location);
+		$p = realpath($ï¿½this->location);
 		if(($p === false)) {
 			return null;
 		} else {
