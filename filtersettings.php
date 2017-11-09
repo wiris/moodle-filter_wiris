@@ -93,17 +93,10 @@ if ($ADMIN->fulltree) {
                                                             '/demo/editor/render',
                                                             PARAM_LOCALURL));
 
-        $settings->add(new admin_setting_configtext('filter_wiris/imageserviceport',
-                                                            get_string('imageserviceport', 'filter_wiris'),
-                                                            get_string('imageserviceport_help', 'filter_wiris'),
-                                                            80,
-                                                            PARAM_INT,
-                                                            4));
-
         $settings->add(new admin_setting_configselect('filter_wiris/imageserviceprotocol',
                                                             get_string('imageserviceprotocol', 'filter_wiris'),
                                                             get_string('imageserviceprotocol_help', 'filter_wiris'),
-                                                            'http',
+                                                            'https',
                                                             array('http' => 'http', 'https' => 'https')));
 
         // Image properties
@@ -157,6 +150,7 @@ if ($ADMIN->fulltree) {
                 $tinyurl = 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
                 $attourl = 'https://moodle.org/plugins/atto_wiris';
                 $linkattributes = array('target' => '_blank');
+                $attributes = array();
                 $message .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
                 $message .= get_string('or', 'filter_wiris');
                 $message .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
