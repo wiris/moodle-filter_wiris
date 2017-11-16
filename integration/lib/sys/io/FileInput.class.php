@@ -24,8 +24,8 @@ class sys_io_FileInput extends haxe_io_Input {
 	}
 	public function seek($p, $pos) {
 		$w = null;
-		$ï¿½t = ($pos);
-		switch($ï¿½t->index) {
+		$»t = ($pos);
+		switch($»t->index) {
 		case 0:
 		{
 			$w = SEEK_SET;
@@ -76,28 +76,28 @@ class sys_io_FileInput extends haxe_io_Input {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
-			return call_user_func_array($this->ï¿½dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	static $__properties__ = array("set_bigEndian" => "setEndian");
 	function __toString() { return 'sys.io.FileInput'; }
 }
-function sys_io_FileInput_0(&$ï¿½this, &$r) {
+function sys_io_FileInput_0(&$»this, &$r) {
 	throw new HException(haxe_io_Error::Custom("An error occurred"));
 }
-function sys_io_FileInput_1(&$ï¿½this, &$l, &$p, &$s) {
+function sys_io_FileInput_1(&$»this, &$l, &$p, &$s) {
 	throw new HException(new haxe_io_Eof());
 }
-function sys_io_FileInput_2(&$ï¿½this, &$l, &$p, &$r, &$s) {
+function sys_io_FileInput_2(&$»this, &$l, &$p, &$r, &$s) {
 	throw new HException(haxe_io_Error::Custom("An error occurred"));
 }
-function sys_io_FileInput_3(&$ï¿½this) {
+function sys_io_FileInput_3(&$»this) {
 	throw new HException(new haxe_io_Eof());
 }
-function sys_io_FileInput_4(&$ï¿½this, &$r) {
+function sys_io_FileInput_4(&$»this, &$r) {
 	throw new HException(haxe_io_Error::Custom("An error occurred"));
 }

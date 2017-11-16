@@ -40,9 +40,9 @@ class Reflect {
 	}
 	static function callMethod($o, $func, $args) {
 		if(is_string($o) && !is_array($func)) {
-			return call_user_func_array(Reflect::field($o, $func), $args->ï¿½a);
+			return call_user_func_array(Reflect::field($o, $func), $args->»a);
 		}
-		return call_user_func_array(((is_callable($func)) ? $func : array($o, $func)), ((null === $args) ? array() : $args->ï¿½a));
+		return call_user_func_array(((is_callable($func)) ? $func : array($o, $func)), ((null === $args) ? array() : $args->»a));
 	}
 	static function fields($o) {
 		if($o === null) {
@@ -78,7 +78,7 @@ class Reflect {
 		if(!_hx_has_field($o, $f)) {
 			return false;
 		}
-		if(isset($o->ï¿½dynamics[$f])) unset($o->ï¿½dynamics[$f]); else if($o instanceof _hx_anonymous) unset($o->$f); else $o->$f = null;
+		if(isset($o->»dynamics[$f])) unset($o->»dynamics[$f]); else if($o instanceof _hx_anonymous) unset($o->$f); else $o->$f = null;
 		return true;
 	}
 	static function copy($o) {

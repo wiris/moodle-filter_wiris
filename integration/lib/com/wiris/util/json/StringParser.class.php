@@ -54,22 +54,22 @@ class com_wiris_util_json_StringParser {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
-			return call_user_func_array($this->ï¿½dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	static function isBlank($c) {
 		return $c === 32 || $c === 10 || $c === 13 || $c === 9 || $c === 160;
 	}
 	function __toString() { return 'com.wiris.util.json.StringParser'; }
 }
-function com_wiris_util_json_StringParser_0(&$ï¿½this) {
+function com_wiris_util_json_StringParser_0(&$»this) {
 	{
 		$s = new haxe_Utf8(null);
-		$s->addChar($ï¿½this->c);
+		$s->addChar($»this->c);
 		return $s->toString();
 	}
 }
