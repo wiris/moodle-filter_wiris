@@ -49,9 +49,9 @@ if ($ADMIN->fulltree) {
         // users to copy the file from the older location to the new one.
         if ($oldconfile = filter_wiris_pluginwrapper::get_old_configuration()) {
             $warningoutput = get_string('oldconfiguration', 'filter_wiris', $oldconfile);
-            if($CFG->version > 2016052300){
+            if ($CFG->version > 2016052300) {
                 \core\notification::warning($warningoutput);
-            }else{
+            } else {
                 $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
             }
         }
