@@ -44,29 +44,29 @@ class com_wiris_plugin_impl_HttpImpl extends haxe_Http {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
-			return call_user_func_array($this->ï¿½dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.HttpImpl'; }
 }
-function com_wiris_plugin_impl_HttpImpl_0(&$ï¿½this, &$listener, &$url, $msg) {
+function com_wiris_plugin_impl_HttpImpl_0(&$»this, &$listener, &$url, $msg) {
 	{
-		if($ï¿½this->listener !== null) {
-			$ï¿½this->listener->onError($msg);
+		if($»this->listener !== null) {
+			$»this->listener->onError($msg);
 		} else {
 			throw new HException($msg);
 		}
 	}
 }
-function com_wiris_plugin_impl_HttpImpl_1(&$ï¿½this, &$listener, &$url, $data) {
+function com_wiris_plugin_impl_HttpImpl_1(&$»this, &$listener, &$url, $data) {
 	{
-		$ï¿½this->data = $data;
-		if($ï¿½this->listener !== null) {
-			$ï¿½this->listener->onData($data);
+		$»this->data = $data;
+		if($»this->listener !== null) {
+			$»this->listener->onData($data);
 		}
 	}
 }

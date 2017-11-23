@@ -198,8 +198,11 @@ $output = '';
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
 $testname = get_string('lookingforwirisfilterversion', 'filter_wiris');
-if (isset($plugin->version)) {
-    $reporttext = '<span>' . $plugin->version . '</span>';
+if (isset($plugin->release)) {
+    $reporttext = '<span>' . $plugin->release . '</span>';
+    $condition = true;
+} else if ($plugin->maturity == MATURITY_BETA) {
+     $reporttext = '<span>' . $plugin->version . '</span>';
     $condition = true;
 } else {
     $reporttext = get_string('impossibletofindwirisfilterversion', 'filter_wiris');

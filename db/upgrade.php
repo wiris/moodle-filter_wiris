@@ -30,7 +30,7 @@ function xmldb_filter_wiris_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion <= 2016101700) {
+    if ($oldversion < 2016101701) {
          // Define table filter_wiris to be created.
         $table = new xmldb_table('filter_wiris_formulas');
 

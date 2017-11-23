@@ -83,8 +83,8 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
 			$jsonResponse->setResult($result);
 			return $jsonResponse->getResponse();
-		}catch(Exception $ï¿½e) {
-			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
 			{
 				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {

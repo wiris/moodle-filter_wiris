@@ -49,8 +49,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$version = null;
 		try {
 			$version = com_wiris_system_Storage::newResourceStorage("VERSION")->read();
-		}catch(Exception $ï¿½e) {
-			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex = $_ex_;
 			{
 				$version = "Missing version";
@@ -60,8 +60,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		try {
 			$tech = str_replace("\x0A", "", com_wiris_system_Storage::newResourceStorage("tech.txt")->read());
 			$tech = str_replace("\x0D", "", $tech);
-		}catch(Exception $ï¿½e) {
-			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex2 = $_ex_;
 			{
 				$tech = "MissingTech";
@@ -274,12 +274,12 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
-			return call_user_func_array($this->ï¿½dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.PluginBuilderImpl'; }
 }

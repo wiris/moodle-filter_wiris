@@ -97,10 +97,6 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wirisimageservicepath'] = get_config('filter_wiris', 'imageservicepath');
         }
 
-        if (get_config('filter_wiris', 'imageserviceport')) {
-            $configuration['wirisimageserviceport'] = get_config('filter_wiris', 'imageserviceport');
-        }
-
         if (get_config('filter_wiris', 'imageserviceprotocol')) {
             $configuration['wirisimageserviceprotocol'] = get_config('filter_wiris', 'imageserviceprotocol');
         }
