@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This class provides necessary methods to run behat scripts for wiris plugins.
+ * Methods related to the interaction with the wiris editor.
  * @package    filter
  * @subpackage wiris
  * @copyright  Maths for More S.L. <info@wiris.com>
@@ -24,9 +24,9 @@
 
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
-require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
+require_once(__DIR__ . '/behat_wiris_base.php');
 
-class behat_filter_wiris extends behat_base {
+class behat_wiris_editor extends behat_wiris_base {
     /**
      * Once the editor has been opened and focused, sets the wiris formula to the specified value.
      *
