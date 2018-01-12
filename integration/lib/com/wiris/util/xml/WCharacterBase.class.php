@@ -139,7 +139,7 @@ class com_wiris_util_xml_WCharacterBase {
 		$min = 0;
 		$max = $v->length - 1;
 		do {
-			$mid = Math::floor(($min + $max) / 2);
+			$mid = intval(($min + $max) / 2);
 			$cc = $v[$mid];
 			if($c === $cc) {
 				return true;

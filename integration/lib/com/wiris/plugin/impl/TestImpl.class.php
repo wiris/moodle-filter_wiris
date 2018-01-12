@@ -21,7 +21,7 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		return $output;
 	}
 	public function getTestPage() {
-		$random = "" . _hx_string_rec(Math::floor(Math::random() * 9999), "");
+		$random = "" . _hx_string_rec(intval(Math::random() * 9999), "");
 		$mml = "<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mrow><msqrt><mn>" . $random . "</mn></msqrt></mrow></math>";
 		$testName = null; $reportText = null; $solutionLink = null;
 		$this->conf = $this->plugin->getConfiguration();
