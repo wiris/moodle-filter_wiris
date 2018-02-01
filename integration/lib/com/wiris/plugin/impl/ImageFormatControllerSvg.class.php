@@ -3,6 +3,8 @@
 class com_wiris_plugin_impl_ImageFormatControllerSvg implements com_wiris_plugin_api_ImageFormatController{
 	public function __construct() { 
 	}
+	public function scalateMetrics($dpi, $metrics) {
+	}
 	public function getMetrics($bytes, &$output) {
 		$svg = $bytes->toString();
 		$svgRoot = _hx_substr($svg, 0, _hx_index_of($svg, ">", null));

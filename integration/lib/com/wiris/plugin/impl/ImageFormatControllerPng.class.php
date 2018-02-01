@@ -3,6 +3,12 @@
 class com_wiris_plugin_impl_ImageFormatControllerPng implements com_wiris_plugin_api_ImageFormatController{
 	public function __construct() { 
 	}
+	public function scalateMetrics($dpi, $metrics) {
+		$f = 96 / $dpi;
+		$metrics->set("width", intval($f * $metrics->get("width")));
+		$metrics->set("height", intval($f * $metrics->get("height")));
+		$metrics->set("baseline", intval($f * $metrics->get("baseline")));
+	}
 	public function getMetrics($bytes, &$output) {
 		$output = $output;
 		$width = 0;
