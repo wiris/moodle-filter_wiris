@@ -53,11 +53,11 @@ class com_wiris_plugin_impl_TextFilter {
 			$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
 		} else {
 			$digest = $this->render->computeDigest($str, $prop);
-			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
+			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "lang", null));
 			if($hashImage === null) {
 				$this->render->showImage(null, $str, $provider);
+				$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "lang", null));
 			}
-			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "alt", null));
 			$content = $hashImage->get("content");
 			if($this->plugin->getConfiguration()->getProperty("wirisimageformat", "png") === "png") {
 				$img .= " src=\"data:image/png;base64," . $content . "\"";
@@ -83,16 +83,19 @@ class com_wiris_plugin_impl_TextFilter {
 		}
 		$mml = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$FILTER_OUTPUT_MATHML, "false") === "true";
 		$f = 96 / $dpi;
-		$dwidth = $f * Std::parseFloat($width);
-		$dheight = $f * Std::parseFloat($height);
-		$dbaseline = $f * Std::parseFloat($baseline);
+		$imageFormatController = $this->plugin->getImageFormatController();
+		$metricsHash = new Hash();
+		$metricsHash->set("width", Std::parseInt($width));
+		$metricsHash->set("height", Std::parseInt($height));
+		$metricsHash->set("baseline", Std::parseInt($baseline));
+		$imageFormatController->scalateMetrics($dpi, $metricsHash);
 		$alt = $this->html_entity_encode($alt);
 		$img .= " class=\"Wirisformula\"";
 		$img .= " alt=\"" . $alt . "\"";
-		$img .= " width=\"" . _hx_string_rec($dwidth, "") . "\"";
-		$img .= " height=\"" . _hx_string_rec($dheight, "") . "\"";
-		$d = $dbaseline - $dheight;
-		$img .= " style=\"vertical-align:" . _hx_string_rec($d, "") . "px\"";
+		$img .= " width=\"" . _hx_string_rec($metricsHash->get("width"), "") . "\"";
+		$img .= " height=\"" . _hx_string_rec($metricsHash->get("height"), "") . "\"";
+		$verticalAlign = $metricsHash->get("baseline") - $metricsHash->get("height");
+		$img .= " style=\"vertical-align:" . _hx_string_rec($verticalAlign, "") . "px\"";
 		if($mml) {
 			$tag = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_MATHML_ATTRIBUTE, "data-mathml");
 			$img .= " " . $tag . "='" . $this->save_xml_encode($str) . "'";

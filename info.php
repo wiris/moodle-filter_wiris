@@ -32,24 +32,31 @@ function wrs_assert($condition, $reporttext, $solutionlink) {
     if ($condition) {
         return $reporttext;
     } else {
-        $result = '<span class="error wrs_plugin wrs_filter">' . $reporttext . '</span>' . '<a target="_blank" href="';
-        $result .= $solutionlink . '"><img class="wrs_plugin wrs_filter" alt="" src="img/help.gif" /></a>';
+        $result = html_writer::tag('span', $reporttext);
+        $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
+        $image = html_writer::empty_tag('img', array('src' => 'img/help.gif', 'class' => 'wrs_plugin wrs_filter'));
+        $result .= html_writer::link($solutionlink, $image, array('target' => '_blank'));
         return $result;
     }
 }
 
 function wrs_getstatus($condition) {
+    $statustext = '';
     if ($condition) {
-        return '<span class="ok wrs_plugin wrs_filter">OK</span>';
+        $text = get_string('ok', 'filter_wiris');
+        $statustext .= html_writer::tag('span', $text, array('class' => 'wrs_ok wrs_plugin wrs_filter'));
+        return $statustext;
     } else {
-        return '<span class="error wrs_plugin wrs_filter">ERROR</span>';
+        $text = get_string('error', 'filter_wiris');
+        $statustext .= html_writer::tag('span', $text, array('class' => 'wrs_error wrs_plugin wrs_filter'));
+        return $statustext;
     }
 }
 
 function wrs_createtablerow($testname, $reporttext, $solutionlink, $condition) {
-    $output = '<td class="wrs_plugin wrs_filter">' . $testname . '</td>';
-    $output .= '<td class="wrs_plugin wrs_filter">' . wrs_assert($condition, $reporttext, $solutionlink) . '</td>';
-    $output .= '<td class="wrs_plugin wrs_filter">' . wrs_getstatus($condition) . '</td>';
+    $output = html_writer::tag('td', $testname, array('class' => 'wrs_plugin wrs_filter'));
+    $output .= html_writer::tag('td', wrs_assert($condition, $reporttext, $solutionlink), array('class' => 'wrs_plugin wrs_filter'));
+    $output .= html_writer::tag('td',  wrs_getstatus($condition), array('class' => 'wrs_plugin wrs_filter'));
     return $output;
 }
 
@@ -61,24 +68,24 @@ function get_current_editor_data() {
 
     if ($CFG->version < 2012120300) {
         $data['plugin_path'] = '../../lib/editor/tinymce/tiny_mce/' . $tinyeditor->version . '/plugins/tiny_mce_wiris';
-        $data['plugin_name'] = 'TinyMCE';
+        $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
         return $data;
     }
 
     if ($CFG->version >= 2012120300 && $CFG->version < 2014051200) {
         $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-        $data['plugin_name'] = 'TinyMCE';
+        $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
         return $data;
     }
 
     if ($CFG->version >= 2014051200) {
         $editors = array_flip(explode(',', $CFG->texteditors));
         if (count($editors) <= 0) {
-            throw new Exception("There are not editors plugins installed", 1);
+            throw new Exception(get_string('noteditorspluginsinstalled', 'filter_wiris'), 1);
         }
         if (count($editors) == 1) {
             if (array_key_exists('textarea', $editors)) {
-                throw new Exception("There are only a textarea editors plugin installed", 1);
+                throw new Exception(get_string('onlytextareaeditorinstalled', 'filter_wiris'), 1);
             }
         }
 
@@ -86,11 +93,11 @@ function get_current_editor_data() {
             switch ($editor) {
                 case 'atto':
                     $data['plugin_path'] = '../../lib/editor/atto/plugins/wiris';
-                    $data['plugin_name'] = 'Atto';
+                    $data['plugin_name'] = get_string('atto', 'filter_wiris');
                 return $data;
                 case 'tinymce':
                     $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-                    $data['plugin_name'] = 'TinyMCE';
+                    $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
                 return $data;
             }
         }
@@ -101,7 +108,7 @@ function get_current_editor_data() {
 
 function check_if_wiris_button_are_in_toolbar($editor = null) {
     if ( is_null($editor) ) {
-        throw new Exception("Editor name is expected on check_if_wiris_button_are_in_toolbar", 1);
+        throw new Exception(get_string('editornameexpected', 'filter_wiris'), 1);
     }
 
     switch ($editor) {
@@ -110,7 +117,7 @@ function check_if_wiris_button_are_in_toolbar($editor = null) {
         case 'TinyMCE':
             return check_if_wiris_button_are_in_tinymce_toolbar();
         default:
-            throw new Exception($editor . " is not a supported editor on check_if_wiris_button_are_in_toolbar", 1);
+            throw new Exception($editor . get_string('notsupportededitor', 'filter_wiris', 1));
     }
 }
 
@@ -123,9 +130,9 @@ function check_if_wiris_button_are_in_tinymce_toolbar() {
     $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
     return (strpos($configvalue, 'tiny_mce_wiris') === false);
 }
-// END HELPERS FUNCTIONS.
 
-// BEGUIN PAGE PROLOGUE.
+
+// Page prologue
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('title', 'filter_wiris'));
 $PAGE->set_url('/filter/wiris/info.php', array());
@@ -150,29 +157,28 @@ $output .= "Status";
 $output .= html_writer::end_tag('th');
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END PAGE PROLOGUE.
 
-// PREPARE TESTS.
+// Get editor data for tests.
 $currenteditordata = get_current_editor_data();
 
-// BEGIN TEST 1.
+// Looking for correct folder test.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-$testname = get_string('test1', 'filter_wiris');
-$reporttext = get_string('report1', 'filter_wiris');
+$testname = get_string('lookingforcorrectfolder', 'filter_wiris');
+$reporttext = get_string('filtermustbeinstalled', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
 $actualfolder = realpath(dirname(__FILE__));
 $correctfolder = realpath($CFG->dirroot . '/filter/wiris');
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $actualfolder == $correctfolder);
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END TEST 1.
 
-// BEGIN TEST 2.
+
+// Filter files tests.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-$testname = get_string('test2', 'filter_wiris');
-$reporttext = get_string('report2', 'filter_wiris');
+$testname = get_string('lookingforfilterfiles', 'filter_wiris');
+$reporttext = get_string('wirispluginfiltermustbeinstalled', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 $filterfiles = Array('filter.php', 'version.php');
 $exist = true;
@@ -185,37 +191,38 @@ foreach ($filterfiles as $value) {
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $exist);
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END TEST 2.
 
-// BEGIN TEST 3.
+// Filter version existance test.
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $output = '';
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
-$testname = get_string('test3', 'filter_wiris');
+$testname = get_string('lookingforwirisfilterversion', 'filter_wiris');
 if (isset($plugin->release)) {
     $reporttext = '<span>' . $plugin->release . '</span>';
     $condition = true;
+} else if ($plugin->maturity == MATURITY_BETA) {
+     $reporttext = '<span>' . $plugin->version . '</span>';
+    $condition = true;
 } else {
-    $reporttext = get_string('report3', 'filter_wiris');
+    $reporttext = get_string('impossibletofindwirisfilterversion', 'filter_wiris');
     $condition = false;
 }
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END TEST 4.
 
-// BEGIN TEST 5.
+// Wiris filter enabled
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-$testname = get_string('test4', 'filter_wiris');
+$testname = get_string('pluginname', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
 $filterenabled = filter_is_enabled('filter/wiris');
 if ($filterenabled) {
-    $reporttext = get_string('report4.1', 'filter_wiris');
+    $reporttext = get_string('enabled', 'filter_wiris');
 } else {
-    $reporttext = get_string('report4.2', 'filter_wiris');
+    $reporttext = get_string('disabled', 'filter_wiris');
 }
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $filterenabled);
 $output .= html_writer::end_tag('tr');
@@ -224,8 +231,8 @@ $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'
 echo $output;
 
 $output = '';
-$testname = get_string('test5', 'filter_wiris') . $currenteditordata['plugin_name'];
-$reporttext = get_string('report5.1', 'filter_wiris') . $currenteditordata['plugin_name'] . get_string('report5.2', 'filter_wiris');
+$testname = get_string('lookingforwirisplugin', 'filter_wiris') . $currenteditordata['plugin_name'];
+$reporttext = get_string('wirispluginfor', 'filter_wiris') . $currenteditordata['plugin_name'] . get_string('mustbeinstalled', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 $wirisplugin = $currenteditordata['plugin_path'] . '/core';
 $condition = file_exists($wirisplugin);
@@ -236,17 +243,15 @@ if (!$condition) {
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END TEST 5.
 
-// BEGIN TEST 6.
+// Version compatibility test.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-$testname = get_string('test6', 'filter_wiris') . $currenteditordata['plugin_name'] . ' versions';
-if (isset($plugin->release)) {
-    $filterversion = $plugin->release;
-} else {
-    get_string('report6', 'filter_wiris');
+$testname = get_string('wirispluginfilterfor', 'filter_wiris') . $currenteditordata['plugin_name'] . ' versions';
+
+if (isset($plugin->version)) {
+    $filterversion = $plugin->version;
 }
 
 // Using version.php to check release number.
@@ -256,19 +261,19 @@ if (strtolower($currenteditordata['plugin_name']) == 'tinymce') {
     require($currenteditordata['plugin_path'] . '/version.php');
 }
 
-if (isset($plugin->release)) {
-    $pluginversion = $plugin->release;
+if (isset($plugin->version)) {
+    $pluginversion = $plugin->version;
 } else {
     $pluginversion = "";
 }
 
 if ($filterversion == $pluginversion) {
-    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '. $currenteditordata['plugin_name'] .' have the same version';
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris'). $currenteditordata['plugin_name'] . get_string('havesameversion', 'filter_wiris');
     $condition = true;
 } else {
-    $reporttext = 'WIRIS plugin filter and WIRIS plugin for '. $currenteditordata['plugin_name'] .' versions don\'t match';
-    $reporttext .= "<br>" . "WIRIS Filter version =  " . $filterversion;
-    $reporttext .= "<br> WIRIS Plugin for " .  $currenteditordata['plugin_name'] . 'version = ' . $pluginversion;
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris'). $currenteditordata['plugin_name'] .get_string('versionsdontmatch', 'filter_wiris');
+    $reporttext .= "<br>" . get_string('wirisfilterversion', 'filter_wiris') . $filterversion;
+    $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') .  $currenteditordata['plugin_name'] . ' ' . get_string('version', 'filter_wiris'). ' = ' . $pluginversion;
     $condition = false;
 }
 
@@ -276,13 +281,12 @@ $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
-// END TEST 6.
 
-// BEGIN TEST 7.
+// Wiris plugin enabled test.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 
-$testname = get_string('test7', 'filter_wiris') . $currenteditordata['plugin_name'];
+$testname = get_string('lookingforwirispluginenabled', 'filter_wiris') . $currenteditordata['plugin_name'];
 try {
     $condition = check_if_wiris_button_are_in_toolbar($currenteditordata['plugin_name']);
     $reporttext = ($condition) ? get_string('enabled', 'filter_wiris') : get_string('disabled', 'filter_wiris');
@@ -302,7 +306,7 @@ $output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('br');
 echo $output;
 $output = '';
-echo get_string('textBeforeButton1', 'filter_wiris') . "<br/>";
+echo get_string('clickwirisplugincorrectlyinstalled', 'filter_wiris') . "<br/>";
 $link = 'integration/test.php';
 $input = '<input type="button" value="' . get_string('button1', 'filter_wiris');
 $input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
@@ -310,7 +314,7 @@ echo $input;
 
 $wqversion = get_config('qtype_wq', 'version');
 if (!empty($wqversion)) {
-    echo get_string('textBeforeButton2', 'filter_wiris') . "<br/>";
+    echo get_string('clickwirisquizzescorrectlyinstalled', 'filter_wiris') . "<br/>";
     $link = '../../question/type/wq/info.php';
     $input = '<input type="button" value="' . get_string('button2', 'filter_wiris');
     $input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
@@ -329,4 +333,3 @@ $output .= html_writer::end_tag('br');
 $output .= html_writer::end_tag('p');
 
 echo $output;
-// END PAGE EPILOGUE.

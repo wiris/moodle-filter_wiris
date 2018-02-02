@@ -6,11 +6,11 @@ class com_wiris_system_TypeTools {
 		return "" . _hx_string_rec($value, "");
 	}
 	static function isFloating($str) {
-		$pattern = new EReg("^(\\d|\\d\\.|\\.\\d)", "");
+		$pattern = new EReg("^[+-]?\\d*\\.?\\d+([eE][+-]?\\d+)?\$", "");
 		return $pattern->match($str);
 	}
 	static function isInteger($str) {
-		$pattern = new EReg("^(\\d)", "");
+		$pattern = new EReg("^[+-]?\\d+\$", "");
 		return $pattern->match($str);
 	}
 	static function isIdentifierPart($c) {

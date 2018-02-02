@@ -83,22 +83,18 @@ class filter_wiris_pluginwrapper {
             $this->begin();
             // Create PluginBuilder with Moodle specific configuration.
             $this->moodleConfig = new filter_wiris_configurationupdater();
-            $this->instance = com_wiris_plugin_api_PluginBuilder::getInstance();
+            $this->instance = com_wiris_plugin_api_PluginBuilder::newInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
             $this->instance->addConfigurationUpdater(new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig));
 
             // Class to manage file cache.
-            if ($this->get_instance()->getConfiguration()->getProperty('wirispluginperformance', 'false') == 'false' ||
-                $this->get_instance()->getConfiguration()->getProperty('wirisimageformat', 'png') == 'png') {
-                $cachefile = new moodlefilecache('filter_wiris', 'images');
-            } else {
-                $cachefile = new moodledbjsoncache('filter_wiris_formulas', 'md5', 'jsoncontent');
-            }
+            $cachefile = new moodlefilecache('filter_wiris', 'images');
+            $cacheformula = new moodlefilecache('filter_wiris', 'formulas');
+
             $this->instance->setStorageAndCacheCacheObject($cachefile);
             // Class to manage formulas (i.e plain text) cache.
-            $cachedb = new moodledbcache('filter_wiris_formulas', 'md5', 'content');
-            $this->instance->setStorageAndCacheCacheFormulaObject($cachedb);
+            $this->instance->setStorageAndCacheCacheFormulaObject($cacheformula);
             // Stop haxe environment.
             $this->end();
         }

@@ -28,5 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 $definitions = array(
     'images' => array(
         'mode' => cache_store::MODE_APPLICATION
+    ),
+    'formulas' => array(
+        'mode' => cache_store::MODE_APPLICATION
     )
 );

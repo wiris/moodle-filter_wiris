@@ -3,6 +3,11 @@
 class com_wiris_plugin_api_PluginBuilder {
 	public function __construct() { 
 	}
+	public function getAccessProvider() {
+		return null;
+	}
+	public function setAccessProvider($provider) {
+	}
 	public function getCustomParamsProvider() {
 		return null;
 	}
@@ -68,6 +73,9 @@ class com_wiris_plugin_api_PluginBuilder {
 			com_wiris_plugin_api_PluginBuilder::$pb = new com_wiris_plugin_impl_PluginBuilderImpl();
 		}
 		return com_wiris_plugin_api_PluginBuilder::$pb;
+	}
+	static function newInstance() {
+		return new com_wiris_plugin_impl_PluginBuilderImpl();
 	}
 	function __toString() { return 'com.wiris.plugin.api.PluginBuilder'; }
 }

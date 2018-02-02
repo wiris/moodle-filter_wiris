@@ -46,10 +46,6 @@ class filter_wiris_pluginwrapperconfigurationupdater implements com_wiris_plugin
             }
         }
 
-        if ($configuration['wirisimageformat'] == 'png') {
-            $configuration['wirispluginperformance'] = 'false';
-        }
-
     }
     public function init($obj) {
     }

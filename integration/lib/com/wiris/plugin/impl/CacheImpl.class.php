@@ -66,6 +66,7 @@ class com_wiris_plugin_impl_CacheImpl implements com_wiris_util_sys_Cache{
 		$formulaFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$FORMULA_FOLDER);
 		$cacheFolder = $this->getAndCheckFolder(com_wiris_plugin_api_ConfigurationKeys::$CACHE_FOLDER);
 		$includes = new _hx_array(array());
+		$includes->push("svg");
 		$includes->push("png");
 		$includes->push("csv");
 		$includes->push("txt");

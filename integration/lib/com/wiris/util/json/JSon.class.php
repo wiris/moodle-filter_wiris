@@ -232,6 +232,15 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 		$sb->add($s);
 		$sb->add("\"");
 	}
+	public function encodeArrayInt($sb, $v) {
+		$v2 = new _hx_array(array());
+		$i = 0;
+		while($i < $v->length) {
+			$v2->push($v[$i]);
+			++$i;
+		}
+		$this->encodeArray($sb, $v2);
+	}
 	public function encodeArray($sb, $v) {
 		$newLines = $this->addNewLines && com_wiris_util_json_JSon::getDepth($v) > 2;
 		$this->depth++;
@@ -300,25 +309,29 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 			if(com_wiris_system_TypeTools::isArray($o)) {
 				$this->encodeArray($sb, $o);
 			} else {
-				if(Std::is($o, _hx_qtype("String"))) {
-					$this->encodeString($sb, $o);
+				if(Std::is($o, _hx_qtype("Array"))) {
+					$this->encodeArrayInt($sb, $o);
 				} else {
-					if(Std::is($o, _hx_qtype("Int"))) {
-						$this->encodeInteger($sb, $o);
+					if(Std::is($o, _hx_qtype("String"))) {
+						$this->encodeString($sb, $o);
 					} else {
-						if(Std::is($o, _hx_qtype("haxe.Int64"))) {
-							$this->encodeLong($sb, $o);
+						if(Std::is($o, _hx_qtype("Int"))) {
+							$this->encodeInteger($sb, $o);
 						} else {
-							if(Std::is($o, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
-								$this->encodeIntegerFormat($sb, $o);
+							if(Std::is($o, _hx_qtype("haxe.Int64"))) {
+								$this->encodeLong($sb, $o);
 							} else {
-								if(Std::is($o, _hx_qtype("Bool"))) {
-									$this->encodeBoolean($sb, $o);
+								if(Std::is($o, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
+									$this->encodeIntegerFormat($sb, $o);
 								} else {
-									if(Std::is($o, _hx_qtype("Float"))) {
-										$this->encodeFloat($sb, $o);
+									if(Std::is($o, _hx_qtype("Bool"))) {
+										$this->encodeBoolean($sb, $o);
 									} else {
-										throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+										if(Std::is($o, _hx_qtype("Float"))) {
+											$this->encodeFloat($sb, $o);
+										} else {
+											throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+										}
 									}
 								}
 							}

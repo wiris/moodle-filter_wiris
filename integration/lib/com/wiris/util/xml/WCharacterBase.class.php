@@ -9,6 +9,7 @@ class com_wiris_util_xml_WCharacterBase {
 	static $ROOT_NO_TAIL_VERTICAL = 61759;
 	static $ROOT_LEFT_TAIL = 61760;
 	static $ROOT_VERTICAL_LINE = 61761;
+	static $LINE_FEED = 10;
 	static $ROUND_BRACKET_LEFT = 40;
 	static $ROUND_BRACKET_RIGHT = 41;
 	static $COMMA = 44;
@@ -138,7 +139,7 @@ class com_wiris_util_xml_WCharacterBase {
 		$min = 0;
 		$max = $v->length - 1;
 		do {
-			$mid = Math::floor(($min + $max) / 2);
+			$mid = intval(($min + $max) / 2);
 			$cc = $v[$mid];
 			if($c === $cc) {
 				return true;

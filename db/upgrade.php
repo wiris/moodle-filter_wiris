@@ -30,7 +30,7 @@ function xmldb_filter_wiris_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion <= 2016101700) {
+    if ($oldversion < 2016101701) {
          // Define table filter_wiris to be created.
         $table = new xmldb_table('filter_wiris_formulas');
 
@@ -108,6 +108,13 @@ function xmldb_filter_wiris_upgrade($oldversion) {
 
         // Wiris savepoint reached.
         upgrade_plugin_savepoint(true, 2017050800, 'filter', 'wiris');
+    }
+
+    if ($oldversion < 2017102400) {
+        unset_config('filter_wiris_editor_enable');
+        unset_config('filter_wiris_chem_editor_enable');
+        // Wiris savepoint reached.
+        upgrade_plugin_savepoint(true, 2017102400, 'filter', 'wiris');
     }
 
     return true;

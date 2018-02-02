@@ -54,7 +54,7 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         // Special image svg
         $this->imagesvgspecialchars = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2F';
         $this->imagesvgspecialchars .= 'svg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height';
-        $this->imagesvgspecialchars .= '%3D%2221%22%20width%3D%22117%22%20wrs%3Abaseline%3D%2216%22%3E%3C%21--MathML%3A%20%3Cmat';
+        $this->imagesvgspecialchars .= '%3D%2221%22%20width%3D%22117%22%20wrs%3Abaseline%3D%2216%22%3E%3C!--MathML%3A%20%3Cmat';
 
         // Special chars alt
         $this->specialcharsalt = '{"result":{"text":"p r i n t left parenthesis \" a s d \" right parenthesis semicolon divided by divided by"},"status":"ok"}';
@@ -64,7 +64,7 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         // Svg performance.
         $this->imagesvgperformance = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3';
         $this->imagesvgperformance .= 'Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2220';
-        $this->imagesvgperformance .= '%22%20width%3D%2234%22%20wrs%3Abaseline%3D%2216%22%3E%3C%21--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fww';
+        $this->imagesvgperformance .= '%22%20width%3D%2234%22%20wrs%3Abaseline%3D%2216%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fww';
         $this->imagesvgperformance .= 'w.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmn%3E1%3C%2Fmn%3E%3Cmo%3E%2B%3C%2';
 
         $this->svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/cvs-extension" height="20"';
@@ -85,32 +85,39 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_jsonconent_db() {
-
+    public function test_filter_safexml_with_performance_cache_svg() {
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
 
-        global $DB;
-        $record = $DB->get_record($this->cachetable, array('md5' => 'cd345a63d1346d7a11b5e73bb97e5bb7'));
-        $assertion = strrpos($record->jsoncontent, $this->svg) !== false;
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.svg');
+        $assertion = strrpos($fileresult, $this->svg) !== false;
 
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_alt_db() {
+    public function test_filter_safexml_with_performance_cache_formula() {
+        $this->wirisfilter = new filter_wiris(context_system::instance(), array());
+        $this->wirisfilter->filter($this->safexml);
+        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
 
+        $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
+        $assertion = strrpos($fileresult, $this->xml) !== false;
+        $this->assertTrue($assertion);
+    }
+
+    public function test_filter_safexml_with_performance_alt_cache() {
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
-        global $DB;
-        $record = $DB->get_record($this->cachetable, array('md5' => 'fc13b6ac6aec34845457b164dd4af76a'));
-
-        $this->assertEquals($this->specialcharsalt, $record->alt);
+        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $fileresult = $cachefile->get('fc13b6ac6aec34845457b164dd4af76a.en.txt');
+        $this->assertEquals($this->specialcharsalt, $fileresult);
     }
+
 
     public function test_filter_xml_with_performance_special_chars() {
         $output = $this->wirisfilter->filter($this->specialcharsimagesafexml);
-
         $assertion = strrpos($output, $this->imagesvgspecialchars) !== false;
         $this->assertTrue($assertion);
     }
