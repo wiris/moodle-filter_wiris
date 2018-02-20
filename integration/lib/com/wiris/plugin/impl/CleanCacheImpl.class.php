@@ -27,12 +27,12 @@ class com_wiris_plugin_impl_CleanCacheImpl implements com_wiris_plugin_api_Clean
 		if($this->gui) {
 			$output = "";
 			$output .= "<html><head>\x0D\x0A";
-			$output .= "<title>WIRIS plugin clean cache service</title><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\x0D\x0A";
+			$output .= "<title>MathType integration clean cache service</title><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\x0D\x0A";
 			$output .= "<link rel=stylesheet type=text/css href=" . $this->resourcePath . "?resourcefile=wirisplugin.css />";
 			$output .= "</head>";
 			$output .= "<div class=wirismaincontainer>";
 			$output .= "<body class=wirisplugincleancache>";
-			$output .= "<h2 class=wirisplugincleancache>WIRIS plugin clean cache service</h2>\x0D\x0A";
+			$output .= "<h2 class=wirisplugincleancache>MathType integration clean cache service</h2>\x0D\x0A";
 			$output .= "<div class=wirisplugincleancacheform>";
 			if($this->wirisCleanCacheToken !== null) {
 				$output .= "<form action=" . $this->cleanCachePath . " method=post>";

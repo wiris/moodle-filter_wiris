@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * WIRIS Filter settings.
+ * MathType filter settings.
  *
  * @package    filter
  * @subpackage wiris
@@ -70,7 +70,7 @@ if ($ADMIN->fulltree) {
                                                             get_string('wirischemeditor', 'filter_wiris'), '', '0'));
         }
 
-        // Allow WIRIS Editor plugin be enabled despite of the filter is disabled on a course.
+        // Allow MathType be enabled despite of the filter is disabled on a course.
         $settings->add(new admin_setting_configcheckbox('filter_wiris/allow_editorplugin_active_course',
                                                             get_string('alloweditorpluginactive', 'filter_wiris'),
                                                             get_string('alloweditorpluginactive_help', 'filter_wiris'), '0'));
@@ -131,7 +131,7 @@ if ($ADMIN->fulltree) {
                                                             get_string('editormodalwindowfullscreen', 'filter_wiris'),
                                                             get_string('editormodalwindowfullscreen_help', 'filter_wiris'), '0'));
 
-        // Access Provider: If enabled WIRIS PLUGIN services can not be accessed from non logged users.
+        // Access Provider: If enabled MathType services can not be accessed from non logged users.
 
         $settings->add(new admin_setting_heading('securitysettings',
                                                             get_string('securitysettings', 'filter_wiris'),
@@ -183,7 +183,7 @@ if ($ADMIN->fulltree) {
 
     if ($quizzesinstalled) {
         $url = $CFG->wwwroot . '/admin/settings.php?section=qtypesettingwq';
-        $url = '<a href="' . $url . '">WIRIS quizzes settings</a>';
+        $url = '<a href="' . $url . '">WIRIS Quizzes settings</a>';
         $settings->add(new admin_setting_heading('filter_wirisquizzesheading', $url, ''));
     }
 

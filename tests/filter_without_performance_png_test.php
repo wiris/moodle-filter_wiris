@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unit tests for WIRIS filter.
+ * Unit tests for MathType filter.
  *
  * @package    filter_wiris
  * @group filter_wiris

@@ -16,14 +16,11 @@
 //
 
 /**
- * It is a filter that allows to visualize applets that use WIRIS CAS and
- * images (of formulas) generated through the WIRIS Formula Image Service.
+ * It is a filter that allows to visualize formulas generated with
+ * MathType image service.
  *
- * Replaces all substrings  '«applet ... «/applet»' and '<applet ... </applet>'
- * generated  with WIRIS CAS by the corresponding WIRIS
- * applet image.
  * Replaces all substrings '«math ... «/math»' '<math ... </math>'
- * generated with WIRIS Editor by the corresponding image.
+ * generated with MathType by the corresponding image.
  *
  * @package    filter
  * @subpackage wiris
@@ -32,33 +29,6 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
-/* ---------------------------------------------------------------------------- */
-// General description:                                                         //
-// Applet: An applet is a Java program designed to be executed in a web page    //
-// through a navigator who supports Java. All the last versions of Netscape or  //
-// Microsoft Internet Explorer include it by defect.                            //
-// WIRIS CAS (Computer Algebra System): mathematical calculation Tool that      //
-// works through an applet.                                                     //
-// Web Service: A web service is a component of software that can describe      //
-// itself and provides certain functionality to other applications, through an  //
-// Internet connection.                                                         //
-// WIRIS EDITOR: Formulas publisher who allows to generate images of these      //
-// formulas through a Web Service.                                              //
-// Regular expression: A regular expression is a model or a form to compare     //
-// with a chain of characters.                                                  //
-/*                                                                              */
-// Wiris Filter Description:                                                    //
-// It is a filter that allows to visualize applets that use WIRIS CAS and       //
-// images (of formulas) generated through the WIRIS Formula Image Service.      //
-/*                                                                              */
-// Replaces all substrings ''«applet ... «/applet»' by the corresponding WIRIS  //
-// applet code: '<applet ... </applet>'                                         //
-// Replaces all substrings '«math ... «/math»' by the corresponding MathML      //
-// code: '<math ... </math>'                                                    //
-/* ---------------------------------------------------------------------------- */
-
-
 
 class filter_wiris extends moodle_text_filter {
 
@@ -81,7 +51,7 @@ class filter_wiris extends moodle_text_filter {
         wrs_loadclasses();
 
         // MathJax and MathML
-        // Not filter if MathJax filter order < WIRIS filter order.
+        // Not filter if MathJax filter order < MathType filter order.
         if ($n1 !== false && $wirisfilter = $DB->get_record('filter_active', array('filter' => 'wiris'))) {
             if ($mathjaxfilter = $DB->get_record('filter_active', array('filter' => 'mathjaxloader', 'active' => '1'))) {
                 if ($mathjaxfilter->sortorder < $wirisfilter->sortorder) {

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Cache definition for WIRIS plugin.
+ * Cache definition for MathType.
  *
  * @package    filter
  * @subpackage wiris
