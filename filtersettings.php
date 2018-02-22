@@ -183,7 +183,7 @@ if ($ADMIN->fulltree) {
 
     if ($quizzesinstalled) {
         $url = $CFG->wwwroot . '/admin/settings.php?section=qtypesettingwq';
-        $url = '<a href="' . $url . '">WIRIS Quizzes settings</a>';
+        $url = '<a href="' . $url . '">Wiris Quizzes settings</a>';
         $settings->add(new admin_setting_heading('filter_wirisquizzesheading', $url, ''));
     }
 

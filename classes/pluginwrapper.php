@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// This classes are shared between WIRIS Quizzes and MathType
+// This classes are shared between Wiris Quizzes and MathType
 // Avoid loading twice.
 if (!class_exists('moodlefilecache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
