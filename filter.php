@@ -52,12 +52,8 @@ class filter_wiris extends moodle_text_filter {
 
         // MathJax and MathML
         // Not filter if MathJax filter order < MathType filter order.
-        if ($n1 !== false && $wirisfilter = $DB->get_record('filter_active', array('filter' => 'wiris'))) {
-            if ($mathjaxfilter = $DB->get_record('filter_active', array('filter' => 'mathjaxloader', 'active' => '1'))) {
-                if ($mathjaxfilter->sortorder < $wirisfilter->sortorder) {
-                    return $text;
-                }
-            }
+        if ($n1 !== false && $this->mathjax_have_preference()) {
+            return $text;
         }
 
         $wirispluginwrapper = new filter_wiris_pluginwrapper();
@@ -92,5 +88,37 @@ class filter_wiris extends moodle_text_filter {
         }
 
         return $text;
+    }
+
+    /**
+     * Returns true if MathJax filter is active in active context and
+     * have preference over MathType filter
+     * @return [bool] true if MathJax have preference over MathType filter. False otherwise.
+     */
+    private function mathjax_have_preference() {
+        $mathjaxpreference = false;
+        $mathjaxfilteractive = false;
+        $avaliablecontextfilters = filter_get_available_in_context($this->context);
+
+        // First we need to know if MathJax filter is active in active context.
+        if (array_key_exists('mathjaxloader', $avaliablecontextfilters)) {
+            $mathjaxfilter = $avaliablecontextfilters['mathjaxloader'];
+            $mathjaxfilteractive = $mathjaxfilter->localstate == TEXTFILTER_ON ||
+                                   ($mathjaxfilter->localstate == TEXTFILTER_INHERIT &&
+                                    $mathjaxfilter->inheritedstate == TEXTFILTER_ON);
+        }
+
+        // Check filter orders.
+        if ($mathjaxfilteractive) {
+            $filterkeys = array_keys($avaliablecontextfilters);
+            $mathjaxfilterorder = array_search('mathjaxloader', $filterkeys);
+            $mathtypefilterorder = array_search('wiris', $filterkeys);
+
+            if ($mathtypefilterorder > $mathjaxfilterorder) {
+                $mathjaxpreference = true;
+            }
+        }
+
+        return $mathjaxpreference;
     }
 }
