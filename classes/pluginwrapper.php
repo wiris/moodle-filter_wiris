@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This class loads the environment that WIRIS filter needs to work.
+ * This class loads the environment that MathType filter needs to work.
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// This classes are shared between WIRIS Quizzes and WIRIS Plugins
+// This classes are shared between Wiris Quizzes and MathType
 // Avoid loading twice.
 if (!class_exists('moodlefilecache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodlefilecache.php');
@@ -124,16 +124,16 @@ class filter_wiris_pluginwrapper {
     }
 
     /**
-     * Returns WIRIS plugin data from the plugin installed in the default Moodle
+     * Returns MathType plugin data from the plugin installed in the default Moodle
      * HTML editor (or the first available), or false if none found.
      *
      * Needs the Moodle to be started with $CFG variable defined.
      *
      * @return object
      *   An object with the following properties:
-     *     - url: base url of the WIRIS plugin.
-     *     - path: base path of the WIRIS plugin.
-     *     - version: version of the WIRIS plugin.
+     *     - url: base url of the MathType plugin.
+     *     - path: base path of the MathType plugin.
+     *     - version: version of the MathType plugin.
      * */
     public static function get_wiris_plugin() {
         global $CFG;
@@ -165,7 +165,7 @@ class filter_wiris_pluginwrapper {
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
                 }
                 if (!file_exists($CFG->dirroot . $relativepath . '/core')) {
-                    // WIRIS plugin  >= 3.50 not installed.
+                    // MathType  >= 3.50 not installed.
                     continue;
                 }
                 $plugin = new stdClass();

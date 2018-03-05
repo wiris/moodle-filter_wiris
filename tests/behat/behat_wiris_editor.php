@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Methods related to the interaction with the wiris editor.
+ * Methods related to the interaction with the MathType.
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,13 +28,13 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 
 class behat_wiris_editor extends behat_wiris_base {
     /**
-     * Once the editor has been opened and focused, sets the wiris formula to the specified value.
+     * Once the editor has been opened and focused, sets the MathType formula to the specified value.
      *
-     * @Given /^I set wiris formula to "(?P<value_string>(?:[^"]|\\")*)"$/
+     * @Given /^I set mathtype formula to "(?P<value_string>(?:[^"]|\\")*)"$/
      * @param  string $value value to which we want to set the field
-     * @throws ElementNotFoundException If wiris editor does not exist, it will throw an invalid argument exception.
+     * @throws ElementNotFoundException If MathType does not exist, it will throw an invalid argument exception.
      */
-    public function i_set_wiris_formula_to($value) {
+    public function i_set_mathtype_formula_to($value) {
         $session = $this->getSession(); // Get the mink session.
         $element = $session->getPage()->find(
             'xpath',

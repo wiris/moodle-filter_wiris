@@ -2,8 +2,8 @@
 <libraries>
     <library>
         <location>integration</location>
-        <name>WIRIS PLUGIN Engine</name>
-        <version>4.12.0.1384</version>
+        <name>MathType integration engine</name>
+        <version>7.0.0.1386</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>
     </library>

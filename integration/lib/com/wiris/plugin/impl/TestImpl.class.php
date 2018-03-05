@@ -28,11 +28,11 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 		$condition = null;
 		$output = "";
 		$output .= "<html><head>\x0D\x0A";
-		$output .= "<title>WIRIS plugin test page</title><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /><style type=\"text/css\">/*<!--*/html {font-family: sans-serif;}h2 {margin-left: 1em;}h3 {margin-left: 2em;}p {margin-left: 3em;}p.concrete {margin-left: 4em;}.ok {font-weight: bold;color: #0c0;}.error {font-weight: bold;color: #f00;}/*-->*/</style><style type=\"text/css\">body{font-family: Arial;}span{font-weight: bold;}span.ok {color: #009900;}span.error {color: #dd0000;}table, th, td, tr {border: solid 1px #000000;border-collapse:collapse;padding: 5px;}th{background-color: #eeeeee;}img{border:none;}</style>\x0D\x0A";
+		$output .= "<title>MathType integration test page</title><meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" /><style type=\"text/css\">/*<!--*/html {font-family: sans-serif;}h2 {margin-left: 1em;}h3 {margin-left: 2em;}p {margin-left: 3em;}p.concrete {margin-left: 4em;}.ok {font-weight: bold;color: #0c0;}.error {font-weight: bold;color: #f00;}/*-->*/</style><style type=\"text/css\">body{font-family: Arial;}span{font-weight: bold;}span.ok {color: #009900;}span.error {color: #dd0000;}table, th, td, tr {border: solid 1px #000000;border-collapse:collapse;padding: 5px;}th{background-color: #eeeeee;}img{border:none;}</style>\x0D\x0A";
 		$output .= "<script src=\"../core/WIRISplugins.js?viewer=image\" ></script>\x0D\x0A";
-		$output .= "</head><body><h1>WIRIS plugin test page</h1>\x0D\x0A";
+		$output .= "</head><body><h1>MathType integration test page</h1>\x0D\x0A";
 		$output .= "<table><tr><th>Test</th><th>Report</th><th>Status</th></tr>\x0D\x0A";
-		$testName = "WIRIS plugin version";
+		$testName = "MathType integration version";
 		try {
 			$s = com_wiris_system_Storage::newResourceStorage("VERSION")->read();
 			$reportText = "<b>" . $s . "</b>";
@@ -108,7 +108,7 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 				$condition = false;
 			}
 		}
-		$reportText = "Checking if WIRIS server is reachable";
+		$reportText = "Checking if server is reachable";
 		$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
 		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null) {
 			$condition = true;
@@ -118,11 +118,11 @@ class com_wiris_plugin_impl_TestImpl implements com_wiris_plugin_api_Test{
 			$output .= $this->createTableRow($testName, $reportText, $solutionLink, $condition);
 			$isLicensed = $this->plugin->isEditorLicensed();
 			$condition = false;
-			$testName = "WIRIS editor license";
-			$reportText = "Checking WIRIS editor valid license";
+			$testName = "MathType license";
+			$reportText = "Checking MathType valid license";
 			$output .= $this->createTableRow($testName, $reportText, $solutionLink, $isLicensed);
 		} else {
-			$reportText = "WIRIS Services not installed";
+			$reportText = "MathType services not installed";
 		}
 		$debug = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$DEBUG, "false") === "true";
 		if($debug) {

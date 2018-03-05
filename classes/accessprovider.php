@@ -20,7 +20,7 @@
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +29,11 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once($CFG->dirroot . '/lib/moodlelib.php');
-require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/util/sys/AccessProvider.interface.php');
+
+// Avoid redeclareding or AccessProvider interface.
+if (!interface_exists('com_wiris_util_sys_AccessProvider')) {
+    require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/util/sys/AccessProvider.interface.php');
+}
 
 class filter_wiris_accessprovider implements com_wiris_util_sys_AccessProvider {
     /**
