@@ -96,6 +96,19 @@ class filter_wiris extends moodle_text_filter {
      * @return [bool] true if MathJax have preference over MathType filter. False otherwise.
      */
     private function mathjax_have_preference() {
+
+        // The complex logic is working out the active state in the parent context,
+        // so strip the current context from the list. We need avoid to call
+        // filter_get_avaliable_in_context method if the context
+        // is system context only.
+        $contextids = explode('/', trim($this->context->path, '/'));
+        array_pop($contextids);
+        $contextids = implode(',', $contextids);
+        // System context only.
+        if (empty($contextids)) {
+            return false;
+        }
+
         $mathjaxpreference = false;
         $mathjaxfilteractive = false;
         $avaliablecontextfilters = filter_get_available_in_context($this->context);
