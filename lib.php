@@ -126,9 +126,14 @@ function wrs_filterapplettojnlp($text) {
         if (strpos($appletcode, ' src="') && strpos($appletcode, 'value="<session')) {
             $sessionid = wrs_createsessionid();
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
-            $srcend = strpos($appletcode, '.png"', 0);
+            $srcend = strpos($appletcode, '.png"', $srcstart);
             $src = substr($appletcode, $srcstart, $srcend - $srcstart + 4);
-            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid;
+            // Quick fix to obtain the algorithm language
+            $langstart = strpos($appletcode, ' lang="') + strlen(' lang="');
+            $langend = strpos($appletcode, ' version="', $langstart);
+            $lang = substr($appletcode, $langstart, $langend - $langstart - 1);
+
+            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid.'&lang='.$lang;
             $output .= html_writer::start_tag('a', array('href' => $hreflink));
             $img = '';
             if (method_exists('html_writer', 'img')) {
