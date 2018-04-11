@@ -76,6 +76,7 @@ class com_wiris_util_xml_WCharacterBase {
 	static $INTEGRAL = 8747;
 	static $TOP_HALF_INTEGRAL = 8992;
 	static $BOTTOM_HALF_INTEGRAL = 8993;
+	static $INTEGRAL_EXTENSION = 9134;
 	static $VERTICAL_LINE_EXTENSION = 9168;
 	static $TILDE_OPERATOR = 8764;
 	static $LEFT_CEILING = 8968;
