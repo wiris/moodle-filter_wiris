@@ -19,14 +19,14 @@
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018020100;
-$plugin->release = '4.12.0.1384';
+$plugin->version = 2018040400;
+$plugin->release = '7.1.0.1387';
 $plugin->requires = 2011120511;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->component = 'filter_wiris';

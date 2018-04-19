@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Methods related to wiris filter settings.
+ * Methods related to MathType filter settings.
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,9 +28,9 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 
 class behat_wiris_filter extends behat_wiris_base {
     /**
-     * Turns wiris filter on in 'Manage Filters' menu
+     * Turns MathType filter on in 'Manage Filters' menu
      *
-     * @Given /^I turn wiris filter on$/
+     * @Given /^I turn MathType filter on$/
      *
      * @throws  Behat\Mink\Exception\ElementNotFoundException If $xpathnumber is not correctly computed.
      */

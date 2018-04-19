@@ -67,7 +67,7 @@ class com_wiris_plugin_impl_EditorImpl implements com_wiris_plugin_api_Editor{
 		$this->addLine($output, "<script type=\"text/javascript\" src=\"" . $editorUrl . "?lang=" . rawurlencode($language) . "\"></script>");
 		$this->addLine($output, "<script type=\"text/javascript\" src=\"../core/editor.js\"></script>");
 		$this->addLine($output, "<script type=\"text/javascript\" src=\"../lang/" . rawurlencode($language) . "/strings.js\"></script>");
-		$this->addLine($output, "<title>WIRIS editor</title>");
+		$this->addLine($output, "<title>MathType</title>");
 		$this->addLine($output, "<style type=\"text/css\">/*<!--*/html, body, #container { height: 100%; } body { margin: 0; }");
 		$this->addLine($output, "#links { text-align: right; margin-right: 20px; } #links_rtl {text-align: left; margin-left: 20px;} #controls { float: left; } #controls_rtl {float: right;}/*-->*/</style>");
 		$this->addLine($output, "</head><body topmargin=\"0\" leftmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">");

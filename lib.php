@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions for WIRIS filter.
+ * Library functions for MathType filter.
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -92,7 +92,7 @@ function wrs_createsessionid() {
 
 /**
  * Set initial session on server
- * @param  String $sessionid WIRIS Cas session id.
+ * @param  String $sessionid CAS session id.
  * @param  String $xml       xml session.
  */
 function wrs_setinitialsession($sessionid, $xml) {
@@ -108,8 +108,8 @@ function wrs_setinitialsession($sessionid, $xml) {
 }
 
 /**
- * Includes a <nonapplet> tag on all the <APPLET> tags with an image linking a WIRIS cas jnlp containing the applet session.
- * This allows to download WIRIS cas jnlp for chrome browsers.
+ * Includes a <nonapplet> tag on all the <APPLET> tags with an image linking a CAS jnlp containing the applet session.
+ * This allows to download CAS jnlp for chrome browsers.
  * @param  String $text with <APPLET_TAGS>
  * @return String Filtered text.
  */
@@ -126,13 +126,18 @@ function wrs_filterapplettojnlp($text) {
         if (strpos($appletcode, ' src="') && strpos($appletcode, 'value="<session')) {
             $sessionid = wrs_createsessionid();
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
-            $srcend = strpos($appletcode, '.png"', 0);
+            $srcend = strpos($appletcode, '.png"', $srcstart);
             $src = substr($appletcode, $srcstart, $srcend - $srcstart + 4);
-            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid;
+            // Quick fix to obtain the algorithm language
+            $langstart = strpos($appletcode, ' lang="') + strlen(' lang="');
+            $langend = strpos($appletcode, ' version="', $langstart);
+            $lang = substr($appletcode, $langstart, $langend - $langstart - 1);
+
+            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid.'&lang='.$lang;
             $output .= html_writer::start_tag('a', array('href' => $hreflink));
             $img = '';
             if (method_exists('html_writer', 'img')) {
-                $img = html_writer::img($src, 'WIRIS CAS');
+                $img = html_writer::img($src, 'CAS');
             } else {
                 $img .= html_writer::start_tag('img', array('src' => $src));
                 $img .= html_writer::end_tag('img');

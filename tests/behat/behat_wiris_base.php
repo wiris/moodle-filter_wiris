@@ -24,10 +24,10 @@
  */
 
 /**
- * This class provides necessary methods to run behat scripts for wiris plugins.
+ * This class provides necessary methods to run behat scripts for MathType.
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

@@ -16,12 +16,12 @@
 //
 
 /**
- * This class implements WIRIS com_wiris_plugin_configuration_ConfigurationUpdater interface
+ * This class implements com_wiris_plugin_configuration_ConfigurationUpdater interface
  * to use a custom Moodle configuration.
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -121,7 +121,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wiriseditormodalwindowfullscreen'] = 'true';
         }
 
-        // Enabling access provider if has been setted on WIRIS filter settings.
+        // Enabling access provider if has been setted on MathType filter settings.
 
         if (get_config('filter_wiris', 'access_provider_enabled')) {
             $configuration['wirisaccessproviderenabled'] = 'true';
@@ -140,7 +140,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         if ($this->get_latex_status()) {
             $configuration['wiriseditorparselatex'] = false;
         }
-        // WIRIS editor.
+        // MathType.
         $filterenabled = filter_is_enabled('filter/wiris');
         $this->waseditorenabled = $this->eval_parameter($configuration['wiriseditorenabled']);
         if (get_config('filter_wiris', 'editor_enable')) {
@@ -153,7 +153,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         } else {
             $configuration['wiriseditorenabled'] = "false";
         }
-        // WIRIS cas.
+        // Cas.
         $this->wascasenabled = $this->eval_parameter($configuration['wiriscasenabled']);
         if (isset($CFG->filter_wiris_cas_enable)) {
             $wiriscasenabled = ($this->wascasenabled && $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
@@ -162,7 +162,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wiriscasenabled'] = false;
         }
 
-        // WIRIS Chem editor.
+        // ChemType.
         $this->waschemeditorenabled = $this->eval_parameter($configuration['wirischemeditorenabled']);
         if (get_config('filter_wiris', 'chem_editor_enable')) {
             $wirischemeditorenabled = $this->waschemeditorenabled &&

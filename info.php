@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * WIRIS filter test page.
+ * MathType filter test page.
  *
  * @package    filter
  * @subpackage wiris
- * @copyright  Maths for More S.L. <info@wiris.com>
+ * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -161,19 +161,6 @@ echo $output;
 // Get editor data for tests.
 $currenteditordata = get_current_editor_data();
 
-// Looking for correct folder test.
-$output = '';
-$output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-$testname = get_string('lookingforcorrectfolder', 'filter_wiris');
-$reporttext = get_string('filtermustbeinstalled', 'filter_wiris');
-$solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
-$actualfolder = realpath(dirname(__FILE__));
-$correctfolder = realpath($CFG->dirroot . '/filter/wiris');
-echo wrs_createtablerow($testname, $reporttext, $solutionlink, $actualfolder == $correctfolder);
-$output .= html_writer::end_tag('tr');
-echo $output;
-
-
 // Filter files tests.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
@@ -213,7 +200,7 @@ echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
 
-// Wiris filter enabled
+// MathType filter enabled
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('pluginname', 'filter_wiris');
@@ -282,7 +269,7 @@ echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
 
-// Wiris plugin enabled test.
+// MathType enabled test.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 
