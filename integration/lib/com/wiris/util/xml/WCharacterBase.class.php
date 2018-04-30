@@ -3,6 +3,9 @@
 class com_wiris_util_xml_WCharacterBase {
 	public function __construct(){}
 	static $NEGATIVE_THIN_SPACE = 57344;
+	static $LINE = 57345;
+	static $SEGMENT = 57346;
+	static $ALIGNMENT_MARK = 57358;
 	static $ROOT = 61696;
 	static $ROOT_VERTICAL = 61727;
 	static $ROOT_NO_TAIL = 61728;
