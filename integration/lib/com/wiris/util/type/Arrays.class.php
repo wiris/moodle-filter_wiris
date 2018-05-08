@@ -12,6 +12,16 @@ class com_wiris_util_type_Arrays {
 		}
 		return $data;
 	}
+	static function isNotEmpty($array) {
+		return $array !== null && $array->length > 0;
+	}
+	static function getOrDefault($array, $index, $defaultValue) {
+		if($array !== null && $index >= 0 && $index < $array->length) {
+			return $array[$index];
+		} else {
+			return $defaultValue;
+		}
+	}
 	static function indexOfElement($array, $element) {
 		$i = 0;
 		$n = $array->length;
