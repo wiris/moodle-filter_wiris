@@ -232,6 +232,13 @@ class com_wiris_util_type_Arrays {
 	}
 	static function difference($a, $b) {
 		$v = new _hx_array(array());
+		if($a === null) {
+			return $v;
+		} else {
+			if($b === null) {
+				return com_wiris_util_type_Arrays::copyArray($a);
+			}
+		}
 		$it = $a->iterator();
 		while($it->hasNext()) {
 			$e = $it->next();
