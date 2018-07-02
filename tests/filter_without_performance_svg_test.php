@@ -47,7 +47,7 @@ class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
         $testsiteprotocol = strrpos($CFG->wwwroot, 'https') !== false ? 'https' : 'http';
         // Simple image "1+2".
 
-        // Special chars alt
+        // Special chars alt.
         $this->specialcharsalt = '{"result":{"text":"1 plus 2"},"status":"ok"}';
 
         // Svg format.

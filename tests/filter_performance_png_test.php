@@ -51,21 +51,22 @@ class filter_wiris_filter_performance_png_testcase extends advanced_testcase
         // Png format.
         $testsiteprotocol = strrpos($CFG->wwwroot, 'https') !== false ? 'https' : 'http';
 
-        $this->minuspngbase64uri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4bA';
-        $this->minuspngbase64uri .= 'AAABGJhU0UAAAAMyZLetQAAAJxJREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5Ws';
-        $this->minuspngbase64uri .= 'B8VGoGF5AS0dhA/JAfGmwOQoEfgw2R1lCo3DQOIoDiE9CMwDFjvpPBCYEBIF4AxC7MRBpIa2BEtRBKsRqoLWjNIB4NhBzk';
-        $this->minuspngbase64uri .= 'aKJlo4SB+JVQMxCqkZaOmoLNKRIcgypiZUcD/+nk13UAwALiDAoXaNIwQAAAF10RVh0TWF0aE1MADxtYXRoIHhtbG5zPSJ';
-        $this->minuspngbase64uri .= 'odHRwOi8vd3d3LnczLm9yZy8xOTk4L01hdGgvTWF0aE1MIj48bW4+MTwvbW4+PG1vPi08L21vPjxtbj4yPC9tbj48L21hdG';
-        $this->minuspngbase64uri .= 'g+Ja9qWgAAAABJRU5ErkJggg==';
+        $this->minuspngbase64uri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4b';
+        $this->minuspngbase64uri .= 'AAAABGJhU0UAAAAMyZLetQAAAJxJREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5';
+        $this->minuspngbase64uri .= 'WsB8VGoGF5AS0dhA/JAfGmwOQoEfgw2R1lCo3DQOIoDiE9CMwDFjvpPBCYEBIF4AxC7MRBpIa2BEtRBKsRqoLWjNIB4Nh';
+        $this->minuspngbase64uri .= 'BzkaKJlo4SB+JVQMxCqkZaOmoLNKRIcgypiZUcD/+nk13UAwALiDAoXaNIwQAAAF10RVh0TWF0aE1MADxtYXRoIHhtbG5';
+        $this->minuspngbase64uri .= 'zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk4L01hdGgvTWF0aE1MIj48bW4+MTwvbW4+PG1vPi08L21vPjxtbj4yPC9tbj48';
+        $this->minuspngbase64uri .= 'L21hdGg+Ja9qWgAAAABJRU5ErkJggg==';
 
-        // Special chars alt
+        // Special chars alt.
         $this->specialcharsalt = '{"result":{"text":"1 minus 2"},"status":"ok"}';
 
-        $this->pluspngbase64uri = 'iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAABGJhU0UAAAAMyZLetQAAA';
-        $this->pluspngbase64uri .= 'J1JREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5WsB8VGoGF5AjqMo8Yg8EF8abI4Cg';
-        $this->pluspngbase64uri .= 'R+DzVGW0CgcNI7iAOKT0AxAsQX/icCEgCAQbwBiN1r5mlQ9SlAHqdAyKkjRowHEs4GYi9bpg1g94kC8CohZ6JFoidWzBRpSJ';
-        $this->pluspngbase64uri .= 'BlMamIlx/H/6WQX9QAAJxI4ILfeWLsAAABddEVYdE1hdGhNTAA8bWF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5O';
-        $this->pluspngbase64uri .= 'C9NYXRoL01hdGhNTCI+PG1uPjE8L21uPjxtbz4rPC9tbz48bW4+MjwvbW4+PC9tYXRoPshlGCAAAAAASUVORK5CYII=';
+        $this->pluspngbase64uri = 'iVBORw0KGgoAAAANSUhEUgAAACUAAAANCAYAAAAuYadYAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAABGJhU0UAAAAMyZLetQA';
+        $this->pluspngbase64uri .= 'AAJ1JREFUeNpjYEAFakBcC8QXGGgHrIF4DRB/AuJfULui8WlYDMRpQPyfho46CMSRQMwD5WsB8VGoGF5AjqMo8Yg8EF8ab';
+        $this->pluspngbase64uri .= 'I4CgR+DzVGW0CgcNI7iAOKT0AxAsQX/icCEgCAQbwBiN1r5mlQ9SlAHqdAyKkjRowHEs4GYi9bpg1g94kC8CohZ6JFoidW';
+        $this->pluspngbase64uri .= 'zBRpSJBlMamIlx/H/6WQX9QAAJxI4ILfeWLsAAABddEVYdE1hdGhNTAA8bWF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vc';
+        $this->pluspngbase64uri .= 'mcvMTk5OC9NYXRoL01hdGhNTCI+PG1uPjE8L21uPjxtbz4rPC9tbz48bW4+MjwvbW4+PC9tYXRoPshlGCAAAAAASUVORK';
+        $this->pluspngbase64uri .= '5CYII=';
 
         $this->imagepng = '<img src="' . $testsiteprotocol. '://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';

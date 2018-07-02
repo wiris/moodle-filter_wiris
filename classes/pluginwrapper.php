@@ -86,7 +86,8 @@ class filter_wiris_pluginwrapper {
             $this->instance = com_wiris_plugin_api_PluginBuilder::newInstance();
             $this->instance->addConfigurationUpdater($this->moodleConfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
-            $this->instance->addConfigurationUpdater(new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig));
+            $newpluginwrapperconfiguration = new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig);
+            $this->instance->addConfigurationUpdater($newpluginwrapperconfiguration);
 
             // Class to manage file cache.
             $cachefile = new moodlefilecache('filter_wiris', 'images');
