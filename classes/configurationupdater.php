@@ -113,10 +113,6 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         // Window Properties.
 
-        if (!get_config('filter_wiris', 'editormodalwindow')) {
-            $configuration['wiriseditormodalwindow'] = 'false';
-        }
-
         if (get_config('filter_wiris', 'editormodalwindowfullscreen')) {
             $configuration['wiriseditormodalwindowfullscreen'] = 'true';
         }
