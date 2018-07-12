@@ -55,6 +55,16 @@ class com_wiris_util_type_Arrays {
 		}
 		return $words;
 	}
+	static function toIntArray($array) {
+		$result = new _hx_array(array());
+		$it = $array->iterator();
+		while($it->hasNext()) {
+			$value = Std::parseInt($it->next());
+			$result->push($value);
+			unset($value);
+		}
+		return $result;
+	}
 	static function contains($array, $element) {
 		return com_wiris_util_type_Arrays::indexOfElement($array, $element) >= 0;
 	}

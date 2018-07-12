@@ -57,7 +57,7 @@ class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
         $this->imagepng .= ' data-mathml=\'«math ';
         $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 
-        // Special chars alt
+        // Special chars alt.
         $this->specialcharsalt = '{"result":{"text":"1 plus 2"},"status":"ok"}';
 
         // Svg format.

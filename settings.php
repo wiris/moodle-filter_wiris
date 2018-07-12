@@ -101,7 +101,7 @@ if ($ADMIN->fulltree) {
                                                             'https',
                                                             array('http' => 'http', 'https' => 'https')));
 
-        // Image properties
+        // Image properties.
 
         $settings->add(new admin_setting_heading('filter_wiris/imagesettings',
                                                             get_string('imagesettings', 'filter_wiris'),
@@ -117,15 +117,12 @@ if ($ADMIN->fulltree) {
                                                             get_string('pluginperformance', 'filter_wiris'),
                                                             get_string('pluginperformance_help', 'filter_wiris'), '1'));
 
-        // Window properties
+        // Window properties.
 
         $settings->add(new admin_setting_heading('filter_wiris/windowsettings',
                                                             get_string('windowsettings', 'filter_wiris'),
                                                             get_string('windowsettings_text', 'filter_wiris')));
 
-        $settings->add(new admin_setting_configcheckbox('filter_wiris/editormodalwindow',
-                                                            get_string('editormodalwindow', 'filter_wiris'),
-                                                            get_string('editormodalwindow_help', 'filter_wiris'), '1'));
 
         $settings->add(new admin_setting_configcheckbox('filter_wiris/editormodalwindowfullscreen',
                                                             get_string('editormodalwindowfullscreen', 'filter_wiris'),

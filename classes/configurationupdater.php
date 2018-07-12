@@ -85,9 +85,9 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         com_wiris_system_CallWrapper::getInstance()->stop();
 
-        // configuration.ini wrapper
+        // Configuration.ini wrapper.
 
-        // Connection properties
+        // Connection properties.
 
         if (get_config('filter_wiris', 'imageservicehost')) {
             $configuration['wirisimageservicehost'] = get_config('filter_wiris', 'imageservicehost');
@@ -111,11 +111,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wirispluginperformance'] = 'false';
         }
 
-        // Window Properties
-
-        if (!get_config('filter_wiris', 'editormodalwindow')) {
-            $configuration['wiriseditormodalwindow'] = 'false';
-        }
+        // Window Properties.
 
         if (get_config('filter_wiris', 'editormodalwindowfullscreen')) {
             $configuration['wiriseditormodalwindowfullscreen'] = 'true';
@@ -156,7 +152,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         // Cas.
         $this->wascasenabled = $this->eval_parameter($configuration['wiriscasenabled']);
         if (isset($CFG->filter_wiris_cas_enable)) {
-            $wiriscasenabled = ($this->wascasenabled && $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
+            $wiriscasenabled = ($this->wascasenabled &&
+                                $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
             $configuration['wiriscasenabled'] = $wiriscasenabled;
         } else {
             $configuration['wiriscasenabled'] = false;

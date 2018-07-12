@@ -128,7 +128,7 @@ function wrs_filterapplettojnlp($text) {
             $srcstart = strpos($appletcode, ' src="') + strlen(' src="');
             $srcend = strpos($appletcode, '.png"', $srcstart);
             $src = substr($appletcode, $srcstart, $srcend - $srcstart + 4);
-            // Quick fix to obtain the algorithm language
+            // Quick fix to obtain the algorithm language.
             $langstart = strpos($appletcode, ' lang="') + strlen(' lang="');
             $langend = strpos($appletcode, ' version="', $langstart);
             $lang = substr($appletcode, $langstart, $langend - $langstart - 1);
