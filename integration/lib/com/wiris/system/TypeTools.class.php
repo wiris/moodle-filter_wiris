@@ -33,5 +33,19 @@ class com_wiris_system_TypeTools {
 	static function string2ByteData_iso8859_1($str) {
 		return haxe_io_Bytes::ofString($str);
 	}
+	static function hashParamsToObjectParams($params) {
+		if($params === null) {
+			return null;
+		}
+		$paramObject = _hx_anonymous(array());
+		$i = $params->keys();
+		while($i->hasNext()) {
+			$key = $i->next();
+			$value = $params->get($key);
+			$paramObject->{$key} = $value;
+			unset($value,$key);
+		}
+		return $paramObject;
+	}
 	function __toString() { return 'com.wiris.system.TypeTools'; }
 }
