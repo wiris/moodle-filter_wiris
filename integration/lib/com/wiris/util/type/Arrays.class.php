@@ -259,5 +259,15 @@ class com_wiris_util_type_Arrays {
 		}
 		return $v;
 	}
+	static function arrayUnion($baseArray, $unionArray) {
+		$it = $unionArray->iterator();
+		while($it->hasNext()) {
+			$n = $it->next();
+			if(!com_wiris_system_ArrayEx::contains($baseArray, $n)) {
+				$baseArray->push($n);
+			}
+			unset($n);
+		}
+	}
 	function __toString() { return 'com.wiris.util.type.Arrays'; }
 }
