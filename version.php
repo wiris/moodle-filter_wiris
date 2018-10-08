@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018092500;
-$plugin->release = '7.6.1.1393';
+$plugin->version = 2018100800;
+$plugin->release = '7.7.0.1394';
 $plugin->requires = 2011120511;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->component = 'filter_wiris';

@@ -64,9 +64,7 @@ class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider
         $this->wrap->stop();
         $serviceparams = array();
         foreach ($this->serviceparamlist as $key) {
-            if ($serviceparam = optional_param($key, false, PARAM_RAW)) {
-                $serviceparams[$key] = $serviceparam;
-            }
+             $serviceparams[$key] = optional_param($key, false, PARAM_RAW);
         }
         $this->wrap->start();
         return $serviceparams;
