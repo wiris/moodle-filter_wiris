@@ -161,6 +161,9 @@ class com_wiris_plugin_impl_TextFilter {
 				if($safeXML) {
 					if($dataMathml !== -1) {
 						$m1 = _hx_index_of($text, "/>", $n1);
+						if($m1 === -1) {
+							$m1 = _hx_index_of($text, ">", $n1);
+						}
 						if($m1 >= 0 && (_hx_index_of($text, "<img", $n1) === -1 || _hx_index_of($text, "<img", $n1) > $m1)) {
 							$m0 = _hx_last_index_of(_hx_substr($text, $m0, $n0 - $m0), "<img", null);
 							if($m0 >= 0) {
