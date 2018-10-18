@@ -269,5 +269,22 @@ class com_wiris_util_type_Arrays {
 			unset($n);
 		}
 	}
+	static function equalAsSets($a, $b) {
+		if($a === null || $b === null) {
+			return $a === $b;
+		}
+		if($a->length === $b->length) {
+			$it = $b->iterator();
+			while($it->hasNext()) {
+				$t = $it->next();
+				if(!com_wiris_system_ArrayEx::contains($a, $t)) {
+					return false;
+				}
+				unset($t);
+			}
+			return true;
+		}
+		return false;
+	}
 	function __toString() { return 'com.wiris.util.type.Arrays'; }
 }
