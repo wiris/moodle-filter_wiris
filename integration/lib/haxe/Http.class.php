@@ -264,7 +264,7 @@ class haxe_Http {
 			$this->onError("Invalid URL");
 			return;
 		}
-		$secure = $url_regexp->matched(1) === "https://";
+		$secure = $url_regexp->matched(1) === "https://" && _hx_field(_hx_qtype("haxe.Http"), "PROXY") === null;
 		if($sock === null) {
 			if($secure) {
 				$sock = new php_net_SslSocket();

@@ -3,7 +3,7 @@
     <library>
         <location>integration</location>
         <name>MathType integration engine</name>
-        <version>7.8.0.1397</version>
+        <version>7.9.0.1398</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>
     </library>
