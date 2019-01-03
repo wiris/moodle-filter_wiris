@@ -103,7 +103,9 @@ class com_wiris_plugin_impl_CacheImpl implements com_wiris_util_sys_Cache{
 		$parent = $this->getFolderStore($this->cacheFolder, $digest);
 		$parent->mkdirs();
 		$store = $this->getFileStoreWithParent($parent, $digest, $extension);
-		$store->writeBinary($value);
+		if(!$store->exists()) {
+			$store->writeBinary($value);
+		}
 	}
 	public $cacheFolder;
 	public $conf;

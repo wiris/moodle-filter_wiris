@@ -52,6 +52,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("_wrs_conf_imageMathmlAttribute", $this->getProperty("wiriseditormathmlattribute", null));
 		$javaScriptHash->set("_wrs_conf_saveMode", $this->getProperty("wiriseditorsavemode", null));
 		$javaScriptHash->set("_wrs_conf_editMode", $this->getProperty("wiriseditoreditmode", null));
+		$javaScriptHash->set("_wrs_conf_saveHandTraces", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SAVE_MATHML_SEMANTICS, null) === "true");
 		$parseLatexElements = new _hx_array(array());
 		if($this->getProperty("wiriseditorparselatex", null) === "true") {
 			$parseLatexElements->push("latex");

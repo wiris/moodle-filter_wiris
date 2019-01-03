@@ -46,25 +46,30 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
 
-        // Image: print("asd");//
-        $this->specialcharsimagesafexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mi»p«/mi»«mi»r«/mi»«mi»i«/mi»';
-        $this->specialcharsimagesafexml .= '«mi»n«/mi»«mi»t«/mi»«mo»(«/mo»«mo»§#34;«/mo»«mi»a«/mi»«mi»s«/mi»«mi»d«/mi»«mo»§#34;';
+        // Image: print "asd".
+        $this->specialcharsimagesafexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mi»p«/mi»«mi»r';
+        $this->specialcharsimagesafexml .= '«/mi»«mi»i«/mi»«mi»n«/mi»«mi»t«/mi»«mo»';
+        $this->specialcharsimagesafexml .= '(«/mo»«mo»§#34;«/mo»«mi»a«/mi»«mi»s«/mi»«mi»d«/mi»«mo»§#34;';
         $this->specialcharsimagesafexml .= '«/mo»«mo»)«/mo»«mo»;«/mo»«mo»/«/mo»«mo»/«/mo»«/math»';
 
-        // Special image svg
+        // Special image svg.
         $this->imagesvgspecialchars = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2F';
         $this->imagesvgspecialchars .= 'svg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height';
         $this->imagesvgspecialchars .= '%3D%2221%22%20width%3D%22117%22%20wrs%3Abaseline%3D%2216%22%3E%3C!--MathML%3A%20%3Cmat';
 
-        // Special chars alt
-        $this->specialcharsalt = '{"result":{"text":"p r i n t left parenthesis \" a s d \" right parenthesis semicolon divided by divided by"},"status":"ok"}';
+        // Special chars alt.
+        $this->specialcharsalt = '';
+        $this->specialcharsalt .= '{"result":{"text":"p r i n t left parenthesis \" a s d \" right';
+        $this->specialcharsalt .= ' parenthesis semicolon divided by divided by"},"status":"ok"}';
 
         // Simple images of "1+2".
 
         // Svg performance.
-        $this->imagesvgperformance = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3';
-        $this->imagesvgperformance .= 'Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2220';
-        $this->imagesvgperformance .= '%22%20width%3D%2234%22%20wrs%3Abaseline%3D%2216%22%3E%3C!--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fww';
+        $this->imagesvgperformance = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2F';
+        $this->imagesvgperformance .= 'www.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2F';
+        $this->imagesvgperformance .= 'www.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2220';
+        $this->imagesvgperformance .= '%22%20width%3D%2234%22%20wrs%3Abaseline%3D%2216%22%3E%3C!';
+        $this->imagesvgperformance .= '--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fww';
         $this->imagesvgperformance .= 'w.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmn%3E1%3C%2Fmn%3E%3Cmo%3E%2B%3C%2';
 
         $this->svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/cvs-extension" height="20"';

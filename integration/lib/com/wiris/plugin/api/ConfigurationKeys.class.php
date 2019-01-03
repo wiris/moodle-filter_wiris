@@ -34,6 +34,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $WIRIS_DPI = "wirisimagedpi";
 	static $FONT_FAMILY = "wirisfontfamily";
 	static $FILTER_OUTPUT_MATHML = "wirisfilteroutputmathml";
+	static $SAVE_MATHML_SEMANTICS = "wirissavehandtraces";
 	static $EDITOR_MATHML_ATTRIBUTE = "wiriseditormathmlattribute";
 	static $EDITOR_PARAMS = "wiriseditorparameters";
 	static $EDITOR_PARAMETERS_DEFAULT_LIST = "mml,color,centerbaseline,zoom,dpi,fontSize,fontFamily,defaultStretchy,backgroundColor,format";
@@ -53,7 +54,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $CLEAN_CACHE_GUI = "wiriscleancachegui";
 	static $imageConfigProperties;
 	static $imageConfigPropertiesInv;
-	static $SERVICES_PARAMETERS_LIST = "mml,lang,service,latex";
+	static $SERVICES_PARAMETERS_LIST = "mml,lang,service,latex,mode";
 	static function computeInverse($dict) {
 		$keys = $dict->keys();
 		$outDict = new Hash();

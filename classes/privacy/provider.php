@@ -15,19 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Privacy class for MathType filter.
  *
- * @package    filter
- * @subpackage wiris
+ * @package    filter_wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace filter_wiris\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018121200;
-$plugin->release = '7.9.0.1398';
-$plugin->requires = 2011120511;
-$plugin->maturity = MATURITY_STABLE;
-$plugin->component = 'filter_wiris';
-$plugin->dependencies = array();
+class provider implements
+    // This plugin does not store any personal user data.
+    \core_privacy\local\metadata\null_provider
+{
+    use \core_privacy\local\legacy_polyfill;
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function _get_reason() {
+        return 'privacy:null_reason';
+    }
+}
