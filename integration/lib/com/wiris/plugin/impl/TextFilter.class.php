@@ -44,6 +44,7 @@ class com_wiris_plugin_impl_TextFilter {
 		$width = null;
 		$height = null;
 		$baseline = null;
+		$role = null;
 		if($this->plugin->getConfiguration()->getProperty("wirispluginperformance", "false") === "false") {
 			$src = $this->render->createImage($str, $provider, $output);
 			$img .= " src=\"" . $src . "\"";
@@ -51,6 +52,7 @@ class com_wiris_plugin_impl_TextFilter {
 			$width = com_wiris_system_PropertiesTools::getProperty($output, "width", null);
 			$height = com_wiris_system_PropertiesTools::getProperty($output, "height", null);
 			$baseline = com_wiris_system_PropertiesTools::getProperty($output, "baseline", null);
+			$role = com_wiris_system_PropertiesTools::getProperty($output, "role", null);
 		} else {
 			$digest = $this->render->computeDigest($str, $prop);
 			$hashImage = $this->render->showImageHash($digest, com_wiris_system_PropertiesTools::getProperty($prop, "lang", null));
@@ -72,6 +74,7 @@ class com_wiris_plugin_impl_TextFilter {
 			$width = $hashImage->get("width");
 			$height = $hashImage->get("height");
 			$baseline = $hashImage->get("baseline");
+			$role = $hashImage->get("role");
 		}
 		$dpi = Std::parseFloat($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$WIRIS_DPI, "96"));
 		if($this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null) !== null) {
@@ -96,6 +99,7 @@ class com_wiris_plugin_impl_TextFilter {
 		$img .= " height=\"" . _hx_string_rec($metricsHash->get("height"), "") . "\"";
 		$verticalAlign = $metricsHash->get("baseline") - $metricsHash->get("height");
 		$img .= " style=\"vertical-align:" . _hx_string_rec($verticalAlign, "") . "px\"";
+		$img .= " role=\"" . $role . "\"";
 		if($mml) {
 			$tag = $this->plugin->getConfiguration()->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_MATHML_ATTRIBUTE, "data-mathml");
 			$img .= " " . $tag . "='" . $this->save_xml_encode($str) . "'";

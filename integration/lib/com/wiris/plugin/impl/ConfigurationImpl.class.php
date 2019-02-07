@@ -48,11 +48,11 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 	}
 	public function getJavaScriptHash() {
 		$javaScriptHash = new Hash();
-		$javaScriptHash->set("_wrs_conf_editorEnabled", $this->getProperty("wiriseditorenabled", null) === "true");
-		$javaScriptHash->set("_wrs_conf_imageMathmlAttribute", $this->getProperty("wiriseditormathmlattribute", null));
-		$javaScriptHash->set("_wrs_conf_saveMode", $this->getProperty("wiriseditorsavemode", null));
-		$javaScriptHash->set("_wrs_conf_editMode", $this->getProperty("wiriseditoreditmode", null));
-		$javaScriptHash->set("_wrs_conf_saveHandTraces", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SAVE_MATHML_SEMANTICS, null) === "true");
+		$javaScriptHash->set("editorEnabled", $this->getProperty("wiriseditorenabled", null) === "true");
+		$javaScriptHash->set("imageMathmlAttribute", $this->getProperty("wiriseditormathmlattribute", null));
+		$javaScriptHash->set("saveMode", $this->getProperty("wiriseditorsavemode", null));
+		$javaScriptHash->set("editMode", $this->getProperty("wiriseditoreditmode", null));
+		$javaScriptHash->set("saveHandTraces", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SAVE_MATHML_SEMANTICS, null) === "true");
 		$parseLatexElements = new _hx_array(array());
 		if($this->getProperty("wiriseditorparselatex", null) === "true") {
 			$parseLatexElements->push("latex");
@@ -60,23 +60,23 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		if($this->getProperty("wiriseditorparsexml", null) === "true") {
 			$parseLatexElements->push("xml");
 		}
-		$javaScriptHash->set("_wrs_conf_parseModes", $parseLatexElements);
-		$javaScriptHash->set("_wrs_conf_editorAttributes", $this->getProperty("wiriseditorwindowattributes", null));
-		$javaScriptHash->set("_wrs_conf_editorUrl", $this->plugin->getImageServiceURL("editor", false));
-		$javaScriptHash->set("_wrs_conf_modalWindow", $this->getProperty("wiriseditormodalwindow", null) === "true");
-		$javaScriptHash->set("_wrs_conf_modalWindowFullScreen", $this->getProperty("wiriseditormodalwindowfullscreen", null) === "true");
-		$javaScriptHash->set("_wrs_conf_CASEnabled", $this->getProperty("wiriscasenabled", null) === "true");
-		$javaScriptHash->set("_wrs_conf_CASMathmlAttribute", $this->getProperty("wiriscasmathmlattribute", null));
-		$javaScriptHash->set("_wrs_conf_CASAttributes", $this->getProperty("wiriscaswindowattributes", null));
-		$javaScriptHash->set("_wrs_conf_hostPlatform", $this->getProperty("wirishostplatform", null));
-		$javaScriptHash->set("_wrs_conf_versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
-		$javaScriptHash->set("_wrs_conf_enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
-		$javaScriptHash->set("_wrs_conf_setSize", $this->getProperty("wiriseditorsetsize", "false") === "true");
-		$javaScriptHash->set("_wrs_conf_editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
-		$javaScriptHash->set("_wrs_conf_chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
-		$javaScriptHash->set("_wrs_conf_imageFormat", $this->getProperty("wirisimageformat", "png"));
+		$javaScriptHash->set("parseModes", $parseLatexElements);
+		$javaScriptHash->set("editorAttributes", $this->getProperty("wiriseditorwindowattributes", null));
+		$javaScriptHash->set("editorUrl", $this->plugin->getImageServiceURL("editor", false));
+		$javaScriptHash->set("modalWindow", $this->getProperty("wiriseditormodalwindow", null) === "true");
+		$javaScriptHash->set("modalWindowFullScreen", $this->getProperty("wiriseditormodalwindowfullscreen", null) === "true");
+		$javaScriptHash->set("CASEnabled", $this->getProperty("wiriscasenabled", null) === "true");
+		$javaScriptHash->set("CASMathmlAttribute", $this->getProperty("wiriscasmathmlattribute", null));
+		$javaScriptHash->set("CASAttributes", $this->getProperty("wiriscaswindowattributes", null));
+		$javaScriptHash->set("hostPlatform", $this->getProperty("wirishostplatform", null));
+		$javaScriptHash->set("versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
+		$javaScriptHash->set("enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
+		$javaScriptHash->set("setSize", $this->getProperty("wiriseditorsetsize", "false") === "true");
+		$javaScriptHash->set("editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
+		$javaScriptHash->set("chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
+		$javaScriptHash->set("imageFormat", $this->getProperty("wirisimageformat", "png"));
 		if($this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null) !== null) {
-			$javaScriptHash->set("_wrs_conf_editorParameters", com_wiris_util_json_JSon::decode($this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null)));
+			$javaScriptHash->set("editorParameters", com_wiris_util_json_JSon::decode($this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_PARAMS, null)));
 		} else {
 			$h = com_wiris_plugin_api_ConfigurationKeys::$imageConfigPropertiesInv;
 			$attributes = new Hash();
@@ -93,9 +93,9 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 					$attributes->set($confVal, $value);
 				}
 			}
-			$javaScriptHash->set("_wrs_conf_editorParameters", $attributes);
+			$javaScriptHash->set("editorParameters", $attributes);
 		}
-		$javaScriptHash->set("_wrs_conf_wirisPluginPerformance", $this->getProperty("wirispluginperformance", null) === "true");
+		$javaScriptHash->set("wirisPluginPerformance", $this->getProperty("wirispluginperformance", null) === "true");
 		$version = null;
 		try {
 			$version = com_wiris_system_Storage::newResourceStorage("VERSION")->read();
@@ -109,7 +109,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 				$version = "Missing version";
 			}
 		}
-		$javaScriptHash->set("_wrs_conf_version", $version);
+		$javaScriptHash->set("version", $version);
 		return $javaScriptHash;
 	}
 	public function appendElement2JavascriptArray($array, $value) {

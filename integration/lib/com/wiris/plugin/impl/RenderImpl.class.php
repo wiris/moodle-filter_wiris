@@ -143,6 +143,7 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			}
 			$jsonResult->set("content", $content->toString());
 			$jsonResult->set("format", $imageFormat);
+			$jsonResult->set("role", "math");
 			return $jsonResult;
 		} else {
 			return null;
@@ -298,6 +299,9 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 		if($provider->getParameter("refererquery", null) !== null) {
 			$refererquery = $provider->getParameter("refererquery", "");
 			$rparam = "&refererquery=" . $refererquery;
+		}
+		if($output !== null) {
+			$output["role"] = "math";
 		}
 		if($provider->getParameter("base64", null) !== null || $saveMode === "base64") {
 			$bs = $this->showImage($digest, null, $provider);
