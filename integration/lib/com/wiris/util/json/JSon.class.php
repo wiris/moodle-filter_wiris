@@ -232,6 +232,24 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 		$sb->add($s);
 		$sb->add("\"");
 	}
+	public function encodeArrayBoolean($sb, $v) {
+		$v2 = new _hx_array(array());
+		$i = 0;
+		while($i < $v->length) {
+			$v2->push($v[$i]);
+			++$i;
+		}
+		$this->encodeArray($sb, $v2);
+	}
+	public function encodeArrayDouble($sb, $v) {
+		$v2 = new _hx_array(array());
+		$i = 0;
+		while($i < $v->length) {
+			$v2->push($v[$i]);
+			++$i;
+		}
+		$this->encodeArray($sb, $v2);
+	}
 	public function encodeArrayInt($sb, $v) {
 		$v2 = new _hx_array(array());
 		$i = 0;
@@ -312,25 +330,33 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 				if(Std::is($o, _hx_qtype("Array"))) {
 					$this->encodeArrayInt($sb, $o);
 				} else {
-					if(Std::is($o, _hx_qtype("String"))) {
-						$this->encodeString($sb, $o);
+					if(Std::is($o, _hx_qtype("Array"))) {
+						$this->encodeArrayDouble($sb, $o);
 					} else {
-						if(Std::is($o, _hx_qtype("Int"))) {
-							$this->encodeInteger($sb, $o);
+						if(Std::is($o, _hx_qtype("Array"))) {
+							$this->encodeArrayBoolean($sb, $o);
 						} else {
-							if(Std::is($o, _hx_qtype("haxe.Int64"))) {
-								$this->encodeLong($sb, $o);
+							if(Std::is($o, _hx_qtype("String"))) {
+								$this->encodeString($sb, $o);
 							} else {
-								if(Std::is($o, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
-									$this->encodeIntegerFormat($sb, $o);
+								if(Std::is($o, _hx_qtype("Int"))) {
+									$this->encodeInteger($sb, $o);
 								} else {
-									if(Std::is($o, _hx_qtype("Bool"))) {
-										$this->encodeBoolean($sb, $o);
+									if(Std::is($o, _hx_qtype("haxe.Int64"))) {
+										$this->encodeLong($sb, $o);
 									} else {
-										if(Std::is($o, _hx_qtype("Float"))) {
-											$this->encodeFloat($sb, $o);
+										if(Std::is($o, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
+											$this->encodeIntegerFormat($sb, $o);
 										} else {
-											throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+											if(Std::is($o, _hx_qtype("Bool"))) {
+												$this->encodeBoolean($sb, $o);
+											} else {
+												if(Std::is($o, _hx_qtype("Float"))) {
+													$this->encodeFloat($sb, $o);
+												} else {
+													throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+												}
+											}
 										}
 									}
 								}
