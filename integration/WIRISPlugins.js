@@ -1884,6 +1884,12 @@ com.wiris.system.JsDOMUtils.getComputedStyleProperty = function(element,name) {
 	} else value = element.style[com.wiris.system.JsDOMUtils.camelize(name)];
 	return value;
 }
+com.wiris.system.JsDOMUtils.getPixelRatio = function() {
+	var context = document.createElement("canvas").getContext("2d");
+	var dpr = window.devicePixelRatio || 1;
+	var bsr = context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1;
+	return dpr / bsr;
+}
 com.wiris.system.JsDOMUtils.camelize = function(str) {
 	var start = 0;
 	var pos;
@@ -1936,7 +1942,9 @@ com.wiris.system.JsDOMUtils.getWindowScroll = function() {
 	return scroll;
 }
 com.wiris.system.JsDOMUtils.setWindowScroll = function(scroll) {
-	js.Lib.window.scrollTo(js.Boot.__cast(scroll[0] , Int),js.Boot.__cast(scroll[1] , Int));
+	var x = scroll[0] | 0;
+	var y = scroll[1] | 0;
+	js.Lib.window.scrollTo(x,y);
 }
 com.wiris.system.JsDOMUtils.isLeftBidiAware = function(keyCode,rtl) {
 	return keyCode == 37 && !rtl || keyCode == 39 && rtl;
@@ -3775,7 +3783,7 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 com.wiris.js.JsPluginViewer.USE_CREATE_IMAGE = 1;
 com.wiris.js.JsPluginViewer.DEBUG = false;
 com.wiris.js.JsPluginViewer.TECH = "@param.js.tech.discover@";
-com.wiris.js.JsPluginViewer.VERSION = "7.12.0.1430";
+com.wiris.js.JsPluginViewer.VERSION = "7.13.0.1419";
 com.wiris.system.JsDOMUtils.TOUCHHOLD_MOVE_MARGIN = 10;
 com.wiris.system.JsDOMUtils.browser = new com.wiris.system.JsBrowser();
 com.wiris.system.JsDOMUtils.initialized = false;
