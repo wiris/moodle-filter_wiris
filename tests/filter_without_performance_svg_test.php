@@ -53,7 +53,7 @@ class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
         // Svg format.
         $this->imagesvg = '<img src="' . $testsiteprotocol . '://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagesvg .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
-        $this->imagesvg .= ' class="Wirisformula" alt="1 plus 2" width="34" height="20" style="vertical-align:-4px"';
+        $this->imagesvg .= ' class="Wirisformula" alt="1 plus 2" width="34" height="20" style="vertical-align:-4px" role="math"';
         $this->imagesvg .= ' data-mathml=\'«math ';
         $this->imagesvg .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 
