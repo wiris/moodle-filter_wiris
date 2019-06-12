@@ -51,7 +51,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("editorEnabled", $this->getProperty("wiriseditorenabled", null) === "true");
 		$javaScriptHash->set("imageMathmlAttribute", $this->getProperty("wiriseditormathmlattribute", null));
 		$javaScriptHash->set("saveMode", $this->getProperty("wiriseditorsavemode", null));
-		$javaScriptHash->set("editMode", $this->getProperty("wiriseditoreditmode", null));
+		$javaScriptHash->set("base64savemode", $this->getProperty("wiriseditorbase64savemode", null));
 		$javaScriptHash->set("saveHandTraces", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$SAVE_MATHML_SEMANTICS, null) === "true");
 		$parseLatexElements = new _hx_array(array());
 		if($this->getProperty("wiriseditorparselatex", null) === "true") {
@@ -71,7 +71,6 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("hostPlatform", $this->getProperty("wirishostplatform", null));
 		$javaScriptHash->set("versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
 		$javaScriptHash->set("enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
-		$javaScriptHash->set("setSize", $this->getProperty("wiriseditorsetsize", "false") === "true");
 		$javaScriptHash->set("editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
 		$javaScriptHash->set("chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
 		$javaScriptHash->set("imageFormat", $this->getProperty("wirisimageformat", "png"));
