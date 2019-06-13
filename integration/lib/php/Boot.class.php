@@ -662,7 +662,7 @@ class _hx_anonymous extends stdClass {
 		$b = '{ ';
 		$properties = $rfl->getProperties();
 		$first = true;
-		while(list(, $prop) = each($properties)) {
+		foreach ($properties as $prop) {
 			if($first)
 				$first = false;
 			else
