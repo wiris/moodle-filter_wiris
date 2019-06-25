@@ -61,8 +61,7 @@ class behat_wiris_editor extends behat_wiris_base {
                 throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound', 'filter_wirs'));
             }
             $component->setValue($value);
-        }
-        else {
+        } else {
             $script = 'return document.getElementById(\'wrs_content_container[0]\')';
             $container = $session->evaluateScript($script);
             if (empty($container)) {
@@ -205,7 +204,7 @@ class behat_wiris_editor extends behat_wiris_base {
      */
     public function a_wirisformula_containing_should_exist_in_message_field($value) {
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message",$this);
+        behat_field_manager::get_form_field_from_label("Message", $this);
         // As tinymce editor is insde an iframe, the search should be done inside the document of it
         $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document
         .evaluate("//img[@alt=\''.$value.'\' and not(@data-mce-src)]", document.getElementById(\'id_message_ifr\')
@@ -266,10 +265,10 @@ class behat_wiris_editor extends behat_wiris_base {
      */
     public function i_click_on_message_field() {
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message",$this);
+        behat_field_manager::get_form_field_from_label("Message", $this);
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath','//div[@id="id_messageeditable"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="id_messageeditable"]')
         );
         if (empty($component)) {
             throw new Exception("Message field does not exsits.");
@@ -285,7 +284,7 @@ class behat_wiris_editor extends behat_wiris_base {
      */
     public function i_place_caret_at_position($position) {
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message",$this);
+        behat_field_manager::get_form_field_from_label("Message", $this);
         $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
             .'node = document.getElementById(\'id_messageeditable\').firstChild;'
             .'window.parent.document.getSelection().removeAllRanges();'
@@ -422,7 +421,7 @@ class behat_wiris_editor extends behat_wiris_base {
      * @param  string $attribute attribute of the element to find
      * @param  string $value value for the attribute of the element to find
      */
-    public function element_containing_attribute_with_value_should_exist($element,$attribute,$value) {
+    public function element_containing_attribute_with_value_should_exist($element, $attribute, $value) {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
@@ -441,7 +440,7 @@ class behat_wiris_editor extends behat_wiris_base {
      * @param  string $attribute attribute of the element to find
      * @param  string $value value for the attribute of the element to find
      */
-    public function element_containing_attribute_with_value_should_not_exist($element,$attribute,$value) {
+    public function element_containing_attribute_with_value_should_not_exist($element, $attribute, $value) {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
@@ -458,7 +457,7 @@ class behat_wiris_editor extends behat_wiris_base {
      * @Given I click on element :element containing attribute :attribute with value :value
      * @throws ElementNotFoundException If the element does not exist, it will throw an exception.
      */
-    public function i_click_on_element_containing_attribute_with_value($element,$attribute,$value) {
+    public function i_click_on_element_containing_attribute_with_value($element, $attribute, $value) {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
