@@ -45,7 +45,8 @@ class behat_wiris_editor extends behat_wiris_base {
     public function i_set_mathtype_formula_to($value) {
         $this->spin(
             function($context) {
-                return $context->getSession()->getPage()->find('xpath', '//div[contains(@class,\'wrs_editor\')]//span[@class=\'wrs_container\']');
+                return $context->getSession()->getPage()->find('xpath', '//div[contains(@class,\'wrs_editor\')]
+                //span[@class=\'wrs_container\']');
             }
             ,
             false,
@@ -58,14 +59,16 @@ class behat_wiris_editor extends behat_wiris_base {
                 $session->getSelectorsHandler()->selectorToXpath('xpath', "//input[@class='wrs_focusElement']")
             ); // Runs the actual query and returns the element.
             if (empty($component)) {
-                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound', 'filter_wirs'));
+                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
+                , 'filter_wirs'));
             }
             $component->setValue($value);
         } else {
             $script = 'return document.getElementById(\'wrs_content_container[0]\')';
             $container = $session->evaluateScript($script);
             if (empty($container)) {
-                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound', 'filter_wirs'));
+                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
+                , 'filter_wirs'));
             }
             $script = 'const container = document.getElementById(\'wrs_content_container[0]\');'.
                 'const editor = window.com.wiris.jsEditor.JsEditor.getInstance(container);'.
@@ -83,7 +86,8 @@ class behat_wiris_editor extends behat_wiris_base {
     public function i_press_accept_button_in_mathtype_editor() {
         $this->spin(
             function($context) {
-                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document.querySelector(".wrs_formulaDisplay").clientHeight > 0';
+                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document
+                .querySelector(".wrs_formulaDisplay").clientHeight > 0';
                 return $this->getSession()->evaluateScript($script);
             }
             ,
@@ -110,7 +114,8 @@ class behat_wiris_editor extends behat_wiris_base {
     public function i_press_cancel_button_in_mathtype_editor() {
         $this->spin(
             function($context) {
-                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document.querySelector(".wrs_formulaDisplay").clientHeight > 0';
+                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document
+                .querySelector(".wrs_formulaDisplay").clientHeight > 0';
                 return $this->getSession()->evaluateScript($script);
             }
             ,
