@@ -210,7 +210,7 @@ class behat_wiris_editor extends behat_wiris_base {
     public function a_wirisformula_containing_should_exist_in_message_field($value) {
         $session = $this->getSession();
         behat_field_manager::get_form_field_from_label("Message", $this);
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it
+        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document
         .evaluate("//img[@alt=\''.$value.'\' and not(@data-mce-src)]", document.getElementById(\'id_message_ifr\')
         .contentWindow.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue';
@@ -310,7 +310,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]//button[@class="atto_wiris_button_wiris_editor"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
+            //button[@class="atto_wiris_button_wiris_editor"]')
         );
         if (empty($component)) {
             throw new Exception ('MathType button in Question field not found');
@@ -328,7 +329,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]//button[@class="atto_wiris_button_wiris_editor"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
+            //button[@class="atto_wiris_button_wiris_editor"]')
         );
         if (empty($component)) {
             throw new Exception ('MathType button in General feedback field not found');
@@ -346,7 +348,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]//button[@class="atto_wiris_button_wiris_editor"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
+            //button[@class="atto_wiris_button_wiris_editor"]')
         );
         if (empty($component)) {
             throw new Exception ('MathType button in Answer1 Feedback field not found');
@@ -364,7 +367,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]//button[@class="atto_html_button"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
+            //button[@class="atto_html_button"]')
         );
         if (empty($component)) {
             throw new Exception ('HTML button in Question field not found');
@@ -382,7 +386,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]//button[@class="atto_html_button"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
+            //button[@class="atto_html_button"]')
         );
         if (empty($component)) {
             throw new Exception ('HTML button in General feedback field not found');
@@ -400,7 +405,8 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]//button[@class="atto_html_button"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
+            //button[@class="atto_html_button"]')
         );
         if (empty($component)) {
             throw new Exception ('HTML button in Answer1 Feedback field not found');
