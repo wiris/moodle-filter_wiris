@@ -28,13 +28,6 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 
 class behat_wiris_editor extends behat_wiris_base {
 
-     /**
-      * @Transform /^(\d+)$/
-      */
-    public function cast_string_to_number($string) {
-        return intval($string);
-    }
-
     /**
      * Once the editor has been opened and focused, set the MathType formula to the specified value.
      *
@@ -47,10 +40,10 @@ class behat_wiris_editor extends behat_wiris_base {
             function($context) {
                 return $context->getSession()->getPage()->find('xpath', '//div[contains(@class,\'wrs_editor\')]
                 //span[@class=\'wrs_container\']');
-            }
-            ,
+            },
             false,
-            5
+            false,
+            'Not known exception'
         );
         $session = $this->getSession(); // Get the mink session.
         if (strpos($value, 'math') == false) {
@@ -86,13 +79,16 @@ class behat_wiris_editor extends behat_wiris_base {
     public function i_press_accept_button_in_mathtype_editor() {
         $this->spin(
             function($context) {
-                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document
-                .querySelector(".wrs_formulaDisplay").clientHeight > 0';
-                return $this->getSession()->evaluateScript($script);
-            }
-            ,
+                $toolbar = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
+                @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//div[@class=\'wrs_panelContainer\']');
+                $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
+                @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
+                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
+                return !empty($toolbar) and !empty($container);
+            },
             false,
-            5
+            false,
+            'Not known exception'
         );
         $session = $this->getSession();
         $component = $session->getPage()->find(
@@ -114,13 +110,16 @@ class behat_wiris_editor extends behat_wiris_base {
     public function i_press_cancel_button_in_mathtype_editor() {
         $this->spin(
             function($context) {
-                $script = 'return document.querySelector(".wrs_formulaDisplay") != null && document
-                .querySelector(".wrs_formulaDisplay").clientHeight > 0';
-                return $this->getSession()->evaluateScript($script);
-            }
-            ,
+                $toolbar = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
+                @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//div[@class=\'wrs_panelContainer\']');
+                $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
+                @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
+                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
+                return !empty($toolbar) and !empty($container);
+            },
             false,
-            5
+            false,
+            'Not known exception'
         );
         $session = $this->getSession();
         $component = $session->getPage()->find(
@@ -147,494 +146,6 @@ class behat_wiris_editor extends behat_wiris_base {
         );
         if (empty($component)) {
             throw new Exception('MathType editor title bar not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Look whether a Wirisformula exists
-     *
-     * @Then Wirisformula should exist
-     */
-    public function wirisformula_should_exist() {
-        $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@class, \'Wirisformula\')]')
-        );
-        if (empty($formula)) {
-            throw new Exception('Wirisformula not found.');
-        }
-    }
-
-    /**
-     * Look whether a Wirisformula exists
-     *
-     * @Then Wirisformula should not exist
-     */
-    public function wirisformula_should_not_exist() {
-        $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@class, \'Wirisformula\')]')
-        );
-        if (!empty($formula)) {
-            throw new Exception('Wirisformula does exist.');
-        }
-    }
-
-    /**
-     * Look whether any ChemType formula exist
-     *
-     * @Then ChemType formula should exist
-     */
-    public function chemtype_formula_should_exist() {
-        $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@data-mathml,\'chemistry\')]')
-        );
-        if (empty($formula)) {
-            throw new Exception('ChemType formula not found.');
-        }
-    }
-
-    /**
-     * Check if a Wirisformula containing certain value exist
-     *
-     * @Then a Wirisformula containing :value should exist
-     * @param  string $value the formula should contains
-     */
-    public function a_wirisformula_containing_should_exist($value) {
-        $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@alt, \''.$value.'\')]')
-        );
-        if (empty($formula)) {
-            throw new Exception('Wirisformula with value '.$value.' not found.');
-        }
-    }
-
-    /**
-     * Check if a Wirisformula containing certain value exist in Message field
-     *
-     * @Then a Wirisformula containing :value should exist in Message field
-     * @param  string $value content that the formula should contains
-     * @throws Exception If Message field does not exist, it will throw an exception.
-     */
-    public function a_wirisformula_containing_should_exist_in_message_field($value) {
-        // Will return exception if the field is not found.
-        behat_field_manager::get_form_field_from_label("Message", $this);
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document
-        .evaluate("//img[@alt=\''.$value.'\' and not(@data-mce-src)]", document.getElementById(\'id_message_ifr\')
-        .contentWindow.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue';
-        $formula = $this->getSession()->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Wirisformula with value '.$value.' not found.');
-        }
-    }
-
-    /**
-     * Check the size of the formula
-     *
-     * @Then Wirisformula should has height :height with error of :error
-     * @param  int $height height value to be compared with
-     * @param  int $error acceptable error of the height value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_height_with_error($height, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0]';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image height is not correct.');
-        }
-    }
-
-    /**
-     * Check the size of the formula
-     *
-     * @Then Wirisformula should has width :width with error of :error
-     * @param  int $width width value to be compared with
-     * @param  int $error acceptable error of the width value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_width_with_error($width, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0]';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image width is not correct.');
-        }
-    }
-
-    /**
-     * Check the size of the formula in Message field
-     *
-     * @Then Wirisformula should has width :width with error of :error in Message field
-     * @param  int $width width value to be compared with
-     * @param  int $error acceptable error of the width value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_width_with_error_in_message_field($width, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        // Will return exception if the field is not found.
-        behat_field_manager::get_form_field_from_label("Message", $this);
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image width is not correct.');
-        }
-    }
-
-    /**
-     * Check the size of the formula in Message field
-     *
-     * @Then Wirisformula should has height :height with error of :error in Message field
-     * @param  int $height height value to be compared with
-     * @param  int $error acceptable error of the height value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_height_with_error_in_message_field($height, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        // Will return exception if the field is not found.
-        behat_field_manager::get_form_field_from_label("Message", $this);
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementById(\'id_message_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image height is not correct.');
-        }
-    }
-
-    /**
-     * Check the size of the formula in full screen mode
-     *
-     * @Then Wirisformula should has width :width with error of :error in full screen mode
-     * @param  int $width width value to be compared with
-     * @param  int $error acceptable error of the width value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_width_with_error_in_full_screen_mode($width, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\')';
-        $iframe = $session->evaluateScript($script);
-        if (empty($iframe)) {
-            return Exception('Tinymce screen mode is off.');
-        }
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image width is not correct.');
-        }
-    }
-
-    /**
-     * Check the size of the formula in full screen mode
-     *
-     * @Then Wirisformula should has height :height with error of :error in full screen mode
-     * @param  int $height height value to be compared with
-     * @param  int $error acceptable error of the height value
-     * @throws Exception If formula does not exist, it will throw an exception.
-     */
-    public function wirisformula_should_has_height_with_error_in_full_screen_mode($height, $error) {
-        $session = $this->getSession();
-        if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
-        }
-        // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\')';
-        $iframe = $session->evaluateScript($script);
-        if (empty($iframe)) {
-            return Exception('Tinymce screen mode is off.');
-        }
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')';
-        $formula = $session->evaluateScript($script);
-        if (empty($formula)) {
-            throw new Exception('Formula not found.');
-        }
-        $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
-        $equals = $this->getSession()->evaluateScript($script);
-        if (!$equals) {
-            throw new Exception('Image height is not correct.');
-        }
-    }
-
-    /**
-     * Click on Message field
-     *
-     * @Given I click on Message field
-     * @throws Exception If Message field does not exist, it will throw an exception.
-     */
-    public function i_click_on_message_field() {
-        $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message", $this);
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="id_messageeditable"]')
-        );
-        if (empty($component)) {
-            throw new Exception("Message field does not exsits.");
-        }
-        $component->click();
-    }
-
-    /**
-     * Place caret in a certain position in the Message field
-     *
-     * @Given I place caret at position :position in Message field
-     * @throws Exception If Message field does not exist, it will throw an exception.
-     */
-    public function i_place_caret_at_position($position) {
-        $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message", $this);
-        $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
-            .'node = document.getElementById(\'id_messageeditable\').firstChild;'
-            .'window.parent.document.getSelection().removeAllRanges();'
-            .'range.setStart(node,'.$position.');'
-            .'range.setEnd(node,'.$position.');'
-            .'window.parent.document.getSelection().addRange(range);'
-            .'window.parent.document.body.focus();';
-        $session->executeScript($script);
-    }
-
-    /**
-     * Press MathType button in Question field
-     *
-     * @Given I press MathType in Question field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
-     */
-    public function i_press_mathtype_in_questiontext_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('MathType button in Question field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press MathType button in General feedback field
-     *
-     * @Given I press MathType in General feedback field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
-     */
-    public function i_press_mathtype_in_general_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('MathType button in General feedback field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press MathType button in Answer1 Feedback field
-     *
-     * @Given I press MathType in Answer1 Feedback field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
-     */
-    public function i_press_mathtype_in_answer1_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('MathType button in Answer1 Feedback field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in Question field
-     *
-     * @Given I press HTML in Question field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_question_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
-            //button[@class="atto_html_button"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('HTML button in Question field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in General feedback field
-     *
-     * @Given I press HTML in General feedback field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_general_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
-            //button[@class="atto_html_button"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('HTML button in General feedback field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in Answer1 Feedback field
-     *
-     * @Given I press HTML in Answer1 Feedback field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_answer1_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
-            //button[@class="atto_html_button"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('HTML button in Answer1 Feedback field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Execute mathjax script
-     *
-     * @Given I enable saveMode
-     */
-    public function i_enable_save_mode() {
-        $script = 'WirisPlugin.Configuration.set("saveMode", "xml")';
-        $this->getSession()->executeScript($script);
-    }
-
-    /**
-     * Look whether an element contains certain value for an attribute
-     *
-     * @Then element :element containing attribute :attribute with value :value should exist
-     * @param  string $element element to find
-     * @param  string $attribute attribute of the element to find
-     * @param  string $value value for the attribute of the element to find
-     */
-    public function element_containing_attribute_with_value_should_exist($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (empty($component)) {
-            throw new Exception ($element.' with value '.$value.' for attribute '.$attribute.' not found');
-        }
-    }
-
-    /**
-     * Look whether an element contains certain value for an attribute
-     *
-     * @Then element :element containing attribute :attribute with value :value should not exist
-     * @param  string $element element to find
-     * @param  string $attribute attribute of the element to find
-     * @param  string $value value for the attribute of the element to find
-     */
-    public function element_containing_attribute_with_value_should_not_exist($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (!empty($component)) {
-            throw new Exception ($element.' with value \''.$value.'\' for attribute \''.$attribute.'\' does exist');
-        }
-    }
-
-    /**
-     * Click on an element that contains certain value for an attribute
-     *
-     * @Given I click on element :element containing attribute :attribute with value :value
-     * @throws ElementNotFoundException If the element does not exist, it will throw an exception.
-     */
-    public function i_click_on_element_containing_attribute_with_value($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (empty($component)) {
-            throw new Exception ($element.' with value \''.$value.'\' for attribute \''.$attribute.'\' do not exist');
         }
         $component->click();
     }
