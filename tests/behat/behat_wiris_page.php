@@ -181,62 +181,6 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Look whether an element contains certain value for an attribute
-     *
-     * @Then element :element containing attribute :attribute with value :value should exist
-     * @param  string $element element to find
-     * @param  string $attribute attribute of the element to find
-     * @param  string $value value for the attribute of the element to find
-     */
-    public function element_containing_attribute_with_value_should_exist($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (empty($component)) {
-            throw new Exception ($element.' with value '.$value.' for attribute '.$attribute.' not found');
-        }
-    }
-
-    /**
-     * Look whether an element contains certain value for an attribute
-     *
-     * @Then element :element containing attribute :attribute with value :value should not exist
-     * @param  string $element element to find
-     * @param  string $attribute attribute of the element to find
-     * @param  string $value value for the attribute of the element to find
-     */
-    public function element_containing_attribute_with_value_should_not_exist($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (!empty($component)) {
-            throw new Exception ($element.' with value \''.$value.'\' for attribute \''.$attribute.'\' does exist');
-        }
-    }
-
-    /**
-     * Click on an element that contains certain value for an attribute
-     *
-     * @Given I click on element :element containing attribute :attribute with value :value
-     * @throws ElementNotFoundException If the element does not exist, it will throw an exception.
-     */
-    public function i_click_on_element_containing_attribute_with_value($element, $attribute, $value) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//'.$element.'[contains(@'.$attribute.', \''.$value.'\')]')
-        );
-        if (empty($component)) {
-            throw new Exception ($element.' with value \''.$value.'\' for attribute \''.$attribute.'\' do not exist');
-        }
-        $component->click();
-    }
-
-    /**
      * Execute mathjax script
      *
      * @Given I enable saveMode
@@ -282,13 +226,62 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
+     * Look whether an image exists
+     *
+     * @Then an image should exist
+     */
+    public function an_image_should_exist() {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img')
+        );
+        if (empty($formula)) {
+            throw new Exception('Image not found.');
+        }
+    }
+
+    /**
      * Svg element is correctly displayed in the current page
      *
-     * @Then svg is correctly displayed
+     * @Then an svg is correctly displayed
      */
-    public function svg_is_correclt_displayed() {
+    public function svg_is_correclty_displayed() {
+        // We dont use xpath because in this page the svg element acts as root node instead of being an element inside an html.
         $script = 'return document.children[0].nodeName';
         $node = $this->getSession()->evaluateScript($script);
         return $node == 'svg';
+    }
+
+    /**
+     * Images are correctly displayed when the chosen format is svg
+     *
+     * @Then svg img format is correctly displayed
+     */
+    public function svg_img_format_is_correctly_displayed() {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/svg+xml\')]')
+        );
+        if (empty($formula)) {
+            throw new Exception('Image not found.');
+        }
+    }
+
+    /**
+     * Images are correctly displayed when the chosen format is png
+     *
+     * @Then png img format is correctly displayed
+     */
+    public function png_img_format_is_correctly_displayed() {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/png;base64\')]')
+        );
+        if (empty($formula)) {
+            throw new Exception('Image not found.');
+        }
     }
 }
