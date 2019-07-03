@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -181,16 +182,6 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Execute mathjax script
-     *
-     * @Given I enable saveMode
-     */
-    public function i_enable_save_mode() {
-        $script = 'WirisPlugin.Configuration.set("saveMode", "xml")';
-        $this->getSession()->executeScript($script);
-    }
-
-    /**
      * Look whether an element contains certain value for an attribute
      *
      * @Then element :element containing attribute :attribute with value :value should exist
@@ -246,4 +237,59 @@ class behat_wiris_page extends behat_wiris_base {
         $component->click();
     }
 
+    /**
+     * Execute mathjax script
+     *
+     * @Given I enable saveMode
+     */
+    public function i_enable_save_mode() {
+        $script = 'WirisPlugin.Configuration.set("saveMode", "xml")';
+        $this->getSession()->executeScript($script);
+    }
+
+    /**
+     * Follow a specific url
+     *
+     * @Given I go to link :url
+     */
+    public function i_go_to_link($url) {
+        $script = 'window.location.replace("http://127.0.0.1/moodle3_5'.$url.'");';
+        $this->getSession()->executeScript($script);
+    }
+
+    /**
+     * Go back on the browser
+     *
+     * @Given I go back
+     */
+    public function i_go_back() {
+        $this->getSession()->back();
+    }
+
+    /**
+     * Go back on the browser
+     *
+     * @Given I create an image with mml :mml and visit to its path
+     */
+    public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
+        $session = $this->getSession();
+        $script = 'window.location.replace("http://127.0.0.1/moodle3_5/filter/wiris/integration/createimage.php?mml='
+        .$mml.'&lang=en&metrics=&centerbaseline=false");';
+        $session->executeScript($script);
+        $script = 'return document.body.innerHTML';
+        $path = $session->evaluateScript($script);
+        $script = 'window.location.replace("'.$path.'");';
+        $session->executeScript($script);
+    }
+
+    /**
+     * Svg element is correctly displayed in the current page
+     *
+     * @Then svg is correctly displayed
+     */
+    public function svg_is_correclt_displayed() {
+        $script = 'return document.children[0].nodeName';
+        $node = $this->getSession()->evaluateScript($script);
+        return $node == 'svg';
+    }
 }
