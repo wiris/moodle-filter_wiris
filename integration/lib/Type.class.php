@@ -79,7 +79,7 @@ class Type {
 		if($c === null) {
 			return null;
 		}
-		return $inst = $c->getConstructor() ? $c->newInstanceArgs($args->»a) : $c->newInstanceArgs();
+		return $inst = $c->getConstructor() ? $c->newInstanceArgs($args->ï¿½a) : $c->newInstanceArgs();
 	}
 	static function createEmptyInstance($cl) {
 		if($cl->__qname__ === "Array") {
@@ -151,12 +151,12 @@ class Type {
 		$r = array();
 		$internals = array('__construct', '__call', '__get', '__set', '__isset', '__unset', '__toString');
 		$ms = $rfl->getMethods();
-		while(list(, $m) = each($ms)) {
+		foreach ($ms as $m) {
 			$n = $m->getName();
 			if(!$m->isStatic() && ! in_array($n, $internals)) $r[] = $n;
 		}
 		$ps = $rfl->getProperties();
-		while(list(, $p) = each($ps))
+		foreach ($ps as $p)
 			if(!$p->isStatic()) $r[] = $p->getName();
 		return new _hx_array(array_values(array_unique($r)));
 	}
@@ -172,10 +172,10 @@ class Type {
 		if($rfl === null) return new _hx_array(array());
 		$ms = $rfl->getMethods();
 		$r = array();
-		while(list(, $m) = each($ms))
+		foreach ($ms as $m)
 			if($m->isStatic()) $r[] = $m->getName();
 		$ps = $rfl->getProperties();
-		while(list(, $p) = each($ps))
+		foreach ($ps as $p)
 			if($p->isStatic()) $r[] = $p->getName();
 		;
 		return new _hx_array(array_unique($r));
