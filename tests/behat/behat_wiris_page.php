@@ -200,6 +200,20 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
+     * Create an image with an mml and visit to its path
+     *
+     * @Given I create an image with mml :mml and visit to its path
+     */
+    public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
+        $session = $this->getSession();
+        $url = '/filter/wiris/integration/createimage.php?mml='.$mml.'&lang=en&metrics=&centerbaseline=false';
+        $session->visit($this->locate_path($url));
+        $script = 'return document.body.innerHTML';
+        $path = $session->evaluateScript($script);
+        $session->visit($this->locate_path($path));
+    }
+
+    /**
      * Refresh the page on the browser
      *
      * @Given I refresh the page

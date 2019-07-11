@@ -29,22 +29,6 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 class behat_wiris_filter extends behat_wiris_base {
 
     /**
-     * Create an image with an mml and visit to its path
-     *
-     * @Given I create an image with mml :mml and visit to its path
-     */
-    public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
-        $session = $this->getSession();
-        $script = 'window.location.replace("http://127.0.0.1/moodle3_5/filter/wiris/integration/createimage.php?mml='
-        .$mml.'&lang=en&metrics=&centerbaseline=false");';
-        $session->executeScript($script);
-        $script = 'return document.body.innerHTML';
-        $path = $session->evaluateScript($script);
-        $script = 'window.location.replace("'.$path.'");';
-        $session->executeScript($script);
-    }
-
-    /**
      * Turns MathType filter on
      *
      * @Given I turn MathType filter on
@@ -181,7 +165,6 @@ class behat_wiris_filter extends behat_wiris_base {
         }
         $field->selectOption("png");
     }
-
 
     /**
      * Check editor always active on MathType filter page

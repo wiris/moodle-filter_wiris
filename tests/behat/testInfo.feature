@@ -14,5 +14,3 @@ Feature: Check WIRIS quizzes test page
     Then "KO" "text" should not exist
     Then "DISABLED" "text" should not exist
     Then "OK" "text" should exist
-
-
