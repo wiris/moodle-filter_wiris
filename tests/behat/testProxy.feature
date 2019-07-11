@@ -1,4 +1,4 @@
-@proxy
+@filter @filter_wiris
 Feature: Tests proxy configuration
 
   @javascript
@@ -13,9 +13,3 @@ Feature: Tests proxy configuration
     And I go to link "/wirisutils/setConfig.php?key=proxyport&value="
     And I go to link "/filter/wiris/integration/test.php"
     Then Wirisformula should exist
-
-
-
-
-
-

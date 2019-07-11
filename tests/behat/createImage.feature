@@ -1,4 +1,4 @@
-@services
+@filter @filter_wiris
 Feature: If we're not logged createimage.php should take us to login page
 
   @javascript

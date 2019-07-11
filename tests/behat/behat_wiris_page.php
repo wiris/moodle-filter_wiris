@@ -67,9 +67,9 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Press MathType button in Question field
+     * Press MathType button in Question text field
      *
-     * @Given I press MathType in Question field
+     * @Given I press MathType in Question text field
      * @throws Exception If MathType button does not exist, it will throw an exception.
      */
     public function i_press_mathtype_in_questiontext_field() {
@@ -80,7 +80,7 @@ class behat_wiris_page extends behat_wiris_base {
             //button[@class="atto_wiris_button_wiris_editor"]')
         );
         if (empty($component)) {
-            throw new Exception ('MathType button in Question field not found');
+            throw new Exception ('MathType button in Question text field not found');
         }
         $component->click();
     }
@@ -124,12 +124,12 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Press HTML button in Question field
+     * Press HTML button in Question text field
      *
-     * @Given I press HTML in Question field
+     * @Given I press HTML in Question text field
      * @throws Exception If HTML button does not exist, it will throw an exception.
      */
-    public function i_press_html_in_question_field() {
+    public function i_press_html_in_questiontext_field() {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
@@ -137,7 +137,7 @@ class behat_wiris_page extends behat_wiris_base {
             //button[@class="atto_html_button"]')
         );
         if (empty($component)) {
-            throw new Exception ('HTML button in Question field not found');
+            throw new Exception ('HTML button in Question text field not found');
         }
         $component->click();
     }
@@ -196,8 +196,16 @@ class behat_wiris_page extends behat_wiris_base {
      * @Given I go to link :url
      */
     public function i_go_to_link($url) {
-        $script = 'window.location.replace("http://127.0.0.1/moodle3_5'.$url.'");';
-        $this->getSession()->executeScript($script);
+        $this->getSession()->visit($this->locate_path($url));
+    }
+
+    /**
+     * Refresh the page on the browser
+     *
+     * @Given I refresh the page
+     */
+    public function i_refresh_the_page() {
+        $this->getSession()->reload();
     }
 
     /**
@@ -210,34 +218,34 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Go back on the browser
-     *
-     * @Given I create an image with mml :mml and visit to its path
-     */
-    public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
-        $session = $this->getSession();
-        $script = 'window.location.replace("http://127.0.0.1/moodle3_5/filter/wiris/integration/createimage.php?mml='
-        .$mml.'&lang=en&metrics=&centerbaseline=false");';
-        $session->executeScript($script);
-        $script = 'return document.body.innerHTML';
-        $path = $session->evaluateScript($script);
-        $script = 'window.location.replace("'.$path.'");';
-        $session->executeScript($script);
-    }
-
-    /**
      * Look whether an image exists
      *
      * @Then an image should exist
      */
     public function an_image_should_exist() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
+        $image = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath', '//img')
         );
-        if (empty($formula)) {
+        if (empty($image)) {
             throw new Exception('Image not found.');
+        }
+    }
+
+    /**
+     * Look whether a MathJax element exists
+     *
+     * @Then MathJax element should exist
+     */
+    public function mathjax_element_should_exist() {
+        $session = $this->getSession();
+        $element = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//span[contains(@class,\'MathJax\')]')
+        );
+        if (empty($element)) {
+            throw new Exception('MathJax element not found.');
         }
     }
 
@@ -260,11 +268,11 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function svg_img_format_is_correctly_displayed() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
+        $image = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/svg+xml\')]')
         );
-        if (empty($formula)) {
+        if (empty($image)) {
             throw new Exception('Image not found.');
         }
     }
@@ -276,12 +284,102 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function png_img_format_is_correctly_displayed() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
+        $image = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/png;base64\')]')
         );
-        if (empty($formula)) {
+        if (empty($image)) {
             throw new Exception('Image not found.');
         }
+    }
+
+    /**
+     * Select language option as spanish
+     *
+     * @Given I select spanish
+     * @throws Exception If spanish option does not exist, it will throw an exception.
+     */
+    public function i_select_spanish() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select')
+        );
+        if (empty($component)) {
+            throw new Exception('Spanish option not found.');
+        }
+        $component->selectOption("Español - Internacional ‎(es)‎");
+    }
+
+    /**
+     * Select 100% in grade option of Answer 1 field
+     *
+     * @Given I select 100% option in Answer1
+     * @throws Exception If grade option does not exist, it will throw an exception.
+     */
+    public function i_select_100_option_in_answer1() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select[@id="id_fraction_0"]')
+        );
+        if (empty($component)) {
+            throw new Exception('Grade option in Answer 1 field not found.');
+        }
+        $component->selectOption("100%");
+    }
+
+    /**
+     * Check enable trusted content on site security settings page
+     *
+     * @Given I check enable trusted content
+     * @throws Exception If enable trusted content checkbox does not exist, it will throw an exception.
+     */
+    public function i_check_enable_trusted_content() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//input[@id="id_s__enabletrusttext"]')
+        );
+        if (empty($component)) {
+            throw new Exception('Enable trusted content checkbox not found.');
+        }
+        $component->check();
+    }
+
+    /**
+     * Select seconds in autosave frequency option on Atto toolbar settings page
+     *
+     * @Given I select seconds in autosave frequency option
+     * @throws Exception If autosave frequency option does not exist, it will throw an exception.
+     */
+    public function i_select_seconds_in_autosave_frequency_option() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select[@id="id_s_editor_atto_autosavefrequencyu"]')
+        );
+        if (empty($component)) {
+            throw new Exception('Autosave frequency option in Answer 1 field not found.');
+        }
+        $component->selectOption("seconds");
+    }
+
+    /**
+     * Choose Short answoer in Choose a questoin type to add dialog
+     *
+     * @Given I choose Short answer
+     * @throws Exception If Short answer radio button does not exist, it will throw an exception.
+     */
+    public function i_choose_short_answer() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//input[@id="item_qtype_shortanswer"]')
+        );
+        if (empty($component)) {
+            throw new Exception('Short answer radio button in Answer 1 field not found.');
+        }
+        $component->click();
     }
 }

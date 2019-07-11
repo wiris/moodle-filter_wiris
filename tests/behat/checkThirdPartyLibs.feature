@@ -1,4 +1,4 @@
-@info
+@filter @filter_wiris
 Feature: Check MathType integration as a third party lib
 
   @javascript

@@ -1,4 +1,4 @@
-@proxy
+@filter @filter_wiris
 Feature: Tests bad proxy configuration
 
   @javascript
