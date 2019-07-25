@@ -29,6 +29,7 @@ class com_wiris_util_xml_WCharacterBase {
 	static $COMBINING_LOW_LINE = 818;
 	static $MODIFIER_LETTER_CIRCUMFLEX_ACCENT = 710;
 	static $CARON = 711;
+	static $NO_BREAK_SPACE = 160;
 	static $EN_QUAD = 8192;
 	static $EM_QUAD = 8193;
 	static $EN_SPACE = 8194;
@@ -113,6 +114,10 @@ class com_wiris_util_xml_WCharacterBase {
 	static $MATHEMATICAL_DOUBLE_STRUCK_CAPITAL_A = 120120;
 	static $MATHEMATICAL_DOUBLE_STRUCK_SMALL_A = 120146;
 	static $MATHEMATICAL_DOUBLE_STRUCK_DIGIT_ZERO = 120792;
+	static $MIDDLE_DOT = 183;
+	static $DOT_ABOVE = 729;
+	static $ARABIC_DECIMAL_SEPARATOR = 1643;
+	static $ARABIC_THOUSANDS_SEPARATOR = 1644;
 	static $ALIGNMENT_RELATION_OPERATORS;
 	static function isDigit($c) {
 		if(48 <= $c && $c <= 57) {
