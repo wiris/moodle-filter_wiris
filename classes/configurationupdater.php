@@ -123,7 +123,6 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wirisaccessproviderenabled'] = 'true';
         }
 
-
         // Inherit proxy configuration.
 
         $moodleproxyenabled = !empty($CFG->proxyhost);
