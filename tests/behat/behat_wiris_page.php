@@ -29,35 +29,90 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 class behat_wiris_page extends behat_wiris_base {
 
     /**
-     * Click on Message field
+     * Check the size of the formula in full screen mode
      *
-     * @Given I click on Message field
-     * @throws Exception If Message field does not exist, it will throw an exception.
+     * @Given I press :button in full screen mode
+     * @param  string $button button to press
+     * @throws Exception If the button does not exist, it will throw an exception.
      */
-    public function i_click_on_message_field() {
+    public function i_press_mathtype_in_full_screen_mode($button) {
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message", $this);
+        $buttonarray = array(
+            "MathType" => "mce_fullscreen_tiny_mce_wiris_formulaEditor",
+            "ChemType" => "mce_fullscreen_tiny_mce_wiris_formulaEditorChemistry",
+            "Full screen" => "mce_fullscreen_fullscreen"
+        );
+        if (empty($buttonarray[$button])) {
+            throw new Exception($button." button not registered.");
+        }
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="id_messageeditable"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//*[@id="'.$buttonarray[$button].'"]')
         );
         if (empty($component)) {
-            throw new Exception("Message field does not exsits.");
+            throw new Exception ('"'.$button.'" button not found in full screen mode');
         }
         $component->click();
     }
 
     /**
-     * Place caret in a certain position in the Message field
+     * Click on a certain field
      *
-     * @Given I place caret at position :position in Message field
-     * @throws Exception If Message field does not exist, it will throw an exception.
+     * @Given I click on :field field
+     * @param  string $field field to click on
+     * @throws Exception If the field does not exist, it will throw an exception.
      */
-    public function i_place_caret_at_position($position) {
+    public function i_click_on_field($field) {
+        $fieldarray = array(
+            "Page content" => "id_pageeditable",
+            "Question text" => "id_questiontexteditable",
+            "General feedback" => "id_generalfeedbackeditable",
+            "Feedback" => "id_feedback_0editable"
+        );
+        if (empty($fieldarray[$field])) {
+            throw new Exception($field." field not registered.");
+        }
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Message", $this);
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$fieldarray[$field].'"]')
+        );
+        if (empty($component)) {
+            throw new Exception($field." field not correctly recognized.");
+        }
+        $component->click();
+    }
+
+    /**
+     * Place caret in a certain position in a certain field
+     *
+     * @Given I place caret at position :position in :field field
+     * @param  integer $position position to which the caret is placed
+     * @param  string $field field to check
+     * @throws Exception If the field does not exist, it will throw an exception.
+     */
+    public function i_place_caret_at_position_in_field($position, $field) {
+        $fieldarray = array(
+            "Page content" => "id_pageeditable",
+            "Question text" => "id_questiontexteditable",
+            "General feedback" => "id_generalfeedbackeditable",
+            "Feedback" => "id_feedback_0editable"
+        );
+        if (empty($fieldarray[$field])) {
+            throw new Exception($field." field not registered.");
+        }
+        $session = $this->getSession();
+        $component = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$fieldarray[$field].'"]')
+        );
+        if (empty($component)) {
+            throw new Exception($field." field not correctly recognized.");
+        }
+        $session = $this->getSession();
+        behat_field_manager::get_form_field_from_label("Page content", $this);
         $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
-            .'node = document.getElementById(\'id_messageeditable\').firstChild;'
+            .'node = document.getElementById(\''.$fieldarray[$field].'\').firstChild;'
             .'window.parent.document.getSelection().removeAllRanges();'
             .'range.setStart(node,'.$position.');'
             .'range.setEnd(node,'.$position.');'
@@ -67,115 +122,78 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Press MathType button in Question text field
+     * Press certain button in certain field in Atto
      *
-     * @Given I press MathType in Question text field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
+     * @Given I press :button in :field field in Atto editor
+     * @param  string $button button to press
+     * @param  string $field field to check
+     * @throws Exception If the field does not exist, it will throw an exception.
      */
-    public function i_press_mathtype_in_questiontext_field() {
+    public function i_press_in_field_in_atto_editor($button, $field) {
+        $sectionarray = array(
+            "Page content" => "fitem_id_page",
+            "Question text" => "fitem_id_questiontext",
+            "General feedback" => "fitem_id_generalfeedback",
+            "Feedback" => "fitem_id_feedback_0"
+        );
+        if (empty($sectionarray[$field])) {
+            throw new Exception($field." field not registered.");
+        }
+        $buttonarray = array(
+            "MathType" => "atto_wiris_button_wiris_editor",
+            "ChemType" => "atto_wiris_button_wiris_chem_editor",
+            "HTML" => "atto_html_button"
+        );
+        if (empty($buttonarray[$button])) {
+            throw new Exception($button." button not registered.");
+        }
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
+            //button[@class="'.$buttonarray[$button].'"]')
         );
         if (empty($component)) {
-            throw new Exception ('MathType button in Question text field not found');
+            throw new Exception ('"'.$button.'" button not found in "'.$field.'" field');
         }
         $component->click();
     }
 
     /**
-     * Press MathType button in General feedback field
+     * Press certain button in certain field in Tiny
      *
-     * @Given I press MathType in General feedback field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
+     * @Given I press :button in :field field in TinyMCE editor
+     * @param  string $button button to press
+     * @param  string $field field to check
+     * @throws Exception If the field does not exist, it will throw an exception.
      */
-    public function i_press_mathtype_in_general_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
+    public function i_press_in_field_in_tinymce_editor($button, $field) {
+        $sectionarray = array(
+            "Page content" => "fitem_id_page",
+            "Question text" => "fitem_id_questiontext",
+            "General feedback" => "fitem_id_generalfeedback",
+            "Feedback" => "fitem_id_feedback_0"
         );
-        if (empty($component)) {
-            throw new Exception ('MathType button in General feedback field not found');
+        if (empty($sectionarray[$field])) {
+            throw new Exception($field." field not registered.");
         }
-        $component->click();
-    }
-
-    /**
-     * Press MathType button in Answer1 Feedback field
-     *
-     * @Given I press MathType in Answer1 Feedback field
-     * @throws Exception If MathType button does not exist, it will throw an exception.
-     */
-    public function i_press_mathtype_in_answer1_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
-            //button[@class="atto_wiris_button_wiris_editor"]')
+        $buttonarray = array(
+            "MathType" => "id_page_tiny_mce_wiris_formulaEditor",
+            "ChemType" => "id_page_tiny_mce_wiris_formulaEditorChemistry",
+            "Toggle" => "id_page_pdw_toggle",
+            "Full screen" => "id_page_fullscreen"
         );
-        if (empty($component)) {
-            throw new Exception ('MathType button in Answer1 Feedback field not found');
+        if (empty($buttonarray[$button])) {
+            throw new Exception($button." button not registered.");
         }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in Question text field
-     *
-     * @Given I press HTML in Question text field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_questiontext_field() {
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_questiontext"]
-            //button[@class="atto_html_button"]')
+            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
+            //*[@id="'.$buttonarray[$button].'"]')
         );
         if (empty($component)) {
-            throw new Exception ('HTML button in Question text field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in General feedback field
-     *
-     * @Given I press HTML in General feedback field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_general_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_generalfeedback"]
-            //button[@class="atto_html_button"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('HTML button in General feedback field not found');
-        }
-        $component->click();
-    }
-
-    /**
-     * Press HTML button in Answer1 Feedback field
-     *
-     * @Given I press HTML in Answer1 Feedback field
-     * @throws Exception If HTML button does not exist, it will throw an exception.
-     */
-    public function i_press_html_in_answer1_feedback_field() {
-        $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="fitem_id_feedback_0"]
-            //button[@class="atto_html_button"]')
-        );
-        if (empty($component)) {
-            throw new Exception ('HTML button in Answer1 Feedback field not found');
+            throw new Exception ('"'.$button.'" button not found in "'.$field.'" field');
         }
         $component->click();
     }
@@ -200,9 +218,9 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Create an image with an mml and visit to its path
+     * Create a MathType formula with an mml and visit to its path
      *
-     * @Given I create an image with mml :mml and visit to its path
+     * @Given I create a MathType formula with mml :mml and visit to its path
      */
     public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
         $session = $this->getSession();
@@ -211,15 +229,6 @@ class behat_wiris_page extends behat_wiris_base {
         $script = 'return document.body.innerHTML';
         $path = $session->evaluateScript($script);
         $session->visit($this->locate_path($path));
-    }
-
-    /**
-     * Refresh the page on the browser
-     *
-     * @Given I refresh the page
-     */
-    public function i_refresh_the_page() {
-        $this->getSession()->reload();
     }
 
     /**
@@ -269,18 +278,18 @@ class behat_wiris_page extends behat_wiris_base {
      * @Then an svg is correctly displayed
      */
     public function svg_is_correclty_displayed() {
-        // We dont use xpath because in this page the svg element acts as root node instead of being an element inside an html.
+        // We do not use xpath because in this page the svg element acts as root node instead of being an element inside an html.
         $script = 'return document.children[0].nodeName';
         $node = $this->getSession()->evaluateScript($script);
         return $node == 'svg';
     }
 
     /**
-     * Images are correctly displayed when the chosen format is svg
+     * MathType images are correctly displayed when the chosen format is svg
      *
-     * @Then svg img format is correctly displayed
+     * @Then MathType image in svg format is correctly displayed
      */
-    public function svg_img_format_is_correctly_displayed() {
+    public function mathtype_image_in_svg_format_is_correctly_displayed() {
         $session = $this->getSession();
         $image = $session->getPage()->find(
             'xpath',
@@ -292,11 +301,11 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Images are correctly displayed when the chosen format is png
+     * MathType images are correctly displayed when the chosen format is png
      *
-     * @Then png img format is correctly displayed
+     * @Then MathType image in png format is correctly displayed
      */
-    public function png_img_format_is_correctly_displayed() {
+    public function mathtype_image_in_png_format_is_correctly_displayed() {
         $session = $this->getSession();
         $image = $session->getPage()->find(
             'xpath',

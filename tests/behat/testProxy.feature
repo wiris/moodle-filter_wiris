@@ -1,5 +1,16 @@
 @filter @filter_wiris
 Feature: Tests proxy configuration
+In order to test proxy configuration
+I need to set a correct proxy configurations
+Test the service
+Set empty proxy configurations
+Test the service
+Set https configuration
+Test the service
+Set empty proxy configurations
+Test the service
+Set a bad proxy configuration
+Test the service
 
   Background:
     Given the following config values are set as admin:
@@ -10,7 +21,7 @@ Feature: Tests proxy configuration
       | proxypassword | 309sU9HoF38fDixwGJ3Q |
 
   @javascript
-  Scenario: Tests proxy configuration
+  Scenario: Set and test proxy configuration
     And I go to link "/filter/wiris/integration/test.php"
     Then Wirisformula should exist
     And the following config values are set as admin:
@@ -21,3 +32,27 @@ Feature: Tests proxy configuration
       | proxypassword | |
     And I go to link "/filter/wiris/integration/test.php"
     Then Wirisformula should exist
+
+  @javascript
+  Scenario: Tests proxy configuration with https configuration
+    And the following config values are set as admin:
+      | config | value | plugin |
+      | imageserviceprotocol | https | filter_wiris |
+    And I go to link "/filter/wiris/integration/test.php"
+    Then Wirisformula should exist
+    And the following config values are set as admin:
+      | config | value |
+      | proxyhost | |
+      | proxyport | |
+      | proxyuser | |
+      | proxypassword | |
+    And I go to link "/filter/wiris/integration/test.php"
+    Then Wirisformula should exist
+
+  @javascript
+  Scenario: Tests bad proxy configuration
+    And the following config values are set as admin:
+      | config | value |
+      | proxyport | 43129 |
+    And I go to link "/filter/wiris/integration/test.php"
+    And "unable to connect" "text" should exist

@@ -1,10 +1,13 @@
 @filter @filter_wiris
 Feature: Check if using a bad service host throws exception
+In order to check if using a bad service host throws exception
+I need to set a bad service host
+Visit test services
 
   @javascript
-  Scenario: Check if using a bad service host throws exception
+  Scenario: Set an incorrect service
+    Given the "wiris" filter is "on"
     And I log in as "admin"
-    And I enable Mathtype filter
     And I navigate to "Plugins" in site administration
     And I follow "Manage filters"
     And I go to MathType filter settings
