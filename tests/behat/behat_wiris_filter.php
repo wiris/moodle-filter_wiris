@@ -89,11 +89,30 @@ class behat_wiris_filter extends behat_wiris_base {
         $field = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath',
-            '//input[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]')
+            '//*[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]')
         );
         if (empty($field)) {
             throw new Exception('Editor always active checkbox not found.');
         }
         $field->check();
+    }
+
+    /**
+     * Check Image performance mode off on MathType filter page
+     *
+     * @Given I check image performance mode off
+     * @throws Exception If image performance mode does not exist, it will throw an exception.
+     */
+    public function i_check_image_performance_mode_off() {
+        $session = $this->getSession();
+        $field = $session->getPage()->find(
+            'xpath',
+            $session->getSelectorsHandler()->selectorToXpath('xpath',
+            '//*[@id="id_s_filter_wiris_pluginperformance" ]')
+        );
+        if (empty($field)) {
+            throw new Exception('Editor always active checkbox not found.');
+        }
+        $field->uncheck();
     }
 }

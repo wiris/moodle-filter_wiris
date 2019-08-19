@@ -217,18 +217,16 @@ class behat_wiris_page extends behat_wiris_base {
         $this->getSession()->visit($this->locate_path($url));
     }
 
+
     /**
-     * Create a MathType formula with an mml and visit to its path
+     * Check if MathType formula has certain value for the src property
      *
-     * @Given I create a MathType formula with mml :mml and visit to its path
+     * @Given I check if MathType formula src is equals to :link
      */
-    public function i_create_an_image_with_mml_mml_and_visit_to_its_path($mml) {
+    public function i_check_if_mathtype_formula_src_is_equals_to($link) {
         $session = $this->getSession();
-        $url = '/filter/wiris/integration/createimage.php?mml='.$mml.'&lang=en&metrics=&centerbaseline=false';
-        $session->visit($this->locate_path($url));
-        $script = 'return document.body.innerHTML';
-        $path = $session->evaluateScript($script);
-        $session->visit($this->locate_path($path));
+        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].src == \''.$link.'\'';
+        $session->evaluateScript($script);
     }
 
     /**
@@ -241,11 +239,23 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Look whether an image exists
+     * Svg element is correctly displayed in the current page
      *
-     * @Then an image should exist
+     * @Then an svg image is correctly displayed
      */
-    public function an_image_should_exist() {
+    public function an_svg_image_is_correclty_displayed() {
+        // We do not use xpath because in this page the svg element acts as root node instead of being an element inside an html.
+        $script = 'return document.children[0].nodeName';
+        $node = $this->getSession()->evaluateScript($script);
+        return $node == 'svg';
+    }
+
+    /**
+     * Png element is correctly displayed in the current page
+     *
+     * @Then an png image is correctly displayed
+     */
+    public function an_png_image_is_correctly_displayed() {
         $session = $this->getSession();
         $image = $session->getPage()->find(
             'xpath',
@@ -270,18 +280,6 @@ class behat_wiris_page extends behat_wiris_base {
         if (empty($element)) {
             throw new Exception('MathJax element not found.');
         }
-    }
-
-    /**
-     * Svg element is correctly displayed in the current page
-     *
-     * @Then an svg is correctly displayed
-     */
-    public function svg_is_correclty_displayed() {
-        // We do not use xpath because in this page the svg element acts as root node instead of being an element inside an html.
-        $script = 'return document.children[0].nodeName';
-        $node = $this->getSession()->evaluateScript($script);
-        return $node == 'svg';
     }
 
     /**
