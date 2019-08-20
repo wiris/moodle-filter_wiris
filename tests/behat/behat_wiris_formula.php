@@ -243,14 +243,15 @@ class behat_wiris_formula extends behat_wiris_base {
     }
 
     /**
-     * Check the size of the formula in Message field
+     * Check the size of the formula in a certain field
      *
-     * @Then Wirisformula should has height :height with error of :error in Message field
+     * @Then Wirisformula should has height :height with error of :error in :field field
      * @param  int $height height value to be compared with
      * @param  int $error acceptable error of the height value
+     * @param  string $field field to check
      * @throws Exception If formula does not exist, it will throw an exception.
      */
-    public function wirisformula_should_has_height_with_error_in_message_field($height, $error, $field) {
+    public function wirisformula_should_has_height_with_error_in_field($height, $error, $field) {
         $session = $this->getSession();
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
             throw new Exception('Integer value expected.');

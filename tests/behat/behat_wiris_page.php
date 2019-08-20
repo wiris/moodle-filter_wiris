@@ -130,6 +130,8 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws Exception If the field does not exist, it will throw an exception.
      */
     public function i_press_in_field_in_atto_editor($button, $field) {
+        global $CFG;
+
         $sectionarray = array(
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
@@ -142,10 +144,14 @@ class behat_wiris_page extends behat_wiris_base {
         $buttonarray = array(
             "MathType" => "atto_wiris_button_wiris_editor",
             "ChemType" => "atto_wiris_button_wiris_chem_editor",
-            "HTML" => "atto_html_button"
+            "HTML" => "atto_html_button",
+            "HTML pressed" => "atto_html_button"
         );
         if (empty($buttonarray[$button])) {
             throw new Exception($button." button not registered.");
+        }
+        if ($CFG->version >= 2018051700 && $CFG->version < 2018120300) {
+            $buttonarray["HTML pressed"] = "atto_html_button highlight";
         }
         $session = $this->getSession();
         $component = $session->getPage()->find(

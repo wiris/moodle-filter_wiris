@@ -1,4 +1,4 @@
-@filter @filter_wiris @caca
+@filter @filter_wiris
 Feature: Check if disabling image performance mode the createimage and showimage services work correctly
 In order to check if createimage and showimage services work correctly
 I need to insert a MathType formula in svg format
