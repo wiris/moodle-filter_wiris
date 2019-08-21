@@ -25,8 +25,7 @@ Check if the png image is correclty displayed
   @javascript
   Scenario: Create image in both formats and check
     And I navigate to "Plugins" in site administration
-    And I follow "Manage filters"
-    And I go to MathType filter settings
+    And I follow "MathType by WIRIS"
     And I check image performance mode off
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
@@ -41,8 +40,7 @@ Check if the png image is correclty displayed
     Then an svg image is correctly displayed
     And I go back
     And I navigate to "Plugins" in site administration
-    And I follow "Manage filters"
-    And I go to MathType filter settings
+    And I follow "MathType by WIRIS"
     And I set the following fields to these values:
       | Image format | png |
     And I press "Save changes"

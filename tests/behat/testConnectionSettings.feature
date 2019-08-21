@@ -9,8 +9,7 @@ Visit test services
     Given the "wiris" filter is "on"
     And I log in as "admin"
     And I navigate to "Plugins" in site administration
-    And I follow "Manage filters"
-    And I go to MathType filter settings
+    And I follow "MathType by WIRIS"
     And I set the following fields to these values:
       | Service host | www.wipis.net |
     And I press "Save changes"

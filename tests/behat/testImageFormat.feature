@@ -13,8 +13,7 @@ Check png visiting test services
     Then MathType image in svg format is correctly displayed
     And I go back
     And I navigate to "Plugins" in site administration
-    And I follow "Manage filters"
-    And I go to MathType filter settings
+    And I follow "MathType by WIRIS"
     And I set the following fields to these values:
       | Image format | png |
     And I press "Save changes"

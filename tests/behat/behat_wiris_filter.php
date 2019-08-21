@@ -41,44 +41,6 @@ class behat_wiris_filter extends behat_wiris_base {
     }
 
     /**
-     * Click on MathType filter settings on Manage filters page
-     *
-     * @Given I go to MathType filter settings
-     * @throws Exception If MathType filter settings link does not exist, it will throw an exception.
-     */
-    public function i_go_to_mathtype_filter_settings() {
-        $session = $this->getSession();
-        $href = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//tr/td[text()=\'MathType by WIRIS\']
-            /following-sibling::td[4]/a')
-        );
-        if (empty($href)) {
-            throw new Exception('MathType filter settings link not found.');
-        }
-        $href->click();
-    }
-
-    /**
-     * Click on Mathjax settings on Manage filter page
-     *
-     * @Given I go to MathJax settings
-     * @throws Exception If MathJax settings link does not exist, it will throw an exception.
-     */
-    public function i_go_to_mathjax_settings() {
-        $session = $this->getSession();
-        $href = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//tr/td[text()=\'MathJax\']/following-sibling::td[4]/a')
-        );
-        if (empty($href)) {
-            throw new Exception('MathType filter settings link not found.');
-        }
-        $href->click();
-    }
-
-
-    /**
      * Check editor always active on MathType filter page
      *
      * @Given I check editor always active
@@ -86,15 +48,15 @@ class behat_wiris_filter extends behat_wiris_base {
      */
     public function i_check_editor_always_active() {
         $session = $this->getSession();
-        $field = $session->getPage()->find(
+        $component = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath',
             '//*[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]')
         );
-        if (empty($field)) {
+        if (empty($component)) {
             throw new Exception('Editor always active checkbox not found.');
         }
-        $field->check();
+        $component->check();
     }
 
     /**
@@ -105,14 +67,14 @@ class behat_wiris_filter extends behat_wiris_base {
      */
     public function i_check_image_performance_mode_off() {
         $session = $this->getSession();
-        $field = $session->getPage()->find(
+        $component = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath',
             '//*[@id="id_s_filter_wiris_pluginperformance" ]')
         );
-        if (empty($field)) {
-            throw new Exception('Editor always active checkbox not found.');
+        if (empty($component)) {
+            throw new Exception('Image performance checkbox not found.');
         }
-        $field->uncheck();
+        $component->uncheck();
     }
 }

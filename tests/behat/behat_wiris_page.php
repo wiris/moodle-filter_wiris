@@ -26,6 +26,7 @@
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
+
 class behat_wiris_page extends behat_wiris_base {
 
     /**
@@ -150,9 +151,11 @@ class behat_wiris_page extends behat_wiris_base {
         if (empty($buttonarray[$button])) {
             throw new Exception($button." button not registered.");
         }
+
         if ($CFG->version >= 2018051700 && $CFG->version < 2018120300) {
             $buttonarray["HTML pressed"] = "atto_html_button highlight";
         }
+
         $session = $this->getSession();
         $component = $session->getPage()->find(
             'xpath',
@@ -184,10 +187,10 @@ class behat_wiris_page extends behat_wiris_base {
             throw new Exception($field." field not registered.");
         }
         $buttonarray = array(
-            "MathType" => "id_page_tiny_mce_wiris_formulaEditor",
-            "ChemType" => "id_page_tiny_mce_wiris_formulaEditorChemistry",
-            "Toggle" => "id_page_pdw_toggle",
-            "Full screen" => "id_page_fullscreen"
+            "MathType" => "tiny_mce_wiris_formulaEditor",
+            "ChemType" => "tiny_mce_wiris_formulaEditorChemistry",
+            "Toggle" => "pdw_toggle",
+            "Full screen" => "fullscreen"
         );
         if (empty($buttonarray[$button])) {
             throw new Exception($button." button not registered.");
@@ -196,12 +199,24 @@ class behat_wiris_page extends behat_wiris_base {
         $component = $session->getPage()->find(
             'xpath',
             $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //*[@id="'.$buttonarray[$button].'"]')
+            //*[contains(@id,\''.$buttonarray[$button].'\')]')
         );
         if (empty($component)) {
             throw new Exception ('"'.$button.'" button not found in "'.$field.'" field');
         }
-        $component->click();
+        if ($button == 'Toggle') {
+            // Clicking only if toggle button is not pressed yet
+            $component = $session->getPage()->find(
+                'xpath',
+                $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
+                //*[contains(@class,\'mceButtonActive\')]')
+            );
+            if (!empty($component)) {
+                $component->click();
+            }
+        } else {
+            $component->click();
+        }
     }
 
     /**
