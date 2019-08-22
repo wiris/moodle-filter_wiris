@@ -5,12 +5,14 @@ I need to check svg image visiting test services
 Change format to png
 Check png visiting test services
 
-  @javascript
-  Scenario: Change image format and check
+  Background:
     Given the "wiris" filter is "on"
     And I log in as "admin"
+
+  @javascript
+  Scenario: Change image format and check
     And I go to link "/filter/wiris/integration/test.php"
-    Then MathType image in svg format is correctly displayed
+    Then MathType formula in svg format is correctly displayed
     And I go back
     And I navigate to "Plugins" in site administration
     And I follow "MathType by WIRIS"
@@ -18,4 +20,4 @@ Check png visiting test services
       | Image format | png |
     And I press "Save changes"
     And I go to link "/filter/wiris/integration/test.php"
-    Then MathType image in png format is correctly displayed
+    Then MathType formula in png format is correctly displayed

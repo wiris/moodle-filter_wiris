@@ -19,7 +19,7 @@ Check if there are any Error key word
   Scenario: Visit and WIRIS quizzes test page
     And I go to link "/filter/wiris/info.php"
     Then "Error" "text" should not exist
-    Then "ERROR" "text" should not exist
-    Then "KO" "text" should not exist
-    Then "DISABLED" "text" should not exist
-    Then "OK" "text" should exist
+    And "ERROR" "text" should not exist
+    And "KO" "text" should not exist
+    And "DISABLED" "text" should not exist
+    And "OK" "text" should exist

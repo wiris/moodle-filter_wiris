@@ -26,6 +26,8 @@
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
+use Behat\Mink\Exception\ExpectationException;
+
 class behat_wiris_formula extends behat_wiris_base {
 
      /**
@@ -39,15 +41,13 @@ class behat_wiris_formula extends behat_wiris_base {
      * Look whether a Wirisformula exists
      *
      * @Then Wirisformula should exist
+     * @throws ExpectationException If Wirisformula is not found, it will throw an exception.
      */
     public function wirisformula_should_exist() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@class, \'Wirisformula\')]')
-        );
+        $formula = $session->getPage()->find('xpath', '//img[contains(@class, \'Wirisformula\')]');
         if (empty($formula)) {
-            throw new Exception('Wirisformula not found.');
+            throw new ExpectationException('Wirisformula not found.', $this->getSession());
         }
     }
 
@@ -55,15 +55,13 @@ class behat_wiris_formula extends behat_wiris_base {
      * Look whether a Wirisformula exists
      *
      * @Then Wirisformula should not exist
+     * @throws ExpectationException If Wirisformula is not found, it will throw an exception.
      */
     public function wirisformula_should_not_exist() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@class, \'Wirisformula\')]')
-        );
+        $formula = $session->getPage()->find('xpath', '//img[contains(@class, \'Wirisformula\')]');
         if (!empty($formula)) {
-            throw new Exception('Wirisformula does exist.');
+            throw new ExpectationException('Wirisformula does exist.', $this->getSession());
         }
     }
 
@@ -71,15 +69,13 @@ class behat_wiris_formula extends behat_wiris_base {
      * Look whether any ChemType formula exist
      *
      * @Then ChemType formula should exist
+     * @throws ExpectationException If ChemType formula is not found, it will throw an exception.
      */
     public function chemtype_formula_should_exist() {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@data-mathml,\'chemistry\')]')
-        );
+        $formula = $session->getPage()->find('xpath', '//img[contains(@data-mathml,\'chemistry\')]');
         if (empty($formula)) {
-            throw new Exception('ChemType formula not found.');
+            throw new ExpectationException('ChemType formula not found.', $this->getSession());
         }
     }
 
@@ -88,15 +84,13 @@ class behat_wiris_formula extends behat_wiris_base {
      *
      * @Then a Wirisformula containing :value should exist
      * @param  string $value the formula should contains
+     * @throws ExpectationException If Wirisformula with a certain value is not found, it will throw an exception.
      */
     public function a_wirisformula_containing_should_exist($value) {
         $session = $this->getSession();
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@alt, \''.$value.'\')]')
-        );
+        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \''.$value.'\')]');
         if (empty($formula)) {
-            throw new Exception('Wirisformula with value '.$value.' not found.');
+            throw new ExpectationException('Wirisformula with value '.$value.' not found.', $this->getSession());
         }
     }
 
@@ -105,17 +99,15 @@ class behat_wiris_formula extends behat_wiris_base {
      *
      * @Then a Wirisformula containing html entity :value should exist
      * @param  string $value the formula should contains
+     * @throws ExpectationException If Wirisformula with a certain html entity value is not found, it will throw an exception.
      */
     public function a_wirisformula_containing_html_entity_should_exist($value) {
         $session = $this->getSession();
         $script = 'element = document.createElement("textarea"); element.innerHTML=\''.$value.'\'; return element.value';
         $element = $session->executeScript($script);
-        $formula = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@alt, \''.$element.'\')]')
-        );
+        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \''.$element.'\')]');
         if (empty($formula)) {
-            throw new Exception('Wirisformula with value '.$value.' not found.');
+            throw new ExpectationException('Wirisformula with value '.$value.' not found.', $this->getSession());
         }
     }
 
@@ -125,7 +117,7 @@ class behat_wiris_formula extends behat_wiris_base {
      * @Then a Wirisformula containing :value should exist in :field field
      * @param  string $value content that the formula should contains
      * @param  string $field field to check
-     * @throws Exception If the field does not exist, it will throw an exception.
+     * @throws ExpectationException If the field or the button is not found, it will throw an exception.
      */
     public function a_wirisformula_containing_should_exist_in_field($value, $field) {
         $fieldarray = array(
@@ -133,14 +125,11 @@ class behat_wiris_formula extends behat_wiris_base {
         );
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//*[@id="'.$fieldarray[$field].'"]')
-        );
+        $component = $session->getPage()->find('xpath', '//*[@id="'.$fieldarray[$field].'"]');
         if (empty($component)) {
-            throw new Exception("\"".$field."\" field not correctly recognized.");
+            throw new ExpectationException("\"".$field."\" field not correctly recognized.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document
@@ -148,7 +137,8 @@ class behat_wiris_formula extends behat_wiris_base {
         .contentWindow.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue';
         $formula = $this->getSession()->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Wirisformula with value '.$value.' not found in "'.$field.'" field');
+            throw new ExpectationException('Wirisformula with value '.$value.' not found in "'.$field.'" field',
+            $this->getSession());
         }
     }
 
@@ -158,23 +148,23 @@ class behat_wiris_formula extends behat_wiris_base {
      * @Then Wirisformula should has height :height with error of :error
      * @param  int $height height value to be compared with
      * @param  int $error acceptable error of the height value
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_height_with_error($height, $error) {
         $session = $this->getSession();
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExpectationException('Integer value expected.', $this->getSession(), $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0]';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession(), $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
         ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image height is not correct.');
+            throw new ExpectationException('Image height is not correct.', $this->getSession());
         }
     }
 
@@ -184,23 +174,23 @@ class behat_wiris_formula extends behat_wiris_base {
      * @Then Wirisformula should has width :width with error of :error
      * @param  int $width width value to be compared with
      * @param  int $error acceptable error of the width value
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_width_with_error($width, $error) {
         $session = $this->getSession();
         if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExpectationException('Integer value expected.', $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0]';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
         ' && document.getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image width is not correct.');
+            throw new ExpectationException('Image width is not correct.', $this->getSession());
         }
     }
 
@@ -211,26 +201,26 @@ class behat_wiris_formula extends behat_wiris_base {
      * @param  int $width width value to be compared with
      * @param  int $error acceptable error of the width value
      * @param  string $field field to check
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_width_with_error_in_field($width, $error, $field) {
         $session = $this->getSession();
         if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExcepExpectationExceptiontion('Integer value expected.', $this->getSession());
         }
         $fieldarray = array(
             "Page content" => "id_page_ifr"
         );
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
@@ -238,7 +228,7 @@ class behat_wiris_formula extends behat_wiris_base {
         getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image width is not correct.');
+            throw new ExpectationException('Image width is not correct.', $this->getSession());
         }
     }
 
@@ -249,26 +239,26 @@ class behat_wiris_formula extends behat_wiris_base {
      * @param  int $height height value to be compared with
      * @param  int $error acceptable error of the height value
      * @param  string $field field to check
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_height_with_error_in_field($height, $error, $field) {
         $session = $this->getSession();
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExpectationException('Integer value expected.', $this->getSession());
         }
         $fieldarray = array(
             "Page content" => "id_page_ifr"
         );
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
@@ -276,7 +266,7 @@ class behat_wiris_formula extends behat_wiris_base {
         getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image height is not correct.');
+            throw new ExpectationException('Image height is not correct.', $this->getSession());
         }
     }
 
@@ -286,24 +276,24 @@ class behat_wiris_formula extends behat_wiris_base {
      * @Then Wirisformula should has width :width with error of :error in full screen mode
      * @param  int $width width value to be compared with
      * @param  int $error acceptable error of the width value
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_width_with_error_in_full_screen_mode($width, $error) {
         $session = $this->getSession();
         if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExpectationException('Integer value expected.', $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\')';
         $iframe = $session->evaluateScript($script);
         if (empty($iframe)) {
-            throw new Exception('Tinymce screen mode is off.');
+            throw new ExpectationException('Tinymce screen mode is off.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
@@ -311,7 +301,7 @@ class behat_wiris_formula extends behat_wiris_base {
         getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image width is not correct.');
+            throw new ExpectationException('Image width is not correct.', $this->getSession());
         }
     }
 
@@ -321,31 +311,31 @@ class behat_wiris_formula extends behat_wiris_base {
      * @Then Wirisformula should has height :height with error of :error in full screen mode
      * @param  int $height height value to be compared with
      * @param  int $error acceptable error of the height value
-     * @throws Exception If formula does not exist, it will throw an exception.
+     * @throws ExpectationException If formula is not found, it will throw an exception.
      */
     public function wirisformula_should_has_height_with_error_in_full_screen_mode($height, $error) {
         $session = $this->getSession();
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new Exception('Integer value expected.');
+            throw new ExpectationException('Integer value expected.', $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\')';
         $iframe = $session->evaluateScript($script);
         if (empty($iframe)) {
-            return Exception('Tinymce screen mode is off.');
+            return new ExpectationException('Tinymce screen mode is off.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new Exception('Formula not found.');
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
         ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
-            throw new Exception('Image height is not correct.');
+            throw new ExpectationException('Image height is not correct.', $this->getSession());
         }
     }
 

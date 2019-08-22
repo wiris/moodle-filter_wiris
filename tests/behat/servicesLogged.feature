@@ -33,28 +33,28 @@ Check all services have status OK
   Scenario: Create a mathml image
     And I go to link "/filter/wiris/integration/createimage.php?mml=<math><mo>x</mo></math>"
     Then "formula=5eacffd8c463696c5742b05a925cef04" "text" should exist
-    Then "Forgotten your username" "text" should not exist
+    And "Forgotten your username" "text" should not exist
 
   @javascript
   Scenario: Use showimage.php to check image properties
     And I go to link "/filter/wiris/integration/showimage.php?mml=<math><mo>x</mo></math>"
     Then "\"status\":\"ok\"" "text" should exist
-    Then "!--MathML:" "text" should exist
-    Then "\"format\":\"svg\"" "text" should exist
-    Then "Forgotten your username" "text" should not exist
+    And "!--MathML:" "text" should exist
+    And "\"format\":\"svg\"" "text" should exist
+    And "Forgotten your username" "text" should not exist
 
   @javascript
   Scenario: Check services.php with a mathml2accessible
     And I go to link "/filter/wiris/integration/service.php?service=mathml2accessible&mml=<math xmlns='http://www.w3.org/1998/Math/MathML'><mn>1</mn><mo>+</mo><mn>2</mn></math>"
     Then "{\"result\":{\"text\":\"1 2\"},\"status\":\"ok\"}" "text" should exist
-    Then "Forgotten your username" "text" should not exist
+    And "Forgotten your username" "text" should not exist
 
   @javascript
   Scenario: Check all services in test.php have status OK
     And I go to link "/filter/wiris/integration/test.php"
     Then "MathType integration test page" "text" should exist
-    Then "Forgotten your username" "text" should not exist
-    Then "OK" "text" should exist
-    Then "ERROR" "text" should not exist
-    Then "KO" "text" should not exist
-    Then "DISABLED" "text" should not exist
+    And "Forgotten your username" "text" should not exist
+    And "OK" "text" should exist
+    And "ERROR" "text" should not exist
+    And "KO" "text" should not exist
+    And "DISABLED" "text" should not exist

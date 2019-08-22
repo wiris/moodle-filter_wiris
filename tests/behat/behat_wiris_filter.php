@@ -26,6 +26,8 @@
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
+use Behat\Mink\Exception\ExpectationException;
+
 class behat_wiris_filter extends behat_wiris_base {
 
     /**
@@ -44,17 +46,13 @@ class behat_wiris_filter extends behat_wiris_base {
      * Check editor always active on MathType filter page
      *
      * @Given I check editor always active
-     * @throws Exception If editor always active checkbox does not exist, it will throw an exception.
+     * @throws ExpectationException If editor always active checkbox is not found, it will throw an exception.
      */
     public function i_check_editor_always_active() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath',
-            '//*[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]')
-        );
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]');
         if (empty($component)) {
-            throw new Exception('Editor always active checkbox not found.');
+            throw new ExpectationException('Editor always active checkbox not found.', $this->getSession());
         }
         $component->check();
     }
@@ -63,17 +61,13 @@ class behat_wiris_filter extends behat_wiris_base {
      * Check Image performance mode off on MathType filter page
      *
      * @Given I check image performance mode off
-     * @throws Exception If image performance mode does not exist, it will throw an exception.
+     * @throws ExpectationException If image performance mode is not found, it will throw an exception.
      */
     public function i_check_image_performance_mode_off() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath',
-            '//*[@id="id_s_filter_wiris_pluginperformance" ]')
-        );
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_pluginperformance" ]');
         if (empty($component)) {
-            throw new Exception('Image performance checkbox not found.');
+            throw new ExpectationException('Image performance checkbox not found.', $this->getSession());
         }
         $component->uncheck();
     }

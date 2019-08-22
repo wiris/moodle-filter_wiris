@@ -26,6 +26,7 @@
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
+use Behat\Mink\Exception\ExpectationException;
 
 class behat_wiris_page extends behat_wiris_base {
 
@@ -34,7 +35,7 @@ class behat_wiris_page extends behat_wiris_base {
      *
      * @Given I press :button in full screen mode
      * @param  string $button button to press
-     * @throws Exception If the button does not exist, it will throw an exception.
+     * @throws ExpectationException If the button is not found, it will throw an exception.
      */
     public function i_press_mathtype_in_full_screen_mode($button) {
         $session = $this->getSession();
@@ -44,14 +45,11 @@ class behat_wiris_page extends behat_wiris_base {
             "Full screen" => "mce_fullscreen_fullscreen"
         );
         if (empty($buttonarray[$button])) {
-            throw new Exception($button." button not registered.");
+            throw new ExpectationException($button." button not registered.", $this->getSession());
         }
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//*[@id="'.$buttonarray[$button].'"]')
-        );
+        $component = $session->getPage()->find('xpath', '//*[@id="'.$buttonarray[$button].'"]');
         if (empty($component)) {
-            throw new Exception ('"'.$button.'" button not found in full screen mode');
+            throw new ExpectationException ('"'.$button.'" button not found in full screen mode', $this->getSession());
         }
         $component->click();
     }
@@ -61,7 +59,7 @@ class behat_wiris_page extends behat_wiris_base {
      *
      * @Given I click on :field field
      * @param  string $field field to click on
-     * @throws Exception If the field does not exist, it will throw an exception.
+     * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_click_on_field($field) {
         $fieldarray = array(
@@ -71,15 +69,12 @@ class behat_wiris_page extends behat_wiris_base {
             "Feedback" => "id_feedback_0editable"
         );
         if (empty($fieldarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.");
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$fieldarray[$field].'"]')
-        );
+        $component = $session->getPage()->find('xpath', '//div[@id="'.$fieldarray[$field].'"]');
         if (empty($component)) {
-            throw new Exception($field." field not correctly recognized.");
+            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
         }
         $component->click();
     }
@@ -90,7 +85,7 @@ class behat_wiris_page extends behat_wiris_base {
      * @Given I place caret at position :position in :field field
      * @param  integer $position position to which the caret is placed
      * @param  string $field field to check
-     * @throws Exception If the field does not exist, it will throw an exception.
+     * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_place_caret_at_position_in_field($position, $field) {
         $fieldarray = array(
@@ -100,18 +95,14 @@ class behat_wiris_page extends behat_wiris_base {
             "Feedback" => "id_feedback_0editable"
         );
         if (empty($fieldarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$fieldarray[$field].'"]')
-        );
+        $component = $session->getPage()->find('xpath', '//div[@id="'.$fieldarray[$field].'"]');
         if (empty($component)) {
-            throw new Exception($field." field not correctly recognized.");
+            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
         }
         $session = $this->getSession();
-        behat_field_manager::get_form_field_from_label("Page content", $this);
         $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
             .'node = document.getElementById(\''.$fieldarray[$field].'\').firstChild;'
             .'window.parent.document.getSelection().removeAllRanges();'
@@ -128,7 +119,7 @@ class behat_wiris_page extends behat_wiris_base {
      * @Given I press :button in :field field in Atto editor
      * @param  string $button button to press
      * @param  string $field field to check
-     * @throws Exception If the field does not exist, it will throw an exception.
+     * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_atto_editor($button, $field) {
         global $CFG;
@@ -140,7 +131,7 @@ class behat_wiris_page extends behat_wiris_base {
             "Feedback" => "fitem_id_feedback_0"
         );
         if (empty($sectionarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
         $buttonarray = array(
             "MathType" => "atto_wiris_button_wiris_editor",
@@ -149,7 +140,7 @@ class behat_wiris_page extends behat_wiris_base {
             "HTML pressed" => "atto_html_button"
         );
         if (empty($buttonarray[$button])) {
-            throw new Exception($button." button not registered.");
+            throw new ExpectationException($button." button not registered.", $this->getSession());
         }
 
         if ($CFG->version >= 2018051700 && $CFG->version < 2018120300) {
@@ -157,13 +148,10 @@ class behat_wiris_page extends behat_wiris_base {
         }
 
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //button[@class="'.$buttonarray[$button].'"]')
-        );
+        $component = $session->getPage()->find( 'xpath', '//div[@id="'.$sectionarray[$field].'"]
+        //button[@class="'.$buttonarray[$button].'"]');
         if (empty($component)) {
-            throw new Exception ('"'.$button.'" button not found in "'.$field.'" field');
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
         }
         $component->click();
     }
@@ -174,7 +162,7 @@ class behat_wiris_page extends behat_wiris_base {
      * @Given I press :button in :field field in TinyMCE editor
      * @param  string $button button to press
      * @param  string $field field to check
-     * @throws Exception If the field does not exist, it will throw an exception.
+     * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_tinymce_editor($button, $field) {
         $sectionarray = array(
@@ -184,7 +172,7 @@ class behat_wiris_page extends behat_wiris_base {
             "Feedback" => "fitem_id_feedback_0"
         );
         if (empty($sectionarray[$field])) {
-            throw new Exception($field." field not registered.");
+            throw new ExpectationException($field." field not registered.", $this->getSession());
         }
         $buttonarray = array(
             "MathType" => "tiny_mce_wiris_formulaEditor",
@@ -193,24 +181,18 @@ class behat_wiris_page extends behat_wiris_base {
             "Full screen" => "fullscreen"
         );
         if (empty($buttonarray[$button])) {
-            throw new Exception($button." button not registered.");
+            throw new ExpectationException($button." button not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //*[contains(@id,\''.$buttonarray[$button].'\')]')
-        );
+        $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+        //*[contains(@id,\''.$buttonarray[$button].'\')]');
         if (empty($component)) {
-            throw new Exception ('"'.$button.'" button not found in "'.$field.'" field');
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
         }
         if ($button == 'Toggle') {
-            // Clicking only if toggle button is not pressed yet
-            $component = $session->getPage()->find(
-                'xpath',
-                $session->getSelectorsHandler()->selectorToXpath('xpath', '//div[@id="'.$sectionarray[$field].'"]
-                //*[contains(@class,\'mceButtonActive\')]')
-            );
+            // Clicking only if toggle button is not pressed yet.
+            $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+            //*[contains(@class,\'mceButtonActive\')]');
             if (!empty($component)) {
                 $component->click();
             }
@@ -275,15 +257,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Png element is correctly displayed in the current page
      *
      * @Then an png image is correctly displayed
+     * @throws ExpectationException If the png image is not found, it will throw an exception.
      */
     public function an_png_image_is_correctly_displayed() {
         $session = $this->getSession();
-        $image = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img')
-        );
+        $image = $session->getPage()->find('xpath', '//img');
         if (empty($image)) {
-            throw new Exception('Image not found.');
+            throw new ExpectationException('Image not found.', $this->getSession());
         }
     }
 
@@ -291,47 +271,41 @@ class behat_wiris_page extends behat_wiris_base {
      * Look whether a MathJax element exists
      *
      * @Then MathJax element should exist
+     * @throws ExpectationException If the MathJax element is not found, it will throw an exception.
      */
     public function mathjax_element_should_exist() {
         $session = $this->getSession();
-        $element = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//span[contains(@class,\'MathJax\')]')
-        );
+        $element = $session->getPage()->find('xpath', '//span[contains(@class,\'MathJax\')]');
         if (empty($element)) {
-            throw new Exception('MathJax element not found.');
+            throw new ExpectationException('MathJax element not found.', $this->getSession());
         }
     }
 
     /**
      * MathType images are correctly displayed when the chosen format is svg
      *
-     * @Then MathType image in svg format is correctly displayed
+     * @Then MathType formula in svg format is correctly displayed
+     * @throws ExpectationException If the MathType formula is not found, it will throw an exception.
      */
     public function mathtype_image_in_svg_format_is_correctly_displayed() {
         $session = $this->getSession();
-        $image = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/svg+xml\')]')
-        );
+        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/svg+xml\')]');
         if (empty($image)) {
-            throw new Exception('Image not found.');
+            throw new ExpectationException('MathType formula not found.', $this->getSession());
         }
     }
 
     /**
      * MathType images are correctly displayed when the chosen format is png
      *
-     * @Then MathType image in png format is correctly displayed
+     * @Then MathType formula in png format is correctly displayed
+     * @throws ExpectationException If the MathType formula is not found, it will throw an exception.
      */
     public function mathtype_image_in_png_format_is_correctly_displayed() {
         $session = $this->getSession();
-        $image = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//img[contains(@src,\'data:image/png;base64\')]')
-        );
+        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png;base64\')]');
         if (empty($image)) {
-            throw new Exception('Image not found.');
+            throw new ExpectationException('MathType formula not found.', $this->getSession());
         }
     }
 
@@ -339,16 +313,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Select language option as spanish
      *
      * @Given I select spanish
-     * @throws Exception If spanish option does not exist, it will throw an exception.
+     * @throws ExpectationException If spanish option is not found, it will throw an exception.
      */
     public function i_select_spanish() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select')
-        );
+        $component = $session->getPage()->find('xpath', '//select');
         if (empty($component)) {
-            throw new Exception('Spanish option not found.');
+            throw new ExpectationException('Spanish option not found.', $this->getSession());
         }
         $component->selectOption("Español - Internacional ‎(es)‎");
     }
@@ -357,16 +328,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Select 100% in grade option of Answer 1 field
      *
      * @Given I select 100% option in Answer1
-     * @throws Exception If grade option does not exist, it will throw an exception.
+     * @throws ExpectationException If grade option is not found, it will throw an exception.
      */
     public function i_select_100_option_in_answer1() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select[@id="id_fraction_0"]')
-        );
+        $component = $session->getPage()->find('xpath', '//select[@id="id_fraction_0"]');
         if (empty($component)) {
-            throw new Exception('Grade option in Answer 1 field not found.');
+            throw new ExpectationException('Grade option in Answer 1 field not found.', $this->getSession());
         }
         $component->selectOption("100%");
     }
@@ -375,16 +343,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Check enable trusted content on site security settings page
      *
      * @Given I check enable trusted content
-     * @throws Exception If enable trusted content checkbox does not exist, it will throw an exception.
+     * @throws ExpectationException If enable trusted content checkbox is not found, it will throw an exception.
      */
     public function i_check_enable_trusted_content() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//input[@id="id_s__enabletrusttext"]')
-        );
+        $component = $session->getPage()->find('xpath', '//input[@id="id_s__enabletrusttext"]');
         if (empty($component)) {
-            throw new Exception('Enable trusted content checkbox not found.');
+            throw new ExpectationException('Enable trusted content checkbox not found.', $this->getSession());
         }
         $component->check();
     }
@@ -393,16 +358,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Select seconds in autosave frequency option on Atto toolbar settings page
      *
      * @Given I select seconds in autosave frequency option
-     * @throws Exception If autosave frequency option does not exist, it will throw an exception.
+     * @throws ExpectationException If autosave frequency option is not fonud, it will throw an exception.
      */
     public function i_select_seconds_in_autosave_frequency_option() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//select[@id="id_s_editor_atto_autosavefrequencyu"]')
-        );
+        $component = $session->getPage()->find('xpath', '//select[@id="id_s_editor_atto_autosavefrequencyu"]');
         if (empty($component)) {
-            throw new Exception('Autosave frequency option in Answer 1 field not found.');
+            throw new ExpectationException('Autosave frequency option in Answer 1 field not found.', $this->getSession());
         }
         $component->selectOption("seconds");
     }
@@ -411,16 +373,13 @@ class behat_wiris_page extends behat_wiris_base {
      * Choose Short answoer in Choose a questoin type to add dialog
      *
      * @Given I choose Short answer
-     * @throws Exception If Short answer radio button does not exist, it will throw an exception.
+     * @throws ExpectationException If Short answer radio button is not found, it will throw an exception.
      */
     public function i_choose_short_answer() {
         $session = $this->getSession();
-        $component = $session->getPage()->find(
-            'xpath',
-            $session->getSelectorsHandler()->selectorToXpath('xpath', '//input[@id="item_qtype_shortanswer"]')
-        );
+        $component = $session->getPage()->find('xpath', '//input[@id="item_qtype_shortanswer"]');
         if (empty($component)) {
-            throw new Exception('Short answer radio button in Answer 1 field not found.');
+            throw new ExpectationException('Short answer radio button in Answer 1 field not found.', $this->getSession());
         }
         $component->click();
     }
