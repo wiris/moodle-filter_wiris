@@ -1,13 +1,8 @@
 @filter @filter_wiris
-Feature: Check if disabling image performance mode the createimage and showimage services work correctly
-In order to check if createimage and showimage services work correctly
-I need to insert a MathType formula in svg format
-Show the svg image
-Check if the svg image is correclty displayed
-Change format to png
-Insert a MathType formula in svg format
-Show the png image
-Check if the png image is correclty displayed
+Feature: Check performance
+In order to check the performance setting
+As an admin
+I must not see any JSON response for images services
 
   Background:
     Given the following config values are set as admin:

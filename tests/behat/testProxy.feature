@@ -1,16 +1,8 @@
 @filter @filter_wiris
 Feature: Tests proxy configuration
-In order to test proxy configuration
-I need to set a correct proxy configurations
-Test the service
-Set empty proxy configurations
-Test the service
-Set https configuration
-Test the service
-Set empty proxy configurations
-Test the service
-Set a bad proxy configuration
-Test the service
+In order to check proxy configuration
+As an admin
+I should access the test service if and only if the proxy is correctly configurated
 
   Background:
     Given the following config values are set as admin:

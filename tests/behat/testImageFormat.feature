@@ -1,9 +1,8 @@
 @filter @filter_wiris
-Feature: Check if different image formats are correctly displayed
-In order to check if different image formats are correctly displayed
-I need to check svg image visiting test services
-Change format to png
-Check png visiting test services
+Feature: Check image format
+In order to check image formats (png, svg)
+As an admin
+I need to see the correct image format
 
   Background:
     Given the "wiris" filter is "on"

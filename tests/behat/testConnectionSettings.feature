@@ -1,8 +1,8 @@
 @filter @filter_wiris
-Feature: Check if using a bad service host throws exception
-In order to check if using a bad service host throws exception
-I need to set a bad service host
-Visit test services
+Feature: Check Service host
+In order to check the service host seting
+As an admin
+I can't access the test service if the service host doesn't exists
 
   @javascript
   Scenario: Set an incorrect service

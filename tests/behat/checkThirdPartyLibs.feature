@@ -1,8 +1,8 @@
 @filter @filter_wiris
 Feature: Check MathType integration as a third party lib
 In order to check if MathType integration is a third party library
-I need to visit the Third party libraries
-Check if MathType integration appears
+As an admin
+I need to Check if MathType integration appears on third party libraries page
 
   Background:
     Given I log in as "admin"

@@ -1,8 +1,8 @@
 @filter @filter_wiris
-Feature: Check WIRIS quizzes test page
-In order to check WIRIS quizzes
-I need to visit the test service
-Check if there are any Error key word
+Feature: Check test page
+In order to check the test page
+As a user
+I must see not error messages on test page
 
   Background:
     Given the following config values are set as admin:
@@ -16,7 +16,7 @@ Check if there are any Error key word
       | admin  | C1     | editingteacher |
     And the "wiris" filter is "on"
 
-  Scenario: Visit and WIRIS quizzes test page
+  Scenario: Visit and MathType test page
     And I go to link "/filter/wiris/info.php"
     Then "Error" "text" should not exist
     And "ERROR" "text" should not exist
