@@ -80,6 +80,20 @@ class behat_wiris_formula extends behat_wiris_base {
     }
 
     /**
+     * Look that any ChemType formula exists
+     *
+     * @Then ChemType formula should not exist
+     * @throws ExpectationException If ChemType formula is found, it will throw an exception.
+     */
+    public function chemtype_formula_should_not_exist() {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find('xpath', '//img[contains(@data-mathml,\'chemistry\')]');
+        if (!empty($formula)) {
+            throw new ExpectationException('ChemType formula found.', $this->getSession());
+        }
+    }
+
+    /**
      * Check if a Wirisformula containing certain value exist
      *
      * @Then a Wirisformula containing :value should exist
