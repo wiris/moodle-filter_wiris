@@ -12,12 +12,17 @@ class com_wiris_util_xml_WCharacterBase {
 	static $ROOT_NO_TAIL_VERTICAL = 61759;
 	static $ROOT_LEFT_TAIL = 61760;
 	static $ROOT_VERTICAL_LINE = 61761;
+	static $HORIZONTAL_TAB = 9;
 	static $LINE_FEED = 10;
+	static $CARRIAGE_RETURN = 13;
+	static $SPACE = 32;
+	static $NUMBER_SIGN = 35;
 	static $ROUND_BRACKET_LEFT = 40;
 	static $ROUND_BRACKET_RIGHT = 41;
 	static $COMMA = 44;
 	static $FULL_STOP = 46;
 	static $SQUARE_BRACKET_LEFT = 91;
+	static $BACKSLASH = 92;
 	static $SQUARE_BRACKET_RIGHT = 93;
 	static $CIRCUMFLEX_ACCENT = 94;
 	static $LOW_LINE = 95;
