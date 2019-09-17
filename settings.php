@@ -62,12 +62,16 @@ if ($ADMIN->fulltree) {
 
         if ($waseditorenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris/editor_enable',
-                                                            get_string('wirismatheditor', 'filter_wiris'), '', '1'));
+                                                            get_string('wirismatheditor', 'filter_wiris'),
+                                                            get_string('wirismatheditor_help', 'filter_wiris'),
+                                                            '1'));
         }
 
         if ($waschemeditorenabled) {
             $settings->add(new admin_setting_configcheckbox('filter_wiris/chem_editor_enable',
-                                                            get_string('wirischemeditor', 'filter_wiris'), '', '1'));
+                                                            get_string('wirischemeditor', 'filter_wiris'),
+                                                            get_string('wirischemeditor_help', 'filter_wiris'),
+                                                            '1'));
         }
 
         // Allow MathType be enabled despite of the filter is disabled on a course.
