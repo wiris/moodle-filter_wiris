@@ -80,6 +80,46 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
+     * DbClick on a certain image with specific alternative text.
+     *
+     * @Given I dbClick on image with alt equals to :alt
+     * @param  string $alt image alternative text
+     * @throws ExpectationException If the image is not found, it will throw an exception.
+     */
+    public function i_dbclick_on_image_with_alt_text($alt) {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
+        if (empty($component)) {
+            throw new ExpectationException("Image with alternative text" . $alt . " is not correctly recognized.", $this->getSession());
+        }
+        $component->doubleClick();
+    }
+
+    /**
+     * Follows the page redirection. Use this step after any action that shows a message and waits for a redirection
+     *
+     * @Given I wait for :seconds seconds
+     * @param  string $seconds time to wait
+     */
+    public function i_wait($seconds) {
+        $this->getSession()->wait($seconds * 1000);
+    }
+
+    /**
+     * Follows the page redirection. Use this step after any action that shows a message and waits for a redirection
+     *
+     * @Then modal window is opened
+     * @param  string $seconds time to wait
+     */
+    public function modal_window_is_opened() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//div[contains(@class, "wrs_modal_dialogContainer")]');
+        if (empty($component) || !$component->isVisible()) {
+            throw new ExpectationException("Modal window is not opened.", $this->getSession());
+        }
+    }
+
+    /**
      * Place caret in a certain position in a certain field
      *
      * @Given I place caret at position :position in :field field
@@ -321,7 +361,7 @@ class behat_wiris_page extends behat_wiris_base {
         if (empty($component)) {
             throw new ExpectationException('Spanish option not found.', $this->getSession());
         }
-        $component->selectOption("Español - Internacional ‎(es)‎");
+        $component->selectOption("EspaÃ±ol - Internacional â€Ž(es)â€Ž");
     }
 
     /**
@@ -383,4 +423,5 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $component->click();
     }
+
 }
