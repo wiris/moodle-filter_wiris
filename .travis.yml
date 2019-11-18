@@ -28,8 +28,8 @@ env:
   global:
     - COVERAGE=false
   matrix:
-    - MOODLE_BRANCH=master DB=mysqli IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=master DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+    - MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+    - MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
     - MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
     - MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
     - MOODLE_BRANCH=MOODLE_36_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
@@ -40,9 +40,9 @@ env:
 matrix:
   exclude:
     - php: 7.0
-      env: MOODLE_BRANCH=master DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
     - php: 7.0
-      env: MOODLE_BRANCH=master DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
     - php: 7.0
       env: MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
     - php: 7.0
