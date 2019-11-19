@@ -98,16 +98,6 @@ class behat_wiris_page extends behat_wiris_base {
     /**
      * Follows the page redirection. Use this step after any action that shows a message and waits for a redirection
      *
-     * @Given I wait for :seconds seconds
-     * @param  string $seconds time to wait
-     */
-    public function i_wait($seconds) {
-        $this->getSession()->wait($seconds * 1000);
-    }
-
-    /**
-     * Follows the page redirection. Use this step after any action that shows a message and waits for a redirection
-     *
      * @Then modal window is opened
      * @param  string $seconds time to wait
      */
