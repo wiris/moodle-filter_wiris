@@ -155,6 +155,7 @@ class behat_wiris_page extends behat_wiris_base {
         global $CFG;
 
         $sectionarray = array(
+            "Description" => "fitem_id_introeditor",
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
@@ -239,6 +240,32 @@ class behat_wiris_page extends behat_wiris_base {
     public function i_enable_save_mode() {
         $script = 'WirisPlugin.Configuration.set("saveMode", "xml")';
         $this->getSession()->executeScript($script);
+    }
+
+    /**
+     * Looks if there is a visible modal window which
+     * was created in order with the number is visible.
+     *
+     * @Then modal window with number :number is opened
+     */
+    public function modal_window_with_number_is_opened($number) {
+        $session = $this->getSession();
+        $exception = new ExpectationException('Modal window not visible.', $this->getSession());
+        $this->spin(
+            function($context, $args) {
+                $modal = $context->getSession()
+                               ->getPage()
+                               ->find('xpath',
+                                      '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']")]');
+                echo 'EEEEEEEEEEEEEEEEEEEESTO TIRA ';
+                echo 'EEEEEEEEEEEEEEEEEEEESTO TIRA ' . $modal;
+                return !empty($modal);
+            },
+            array("number" => $number),
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
     }
 
     /**
