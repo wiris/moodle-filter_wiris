@@ -256,10 +256,9 @@ class behat_wiris_page extends behat_wiris_base {
                 $modal = $context->getSession()
                                ->getPage()
                                ->find('xpath',
-                                      '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']")]');
-                echo 'EEEEEEEEEEEEEEEEEEEESTO TIRA ';
-                echo 'EEEEEEEEEEEEEEEEEEEESTO TIRA ' . $modal;
-                return !empty($modal);
+                                      '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
+                                ->isVisible();
+                return $modal;
             },
             array("number" => $number),
             self::get_extended_timeout(),
