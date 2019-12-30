@@ -254,9 +254,9 @@ class behat_wiris_page extends behat_wiris_base {
         $this->spin(
             function($context, $args) {
                 $modal = $context->getSession()
-                   ->getPage()
-                   ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
-                   ->isVisible();
+                    ->getPage()
+                    ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
+                    ->isVisible();
                 return $modal;
             },
             array("number" => $number),
