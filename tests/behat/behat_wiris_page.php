@@ -96,22 +96,6 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Click on a certain image with specific alternative text.
-     *
-     * @Given I click on image with alt equals to :alt
-     * @param  string $alt image alternative text
-     * @throws ExpectationException If the image is not found, it will throw an exception.
-     */
-    public function i_click_on_image_with_alt_text($alt) {
-        $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
-        if (empty($component)) {
-            throw new ExpectationException("Image with alternative text" . $alt . " is not correctly recognized.", $this->getSession());
-        }
-        $component->click();
-    }
-
-    /**
      * Follows the page redirection. Use this step after any action that shows a message and waits for a redirection
      *
      * @Then modal window is opened
@@ -269,11 +253,35 @@ class behat_wiris_page extends behat_wiris_base {
         $exception = new ExpectationException('Modal window not visible.', $this->getSession());
         $this->spin(
             function($context, $args) {
-                $modal = $context->getSession()
+                $modalIsVisible = $context->getSession()
                     ->getPage()
                     ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
                     ->isVisible();
-                return $modal;
+                return $modalIsVisible;
+            },
+            array("number" => $number),
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
+    }
+
+    /**
+     * Looks if there is a visible modal window which
+     * was created in order with the number is not visible.
+     *
+     * @Then modal window with number :number is not opened
+     */
+    public function modal_window_with_number_is_not_opened($number) {
+        $session = $this->getSession();
+        $exception = new ExpectationException('Modal window is visible.', $this->getSession());
+        $this->spin(
+            function($context, $args) {
+                $modalIsVisible = $context->getSession()
+                    ->getPage()
+                    ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
+                    ->isVisible();
+                return !$modal;
             },
             array("number" => $number),
             self::get_extended_timeout(),
