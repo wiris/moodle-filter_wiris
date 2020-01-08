@@ -293,11 +293,11 @@ class behat_wiris_page extends behat_wiris_base {
         $exception = new ExpectationException('Modal window is visible.', $this->getSession());
         $this->spin(
             function($context, $args) {
-                $modalIsVisible = $context->getSession()
+                $modal = $context->getSession()
                     ->getPage()
-                    ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]')
-                    ->isVisible();
-                return !$modal;
+                    ->find('xpath', '//div[@id="wrs_modal_dialogContainer[' . $args["number"] . ']"]');
+
+                return empty($modal) || (!empty($modal) && !$modal->isVisible());
             },
             array("number" => $number),
             self::get_extended_timeout(),
