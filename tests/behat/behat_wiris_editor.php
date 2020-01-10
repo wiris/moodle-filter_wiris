@@ -72,6 +72,51 @@ class behat_wiris_editor extends behat_wiris_base {
     }
 
     /**
+     * Once the editor has been opened and focused, set the MathType formula to the specified value.
+     *
+     * @Given I set MathType formula to :value in modal number :number
+     * @param  string $value value to which we want to set the field
+     * @param  string $number modal window id number
+     * @throws ElementNotFoundException If MathType editor does not exist, it will throw an invalid argument exception.
+     */
+    public function i_set_mathtype_formula_to_in_modal_number($value, $number) {
+        $exception = new ExpectationException('MathType editor container not found.', $this->getSession());
+        $this->spin(
+            function($context, $args) {
+                return $context->getSession()->getPage()->find('xpath', '//div[@id="wrs_modal_dialogContainer[' .
+                    $args["number"] .
+                    ']"]//div[contains(@class,"wrs_editor")]//span[@class="wrs_container"]');
+            },
+            array("number" => $number),
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
+        $session = $this->getSession(); // Get the mink session.
+        if (strpos($value, 'math') == false) {
+            $component = $session->getPage()->find('xpath', '//div[@id="wrs_modal_dialogContainer[' .
+                $number .
+                ']"]//input[@class="wrs_focusElement"]');
+            if (empty($component)) {
+                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
+                , 'filter_wirs'));
+            }
+            $component->setValue($value);
+        } else {
+            $script = 'return document.getElementById("wrs_content_container[' . $number . ']")';
+            $container = $session->evaluateScript($script);
+            if (empty($container)) {
+                throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
+                , 'filter_wirs'));
+            }
+            $script = 'const container = document.getElementById("wrs_content_container[' . $number . ']");' .
+                'const editor = window.com.wiris.jsEditor.JsEditor.getInstance(container);' .
+                'editor.setMathML(\'' . $value . '\');';
+            $session->executeScript($script);
+        }
+    }
+
+    /**
      * Press on accept button in MathType Editor
      *
      * @Given I press accept button in MathType Editor
@@ -99,7 +144,39 @@ class behat_wiris_editor extends behat_wiris_base {
     }
 
     /**
-     * Press on cancel button in MathType Editor
+     * Press accept button in MathType Editor of specific modal
+     *
+     * @Given I press accept button in MathType Editor in modal number :number
+     * @param  string $number modal window id number
+     * @throws ExpectationException If accept button is not found, it will throw an exception.
+     */
+    public function i_press_accept_button_in_mathtype_editor_in_modal_number($number) {
+        $exception = new ExpectationException('Accept button not found.', $this->getSession());
+        $this->spin(
+            function($context, $args) {
+                $toolbar = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[' .
+                    $args["number"] .
+                    ']\' and @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//div[@class=\'wrs_panelContainer\']');
+                $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[' .
+                    $args["number"] .
+                    ']\' and @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
+                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[' .
+                    $args["number"] .
+                    ']\']');
+                return !empty($toolbar) and !empty($container);
+            },
+            array("number" => $number),
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[' . $number . ']\']');
+        $component->click();
+    }
+
+    /**
+     * Press on cancel button in a specific modal window
      *
      * @Given I press cancel button in MathType Editor
      * @throws ExpectationException If Cancel button is not found, it will throw an exception.
@@ -122,6 +199,36 @@ class behat_wiris_editor extends behat_wiris_base {
         );
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
+        $component->click();
+    }
+
+    /**
+     * Press cancel button in a specific modal window
+     *
+     * @Given I press cancel button in MathType Editor in modal number :number
+     * @param  string $number modal window id number
+     * @throws ExpectationException If Cancel button is not found, it will throw an exception.
+     */
+    public function i_press_cancel_button_in_mathtype_editor_in_modal_number($number) {
+        $exception = new ExpectationException('Cancel button not found.', $this->getSession());
+        $this->spin(
+            function($context, $args) {
+                $toolbar = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[' .
+                    $args["number"] .
+                    ']\' and @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//div[@class=\'wrs_panelContainer\']');
+                $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[' .
+                    $args["number"] .
+                    ']\' and @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
+                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[' . $args["number"] . ']\']');
+                return !empty($toolbar) and !empty($container);
+            },
+            array("number" => $number),
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[' . $number . ']\']');
         $component->click();
     }
 
