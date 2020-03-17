@@ -831,13 +831,13 @@ if(!file_exists($_hx_autload_cache_file)) {
 					$t = 3;
 				} else
 					continue;
-				$qname = ($bn == 'HList' && empty($pack)) ? 'List' : join(array_merge($pack, array($bn)), '.');
+				$qname = ($bn == 'HList' && empty($pack)) ? 'List' : join('.', array_merge($pack, array($bn)));
 				$_hx_types_array[] = array(
 					'path' => $p,
 					'name' => $prefix . $bn,
 					'type' => $t,
 					'qname' => $qname,
-					'phpname' => join(array_merge($pack, array($prefix . $bn)), '_')
+					'phpname' => join('_', array_merge($pack, array($prefix . $bn)))
 				);
 			} else if(is_dir($p))
 				_hx_build_paths($p, $_hx_types_array, array_merge($pack, array($f)), $prefix);
