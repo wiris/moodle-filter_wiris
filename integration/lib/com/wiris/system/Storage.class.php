@@ -87,7 +87,8 @@ class com_wiris_system_Storage {
 		return new com_wiris_system_Storage($name);
 	}
 	static function newStorageWithParent($parent, $name) {
-		return new com_wiris_system_Storage($parent->location . com_wiris_system_Storage::getDirectorySeparator() . $name);
+		$path = com_wiris_system_Storage_1($name, $parent);
+		return new com_wiris_system_Storage($path);
 	}
 	static function getResourcesDir() {
 		if(com_wiris_system_Storage::$resourcesDir === null) {
@@ -142,5 +143,12 @@ function com_wiris_system_Storage_0(&$»this, &$path) {
 			return $p;
 		}
 		unset($p);
+	}
+}
+function com_wiris_system_Storage_1(&$name, &$parent) {
+	if($parent->location === ".") {
+		return $name;
+	} else {
+		return $parent->location . com_wiris_system_Storage::getDirectorySeparator() . $name;
 	}
 }

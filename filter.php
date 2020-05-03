@@ -36,9 +36,9 @@ class filter_wiris extends moodle_text_filter {
 
         global $CFG, $DB;
 
-        $n0 = stripos($text, '«math');
+        $n0 = mb_stripos($text, '«math');
         $n1 = stripos($text, '<math');
-        $n2 = stripos($text, '«applet');
+        $n2 = mb_stripos($text, '«applet');
 
         if ($n0 === false && $n1 === false && $n2 === false) {
             // Nothing to do.

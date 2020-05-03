@@ -12,12 +12,17 @@ class com_wiris_util_xml_WCharacterBase {
 	static $ROOT_NO_TAIL_VERTICAL = 61759;
 	static $ROOT_LEFT_TAIL = 61760;
 	static $ROOT_VERTICAL_LINE = 61761;
+	static $HORIZONTAL_TAB = 9;
 	static $LINE_FEED = 10;
+	static $CARRIAGE_RETURN = 13;
+	static $SPACE = 32;
+	static $NUMBER_SIGN = 35;
 	static $ROUND_BRACKET_LEFT = 40;
 	static $ROUND_BRACKET_RIGHT = 41;
 	static $COMMA = 44;
 	static $FULL_STOP = 46;
 	static $SQUARE_BRACKET_LEFT = 91;
+	static $BACKSLASH = 92;
 	static $SQUARE_BRACKET_RIGHT = 93;
 	static $CIRCUMFLEX_ACCENT = 94;
 	static $LOW_LINE = 95;
@@ -29,6 +34,7 @@ class com_wiris_util_xml_WCharacterBase {
 	static $COMBINING_LOW_LINE = 818;
 	static $MODIFIER_LETTER_CIRCUMFLEX_ACCENT = 710;
 	static $CARON = 711;
+	static $NO_BREAK_SPACE = 160;
 	static $EN_QUAD = 8192;
 	static $EM_QUAD = 8193;
 	static $EN_SPACE = 8194;
@@ -113,6 +119,10 @@ class com_wiris_util_xml_WCharacterBase {
 	static $MATHEMATICAL_DOUBLE_STRUCK_CAPITAL_A = 120120;
 	static $MATHEMATICAL_DOUBLE_STRUCK_SMALL_A = 120146;
 	static $MATHEMATICAL_DOUBLE_STRUCK_DIGIT_ZERO = 120792;
+	static $MIDDLE_DOT = 183;
+	static $DOT_ABOVE = 729;
+	static $ARABIC_DECIMAL_SEPARATOR = 1643;
+	static $ARABIC_THOUSANDS_SEPARATOR = 1644;
 	static $ALIGNMENT_RELATION_OPERATORS;
 	static function isDigit($c) {
 		if(48 <= $c && $c <= 57) {

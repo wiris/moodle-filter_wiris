@@ -26,24 +26,49 @@
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
+use Behat\Mink\Exception\ExpectationException;
+
 class behat_wiris_filter extends behat_wiris_base {
+
     /**
-     * Turns MathType filter on in 'Manage Filters' menu
+     * Turns MathType filter off in Filter settings
      *
-     * @Given /^I turn MathType filter on$/
-     *
-     * @throws  Behat\Mink\Exception\ElementNotFoundException If $xpathnumber is not correctly computed.
+     * @Given I turn MathType filter off
+     * @throws ElementNotFoundException If MathType by Wiris field is not found.
      */
-    public function i_turn_wiris_filter_on() {
-        $row = $this->look_in_table("Math & Science by WIRIS");
-        // The table has columns: "td|select|select|" so same row, second column will be in position double-1.
-        $xpathnumber = $row * 2 - 1;
-        $field = $this->find('xpath', "(//select[@class='custom-select singleselect'])[$xpathnumber]");
-        if (null === $field) {
-            throw new ElementNotFoundException(
-                $this->getSession(), 'form field', 'id|name|label|value', $locator
-            );
+    public function i_turn_mathtype_filter_off() {
+        $node = $this->get_node_in_container("option", "Off", "table_row", "MathType by WIRIS");
+        $this->ensure_node_is_visible($node);
+        $node->click();
+    }
+
+    /**
+     * Check editor always active on MathType filter page
+     *
+     * @Given I check editor always active
+     * @throws ExpectationException If editor always active checkbox is not found, it will throw an exception.
+     */
+    public function i_check_editor_always_active() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_allow_editorplugin_active_course" ]');
+        if (empty($component)) {
+            throw new ExpectationException('Editor always active checkbox not found.', $this->getSession());
         }
-        $field->selectOption("On");
+        $component->check();
+    }
+
+    /**
+     * Check Image performance mode off on MathType filter page
+     *
+     * @Given I check image performance mode off
+     * @throws ExpectationException If image performance mode is not found, it will throw an exception.
+     */
+    public function i_check_image_performance_mode_off() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_pluginperformance" ]');
+        if (empty($component)) {
+            throw new ExpectationException('Image performance checkbox not found.', $this->getSession());
+        }
+        $component->uncheck();
     }
 }

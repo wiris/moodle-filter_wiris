@@ -132,7 +132,8 @@ class com_wiris_system_service_HttpResponse {
 			$code = "";
 		}break;
 		}
-		header("HTTP/1.1 " . code, true, r);;
+		$code = "HTTP/1.1 " . $code;
+		header($code, true, $r);;
 	}
 	public function getHeader($name) {
 		return $this->headers->get($name);

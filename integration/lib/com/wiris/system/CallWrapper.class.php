@@ -73,8 +73,8 @@ class com_wiris_system_CallWrapper {
 									} else {
 										continue;
 									}
-									$qname = ($bn == 'HList' && empty($pack)) ? 'List' : join(array_merge($pack, array($bn)), '.');
-									$phpname = !empty($name) ? $name : join(array_merge($pack, array($bn)), '_');
+									$qname = ($bn == 'HList' && empty($pack)) ? 'List' : join('.', array_merge($pack, array($bn)));
+									$phpname = !empty($name) ? $name : join('_', array_merge($pack, array($bn)));
 									_hx_register_type(new $t($phpname, $qname, $p));
 
 								} else if(is_dir($p)) {

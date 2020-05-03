@@ -123,6 +123,21 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             $configuration['wirisaccessproviderenabled'] = 'true';
         }
 
+        // Inherit proxy configuration.
+
+        $moodleproxyenabled = !empty($CFG->proxyhost);
+        $proxyportenabled = !empty($CFG->proxyport);
+        $proxyuserenabled = !empty($CFG->proxyuser);
+        $proxypassenabled = !empty($CFG->proxypassword);
+
+        if ($moodleproxyenabled) {
+            $configuration['wirisproxy'] = "true";
+            $configuration['wirisproxy_host'] = $CFG->proxyhost;
+            $configuration['wirisproxy_port'] = $proxyportenabled ? $CFG->proxyport : null;
+            $configuration['wirisproxy_user'] = $proxyuserenabled ? $CFG->proxyuser : null;
+            $configuration['wirisproxy_password'] = $proxypassenabled ? $CFG->proxypassword : null;
+        }
+
         if ($scriptname == 'showimage.php') { // Minimal conf showing images.
             if (optional_param('refererquery', null, PARAM_RAW) != null) {
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));
@@ -189,18 +204,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         $configuration['wirisreferer'] = $CFG->wwwroot . $query;
 
-        $moodleproxyenabled = !empty($CFG->proxyhost);
-        $proxyportenabled = !empty($CFG->proxyport);
-        $proxyuserenabled = !empty($CFG->proxyuser);
-        $proxypassenabled = !empty($CFG->proxypassword);
-
-        if ($moodleproxyenabled) {
-            $configuration['wirisproxy'] = "true";
-            $configuration['wirisproxy_host'] = $CFG->proxyhost;
-            $configuration['wirisproxy_port'] = $proxyportenabled ? $CFG->proxyport : null;
-            $configuration['wirisproxy_user'] = $proxyuserenabled ? $CFG->proxyuser : null;
-            $configuration['wirisproxy_password'] = $proxypassenabled ? $CFG->proxypassword : null;
-        }
         com_wiris_system_CallWrapper::getInstance()->start();
+        // print_r($configuration);
+        // die;
     }
 }

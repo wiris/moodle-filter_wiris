@@ -22,12 +22,12 @@ class com_wiris_plugin_impl_CasImpl implements com_wiris_plugin_api_Cas{
 		$output->add($lang);
 		$output->add("/strings.js';");
 		$output->add(" ");
-		$output->add(" var scriptsrc =  window.opener._wrs_conf_path + '/lang/' + lang;");
+		$output->add(" var scriptsrc =  window.opener.path + '/lang/' + lang;");
 		$output->add(" var script = document.createElement('script'); ");
 		$output->add(" script.src = scriptsrc;");
 		$output->add(" document.head.appendChild(script);");
 		$output->add("</script><script>");
-		$output->add("var scriptsrc = window.opener._wrs_conf_path + '/core/cas.js'; ");
+		$output->add("var scriptsrc = window.opener.path + '/core/cas.js'; ");
 		$output->add(" var script = document.createElement('script'); ");
 		$output->add(" script.src = scriptsrc;");
 		$output->add(" document.head.appendChild(script);");

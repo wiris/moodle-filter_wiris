@@ -53,7 +53,7 @@ class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
         $testsiteprotocol = strrpos($CFG->wwwroot, 'https') !== false ? 'https' : 'http';
         $this->imagepng = '<img src="' . $testsiteprotocol . '://www.example.com/moodle/filter/wiris/integration/showimage.php';
         $this->imagepng .= '?formula=cd345a63d1346d7a11b5e73bb97e5bb7&refererquery=?course=1/category=0"';
-        $this->imagepng .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px"';
+        $this->imagepng .= ' class="Wirisformula" alt="1 plus 2" width="37" height="13" style="vertical-align:-1px" role="math"';
         $this->imagepng .= ' data-mathml=\'«math ';
         $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 

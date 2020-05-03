@@ -9,8 +9,8 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 		try {
 			$text = $this->plugin->newTextService()->mathml2accessible($mml, $lang, $param);
 			return $text;
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $ï¿½e) {
+			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
 			$ex = $_ex_;
 			{
 				return "";
@@ -82,8 +82,8 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 		$bs = null;
 		try {
 			$bs = $this->showImage($digest, null, null);
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $ï¿½e) {
+			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
 			$e = $_ex_;
 			{
 				return "";
@@ -143,6 +143,7 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			}
 			$jsonResult->set("content", $content->toString());
 			$jsonResult->set("format", $imageFormat);
+			$jsonResult->set("role", "math");
 			return $jsonResult;
 		} else {
 			return null;
@@ -299,6 +300,9 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 			$refererquery = $provider->getParameter("refererquery", "");
 			$rparam = "&refererquery=" . $refererquery;
 		}
+		if($output !== null) {
+			$output["role"] = "math";
+		}
 		if($provider->getParameter("base64", null) !== null || $saveMode === "base64") {
 			$bs = $this->showImage($digest, null, $provider);
 			$by = haxe_io_Bytes::ofData($bs);
@@ -335,12 +339,12 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
+			return call_user_func_array($this->ï¿½dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
 	}
 	static function concatPath($s1, $s2) {
 		if(_hx_last_index_of($s1, "/", null) === strlen($s1) - 1) {

@@ -37,13 +37,21 @@
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
 class behat_wiris_base extends behat_base {
+
+    /**
+     * @Transform /^(\d+)$/
+     */
+    public function cast_string_to_number($string) {
+        return intval($string);
+    }
+
     const MAX_NUNMBER_ROWS = 500;
     /**
      * Looks for the position of an element in the first row in a table given certain text displayed.
      *
      * @param  string $text Text displayed by element desired.
      *
-     * @throws   Exception If it iterates until end of table and finds no element with given parameters.
+     * @throws  Exception If it iterates until end of table and finds no element with given parameters.
      * @throws  Exception If table is too long.
      */
     protected function look_in_table($text) {

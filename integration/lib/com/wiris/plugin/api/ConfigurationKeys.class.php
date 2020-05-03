@@ -37,7 +37,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $SAVE_MATHML_SEMANTICS = "wirissavehandtraces";
 	static $EDITOR_MATHML_ATTRIBUTE = "wiriseditormathmlattribute";
 	static $EDITOR_PARAMS = "wiriseditorparameters";
-	static $EDITOR_PARAMETERS_DEFAULT_LIST = "mml,color,centerbaseline,zoom,dpi,fontSize,fontFamily,defaultStretchy,backgroundColor,format";
+	static $EDITOR_PARAMETERS_DEFAULT_LIST = "mml,color,centerbaseline,zoom,dpi,fontSize,fontFamily,defaultStretchy,backgroundColor,format,saveLatex";
 	static $EDITOR_PARAMETERS_NOTRENDER_LIST = "toolbar, toolbarHidden, reservedWords, autoformat, mml, language, rtlLanguages, ltrLanguages, arabicIndicLanguages, easternArabicIndicLanguages, europeanLanguages";
 	static $HTTPPROXY = "wirisproxy";
 	static $HTTPPROXY_HOST = "wirisproxy_host";

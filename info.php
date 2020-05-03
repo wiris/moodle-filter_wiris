@@ -223,10 +223,10 @@ $testname = get_string('lookingforwirisplugin', 'filter_wiris') . $currenteditor
 $reporttext = get_string('wirispluginfor', 'filter_wiris') . $currenteditordata['plugin_name'] .
                 get_string('mustbeinstalled', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
-$wirisplugin = $currenteditordata['plugin_path'] . '/core';
+$wirisplugin = $currenteditordata['plugin_path'];
 $condition = file_exists($wirisplugin);
 if (!$condition) {
-    $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/core';
+    $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris';
     $condition = file_exists($wirisplugin);
 }
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);

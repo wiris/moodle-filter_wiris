@@ -1,9 +1,9 @@
 MathType filter
 ==========
 ### Master Build Status
-[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=master)](https://travis-ci.org/wiris/moodle-atto_wiris)
+[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=stable)](https://travis-ci.org/wiris/moodle-filter_wiris)
 ### Development Build Status
-[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=development)](https://travis-ci.org/wiris/moodle-atto_wiris)
+[![Build Status](https://travis-ci.org/wiris/moodle-filter_wiris.svg?branch=master)](https://travis-ci.org/wiris/moodle-filter_wiris)
 
 MathType filter allows Moodle to render MathML using MathType image service.
 
