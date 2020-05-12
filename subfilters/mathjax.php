@@ -49,41 +49,41 @@ class filter_wiris_mathjax extends moodle_text_filter {
     public function filter($text, array $options = array()) {
 
         $safeXmlCharactersEntities = [
-            tagOpener => '&laquo;',
-            tagCloser => '&raquo;',
-            doubleQuote => '&uml;',
-            realDoubleQuote => '&quot;',
+            'tagOpener' => '&laquo;',
+            'tagCloser' => '&raquo;',
+            'doubleQuote' => '&uml;',
+            'realDoubleQuote' => '&quot;',
         ];
 
         $safeXmlCharacters = [
-            tagOpener => '«',
-            tagCloser => '»',
-            doubleQuote => '¨',
-            ampersand => '§',
-            quote => '`',
-            realDoubleQuote => '¨',
+            'tagOpener' => '«',
+            'tagCloser' => '»',
+            'doubleQuote' => '¨',
+            'ampersand' => '§',
+            'quote' => '`',
+            'realDoubleQuote' => '¨',
         ];
 
         $xmlCharacters = [
-            tagOpener => '<',
-            tagCloser => '>',
-            doubleQuote => '"',
-            ampersand => '&',
-            quote => '\'',
+            'tagOpener' => '<',
+            'tagCloser' => '>',
+            'doubleQuote' => '"',
+            'ampersand' => '&',
+            'quote' => '\'',
         ];
 
         // Decoding entities.
-        $text = implode($safeXmlCharacters->tagOpener, explode($safeXmlCharactersEntities->tagOpener, $text));
-        $text = implode($safeXmlCharacters->tagCloser, explode($safeXmlCharactersEntities->tagCloser, $text));
-        $text = implode($safeXmlCharacters->doubleQuote, explode($safeXmlCharactersEntities->doubleQuote, $text));
-        $text = implode($safeXmlCharacters->realDoubleQuote, explode($safeXmlCharactersEntities->realDoubleQuote, $text));
+        $text = implode($safeXmlCharacters['tagOpener'], explode($safeXmlCharactersEntities['tagOpener'], $text));
+        $text = implode($safeXmlCharacters['tagCloser'], explode($safeXmlCharactersEntities['tagCloser'], $text));
+        $text = implode($safeXmlCharacters['doubleQuote'], explode($safeXmlCharactersEntities['doubleQuote'], $text));
+        $text = implode($safeXmlCharacters['realDoubleQuote'], explode($safeXmlCharactersEntities['realDoubleQuote'], $text));
 
         // Replace safe XML characters with actual XML characters
-        $text = implode($xmlCharacters->tagOpener, explode($safeXmlCharacters->tagOpener, $text));
-        $text = implode($xmlCharacters->tagCloser, explode($safeXmlCharacters->tagCloser, $text));
-        $text = implode($xmlCharacters->doubleQuote, explode($safeXmlCharacters->doubleQuote, $text));
-        $text = implode($xmlCharacters->ampersand, explode($safeXmlCharacters->ampersand, $text));
-        $text = implode($xmlCharacters->quote, explode($safeXmlCharacters->quote, $text));
+        $text = implode($xmlCharacters['tagOpener'], explode($safeXmlCharacters['tagOpener'], $text));
+        $text = implode($xmlCharacters['tagCloser'], explode($safeXmlCharacters['tagCloser'], $text));
+        $text = implode($xmlCharacters['doubleQuote'], explode($safeXmlCharacters['doubleQuote'], $text));
+        $text = implode($xmlCharacters['ampersand'], explode($safeXmlCharacters['ampersand'], $text));
+        $text = implode($xmlCharacters['quote'], explode($safeXmlCharacters['quote'], $text));
 
         // We are replacing $ by & when its part of an entity for retrocompatibility.
         // Now, the standard is replace § by &.
