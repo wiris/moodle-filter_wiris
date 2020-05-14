@@ -16,31 +16,31 @@
 //
 
 /**
-* This filter doesn't make any calls to the wiris.net services, instead
-* converting safeXML into normal XML and allowing MathJax to render the
-* formulas.
-* 
-* This can be used for improved performance in servers with lots of
-* network connections.
-*
-* @package    filter
-* @subpackage wiris
-* @copyright  WIRIS Europe (Maths for more S.L)
-* @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
+ * This filter doesn't make any calls to the wiris.net services, instead
+ * converting safeXML into normal XML and allowing MathJax to render the
+ * formulas.
+ *
+ * This can be used for improved performance in servers with lots of
+ * network connections.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 
 defined('MOODLE_INTERNAL') || die();
 
 
 class filter_wiris_mathjax extends moodle_text_filter {
-    
+
     /**
-    * Set any context-specific configuration for this filter.
-    *
-    * @param context $context The current context.
-    * @param array $localconfig Any context-specific configuration for this filter.
-    */
+     * Set any context-specific configuration for this filter.
+     *
+     * @param context $context The current context.
+     * @param array $localconfig Any context-specific configuration for this filter.
+     */
     public function __construct($context, array $localconfig) {
         $this->context = $context;
         $this->localconfig = $localconfig;
@@ -48,14 +48,14 @@ class filter_wiris_mathjax extends moodle_text_filter {
 
     public function filter($text, array $options = array()) {
 
-        $safeXmlCharactersEntities = [
+        $safexmlentities = [
             'tagOpener' => '&laquo;',
             'tagCloser' => '&raquo;',
             'doubleQuote' => '&uml;',
             'realDoubleQuote' => '&quot;',
         ];
 
-        $safeXmlCharacters = [
+        $safexml = [
             'tagOpener' => '«',
             'tagCloser' => '»',
             'doubleQuote' => '¨',
@@ -64,7 +64,7 @@ class filter_wiris_mathjax extends moodle_text_filter {
             'realDoubleQuote' => '¨',
         ];
 
-        $xmlCharacters = [
+        $xml = [
             'tagOpener' => '<',
             'tagCloser' => '>',
             'doubleQuote' => '"',
@@ -73,46 +73,46 @@ class filter_wiris_mathjax extends moodle_text_filter {
         ];
 
         // Decoding entities.
-        $text = implode($safeXmlCharacters['tagOpener'], explode($safeXmlCharactersEntities['tagOpener'], $text));
-        $text = implode($safeXmlCharacters['tagCloser'], explode($safeXmlCharactersEntities['tagCloser'], $text));
-        $text = implode($safeXmlCharacters['doubleQuote'], explode($safeXmlCharactersEntities['doubleQuote'], $text));
-        $text = implode($safeXmlCharacters['realDoubleQuote'], explode($safeXmlCharactersEntities['realDoubleQuote'], $text));
+        $text = implode($safexml['tagOpener'], explode($safexmlentities['tagOpener'], $text));
+        $text = implode($safexml['tagCloser'], explode($safexmlentities['tagCloser'], $text));
+        $text = implode($safexml['doubleQuote'], explode($safexmlentities['doubleQuote'], $text));
+        $text = implode($safexml['realDoubleQuote'], explode($safexmlentities['realDoubleQuote'], $text));
 
-        // Replace safe XML characters with actual XML characters
-        $text = implode($xmlCharacters['tagOpener'], explode($safeXmlCharacters['tagOpener'], $text));
-        $text = implode($xmlCharacters['tagCloser'], explode($safeXmlCharacters['tagCloser'], $text));
-        $text = implode($xmlCharacters['doubleQuote'], explode($safeXmlCharacters['doubleQuote'], $text));
-        $text = implode($xmlCharacters['ampersand'], explode($safeXmlCharacters['ampersand'], $text));
-        $text = implode($xmlCharacters['quote'], explode($safeXmlCharacters['quote'], $text));
+        // Replace safe XML characters with actual XML characters.
+        $text = implode($xml['tagOpener'], explode($safexml['tagOpener'], $text));
+        $text = implode($xml['tagCloser'], explode($safexml['tagCloser'], $text));
+        $text = implode($xml['doubleQuote'], explode($safexml['doubleQuote'], $text));
+        $text = implode($xml['ampersand'], explode($safexml['ampersand'], $text));
+        $text = implode($xml['quote'], explode($safexml['quote'], $text));
 
         // We are replacing $ by & when its part of an entity for retrocompatibility.
         // Now, the standard is replace § by &.
-        $returnValue = '';
-        $currentEntity = null;
+        $return = '';
+        $currententity = null;
 
         $array = str_split($text);
 
         for ($i = 0; $i < count($array); $i++) {
             $character = $array[$i];
-            if ($currentEntity === null) {
+            if ($currententity === null) {
                 if ($character === '$') {
-                    $currentEntity = '';
+                    $currententity = '';
                 } else {
-                    $returnValue .= $character;
+                    $return .= $character;
                 }
-            } elseif ($character === ';') {
-                $returnValue += "&$currentEntity";
-                $currentEntity = null;
-            } elseif (preg_match("([a-zA-Z0-9#._-] | '-')", $character)) { // Character is part of an entity.
-                $currentEntity .= $character;
+            } else if ($character === ';') {
+                $return += "&$currententity";
+                $currententity = null;
+            } else if (preg_match("([a-zA-Z0-9#._-] | '-')", $character)) { // Character is part of an entity.
+                $currententity .= $character;
             } else {
-                $returnValue .= "$$currentEntity"; // Is not an entity.
-                $currentEntity = null;
+                $return .= "$$currententity"; // Is not an entity.
+                $currententity = null;
                 $i -= 1; // Parse again the current character.
             }
         }
 
-        return $returnValue;
+        return $return;
 
     }
 
