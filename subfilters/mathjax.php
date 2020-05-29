@@ -47,7 +47,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
     }
 
     public function filter($text, array $options = array()) {
-
         $safexmlentities = [
             'tagOpener' => '&laquo;',
             'tagCloser' => '&raquo;',
@@ -72,6 +71,29 @@ class filter_wiris_mathjax extends moodle_text_filter {
             'quote' => '\'',
         ];
 
+        // Replace Wiris Graph constructions by placeholders
+        $constructions = array();
+        $construction_position = strpos($text, "data-wirisconstruction", 0);
+        while ($construction_position !== false) {
+            $i = 0;
+            
+            $construction_position += strlen("data-wirisconstruction=\"");
+            $construction_end = strpos($text, "\"/>", $construction_position);
+            $construction = substr($text, $construction_position, $construction_end - $construction_position);
+            $constructions[$i] = $construction;
+
+            $i++;
+            if ($construction_end === false) {
+                // This should not happen.
+                break;
+            }
+
+            $construction_position = strpos($text, "data-wirisconstruction", $construction_end);
+        }
+        for ($i = 0; $i < count($constructions); $i++) {
+            $text = $this->replace_first_occurrence($text, $constructions[$i], "construction-placeholder-" . $i);
+        }
+        
         // Decoding entities.
         $text = implode($safexml['tagOpener'], explode($safexmlentities['tagOpener'], $text));
         $text = implode($safexml['tagCloser'], explode($safexmlentities['tagCloser'], $text));
@@ -112,8 +134,26 @@ class filter_wiris_mathjax extends moodle_text_filter {
             }
         }
 
+
+        // Replace the placeholders by the Wiris Graph constructions
+        for ($i = 0; $i < count($constructions); $i++) {
+            $return = $this->replace_first_occurrence($return, "construction-placeholder-" . $i, $constructions[$i]);
+        }
+
         return $return;
 
+    }
+
+    // We replace only the first occurrence because otherwise replacing construction-placeholder-1 would also
+    // replace the construction-placeholder-10. By replacing only the first occurence we avoid this problem.
+    private function replace_first_occurrence($haystack, $needle, $replace) {
+        $pos = strpos($haystack, $needle);
+        if ($pos !== false) {
+            $newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
+            return $newstring;
+        }
+
+        return $haystack;
     }
 
 }
