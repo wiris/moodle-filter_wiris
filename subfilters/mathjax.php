@@ -117,7 +117,9 @@ class filter_wiris_mathjax extends moodle_text_filter {
         for ($i = 0; $i < count($array); $i++) {
             $character = $array[$i];
             if ($currententity === null) {
-                if ($character === '$') {
+                // If the dollar is the last element of the string in no way it can be the
+                // start of an entity.
+                if ($character === '$' && $i < count($array) - 1) {
                     $currententity = '';
                 } else {
                     $return .= $character;
