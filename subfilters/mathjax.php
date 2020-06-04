@@ -139,6 +139,21 @@ class filter_wiris_mathjax extends moodle_text_filter {
             $return .= "$$currententity";
         }
 
+        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML
+        $semantics_position = strpos($return, "<semantics>", 0);
+        while ($semantics_position !== false) {
+            $semantics_position += strlen("<semantics>");
+            $annotation_position = strpos($return, "<annotation", $semantics_position);
+
+            if ($annotation_position !== false) {
+                $return = substr_replace(substr_replace($return, "</mrow>", $annotation_position, 0), "<mrow>", $semantics_position, 0);
+                $semantics_position = strpos($return, "<semantics>", $annotation_position + strlen("<mrow></mrow>"));
+            } else {
+                break; 
+            }
+
+        }
+
 
         // Replace the placeholders by the Wiris Graph constructions
         for ($i = 0; $i < count($constructions); $i++) {
