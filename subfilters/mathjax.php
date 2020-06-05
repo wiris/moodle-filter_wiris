@@ -71,29 +71,29 @@ class filter_wiris_mathjax extends moodle_text_filter {
             'quote' => '\'',
         ];
 
-        // Replace Wiris Graph constructions by placeholders
+        // Replace Wiris Graph constructions by placeholders.
         $constructions = array();
-        $construction_position = strpos($text, "data-wirisconstruction", 0);
-        while ($construction_position !== false) {
+        $constructionposition = strpos($text, "data-wirisconstruction", 0);
+        while ($constructionposition !== false) {
             $i = 0;
-            
-            $construction_position += strlen("data-wirisconstruction=\"");
-            $construction_end = strpos($text, "\"", $construction_position);
-            $construction = substr($text, $construction_position, $construction_end - $construction_position);
+
+            $constructionposition += strlen("data-wirisconstruction=\"");
+            $constructionend = strpos($text, "\"", $constructionposition);
+            $construction = substr($text, $constructionposition, $constructionend - $constructionposition);
             $constructions[$i] = $construction;
 
             $i++;
-            if ($construction_end === false) {
+            if ($constructionend === false) {
                 // This should not happen.
                 break;
             }
 
-            $construction_position = strpos($text, "data-wirisconstruction", $construction_end);
+            $constructionposition = strpos($text, "data-wirisconstruction", $constructionend);
         }
         for ($i = 0; $i < count($constructions); $i++) {
             $text = $this->replace_first_occurrence($text, $constructions[$i], "construction-placeholder-" . $i);
         }
-        
+
         // Decoding entities.
         $text = implode($safexml['tagOpener'], explode($safexmlentities['tagOpener'], $text));
         $text = implode($safexml['tagCloser'], explode($safexmlentities['tagCloser'], $text));
@@ -139,29 +139,26 @@ class filter_wiris_mathjax extends moodle_text_filter {
             $return .= "$$currententity";
         }
 
-        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML
-        $semantics_position = strpos($return, "<semantics>", 0);
-        while ($semantics_position !== false) {
-            $semantics_position += strlen("<semantics>");
-            $annotation_position = strpos($return, "<annotation", $semantics_position);
+        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
+        $semanticposition = strpos($return, "<semantics>", 0);
+        while ($semanticposition !== false) {
+            $semanticposition += strlen("<semantics>");
+            $annotationposition = strpos($return, "<annotation", $semanticposition);
 
-            if ($annotation_position !== false) {
-                $return = substr_replace(substr_replace($return, "</mrow>", $annotation_position, 0), "<mrow>", $semantics_position, 0);
-                $semantics_position = strpos($return, "<semantics>", $annotation_position + strlen("<mrow></mrow>"));
+            if ($annotationposition !== false) {
+                $return = substr_replace(substr_replace($return, "</mrow>", $annotationposition, 0),
+                 "<mrow>", $semanticposition, 0);
+                $semanticposition = strpos($return, "<semantics>", $annotationposition + strlen("<mrow></mrow>"));
             } else {
-                break; 
+                break;
             }
-
         }
-
 
         // Replace the placeholders by the Wiris Graph constructions
         for ($i = 0; $i < count($constructions); $i++) {
             $return = $this->replace_first_occurrence($return, "construction-placeholder-" . $i, $constructions[$i]);
         }
-
         return $return;
-
     }
 
     // We replace only the first occurrence because otherwise replacing construction-placeholder-1 would also
