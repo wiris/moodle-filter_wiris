@@ -117,41 +117,7 @@ class filter_wiris_mathjax extends moodle_text_filter {
         $text = implode($xml['ampersand'], explode($safexml['ampersand'], $text));
         $text = implode($xml['quote'], explode($safexml['quote'], $text));
 
-        // We are replacing $ by & when its part of an entity for retrocompatibility.
-        // Now, the standard is replace § by &.
-        $return = '';
-        $currententity = null;
-
-        $array = str_split($text);
-
-        for ($i = 0; $i < count($array); $i++) {
-            $character = $array[$i];
-            if ($currententity === null) {
-                if ($character === '$') {
-                    $currententity = '';
-                } else {
-                    $return .= $character;
-                }
-            } else if ($character === ';') {
-                if (strlen($currententity) > 0) {
-                    $return += "&$currententity";
-                } else { // It is not an entity
-                    $return += "$;";
-                }
-                $currententity = null;
-            } else if (preg_match("([a-zA-Z0-9#._-] | '-')", $character)) { // Character is part of an entity.
-                $currententity .= $character;
-            } else {
-                $return .= "$$currententity"; // Is not an entity.
-                $currententity = null;
-                $i -= 1; // Parse again the current character.
-            }
-        }
-
-        if ($currententity !== null) {
-            // It was not an entity, so we add it to the returned text using the dollar
-            $return .= "$$currententity";
-        }
+        $return = $text;
 
         // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
         $semanticposition = strpos($return, "<semantics>", 0);
