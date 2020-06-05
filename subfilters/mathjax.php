@@ -123,7 +123,11 @@ class filter_wiris_mathjax extends moodle_text_filter {
                     $return .= $character;
                 }
             } else if ($character === ';') {
-                $return += "&$currententity";
+                if (strlen($currententity) > 0) {
+                    $return += "&$currententity";
+                } else { // It is not an entity
+                    $return += "$;";
+                }
                 $currententity = null;
             } else if (preg_match("([a-zA-Z0-9#._-] | '-')", $character)) { // Character is part of an entity.
                 $currententity .= $character;
