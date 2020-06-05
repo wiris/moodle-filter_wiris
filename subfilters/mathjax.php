@@ -47,6 +47,16 @@ class filter_wiris_mathjax extends moodle_text_filter {
     }
 
     public function filter($text, array $options = array()) {
+
+        $n0 = mb_stripos($text, '«math');
+        $n1 = stripos($text, '<math');
+        $n2 = mb_stripos($text, '«applet');
+
+        if ($n0 === false && $n1 === false && $n2 === false) {
+            // Nothing to do.
+            return $text;
+        }
+
         $safexmlentities = [
             'tagOpener' => '&laquo;',
             'tagCloser' => '&raquo;',
