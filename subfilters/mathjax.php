@@ -48,12 +48,73 @@ class filter_wiris_mathjax extends moodle_text_filter {
 
     public function filter($text, array $options = array()) {
         $n0 = mb_stripos($text, '«math');
+        $n1 = mb_stripos($text, '&laquo;math');
 
-        if ($n0 === false) {
+        if ($n0 === false && $n1 === false) {
             // Nothing to do.
             return $text;
         }
 
+        // Look for SafeMathML
+        
+
+
+
+        $return = $text;
+
+        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
+        $semanticposition = strpos($return, "<semantics>", 0);
+        while ($semanticposition !== false) {
+            $semanticposition += strlen("<semantics>");
+            $annotationposition = strpos($return, "<annotation", $semanticposition);
+
+            if ($annotationposition !== false) {
+                $return = substr_replace(substr_replace($return, "</mrow>", $annotationposition, 0),
+                 "<mrow>", $semanticposition, 0);
+                $semanticposition = strpos($return, "<semantics>", $annotationposition + strlen("<mrow></mrow>"));
+            } else {
+                break;
+            }
+        }
+    }
+
+
+    // We replace only the first occurrence because otherwise replacing construction-placeholder-1 would also
+    // replace the construction-placeholder-10. By replacing only the first occurence we avoid this problem.
+    private function replace_first_occurrence($haystack, $needle, $replace) {
+        $pos = strpos($haystack, $needle);
+        if ($pos !== false) {
+            $newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
+            return $newstring;
+        }
+
+        return $haystack;
+    }
+
+    private function get_substrings($text, $start, $end) {
+        $subs = array();
+        
+        $position = strpos($text, $start, 0);
+        $i = 0;
+
+        while ($safemathmlposition !== false) {
+            $endposition = strpos($text, $end, $position);
+            $endposition += strlen($end);
+            $sub = substr($text, $position, $endposition - $position);
+            $subs[$i] = $sub;
+
+            $i++;
+            if ($endposition === false) {
+                // This should not happen.
+                break;
+            }
+
+            $safemathmlposition = strpos($text, $start, $endposition);
+        }
+        return $subs;
+    }
+
+    private function filter_safe_mathml($text) {
         $safexmlentities = [
             'tagOpener' => '&laquo;',
             'tagCloser' => '&raquo;',
@@ -78,76 +139,20 @@ class filter_wiris_mathjax extends moodle_text_filter {
             'quote' => '\'',
         ];
 
-        // Replace Wiris Graph constructions by placeholders.
-        $constructions = array();
-        $constructionposition = strpos($text, "data-wirisconstruction", 0);
-        while ($constructionposition !== false) {
-            $i = 0;
-
-            $constructionposition += strlen("data-wirisconstruction=\"");
-            $constructionend = strpos($text, "\"", $constructionposition);
-            $construction = substr($text, $constructionposition, $constructionend - $constructionposition);
-            $constructions[$i] = $construction;
-
-            $i++;
-            if ($constructionend === false) {
-                // This should not happen.
-                break;
-            }
-
-            $constructionposition = strpos($text, "data-wirisconstruction", $constructionend);
-        }
-        for ($i = 0; $i < count($constructions); $i++) {
-            $text = $this->replace_first_occurrence($text, $constructions[$i], "construction-placeholder-" . $i);
-        }
-
         // Decoding entities.
         $text = implode($safexml['tagOpener'], explode($safexmlentities['tagOpener'], $text));
         $text = implode($safexml['tagCloser'], explode($safexmlentities['tagCloser'], $text));
         $text = implode($safexml['doubleQuote'], explode($safexmlentities['doubleQuote'], $text));
         $text = implode($safexml['realDoubleQuote'], explode($safexmlentities['realDoubleQuote'], $text));
-
+        
         // Replace safe XML characters with actual XML characters.
         $text = implode($xml['tagOpener'], explode($safexml['tagOpener'], $text));
         $text = implode($xml['tagCloser'], explode($safexml['tagCloser'], $text));
         $text = implode($xml['doubleQuote'], explode($safexml['doubleQuote'], $text));
         $text = implode($xml['ampersand'], explode($safexml['ampersand'], $text));
         $text = implode($xml['quote'], explode($safexml['quote'], $text));
-
-        $return = $text;
-
-        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
-        $semanticposition = strpos($return, "<semantics>", 0);
-        while ($semanticposition !== false) {
-            $semanticposition += strlen("<semantics>");
-            $annotationposition = strpos($return, "<annotation", $semanticposition);
-
-            if ($annotationposition !== false) {
-                $return = substr_replace(substr_replace($return, "</mrow>", $annotationposition, 0),
-                 "<mrow>", $semanticposition, 0);
-                $semanticposition = strpos($return, "<semantics>", $annotationposition + strlen("<mrow></mrow>"));
-            } else {
-                break;
-            }
-        }
-
-        // Replace the placeholders by the Wiris Graph constructions
-        for ($i = 0; $i < count($constructions); $i++) {
-            $return = $this->replace_first_occurrence($return, "construction-placeholder-" . $i, $constructions[$i]);
-        }
-        return $return;
-    }
-
-    // We replace only the first occurrence because otherwise replacing construction-placeholder-1 would also
-    // replace the construction-placeholder-10. By replacing only the first occurence we avoid this problem.
-    private function replace_first_occurrence($haystack, $needle, $replace) {
-        $pos = strpos($haystack, $needle);
-        if ($pos !== false) {
-            $newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
-            return $newstring;
-        }
-
-        return $haystack;
+        
+        return $text;
     }
 
 }
