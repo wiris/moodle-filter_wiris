@@ -55,13 +55,9 @@ class filter_wiris_mathjax extends moodle_text_filter {
             return $text;
         }
 
-        // Look for SafeMathML
-        
-
-
-
-        $return = $text;
-
+        $text = $this->replace_safe_mathml($text, "«math", "«/math»");
+        $return = $this->replace_safe_mathml($text, "&laquo;math", '&laquo;/math&raquo;');
+  
         // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
         $semanticposition = strpos($return, "<semantics>", 0);
         while ($semanticposition !== false) {
@@ -153,6 +149,13 @@ class filter_wiris_mathjax extends moodle_text_filter {
         $text = implode($xml['quote'], explode($safexml['quote'], $text));
         
         return $text;
+    }
+
+    private function replace_safe_mathml($text, $start, $end) {
+        $unescapedsafemathml = $this->get_substrings($text, $start, $end);
+        for ($i = 0; $i < count($unescapedsafemathml); $i++) {
+            $text = $this->replace_first_occurrence($text, $unescapedsafemathml[$i], this->filter_safe_mathml($unescapedsafemathml[$i]))
+        }
     }
 
 }
