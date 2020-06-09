@@ -47,7 +47,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
     }
 
     public function filter($text, array $options = array()) {
-        print_object($text); 
         $n0 = mb_stripos($text, '«math');
 
         if ($n0 === false) {
