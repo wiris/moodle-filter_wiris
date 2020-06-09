@@ -125,9 +125,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
             }
 
             $position = strpos($text, $start, $endposition);
-
-            if ($i > 5) die();
-
         }
         return $subs;
     }
