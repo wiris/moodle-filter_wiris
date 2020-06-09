@@ -119,12 +119,15 @@ class filter_wiris_mathjax extends moodle_text_filter {
             $subs[$i] = $sub;
 
             $i++;
-            if ($endposition === false) {
+            if ($endposition === false || $endposition < $position) {
                 // This should not happen.
                 break;
             }
 
             $position = strpos($text, $start, $endposition);
+
+            if ($i > 5) die();
+
         }
         return $subs;
     }
