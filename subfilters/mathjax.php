@@ -51,27 +51,26 @@ class filter_wiris_mathjax extends moodle_text_filter {
         $n1 = mb_stripos($text, '&laquo;math');
 
         if ($n0 === false && $n1 === false) {
-            // Nothing to do.
-            return $text;
+            $n2 = mb_stripos($text, '<math');
+
+            if ($n2 === false) {
+                // Nothing to do.
+                return $text;
+            } else {
+                $n3 = mb_strpos($text, '<semantics>');
+                if ($n3 === false) {
+                    return $text;
+                } else {
+                    return $this->fix_semantics($text);
+                }
+            }
         }
 
         $text = $this->replace_safe_mathml($text, "«math", "«/math»");
         $return = $this->replace_safe_mathml($text, "&laquo;math", '&laquo;/math&raquo;');
-  
-        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
-        $semanticposition = strpos($return, "<semantics>", 0);
-        while ($semanticposition !== false) {
-            $semanticposition += strlen("<semantics>");
-            $annotationposition = strpos($return, "<annotation", $semanticposition);
-
-            if ($annotationposition !== false) {
-                $return = substr_replace(substr_replace($return, "</mrow>", $annotationposition, 0),
-                 "<mrow>", $semanticposition, 0);
-                $semanticposition = strpos($return, "<semantics>", $annotationposition + strlen("<mrow></mrow>"));
-            } else {
-                break;
-            }
-        }
+        $return = $this->fix_semantics($return);
+        
+        return $return;
     }
 
 
@@ -87,13 +86,33 @@ class filter_wiris_mathjax extends moodle_text_filter {
         return $haystack;
     }
 
+    private function fix_semantics($text) {
+        // Add <mrow> tags after the <semantics> tag in LaTeX-annotated MathML to make it standard MathML.
+        $semanticposition = strpos($text, "<semantics>", 0);
+
+        while ($semanticposition !== false) {
+            $semanticposition += strlen("<semantics>");
+            $annotationposition = strpos($text, "<annotation", $semanticposition);
+
+            if ($annotationposition !== false) {
+                $text = substr_replace(substr_replace($text, "</mrow>", $annotationposition, 0),
+                 "<mrow>", $semanticposition, 0);
+                $semanticposition = strpos($text, "<semantics>", $annotationposition + strlen("<mrow></mrow>"));
+            } else {
+                break;
+            }
+        }
+        return $text;
+
+    }
+
     private function get_substrings($text, $start, $end) {
         $subs = array();
         
         $position = strpos($text, $start, 0);
         $i = 0;
 
-        while ($safemathmlposition !== false) {
+        while ($position !== false) {
             $endposition = strpos($text, $end, $position);
             $endposition += strlen($end);
             $sub = substr($text, $position, $endposition - $position);
@@ -105,7 +124,7 @@ class filter_wiris_mathjax extends moodle_text_filter {
                 break;
             }
 
-            $safemathmlposition = strpos($text, $start, $endposition);
+            $position = strpos($text, $start, $endposition);
         }
         return $subs;
     }
@@ -152,10 +171,11 @@ class filter_wiris_mathjax extends moodle_text_filter {
     }
 
     private function replace_safe_mathml($text, $start, $end) {
-        $unescapedsafemathml = $this->get_substrings($text, $start, $end);
-        for ($i = 0; $i < count($unescapedsafemathml); $i++) {
-            $text = $this->replace_first_occurrence($text, $unescapedsafemathml[$i], this->filter_safe_mathml($unescapedsafemathml[$i]))
+        $smml = $this->get_substrings($text, $start, $end);
+        for ($i = 0; $i < count($smml); $i++) {
+            $text = $this->replace_first_occurrence($text, $smml[$i], $this->filter_safe_mathml($smml[$i]));
         }
+        return $text;
     }
 
 }
