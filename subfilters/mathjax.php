@@ -69,7 +69,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
         $text = $this->replace_safe_mathml($text, "«math", "«/math»");
         $return = $this->replace_safe_mathml($text, "&laquo;math", '&laquo;/math&raquo;');
         $return = $this->fix_semantics($return);
-        
         return $return;
     }
 
@@ -108,7 +107,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
 
     private function get_substrings($text, $start, $end) {
         $subs = array();
-        
         $position = strpos($text, $start, 0);
         $i = 0;
 
@@ -159,14 +157,12 @@ class filter_wiris_mathjax extends moodle_text_filter {
         $text = implode($safexml['tagCloser'], explode($safexmlentities['tagCloser'], $text));
         $text = implode($safexml['doubleQuote'], explode($safexmlentities['doubleQuote'], $text));
         $text = implode($safexml['realDoubleQuote'], explode($safexmlentities['realDoubleQuote'], $text));
-        
         // Replace safe XML characters with actual XML characters.
         $text = implode($xml['tagOpener'], explode($safexml['tagOpener'], $text));
         $text = implode($xml['tagCloser'], explode($safexml['tagCloser'], $text));
         $text = implode($xml['doubleQuote'], explode($safexml['doubleQuote'], $text));
         $text = implode($xml['ampersand'], explode($safexml['ampersand'], $text));
         $text = implode($xml['quote'], explode($safexml['quote'], $text));
-        
         return $text;
     }
 
