@@ -53,7 +53,6 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         $assertion = strrpos($output, $this->xml) !== false;
         $this->assertTrue($assertion);
     }
-    
 
     /**
      * Test that the filter does not break questions with Wiris Graph plotters.
@@ -61,10 +60,42 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     public function test_filter_question_with_plotter() {
         global $CFG;
         $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
-        $input = $this->safexml . ' <img class="wirisconstruction"' .
-        'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.,&quot;horizontal_axis_values_position&quot;:&quot;below&quot;,&quot;vertical_axis_label&quot;:&quot;&quot;,&quot;window_width&quot;:450,&quot;horizontal_axis_label&quot;:&quot;&quot;,&quot;magnetic_grid&quot;:true,&quot;vertical_grid_step&quot;:1.,&quot;styles&quot;:[{&quot;color&quot;:&quot;#3575B7&quot;,&quot;ref&quot;:&quot;curve1&quot;,&quot;external&quot;:true,&quot;xref&quot;:&quot;0&quot;,&quot;stroke_width&quot;:2}],&quot;vertical_axis_step&quot;:2.,&quot;window_height&quot;:450,&quot;grid_subdivisions&quot;:2,&quot;height&quot;:21.,&quot;id&quot;:&quot;plotter1&quot;,&quot;grid_y&quot;:true,&quot;width&quot;:21.,&quot;grid_secondary_color&quot;:&quot;#E2E2E2&quot;,&quot;grid_x&quot;:true,&quot;axis_color&quot;:&quot;#717171&quot;,&quot;grid_primary_color&quot;:&quot;#C6C6C6&quot;,&quot;vertical_axis_values_position&quot;:&quot;left&quot;,&quot;background_color&quot;:&quot;#FFFFFF&quot;,&quot;axis_y&quot;:true,&quot;axis_x&quot;:true,&quot;center&quot;:[0.,0.]}],&quot;elements&quot;:[{&quot;wiris_cas_kernel_computed&quot;:&quot;false&quot;,&quot;type&quot;:&quot;function_graph&quot;,&quot;value_content&quot;:&quot;&lt;math&gt;&lt;lambda&gt;&lt;bvar&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/bvar&gt;&lt;domainofapplication&gt;&lt;interval closure=\&quot;closed\&quot;&gt;&lt;apply&gt;&lt;minus/&gt;&lt;infinity/&gt;&lt;/apply&gt;&lt;infinity/&gt;&lt;/interval&gt;&lt;/domainofapplication&gt;&lt;apply&gt;&lt;plus/&gt;&lt;apply&gt;&lt;power/&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;/apply&gt;&lt;apply&gt;&lt;times/&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/apply&gt;&lt;cn&gt;1&lt;/cn&gt;&lt;/apply&gt;&lt;/lambda&gt;&lt;/math&gt;&quot;,&quot;id&quot;:&quot;curve1&quot;}],&quot;handwriting&quot;:[],&quot;constraints&quot;:[]}"/>';
-        $expected = $this->xml . ' <img class="wirisconstruction"' .
-        'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.,&quot;horizontal_axis_values_position&quot;:&quot;below&quot;,&quot;vertical_axis_label&quot;:&quot;&quot;,&quot;window_width&quot;:450,&quot;horizontal_axis_label&quot;:&quot;&quot;,&quot;magnetic_grid&quot;:true,&quot;vertical_grid_step&quot;:1.,&quot;styles&quot;:[{&quot;color&quot;:&quot;#3575B7&quot;,&quot;ref&quot;:&quot;curve1&quot;,&quot;external&quot;:true,&quot;xref&quot;:&quot;0&quot;,&quot;stroke_width&quot;:2}],&quot;vertical_axis_step&quot;:2.,&quot;window_height&quot;:450,&quot;grid_subdivisions&quot;:2,&quot;height&quot;:21.,&quot;id&quot;:&quot;plotter1&quot;,&quot;grid_y&quot;:true,&quot;width&quot;:21.,&quot;grid_secondary_color&quot;:&quot;#E2E2E2&quot;,&quot;grid_x&quot;:true,&quot;axis_color&quot;:&quot;#717171&quot;,&quot;grid_primary_color&quot;:&quot;#C6C6C6&quot;,&quot;vertical_axis_values_position&quot;:&quot;left&quot;,&quot;background_color&quot;:&quot;#FFFFFF&quot;,&quot;axis_y&quot;:true,&quot;axis_x&quot;:true,&quot;center&quot;:[0.,0.]}],&quot;elements&quot;:[{&quot;wiris_cas_kernel_computed&quot;:&quot;false&quot;,&quot;type&quot;:&quot;function_graph&quot;,&quot;value_content&quot;:&quot;&lt;math&gt;&lt;lambda&gt;&lt;bvar&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/bvar&gt;&lt;domainofapplication&gt;&lt;interval closure=\&quot;closed\&quot;&gt;&lt;apply&gt;&lt;minus/&gt;&lt;infinity/&gt;&lt;/apply&gt;&lt;infinity/&gt;&lt;/interval&gt;&lt;/domainofapplication&gt;&lt;apply&gt;&lt;plus/&gt;&lt;apply&gt;&lt;power/&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;/apply&gt;&lt;apply&gt;&lt;times/&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/apply&gt;&lt;cn&gt;1&lt;/cn&gt;&lt;/apply&gt;&lt;/lambda&gt;&lt;/math&gt;&quot;,&quot;id&quot;:&quot;curve1&quot;}],&quot;handwriting&quot;:[],&quot;constraints&quot;:[]}"/>';
+        $input = $this->safexml .
+        ' <img class="wirisconstruction"' .
+        'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.'.
+        ',&quot;horizontal_axis_values_position&quot;:&quot;below&quot;,&quot;vertical_axis_label&quot;:&quot;&quot;,&quot;window'.
+        '_width&quot;:450,&quot;horizontal_axis_label&quot;:&quot;&quot;,&quot;magnetic_grid&quot;:true,&quot;vertical_grid_step'.
+        '&quot;:1.,&quot;styles&quot;:[{&quot;color&quot;:&quot;#3575B7&quot;,&quot;ref&quot;:&quot;curve1&quot;,&quot;external'.
+        '&quot;:true,&quot;xref&quot;:&quot;0&quot;,&quot;stroke_width&quot;:2}],&quot;vertical_axis_step&quot;:2.,&quot;window_height'.
+        '&quot;:450,&quot;grid_subdivisions&quot;:2,&quot;height&quot;:21.,&quot;id&quot;:&quot;plotter1&quot;,&quot;grid_y&quot;:true,'.
+        '&quot;width&quot;:21.,&quot;grid_secondary_color&quot;:&quot;#E2E2E2&quot;,&quot;grid_x&quot;:true,&quot;axis_color&quot;:&quot;'.
+        '#717171&quot;,&quot;grid_primary_color&quot;:&quot;#C6C6C6&quot;,&quot;vertical_axis_values_position&quot;:&quot;left&quot;,&quot;'.
+        'background_color&quot;:&quot;#FFFFFF&quot;,&quot;axis_y&quot;:true,&quot;axis_x&quot;:true,&quot;center&quot;:[0.,0.]}],&quot;'.
+        'elements&quot;:[{&quot;wiris_cas_kernel_computed&quot;:&quot;false&quot;,&quot;type&quot;:&quot;function_graph&quot;,&quot;'.
+        'value_content&quot;:&quot;&lt;math&gt;&lt;lambda&gt;&lt;bvar&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/bvar&gt;&lt;domainofapplication&gt;'.
+        '&lt;interval closure=\&quot;closed\&quot;&gt;&lt;apply&gt;&lt;minus/&gt;&lt;infinity/&gt;&lt;/apply&gt;&lt;infinity/&gt;'.
+        '&lt;/interval&gt;&lt;/domainofapplication&gt;&lt;apply&gt;&lt;plus/&gt;&lt;apply&gt;&lt;power/&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;'.
+        'cn&gt;2&lt;/cn&gt;&lt;/apply&gt;&lt;apply&gt;&lt;times/&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/apply&gt;&lt;cn&gt;'.
+        '1&lt;/cn&gt;&lt;/apply&gt;&lt;/lambda&gt;&lt;/math&gt;&quot;,&quot;id&quot;:&quot;curve1&quot;}],&quot;handwriting&quot;:[],&quot;'.
+        'constraints&quot;:[]}"/>';
+        $expected = $this->xml .
+        ' <img class="wirisconstruction"' .
+        'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.'.
+        ',&quot;horizontal_axis_values_position&quot;:&quot;below&quot;,&quot;vertical_axis_label&quot;:&quot;&quot;,&quot;window'.
+        '_width&quot;:450,&quot;horizontal_axis_label&quot;:&quot;&quot;,&quot;magnetic_grid&quot;:true,&quot;vertical_grid_step'.
+        '&quot;:1.,&quot;styles&quot;:[{&quot;color&quot;:&quot;#3575B7&quot;,&quot;ref&quot;:&quot;curve1&quot;,&quot;external'.
+        '&quot;:true,&quot;xref&quot;:&quot;0&quot;,&quot;stroke_width&quot;:2}],&quot;vertical_axis_step&quot;:2.,&quot;window_height'.
+        '&quot;:450,&quot;grid_subdivisions&quot;:2,&quot;height&quot;:21.,&quot;id&quot;:&quot;plotter1&quot;,&quot;grid_y&quot;:true,'.
+        '&quot;width&quot;:21.,&quot;grid_secondary_color&quot;:&quot;#E2E2E2&quot;,&quot;grid_x&quot;:true,&quot;axis_color&quot;:&quot;'.
+        '#717171&quot;,&quot;grid_primary_color&quot;:&quot;#C6C6C6&quot;,&quot;vertical_axis_values_position&quot;:&quot;left&quot;,&quot;'.
+        'background_color&quot;:&quot;#FFFFFF&quot;,&quot;axis_y&quot;:true,&quot;axis_x&quot;:true,&quot;center&quot;:[0.,0.]}],&quot;'.
+        'elements&quot;:[{&quot;wiris_cas_kernel_computed&quot;:&quot;false&quot;,&quot;type&quot;:&quot;function_graph&quot;,&quot;'.
+        'value_content&quot;:&quot;&lt;math&gt;&lt;lambda&gt;&lt;bvar&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/bvar&gt;&lt;domainofapplication&gt;'.
+        '&lt;interval closure=\&quot;closed\&quot;&gt;&lt;apply&gt;&lt;minus/&gt;&lt;infinity/&gt;&lt;/apply&gt;&lt;infinity/&gt;'.
+        '&lt;/interval&gt;&lt;/domainofapplication&gt;&lt;apply&gt;&lt;plus/&gt;&lt;apply&gt;&lt;power/&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;'.
+        'cn&gt;2&lt;/cn&gt;&lt;/apply&gt;&lt;apply&gt;&lt;times/&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/apply&gt;&lt;cn&gt;'.
+        '1&lt;/cn&gt;&lt;/apply&gt;&lt;/lambda&gt;&lt;/math&gt;&quot;,&quot;id&quot;:&quot;curve1&quot;}],&quot;handwriting&quot;:[],&quot;'.
+        'constraints&quot;:[]}"/>';
         $output = $this->wirisfilter->filter($input);
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
@@ -72,7 +103,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
 
     /**
      * Test that the filter does not break plain latex, even when there is a semicolon next to the
-     * last dollar sign. 
+     * last dollar sign.
      */
     public function test_filter_question_with_plain_latex_semicolon() {
         global $CFG;
@@ -108,7 +139,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     public function test_filter_question_with_converted_latex_mathml() {
         global $CFG;
         $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
-        $input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn>' . 
+        $input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
         $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
@@ -123,9 +154,11 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     public function test_filter_question_with_converted_latex_safe_mathml() {
         global $CFG;
         $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
-        $input = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«semantics»«msup»«mi»x«/mi»«mn»2«/mn»«/msup»«mo»+«/mo»«mn»2«/mn»«mi»x«/mi»«mo»+«/mo»«mn»1«/mn»' .
+        $input = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«semantics»'.
+        '«msup»«mi»x«/mi»«mn»2«/mn»«/msup»«mo»+«/mo»«mn»2«/mn»«mi»x«/mi»«mo»+«/mo»«mn»1«/mn»'.
         '«annotation encoding=¨LaTeX¨»x^2 + 2x + 1«/annotation»«/semantics»«/math»';
-        $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
+        $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics>'.
+        '<mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
         $output = $this->wirisfilter->filter($input);
         $assertion = strpos($expected, $output) !== false;
