@@ -54,7 +54,7 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
 
         // Special image svg.
         $this->imagesvgspecialchars = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2F';
-        $this->imagesvgspecialchars .= 'svg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fcvs-extension%22%20height';
+        $this->imagesvgspecialchars .= 'svg%22%20xmlns%3Awrs%3D%22http%3A%2F%2Fwww.wiris.com%2Fxml%2Fmathml-extension%22%20height';
         $this->imagesvgspecialchars .= '%3D%2221%22%20width%3D%22117%22%20wrs%3Abaseline%3D%2216%22%3E%3C!--MathML%3A%20%3Cmat';
 
         // Special chars alt.
@@ -67,12 +67,12 @@ class filter_wiris_filter_performance_svg_testcase extends advanced_testcase
         // Svg performance.
         $this->imagesvgperformance = 'data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2F';
         $this->imagesvgperformance .= 'www.w3.org%2F2000%2Fsvg%22%20xmlns%3Awrs%3D%22http%3A%2F%2F';
-        $this->imagesvgperformance .= 'www.wiris.com%2Fxml%2Fcvs-extension%22%20height%3D%2220';
+        $this->imagesvgperformance .= 'www.wiris.com%2Fxml%2Fmathml-extension%22%20height%3D%2220';
         $this->imagesvgperformance .= '%22%20width%3D%2234%22%20wrs%3Abaseline%3D%2216%22%3E%3C!';
         $this->imagesvgperformance .= '--MathML%3A%20%3Cmath%20xmlns%3D%22http%3A%2F%2Fww';
         $this->imagesvgperformance .= 'w.w3.org%2F1998%2FMath%2FMathML%22%3E%3Cmn%3E1%3C%2Fmn%3E%3Cmo%3E%2B%3C%2';
 
-        $this->svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/cvs-extension" height="20"';
+        $this->svg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/mathml-extension" height="20"';
         $this->svg .= ' width="34" wrs:baseline="16"><!--MathML: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>';
         $this->svg .= '+</mo><mn>2</mn></math>--><defs><style type="text/css">@font-face{font-family:';
 

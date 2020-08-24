@@ -57,7 +57,7 @@ class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
         $this->imagesvg .= ' data-mathml=\'«math ';
         $this->imagesvg .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
 
-        $this->imagesvgcontent = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/cvs-extension" ';
+        $this->imagesvgcontent = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:wrs="http://www.wiris.com/xml/mathml-extension" ';
         $this->imagesvgcontent .= 'height="20" width="34" wrs:baseline="16"><!--MathML: <math xmlns="http://www.w3.org/1998/Mat';
         $this->imagesvgcontent .= 'h/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>--><defs><style type="text/css">@font-face{fo';
         $this->imagesvgcontent .= 'nt-family:\'math117e62166fc8586dfa4d1bc0e17\';src:url(data:font/truetype;charset=utf-8;base6';
