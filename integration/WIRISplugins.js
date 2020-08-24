@@ -1924,7 +1924,12 @@ com.wiris.system.JsDOMUtils.addEventListenerImpl = function(element,eventName,ha
 	}
 	if(element.attachEvent) element.attachEvent("on" + eventName,function() {
 		handler(window.event);
-	}); else element.addEventListener(eventName,handler,useCapture);
+	}); else {
+		var options = { };
+		options.capture = useCapture;
+		if(eventName == "touchmove") options.passive = false;
+		element.addEventListener(eventName,handler,options);
+	}
 	return descriptor;
 }
 com.wiris.system.JsDOMUtils.removeEventListener = function(descriptor) {
@@ -2226,6 +2231,15 @@ com.wiris.system.JsDOMUtils.findServicePath = function(scriptName) {
 	}
 	if(servicePath != null && StringTools.startsWith(servicePath,"http://") && js.Lib.window.location.protocol == "https:") servicePath = "https://" + HxOverrides.substr(servicePath,"http://".length,null);
 	return servicePath;
+}
+com.wiris.system.JsDOMUtils.addScript = function(d,win,url) {
+	if(win[url] == null) {
+		win[url] = true;
+		var script = d.createElement("script");
+		script.setAttribute("type","text/javascript");
+		script.setAttribute("src",url);
+		d.getElementsByTagName("head")[0].appendChild(script);
+	}
 }
 com.wiris.system.JsDOMUtils.loadTextFile = function(elem,func) {
 	var w = js.Lib.window;
@@ -3942,7 +3956,7 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 com.wiris.js.JsPluginViewer.USE_CREATE_IMAGE = 1;
 com.wiris.js.JsPluginViewer.DEBUG = false;
 com.wiris.js.JsPluginViewer.TECH = "@param.js.tech.discover@";
-com.wiris.js.JsPluginViewer.VERSION = "7.18.0.1428";
+com.wiris.js.JsPluginViewer.VERSION = "7.23.0.1443";
 com.wiris.system.JsDOMUtils.TOUCHHOLD_MOVE_MARGIN = 10;
 com.wiris.system.JsDOMUtils.browser = new com.wiris.system.JsBrowser();
 com.wiris.system.JsDOMUtils.initialized = false;

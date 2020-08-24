@@ -2,12 +2,15 @@
 
 class com_wiris_plugin_impl_HttpImpl extends haxe_Http {
 	public function __construct($url, $listener) {
-		if(!isset($this->onError)) $this->onError = array(new _hx_lambda(array(&$this, &$listener, &$url), "com_wiris_plugin_impl_HttpImpl_0"), 'execute');
-		if(!isset($this->onData)) $this->onData = array(new _hx_lambda(array(&$this, &$listener, &$url), "com_wiris_plugin_impl_HttpImpl_1"), 'execute');
+		if(!isset($this->onStatus)) $this->onStatus = array(new _hx_lambda(array(&$this, &$listener, &$url), "com_wiris_plugin_impl_HttpImpl_0"), 'execute');
+		if(!isset($this->onError)) $this->onError = array(new _hx_lambda(array(&$this, &$listener, &$url), "com_wiris_plugin_impl_HttpImpl_1"), 'execute');
+		if(!isset($this->onData)) $this->onData = array(new _hx_lambda(array(&$this, &$listener, &$url), "com_wiris_plugin_impl_HttpImpl_2"), 'execute');
 		if(!php_Boot::$skip_constructor) {
 		parent::__construct($url);
 		$this->listener = $listener;
 	}}
+	public function onStatus($status) { return call_user_func_array($this->onStatus, array($status)); }
+	public $onStatus = null;
 	public function setListener($listener) {
 		$this->listener = $listener;
 	}
@@ -53,7 +56,11 @@ class com_wiris_plugin_impl_HttpImpl extends haxe_Http {
 	}
 	function __toString() { return 'com.wiris.plugin.impl.HttpImpl'; }
 }
-function com_wiris_plugin_impl_HttpImpl_0(&$퍁his, &$listener, &$url, $msg) {
+function com_wiris_plugin_impl_HttpImpl_0(&$퍁his, &$listener, &$url, $status) {
+	{
+	}
+}
+function com_wiris_plugin_impl_HttpImpl_1(&$퍁his, &$listener, &$url, $msg) {
 	{
 		if($퍁his->listener !== null) {
 			$퍁his->listener->onError($msg);
@@ -62,7 +69,7 @@ function com_wiris_plugin_impl_HttpImpl_0(&$퍁his, &$listener, &$url, $msg) {
 		}
 	}
 }
-function com_wiris_plugin_impl_HttpImpl_1(&$퍁his, &$listener, &$url, $data) {
+function com_wiris_plugin_impl_HttpImpl_2(&$퍁his, &$listener, &$url, $data) {
 	{
 		$퍁his->data = $data;
 		if($퍁his->listener !== null) {

@@ -218,7 +218,7 @@ function _hx_char_at($o, $i) { $c = substr($o, $i, 1); return FALSE === $c ? '' 
 
 function _hx_char_code_at($s, $pos) {
 	if($pos < 0 || $pos >= strlen($s)) return null;
-	return ord($s{$pos});
+	return ord($s[$pos]);
 }
 
 function _hx_deref($o) { return $o; }

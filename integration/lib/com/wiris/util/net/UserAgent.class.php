@@ -1,18 +1,14 @@
 <?php
 
 class com_wiris_util_net_UserAgent {
-	public function __construct($request) {
+	public function __construct($userAgent) {
 		if(!php_Boot::$skip_constructor) {
-		$this->request = $request;
+		$this->userAgent = $userAgent;
 	}}
 	public function isIe() {
-		if(_hx_index_of($this->request->getHeader("User-Agent"), "Trident", null) !== -1) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->userAgent !== null && _hx_index_of($this->userAgent, "Trident", null) !== -1;
 	}
-	public $request;
+	public $userAgent;
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
