@@ -47,3 +47,4 @@ I must access the services if service provider is enabled
     And "ERROR" "text" should not exist
     And "KO" "text" should not exist
     And "DISABLED" "text" should not exist
+
