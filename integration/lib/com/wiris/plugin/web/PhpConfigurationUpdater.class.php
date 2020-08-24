@@ -55,8 +55,7 @@ class com_wiris_plugin_web_PhpConfigurationUpdater implements com_wiris_plugin_c
 			}
 			$configuration[com_wiris_plugin_api_ConfigurationKeys::$REFERER] = $referer;
 		}
-		$userAgent = null;
-		$userAgent = new com_wiris_util_net_UserAgent(new com_wiris_system_service_HttpRequest());
+		$userAgent = new com_wiris_util_net_UserAgent(null);
 		if($userAgent->isIe()) {
 			$configuration[com_wiris_plugin_api_ConfigurationKeys::$IMAGE_FORMAT] = "png";
 			$configuration[com_wiris_plugin_api_ConfigurationKeys::$IMPROVE_PERFORMANCE] = "false";

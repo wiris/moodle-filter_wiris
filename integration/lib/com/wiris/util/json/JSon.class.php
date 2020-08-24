@@ -93,7 +93,7 @@ class com_wiris_util_json_JSon extends com_wiris_util_json_StringParser {
 			if($this->c === 46 || $this->c === 69 || $this->c === 101) {
 				$floating = true;
 			}
-		} while($this->c >= 48 && $this->c <= 58 || $hex && $this->isHexDigit($this->c) || $floating && ($this->c === 46 || $this->c === 69 || $this->c === 101 || $this->c === 45));
+		} while($this->c >= 48 && $this->c <= 58 || $hex && $this->isHexDigit($this->c) || $floating && ($this->c === 46 || $this->c === 69 || $this->c === 101 || $this->c === 43 || $this->c === 45));
 		if($floating) {
 			return Std::parseFloat($sb->b);
 		} else {
