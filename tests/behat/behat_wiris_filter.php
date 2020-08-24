@@ -71,4 +71,13 @@ class behat_wiris_filter extends behat_wiris_base {
         }
         $component->uncheck();
     }
+
+    /**
+     * Set the MathType filter render type to the given value.
+     *
+     * @Given /^the MathType filter render type is set to "(php|client|mathjax)"$/
+     */
+    public function the_mathtype_filter_render_type_is_set_to($value) {
+        set_config('rendertype', $value, 'filter_wiris');
+    }
 }

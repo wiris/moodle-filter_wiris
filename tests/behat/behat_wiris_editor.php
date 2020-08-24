@@ -54,7 +54,7 @@ class behat_wiris_editor extends behat_wiris_base {
             $component = $session->getPage()->find('xpath', "//input[@class='wrs_focusElement']");
             if (empty($component)) {
                 throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
-                , 'filter_wirs'));
+                , 'filter_wiris'));
             }
             $component->setValue($value);
         } else {
@@ -62,7 +62,7 @@ class behat_wiris_editor extends behat_wiris_base {
             $container = $session->evaluateScript($script);
             if (empty($container)) {
                 throw new \ElementNotFoundException($this->getSession(), get_string('wirisbehaterroreditornotfound'
-                , 'filter_wirs'));
+                , 'filter_wiris'));
             }
             $script = 'const container = document.getElementById(\'wrs_content_container[0]\');'.
                 'const editor = window.com.wiris.jsEditor.JsEditor.getInstance(container);'.

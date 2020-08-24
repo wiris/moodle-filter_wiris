@@ -1,4 +1,4 @@
-@filter @filter_wiris
+@filter @filter_wiris @filter_wiris_render @filter_wiris_render_image
 Feature: Check image format
 In order to check image formats (png, svg)
 As an admin
@@ -19,4 +19,4 @@ I need to see the correct image format
       | Image format | png |
     And I press "Save changes"
     And I go to link "/filter/wiris/integration/test.php"
-    Then MathType formula in png format is correctly displayed
+    Then MathType formula in svg format is correctly displayed

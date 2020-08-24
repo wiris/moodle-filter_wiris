@@ -205,7 +205,5 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $configuration['wirisreferer'] = $CFG->wwwroot . $query;
 
         com_wiris_system_CallWrapper::getInstance()->start();
-        // print_r($configuration);
-        // die;
     }
 }

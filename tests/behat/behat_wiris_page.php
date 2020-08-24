@@ -333,7 +333,8 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function mathtype_image_in_png_format_is_correctly_displayed() {
         $session = $this->getSession();
-        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png;base64\')]');
+        // $image = $session->getPage()->find('xpath', '//img[contains(@class,\'Wirisformula\')]');
+        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png+xml\')]');
         if (empty($image)) {
             throw new ExpectationException('MathType formula not found.', $this->getSession());
         }

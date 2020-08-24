@@ -66,6 +66,21 @@ class behat_wiris_formula extends behat_wiris_base {
     }
 
     /**
+     * Waits for a math formula to be rendered in the page.
+     *
+     * @Given /^I wait until formula is available$/
+     * @throws ElementNotFoundException Thrown by behat_base::find
+     * @return void
+     */
+    public function i_wait_until_formula_is_available() {
+        // Looks for a math formula in the page.
+        $formula = '//img[contains(@class, \'Wirisformula\')]';
+        $this->ensure_element_exists($formula, 'xpath_element');
+        // Then re-validate to throw error otherwise (?)
+        $this->wirisformula_should_exist();
+    }
+
+    /**
      * Look whether any ChemType formula exist
      *
      * @Then ChemType formula should exist
