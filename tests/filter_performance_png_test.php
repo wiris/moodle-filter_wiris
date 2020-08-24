@@ -77,7 +77,6 @@ class filter_wiris_filter_performance_png_testcase extends advanced_testcase
     }
 
     public function test_filter_safexml_with_performance_png() {
-        global $CFG;
         $output = $this->wirisfilter->filter($this->safexml);
         $assertion = strrpos($output, $this->minuspngbase64uri) !== false;
         $this->assertTrue($assertion);

@@ -33,7 +33,7 @@ function wrs_assert($condition, $reporttext, $solutionlink) {
         return $reporttext;
     } else {
         $result = html_writer::tag('span', $reporttext);
-        $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
+        // $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
         $image = html_writer::empty_tag('img', array('src' => 'img/help.gif', 'class' => 'wrs_plugin wrs_filter'));
         $result .= html_writer::link($solutionlink, $image, array('target' => '_blank'));
         return $result;

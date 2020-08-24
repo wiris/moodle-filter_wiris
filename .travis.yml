@@ -28,40 +28,40 @@ env:
   global:
     - COVERAGE=false
   matrix:
-    - MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_35_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
-    - MOODLE_BRANCH=MOODLE_35_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+    - MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_35_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_35_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
 
 matrix:
   exclude:
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.1
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
     - php: 7.1
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php
+      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
 
 
 before_install:

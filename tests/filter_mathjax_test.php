@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
-require_once($CFG->dirroot . '/filter/wiris/subfilters/mathjax.php');
+require_once($CFG->dirroot . '/filter/wiris/subfilters/fullmathml.php');
 
 class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     protected $wirisfilter;
@@ -36,7 +36,6 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     protected $xml;
 
     protected function setUp() {
-        global $CFG;
         parent::setUp();
         $this->resetAfterTest(true);
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»-«/mo»«mn»2«/mn»«/math»';
@@ -44,11 +43,10 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     }
 
     /**
-     * Test that the filter_wiris_mathjax works as expected
+     * Test that the filter_wiris_fullmathml works as expected
      */
     public function test_filter_safexml() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $output = $this->wirisfilter->filter($this->safexml);
         $assertion = strrpos($output, $this->xml) !== false;
         $this->assertTrue($assertion);
@@ -58,8 +56,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * Test that the filter does not break questions with Wiris Graph plotters.
      */
     public function test_filter_question_with_plotter() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = $this->safexml .
         ' <img class="wirisconstruction"' .
         'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.'.
@@ -106,8 +103,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * last dollar sign.
      */
     public function test_filter_question_with_plain_latex_semicolon() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $latexwithsemicolon = '$$x^2 + 2x + 1$$; ';
         $input = $latexwithsemicolon . $this->safexml;
         $expected = $latexwithsemicolon . $this->xml;
@@ -121,8 +117,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * Test that the filter does not break plain latex, even when it is at the end of the line.
      */
     public function test_filter_question_with_plain_latex_end_of_line() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $latex = ' $$x^2 + 2x + 1$$';
         $input = $this->safexml . $latex;
         $expected = $this->xml . $latex;
@@ -137,8 +132,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * without the mrow tag.
      */
     public function test_filter_question_with_converted_latex_mathml() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
         $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
@@ -152,8 +146,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * Does the same as the previous test, but this time with safe mathml.
      */
     public function test_filter_question_with_converted_latex_safe_mathml() {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«semantics»'.
         '«msup»«mi»x«/mi»«mn»2«/mn»«/msup»«mo»+«/mo»«mn»2«/mn»«mi»x«/mi»«mo»+«/mo»«mn»1«/mn»'.
         '«annotation encoding=¨LaTeX¨»x^2 + 2x + 1«/annotation»«/semantics»«/math»';
@@ -170,8 +163,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * ones that the Wiris Quizzes plugin uses to render the answers to a cloze question.
      */
     public function test_filter_cloze () {
-        global $CFG;
-        $this->wirisfilter = new filter_wiris_mathjax(context_system::instance(), array());
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = '<input value="' . htmlspecialchars($this->xml) . '"> ' . $this->safexml;
         $expected = '<input value="' . htmlspecialchars($this->xml) . '"> ' . $this->xml;
         $output = $this->wirisfilter->filter($input);
@@ -181,10 +173,9 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
 
     /**
      * Check that setting filterwiris/rendertype to mathjax makes filter_wiris
-     * act like filter_wiris_mathjax
+     * act like filter_wiris_fullmathml
      */
     public function test_filter_changefilter() {
-        global $CFG;
         set_config('rendertype', 'mathjax', 'filter_wiris');
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
         $output = $this->wirisfilter->filter($this->safexml);

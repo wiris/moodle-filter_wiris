@@ -95,7 +95,7 @@ class filter_wiris_filter_noperformance_png_testcase extends advanced_testcase
         $this->assertTrue($assertion);
     }
     public function test_filter_safexml_without_performance_png_cache() {
-        $output = $this->wirisfilter->filter($this->safexml);
+        $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.png');
         $assertion = strrpos($fileresult, $this->xml) !== false;

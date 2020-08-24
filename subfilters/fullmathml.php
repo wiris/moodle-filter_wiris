@@ -17,8 +17,8 @@
 
 /**
  * This filter doesn't make any calls to the wiris.net services, instead
- * converting safeXML into normal XML and allowing MathJax to render the
- * formulas.
+ * converting safeXML into normal XML and allowing MathJax/WIRISPlugins.js
+ * to render the formulas.
  *
  * This can be used for improved performance in servers with lots of
  * network connections.
@@ -33,7 +33,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-class filter_wiris_mathjax extends moodle_text_filter {
+class filter_wiris_fullmathml extends moodle_text_filter {
 
     /**
      * Set any context-specific configuration for this filter.
@@ -49,7 +49,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
     public function filter($text, array $options = array()) {
         $n0 = mb_stripos($text, '«math');
         $n1 = mb_stripos($text, '&laquo;math');
-
         if ($n0 === false && $n1 === false) {
             $n2 = mb_stripos($text, '<math');
 
@@ -65,7 +64,6 @@ class filter_wiris_mathjax extends moodle_text_filter {
                 }
             }
         }
-
         $text = $this->replace_safe_mathml($text, "«math", "«/math»");
         $return = $this->replace_safe_mathml($text, "&laquo;math", '&laquo;/math&raquo;');
         $return = $this->fix_semantics($return);
@@ -173,5 +171,4 @@ class filter_wiris_mathjax extends moodle_text_filter {
         }
         return $text;
     }
-
 }
