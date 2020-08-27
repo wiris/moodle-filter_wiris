@@ -73,11 +73,31 @@ class behat_wiris_filter extends behat_wiris_base {
     }
 
     /**
-     * Set the MathType filter render type to the given value.
+     * Set the MathJax filter render type to the given value.
      *
      * @Given /^the MathType filter render type is set to "(php|client|mathjax)"$/
      */
     public function the_mathtype_filter_render_type_is_set_to($value) {
         set_config('rendertype', $value, 'filter_wiris');
+    }
+
+    /**
+     * Set the MathJax filter URL type to a given value.
+     *
+     * @param  string $url value to which we want to set the field
+     * @Given the MathJax URL is set to :url
+     */
+    public function the_mathjax_url_is_set_to($url) {
+        set_config('httpsurl', $url, 'filter_mathjaxloader');
+    }
+
+    /**
+     * Set the MathJax Additional equation delimiters to a given value.
+     *
+     * @param  string $value value to which we want to set the field
+     * @Given I set the MathJax delimiters to :value
+     */
+    public function i_set_the_mathjax_delimiters_to($value) {
+        set_config('httadditionaldelimiterspsurl', $value, 'filter_mathjaxloader');
     }
 }

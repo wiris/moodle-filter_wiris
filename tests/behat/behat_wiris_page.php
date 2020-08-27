@@ -314,7 +314,7 @@ class behat_wiris_page extends behat_wiris_base {
     /**
      * MathType images are correctly displayed when the chosen format is svg
      *
-     * @Then MathType formula in svg format is correctly displayed
+     * @Given MathType formula in svg format is correctly displayed
      * @throws ExpectationException If the MathType formula is not found, it will throw an exception.
      */
     public function mathtype_image_in_svg_format_is_correctly_displayed() {
@@ -328,13 +328,13 @@ class behat_wiris_page extends behat_wiris_base {
     /**
      * MathType images are correctly displayed when the chosen format is png
      *
-     * @Then MathType formula in png format is correctly displayed
+     * @Given MathType formula in png format is correctly displayed
      * @throws ExpectationException If the MathType formula is not found, it will throw an exception.
      */
     public function mathtype_image_in_png_format_is_correctly_displayed() {
         $session = $this->getSession();
         // $image = $session->getPage()->find('xpath', '//img[contains(@class,\'Wirisformula\')]');
-        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png+xml\')]');
+        $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png;\')]');
         if (empty($image)) {
             throw new ExpectationException('MathType formula not found.', $this->getSession());
         }

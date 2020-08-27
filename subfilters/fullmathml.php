@@ -47,6 +47,12 @@ class filter_wiris_fullmathml extends moodle_text_filter {
     }
 
     public function filter($text, array $options = array()) {
+
+        // Behat wizardry?
+        if (isset($options['testing']) && $options['testing'] == true) {
+            $text = str_replace(" xmlns=¨http://www.w3.org/1998/Math/MathML¨", "", $text);
+        }
+
         $n0 = mb_stripos($text, '«math');
         $n1 = mb_stripos($text, '&laquo;math');
         if ($n0 === false && $n1 === false) {

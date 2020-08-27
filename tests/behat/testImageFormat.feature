@@ -5,7 +5,10 @@ As an admin
 I need to see the correct image format
 
   Background:
-    Given the "wiris" filter is "on"
+    Given the following config values are set as admin:
+      | config | value | plugin |
+      | imageformat | svg | filter_wiris |
+    And the "wiris" filter is "on"
     And I log in as "admin"
 
   @javascript
@@ -19,4 +22,4 @@ I need to see the correct image format
       | Image format | png |
     And I press "Save changes"
     And I go to link "/filter/wiris/integration/test.php"
-    Then MathType formula in svg format is correctly displayed
+    Then MathType formula in png format is correctly displayed
