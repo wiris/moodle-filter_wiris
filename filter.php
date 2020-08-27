@@ -36,7 +36,7 @@ require_once('subfilters/fullmathml.php');
 
 class filter_wiris extends moodle_text_filter {
     public function filter($text, array $options = array()) {
-        global $CFG, $PAGE;
+        global $PAGE;
 
         switch (get_config('filter_wiris', 'rendertype')) {
             case 'mathjax':
@@ -50,20 +50,7 @@ class filter_wiris extends moodle_text_filter {
                 // @see: https://docs.wiris.com/en/mathtype/mathtype_web/integrations/encoding-attributes.
                 $subfilter = new filter_wiris_fullmathml($this->context, $this->localconfig);
                 // Include the WIRISPlugins.js library with TECH = 'server'.
-                // We try (temp) two different options since the behat 'tests' are not passing
-                // 1. Inline option (uses jQuery):
-                // $PAGE->requires->js_amd_inline("
-                //     require(['jquery'], function($) {
-                //         $(document).ready(function() {
-                //             var s = document.createElement('script');
-                //             s.type = 'text/javascript';
-                //             s.src =  '$CFG->wwwroot/filter/wiris/render/WIRISplugins.js?viewer=image&async=false';
-                //             $('head').append(s);
-                //         });
-                //     });
-                // ");
-                // 2. Require option:
-                $PAGE->requires->js( new moodle_url('$CFG->wwwroot/filter/wiris/render/WIRISplugins.js?viewer=image') );
+                $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image') );
             break;
             case 'php':
             default:
