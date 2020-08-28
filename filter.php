@@ -42,13 +42,15 @@ class filter_wiris extends moodle_text_filter {
             case 'mathjax':
                 // Translate encoding chars from Full MathML to Standard MathML.
                 // @see: https://docs.wiris.com/en/mathtype/mathtype_web/integrations/encoding-attributes.
-                $subfilter = new filter_wiris_fullmathml($this->context, $this->localconfig);
+                $options = array_merge($this->localconfig, array('rendertype' => get_config('filter_wiris', 'rendertype')));
+                $subfilter = new filter_wiris_fullmathml($this->context, $options);
                 // Let the MathJax filter do the heavy-lifting from this point.
             break;
             case 'client':
                 // Translate encoding chars from Full MathML to Standard MathML.
                 // @see: https://docs.wiris.com/en/mathtype/mathtype_web/integrations/encoding-attributes.
-                $subfilter = new filter_wiris_fullmathml($this->context, $this->localconfig);
+                $options = array_merge($this->localconfig, array('rendertype' => get_config('filter_wiris', 'rendertype')));
+                $subfilter = new filter_wiris_fullmathml($this->context, $options);
                 // Include the WIRISPlugins.js library with TECH = 'server'.
                 $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image') );
             break;
