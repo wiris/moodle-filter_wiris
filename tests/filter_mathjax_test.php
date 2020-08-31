@@ -47,7 +47,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      */
     public function test_filter_safexml() {
         $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
-        $output = $this->wirisfilter->filter($this->safexml, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($this->safexml, array());
         $assertion = strrpos($output, $this->xml) !== false;
         $this->assertTrue($assertion);
     }
@@ -56,7 +56,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
      * Test that the filter does not break questions with Wiris Graph plotters.
      */
     public function test_filter_question_with_plotter() {
-        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array("rendertype" => "mathjax"));
+        $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = $this->safexml .
         ' <img class="wirisconstruction"' .
         'data-wirisconstruction="{&quot;displays&quot;:[{&quot;horizontal_grid_step&quot;:1.,&quot;horizontal_axis_step&quot;:2.'.
@@ -93,7 +93,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         'cn&gt;2&lt;/cn&gt;&lt;/apply&gt;&lt;apply&gt;&lt;times/&gt;&lt;cn&gt;2&lt;/cn&gt;&lt;ci&gt;x&lt;/ci&gt;&lt;/apply&gt;&lt;cn&gt;'.
         '1&lt;/cn&gt;&lt;/apply&gt;&lt;/lambda&gt;&lt;/math&gt;&quot;,&quot;id&quot;:&quot;curve1&quot;}],&quot;handwriting&quot;:[],&quot;'.
         'constraints&quot;:[]}"/>';
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -107,7 +107,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         $latexwithsemicolon = '$$x^2 + 2x + 1$$; ';
         $input = $latexwithsemicolon . $this->safexml;
         $expected = $latexwithsemicolon . $this->xml;
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -121,7 +121,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         $latex = ' $$x^2 + 2x + 1$$';
         $input = $this->safexml . $latex;
         $expected = $this->xml . $latex;
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -137,7 +137,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
         $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -153,7 +153,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         $expected = '<math xmlns="http://www.w3.org/1998/Math/MathML"><semantics>'.
         '<mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow>' .
         '<annotation encoding="LaTeX">x^2 + 2x + 1</annotation></semantics></math>';
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -166,7 +166,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
         $this->wirisfilter = new filter_wiris_fullmathml(context_system::instance(), array());
         $input = '<input value="' . htmlspecialchars($this->xml) . '"> ' . $this->safexml;
         $expected = '<input value="' . htmlspecialchars($this->xml) . '"> ' . $this->xml;
-        $output = $this->wirisfilter->filter($input, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($input, array());
         $assertion = strpos($expected, $output) !== false;
         $this->assertTrue($assertion);
     }
@@ -178,7 +178,7 @@ class filter_wiris_filter_mathjax_testcase extends advanced_testcase {
     public function test_filter_changefilter() {
         set_config('rendertype', 'mathjax', 'filter_wiris');
         $this->wirisfilter = new filter_wiris(context_system::instance(), array());
-        $output = $this->wirisfilter->filter($this->safexml, array("rendertype" => "mathjax"));
+        $output = $this->wirisfilter->filter($this->safexml, array());
         $assertion = strrpos($output, $this->xml) !== false;
         $this->assertTrue($assertion);
     }
