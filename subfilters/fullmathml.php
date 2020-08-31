@@ -47,14 +47,6 @@ class filter_wiris_fullmathml extends moodle_text_filter {
     }
 
     public function filter($text, array $options = array()) {
-
-        // Behat wizardry?
-        // This only fails in Moodle3_9 while testing with behat, :shrug:.
-        global $CFG;
-        if (strpos($CFG->release, "3.9") !== false && $options['rendertype'] == 'client') {
-            $text = html_entity_decode(str_replace('&uml', '&quot;', htmlentities($text)));
-        }
-
         $n0 = mb_stripos($text, '«math');
         $n1 = mb_stripos($text, '&laquo;math');
         if ($n0 === false && $n1 === false) {
@@ -75,16 +67,6 @@ class filter_wiris_fullmathml extends moodle_text_filter {
         $text = $this->replace_safe_mathml($text, "«math", "«/math»");
         $return = $this->replace_safe_mathml($text, "&laquo;math", '&laquo;/math&raquo;');
         $return = $this->fix_semantics($return);
-
-        // Behat wizardry?
-        // This only fails in Moodle3_9 while testing with behat, :shrug:.
-        if (strpos($CFG->release, "3.9") !== false && $options['rendertype'] == 'client') {
-            $return = str_replace('http://www.w3.org/1998/Math/MathML', '', $return);
-            $return = str_replace(';<a href="', 'http://www.w3.org/1998/Math/MathML', $return);
-            $return = str_replace(';&gt;', '', $return);
-            $return = str_replace('xmlns=";"', '', $return);
-            $return = str_replace(';', 'xmlns="http://www.w3.org/1998/Math/MathML"', $return);
-        }
 
         return $return;
     }
