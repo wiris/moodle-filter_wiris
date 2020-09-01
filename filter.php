@@ -42,7 +42,7 @@ class filter_wiris extends moodle_text_filter {
                 // Include the WIRISPlugins.js library with TECH = 'server'.
                 // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
                 // Therefore, this filter does not affect the markup server-side.
-                $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true') );
+                $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true') );
             break;
             case 'php':
             default:
