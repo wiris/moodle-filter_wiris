@@ -65,7 +65,6 @@ class behat_wiris_formula extends behat_wiris_base {
         }
     }
 
-
     /**
      * Waits for a math formula to been rendered in the page
      * to MathType format.
@@ -81,37 +80,6 @@ class behat_wiris_formula extends behat_wiris_base {
         $this->ensure_element_exists($formula, 'xpath_element');
         // Then re-validate to throw error otherwise (?)
         $this->wirisformula_should_exist();
-    }
-
-    /**
-     * Look whether a MathJaxformula exists
-     *
-     * @Then MathJaxformula should exist
-     * @throws ExpectationException If MathJaxformula is not found, it will throw an exception.
-     */
-    public function mathjaxformula_should_exist() {
-        $session = $this->getSession();
-        $formula = $session->getPage()->find('xpath', '//span[contains(@class, \'MathJax_SVG\')]');
-        if (empty($formula)) {
-            throw new ExpectationException('MathJaxformula not found.', $this->getSession());
-        }
-    }
-
-    /**
-     * Waits for a math formula to been rendered in the page
-     * to MathJax format.
-     * This is useful for Javasript rendering.
-     *
-     * @Given /^I wait until MathJaxformula formula exists$/
-     * @throws ElementNotFoundException Thrown by behat_base::find
-     * @return void
-     */
-    public function i_wait_until_mathjaxformula_exists() {
-        // Looks for a math formula in the page.
-        $formula = '//span[contains(@class, \'MathJax_SVG\')]';
-        $this->ensure_element_exists($formula, 'xpath_element');
-        // Then re-validate to throw error otherwise (?)
-        $this->mathjaxformula_should_exist();
     }
 
     /**

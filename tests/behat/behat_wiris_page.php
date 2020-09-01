@@ -232,7 +232,7 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Execute mathjax script
+     * Enables saveMode to XML
      *
      * @Given I enable saveMode
      */
@@ -294,20 +294,6 @@ class behat_wiris_page extends behat_wiris_base {
         $image = $session->getPage()->find('xpath', '//img');
         if (empty($image)) {
             throw new ExpectationException('Image not found.', $this->getSession());
-        }
-    }
-
-    /**
-     * Look whether a MathJax element exists
-     *
-     * @Then MathJax element should exist
-     * @throws ExpectationException If the MathJax element is not found, it will throw an exception.
-     */
-    public function mathjax_element_should_exist() {
-        $session = $this->getSession();
-        $element = $session->getPage()->find('xpath', '//span[contains(@class,\'MathJax\')]');
-        if (empty($element)) {
-            throw new ExpectationException('MathJax element not found.', $this->getSession());
         }
     }
 
