@@ -32,30 +32,24 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once('subfilters/php.php');
-require_once('subfilters/fullmathml.php');
 
 class filter_wiris extends moodle_text_filter {
     public function filter($text, array $options = array()) {
         global $PAGE;
 
         switch (get_config('filter_wiris', 'rendertype')) {
-            case 'mathjax':
-                // Translate encoding chars from Full MathML to Standard MathML.
-                // @see: https://docs.wiris.com/en/mathtype/mathtype_web/integrations/encoding-attributes.
-                $subfilter = new filter_wiris_fullmathml($this->context, $this->localconfig);
-                // Let the MathJax filter do the heavy-lifting from this point.
-            break;
             case 'client':
                 // Include the WIRISPlugins.js library with TECH = 'server'.
                 // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
+                // Therefore, this filter does not affect the markup server-side.
                 $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true') );
-                return $text;
             break;
             case 'php':
             default:
                 $subfilter = new filter_wiris_php($this->context, $this->localconfig);
+                $text = $subfilter->filter($text, $options); 
             break;
         }
-        return $subfilter->filter($text, $options);
+        return $text;
     }
 }
