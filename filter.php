@@ -46,11 +46,10 @@ class filter_wiris extends moodle_text_filter {
                 // Let the MathJax filter do the heavy-lifting from this point.
             break;
             case 'client':
-                // Translate encoding chars from Full MathML to Standard MathML.
-                // @see: https://docs.wiris.com/en/mathtype/mathtype_web/integrations/encoding-attributes.
-                $subfilter = new filter_wiris_fullmathml($this->context, $this->localconfig);
                 // Include the WIRISPlugins.js library with TECH = 'server'.
-                $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image') );
+                // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
+                $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true') );
+                return $text;
             break;
             case 'php':
             default:
