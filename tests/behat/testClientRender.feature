@@ -16,6 +16,7 @@ I need to change the render type
       | user     | course | role           |
       | admin  | C1     | editingteacher |
     And the "wiris" filter is "on"
+    And the "urltolink" filter is "off"
     And the MathType filter render type is set to "client"
     And I log in as "admin"
 

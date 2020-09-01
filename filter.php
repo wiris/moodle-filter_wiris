@@ -47,7 +47,7 @@ class filter_wiris extends moodle_text_filter {
             case 'php':
             default:
                 $subfilter = new filter_wiris_php($this->context, $this->localconfig);
-                $text = $subfilter->filter($text, $options); 
+                $text = $subfilter->filter($text, $options);
             break;
         }
         return $text;
