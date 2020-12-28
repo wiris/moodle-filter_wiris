@@ -1,18 +1,29 @@
+notifications:
+  email: false
+
 language: php
 
 sudo: required
-dist: trusty
-
-#branches:
-#  only:
-#    - master
+#dist: trusty
 
 addons:
   firefox: "47.0.1"
-  postgresql: "9.4"
+  postgresql: "9.6"
   apt:
     packages:
+      # - oracle-java8-installer
+      # - oracle-java8-set-default
       - chromium-chromedriver
+
+services:
+  # - docker
+  - postgresql
+
+jobs:
+    # Enable fast finish.
+    # This will fail the build if a single job fails (except those in allow_failures).
+    # It will not stop the jobs from running.
+    fast_finish: true
 
 cache:
   directories:
@@ -23,55 +34,73 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4
 
 env:
   global:
+    - IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
+    # - IGNORE_NAMES=ignore_name.php
+    # - MUSTACHE_IGNORE_NAMES=broken.mustache
+    - PROFILE=firefox
     - COVERAGE=false
+    - PHPUNIT_IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
+    - DB=pgsql
+
   matrix:
-    - MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_35_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - MOODLE_BRANCH=MOODLE_35_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+    - MOODLE_BRANCH=MOODLE_311_STABLE
+    - MOODLE_BRANCH=MOODLE_310_STABLE
+    - MOODLE_BRANCH=MOODLE_39_STABLE
+    - MOODLE_BRANCH=MOODLE_38_STABLE
+    - MOODLE_BRANCH=MOODLE_37_STABLE
+    - MOODLE_BRANCH=MOODLE_35_STABLE
 
 matrix:
   exclude:
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_37_STABLE
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_38_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_38_STABLE
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_39_STABLE
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_37_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
-    - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_32_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
-    - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
-    - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_33_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_310_STABLE
     - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
-    - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_311_STABLE
     - php: 7.1
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=pgsql IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_39_STABLE
     - php: 7.1
-      env: MOODLE_BRANCH=MOODLE_39_STABLE DB=mysqli IGNORE_PATHS=integration,filtersettings.php,render
+      env: MOODLE_BRANCH=MOODLE_310_STABLE
+    - php: 7.1
+      env: MOODLE_BRANCH=MOODLE_311_STABLE
+    - php: 7.2
+      env: MOODLE_BRANCH=MOODLE_35_STABLE
+    - php: 7.3
+      env: MOODLE_BRANCH=MOODLE_35_STABLE
+    - php: 7.4
+      env: MOODLE_BRANCH=MOODLE_35_STABLE
+    - php: 7.4
+      env: MOODLE_BRANCH=MOODLE_37_STABLE
 
 
 before_install:
-  - nvm install 14.0.0
-  - nvm use 14.0.0
+  # - nvm install 14.0.0
+  # - nvm use 14.0.0
+  - if [ "$NODEJS" = 14 ]; then
+      nvm install 14.0.0;
+      nvm use 14.0.0;
+    else
+      nvm install 8.9;
+      nvm use 8.9;
+    fi
   - phpenv config-rm xdebug.ini
   - cd ../..
   - composer selfupdate
-  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  # - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  # - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+  - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+  # - docker run -d -p 127.0.0.1:4444:4444 --net=host -v /dev/shm:/dev/shm selenium/standalone-${PROFILE}:3
 
 install:
   - moodle-plugin-ci add-plugin --branch $TRAVIS_BRANCH wiris/moodle-atto_wiris
@@ -83,8 +112,8 @@ script:
   - moodle-plugin-ci phpmd
   - moodle-plugin-ci codechecker
   - moodle-plugin-ci validate
-  - moodle-plugin-ci phpunit
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
-  - moodle-plugin-ci grunt
-  - moodle-plugin-ci behat --profile chrome
+  - moodle-plugin-ci grunt -t eslint
+  - moodle-plugin-ci phpunit
+  - moodle-plugin-ci behat --profile $PROFILE

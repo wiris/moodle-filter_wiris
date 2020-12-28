@@ -9,7 +9,7 @@
     </library>
     <library>
         <location>render</location>
-        <name>MathType Web Integration Javascript library</name>
+        <name>MathType Web Integration JavaScript SDK</name>
         <version>7.23.0</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>

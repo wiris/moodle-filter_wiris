@@ -220,7 +220,7 @@ echo $output;
 
 $output = '';
 $testname = get_string('lookingforwirisplugin', 'filter_wiris') . '&nbsp;'  . $currenteditordata['plugin_name'];
-$reporttext = get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' . 
+$reporttext = get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                 get_string('mustbeinstalled', 'filter_wiris');
 $solutionlink = 'http://www.wiris.com/plugins/moodle/download';
 $wirisplugin = $currenteditordata['plugin_path'];
