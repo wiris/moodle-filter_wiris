@@ -1,4 +1,4 @@
-@filter @filter_wiris @filter_wiris_render @filter_wiris_render_image
+@filter @filter_wiris @filter_wiris_render @filter_wiris_render_image @wiris_mathtype
 Feature: Check image format
 In order to check image formats (png, svg)
 As an admin

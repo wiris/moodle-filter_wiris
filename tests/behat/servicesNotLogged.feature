@@ -1,4 +1,4 @@
-@filter @filter_wiris
+@filter @filter_wiris @wiris_mathtype
 Feature: Check access provider for non logged users
 In order to check access provider
 As an logged user

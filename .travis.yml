@@ -4,10 +4,8 @@ notifications:
 language: php
 
 sudo: required
-#dist: trusty
 
 addons:
-  firefox: "47.0.1"
   postgresql: "9.6"
   apt:
     packages:
@@ -16,7 +14,6 @@ addons:
       - chromium-chromedriver
 
 services:
-  # - docker
   - postgresql
 
 jobs:
@@ -32,9 +29,9 @@ cache:
 
 php:
   - 7.0
-  - 7.1
-  - 7.2
-  - 7.3
+  # - 7.1
+  # - 7.2
+  # - 7.3
   - 7.4
 
 env:
@@ -42,7 +39,7 @@ env:
     - IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
     # - IGNORE_NAMES=ignore_name.php
     # - MUSTACHE_IGNORE_NAMES=broken.mustache
-    - PROFILE=firefox
+    - PROFILE=chrome
     - COVERAGE=false
     - PHPUNIT_IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
     - DB=pgsql
@@ -84,8 +81,6 @@ matrix:
 
 
 before_install:
-  # - nvm install 14.0.0
-  # - nvm use 14.0.0
   - if [ "$NODEJS" = 14 ]; then
       nvm install 14.0.0;
       nvm use 14.0.0;
@@ -114,6 +109,10 @@ script:
   - moodle-plugin-ci validate
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
-  - moodle-plugin-ci grunt -t eslint
+  - if [ "$MOODLE_BRANCH" = MOODLE_35_STABLE ]; then
+      moodle-plugin-ci grunt;
+    else
+      moodle-plugin-ci grunt -t eslint;
+    fi
   - moodle-plugin-ci phpunit
   - moodle-plugin-ci behat --profile $PROFILE
