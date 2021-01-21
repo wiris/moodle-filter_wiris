@@ -7,11 +7,6 @@ sudo: required
 
 addons:
   postgresql: "9.6"
-  apt:
-    packages:
-      # - oracle-java8-installer
-      # - oracle-java8-set-default
-      - chromium-chromedriver
 
 services:
   - postgresql
@@ -28,8 +23,8 @@ cache:
     - $HOME/.npm
 
 php:
-  - 7.0
-  # - 7.1
+  # - 7.0
+  - 7.1
   # - 7.2
   # - 7.3
   - 7.4
@@ -39,7 +34,7 @@ env:
     - IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
     # - IGNORE_NAMES=ignore_name.php
     # - MUSTACHE_IGNORE_NAMES=broken.mustache
-    - PROFILE=chrome
+    # - PROFILE=chrome
     - COVERAGE=false
     - PHPUNIT_IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
     - DB=pgsql
@@ -50,44 +45,36 @@ env:
     - MOODLE_BRANCH=MOODLE_39_STABLE
     - MOODLE_BRANCH=MOODLE_38_STABLE
     - MOODLE_BRANCH=MOODLE_37_STABLE
+    - MOODLE_BRANCH=MOODLE_36_STABLE
     - MOODLE_BRANCH=MOODLE_35_STABLE
 
 matrix:
   exclude:
-    - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_37_STABLE
-    - php: 7.0
+    - php: 7.1
       env: MOODLE_BRANCH=MOODLE_38_STABLE
-    - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_39_STABLE
-    - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_310_STABLE
-    - php: 7.0
-      env: MOODLE_BRANCH=MOODLE_311_STABLE
     - php: 7.1
       env: MOODLE_BRANCH=MOODLE_39_STABLE
     - php: 7.1
       env: MOODLE_BRANCH=MOODLE_310_STABLE
     - php: 7.1
       env: MOODLE_BRANCH=MOODLE_311_STABLE
-    - php: 7.2
-      env: MOODLE_BRANCH=MOODLE_35_STABLE
-    - php: 7.3
-      env: MOODLE_BRANCH=MOODLE_35_STABLE
+    - php: 7.1
+      env: MOODLE_BRANCH=MOODLE_39_STABLE
+    - php: 7.1
+      env: MOODLE_BRANCH=MOODLE_310_STABLE
+    - php: 7.1
+      env: MOODLE_BRANCH=MOODLE_311_STABLE
     - php: 7.4
       env: MOODLE_BRANCH=MOODLE_35_STABLE
+    - php: 7.4
+      env: MOODLE_BRANCH=MOODLE_36_STABLE
     - php: 7.4
       env: MOODLE_BRANCH=MOODLE_37_STABLE
 
 
 before_install:
-  - if [ "$NODEJS" = 14 ]; then
-      nvm install 14.0.0;
-      nvm use 14.0.0;
-    else
-      nvm install 8.9;
-      nvm use 8.9;
-    fi
+  - nvm install 14.15.0;
+  - nvm use 14.15.0;
   - phpenv config-rm xdebug.ini
   - cd ../..
   - composer selfupdate
@@ -111,8 +98,25 @@ script:
   - moodle-plugin-ci mustache
   - if [ "$MOODLE_BRANCH" = MOODLE_35_STABLE ]; then
       moodle-plugin-ci grunt;
-    else
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_36_STABLE ]; then
+      moodle-plugin-ci grunt;
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_37_STABLE ]; then
+      moodle-plugin-ci grunt;
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_38_STABLE ]; then
+      moodle-plugin-ci grunt -t eslint;
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_39_STABLE ]; then
+      moodle-plugin-ci grunt -t eslint;
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_310_STABLE ]; then
+      moodle-plugin-ci grunt -t eslint;
+    fi
+  - if [ "$MOODLE_BRANCH" = MOODLE_311_STABLE ]; then
       moodle-plugin-ci grunt -t eslint;
     fi
   - moodle-plugin-ci phpunit
-  - moodle-plugin-ci behat --profile $PROFILE
+  - moodle-plugin-ci behat
+  # - moodle-plugin-ci behat --profile $PROFILE
