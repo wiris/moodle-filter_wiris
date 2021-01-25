@@ -433,7 +433,7 @@ class behat_wiris_page extends behat_wiris_base {
         if ($exist === "does" && empty($component)) {
             throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
         }
-        else if ($exist ==="does not" && !empty($component)) {
+        else if ($exist === "does not" && !empty($component)) {
             throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
         }
     }
@@ -468,7 +468,7 @@ class behat_wiris_page extends behat_wiris_base {
         if ($exist === "does" && empty($component)) {
             throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
         }
-        else if ($exist ==="does not" && !empty($component)) {
+        else if ($exist === "does not" && !empty($component)) {
             throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
         }
     }
