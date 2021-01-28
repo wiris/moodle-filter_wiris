@@ -31,9 +31,10 @@ and disable the mathtype and chemtype buttons
     And I navigate to "Plugins > Filters" in site administration
     And I set the field "Math editor" to "0"
     And I press "Save changes"
+    And I set the field "Math editor" to "0"
+    And I press "Save changes"
     And I am on "Course 1" course homepage
     And I add a "Page" to section "0"
-    Then "MathType" "button" should exist
     Then I check "MathType" in "Page content" field "does not" exist in TinyMCE editor
     And I check "ChemType" in "Page content" field "does" exist in TinyMCE editor
 
