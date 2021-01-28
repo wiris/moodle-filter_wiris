@@ -26,7 +26,8 @@ and disable the mathtype and chemtype buttons
   Scenario: Set mathtype button to diable, check that it is not visible and accessible in a toolbar, but the chem button is
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
-    And I check "MathType" in "Page content" field "does" exist in TinyMCE editor
+    And "MathType" "button" should exist
+    # And I check "MathType" in "Page content" field "does" exist in TinyMCE editor
     And I check "ChemType" in "Page content" field "does" exist in TinyMCE editor
     And I navigate to "Plugins > Filters" in site administration
     And I set the field "Math editor" to "0"
@@ -45,7 +46,8 @@ and disable the mathtype and chemtype buttons
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
-    Then I check "MathType" in "Page content" field "does" exist in TinyMCE editor
+    And "mathType" "button" should exist
+    # Then I check "MathType" in "Page content" field "does" exist in TinyMCE editor
     And I check "ChemType" in "Page content" field "does not" exist in TinyMCE editor
 
   @javascript
