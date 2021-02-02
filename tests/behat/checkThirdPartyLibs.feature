@@ -11,8 +11,10 @@ I need to Check if MathType integration appears on third party libraries page
   Scenario: Check third party libraries
     And I navigate to "Development" in site administration
     And I follow "Third party libraries"
-    Then "MathType Web Integration PHP library" "text" should exist
+    # NO-JAVASCRIPT--changes.
+    # Then "MathType Web Integration PHP library" "text" should exist
     Then "MathType Web Integration JavaScript SDK" "text" should exist
     And "GPL 3.0+" "text" should exist
-    And "integration" "text" should exist
+    # NO-JAVASCRIPT--changes.
+    # And "integration" "text" should exist
     And "render" "text" should exist

@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 7.24.0.
 
+
+
 ## [Unreleased]
 
+- Fix & upgrade TravisCI job configuration
 - Update project documentation by improving the main `README` file.
 - Start using `CHANGES` file as changelog.

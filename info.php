@@ -25,7 +25,8 @@
 
 require_once('../../config.php');
 require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
-require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
+// NO-JAVASCRIPT--changes.
+// require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
 
 // BEGIN HELPERS FUNCTIONS.
 function wrs_assert($condition, $reporttext, $solutionlink) {
@@ -237,7 +238,7 @@ echo $output;
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-$testname = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . ' versions';
+$testname = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . ' versions';
 
 if (isset($plugin->version)) {
     $filterversion = $plugin->version;
@@ -257,11 +258,11 @@ if (isset($plugin->version)) {
 }
 
 if ($filterversion == $pluginversion) {
-    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('havesameversion', 'filter_wiris');
     $condition = true;
 } else {
-    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('versionsdontmatch', 'filter_wiris');
     $reporttext .= "<br>" . get_string('wirisfilterversion', 'filter_wiris') . '&nbsp;' . $filterversion;
     $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] . '&nbsp;' .
@@ -297,12 +298,14 @@ $output .= html_writer::end_tag('table');
 $output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('br');
 echo $output;
-$output = '';
-echo get_string('clickwirisplugincorrectlyinstalled', 'filter_wiris') . "<br/>";
-$link = 'integration/test.php';
-$input = '<input type="button" value="' . get_string('button1', 'filter_wiris');
-$input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
-echo $input;
+
+// NO-JAVASCRIPT--changes.
+// $output = '';
+// echo get_string('clickwirisplugincorrectlyinstalled', 'filter_wiris') . "<br/>";
+// $link = 'integration/test.php';
+// $input = '<input type="button" value="' . get_string('button1', 'filter_wiris');
+// $input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
+// echo $input;
 
 $wqversion = get_config('qtype_wq', 'version');
 if (!empty($wqversion)) {
@@ -312,16 +315,13 @@ if (!empty($wqversion)) {
     $input .= '" onClick="javascript:window.open(\'' . $link . '\');" /><br/>';
     echo $input;
 }
-$output .= html_writer::end_tag('br');
-$output .= html_writer::end_tag('p');
 
-$output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('br');
+$output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('span', array('style' => 'font-size:14px; font-weight:normal;'));
 $output .= get_string('contact', 'filter_wiris');
 $output .= " (<a href=\"mailto:support@wiris.com\">support@wiris.com</a>)";
 $output .= html_writer::end_tag('span');
-$output .= html_writer::end_tag('br');
 $output .= html_writer::end_tag('p');
 
 echo $output;

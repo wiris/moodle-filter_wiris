@@ -184,12 +184,12 @@ class behat_wiris_formula extends behat_wiris_base {
     public function wirisformula_should_has_height_with_error($height, $error) {
         $session = $this->getSession();
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
-            throw new ExpectationException('Integer value expected.', $this->getSession(), $this->getSession());
+            throw new ExpectationException('Integer value expected.', $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0]';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
-            throw new ExpectationException('Formula not found.', $this->getSession(), $this->getSession());
+            throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
         ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);

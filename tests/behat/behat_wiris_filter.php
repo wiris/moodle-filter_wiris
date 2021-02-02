@@ -78,7 +78,8 @@ class behat_wiris_filter extends behat_wiris_base {
      * @Given /^the MathType filter render type is set to "(php|client)"$/
      */
     public function the_mathtype_filter_render_type_is_set_to($value) {
-        set_config('rendertype', $value, 'filter_wiris');
+        // NO-JAVASCRIPT--changes.
+        // set_config('rendertype', $value, 'filter_wiris');
     }
 
 }
