@@ -81,4 +81,13 @@ class behat_wiris_filter extends behat_wiris_base {
         set_config('rendertype', $value, 'filter_wiris');
     }
 
+    /**
+     * Set all the MathType visibility to true.
+     *
+     * @Given /^the MathType buttons visibility is set to "(?P<status>\d+)"$/
+     */
+    public function the_mathtype_buttons_visibility_is_set_to($value) {
+        set_config('editor_enable', $value, 'filter_wiris');
+        set_config('chem_editor_enable', $value, 'filter_wiris');
+    }
 }

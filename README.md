@@ -1,6 +1,6 @@
 # ![MathType](http://www.wiris.com/portal/themes/wiris_com/img/logos/mathtype/png/MY_office24.png) MathType Moodle filter plugin by WIRIS
 
-[![Master Build Status](https://travis-ci.com/wiris/moodle-filter_wiris.svg?branch=master)](https://travis-ci.com/wiris/moodle-filter_wiris) [![Stable Build Status](https://travis-ci.com/wiris/moodle-filter_wiris.svg?branch=stable)](https://travis-ci.com/wiris/moodle-filter_wiris)
+[![Build Status](https://travis-ci.com/wiris/moodle-filter_wiris.svg?branch=stable)](https://travis-ci.com/wiris/moodle-filter_wiris)
 
 [MathType](http://www.wiris.com/editor) filter allows Moodle to render MathML using MathType image service. This plugin is part of set [WIRIS math & science](https://moodle.org/plugins/browse.php?list=set&id=66).
 
@@ -28,14 +28,15 @@ Since version 7.24.0, all notable changes to this project are documented in the 
 
 ## Libraries
 
-This plugin uses the **MathType Web Integration PHP library** ([wiris/mathtype-integration-php](https://github.com/wiris/mathtype-integration-php)) and the **MathType Web Integration JavaScript SDK** ([@wiris/html-integrations](https://github.com/wiris/html-integrations)), both released under GNU GPLv3 license.
-
 The MathType Web Integration JavaScript SDK is released as a npm package: [@wiris/mathtype-html-integration-devkit](https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit).
 
+This plugin uses the **MathType Web Integration JavaScript SDK** ([@wiris/html-integrations](https://github.com/wiris/html-integrations)), released under GNU GPLv3 license as a npm package: [@wiris/mathtype-html-integration-devkit](https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit).
+
+> The library's source code can be found at [@wiris/html-integrations](https://www.github.com/wiris/html-integrations) repository
 
 **Note:** More details on the `thirdpartylibs.xml` file.
 
-## Technical Support or Questions
+## Technical Support
 
 If you have questions or need help integrating MathType, please contact us (support@wiris.com) instead of opening an issue.
 

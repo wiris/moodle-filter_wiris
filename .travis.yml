@@ -31,12 +31,12 @@ php:
 
 env:
   global:
-    - IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
+    - IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,render
     # - IGNORE_NAMES=ignore_name.php
     # - MUSTACHE_IGNORE_NAMES=broken.mustache
     # - PROFILE=chrome
     - COVERAGE=false
-    - PHPUNIT_IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,filtersettings.php,render
+    - PHPUNIT_IGNORE_PATHS=classes/privacy,ignore,node_modules,integration,render
     - DB=pgsql
 
   matrix:

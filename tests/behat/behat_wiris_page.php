@@ -401,4 +401,73 @@ class behat_wiris_page extends behat_wiris_base {
         $component->click();
     }
 
+    /**
+     * Checks the existance or non existance of a certain button in certain field in Atto editor
+     *
+     * @Given I check :button in :field field :exist exist in Atto editor
+     * @param  string $button button to check
+     * @param  string $field field to check
+     * @param  string $exist existance or not existance. Values: does| does not
+     * @throws ExpectationException If the field is not found, it will throw an exception.
+     */
+    public function i_check_in_field_in_atto_editor($button, $field, $exist) {
+        global $CFG;
+
+        $sectionarray = array(
+            "Page content" => "fitem_id_page"
+        );
+        if (empty($sectionarray[$field])) {
+            throw new ExpectationException($field." field not registered.", $this->getSession());
+        }
+        $buttonarray = array(
+            "MathType" => "atto_wiris_button_wiris_editor",
+            "ChemType" => "atto_wiris_button_wiris_chem_editor"
+        );
+        if (empty($buttonarray[$button])) {
+            throw new ExpectationException($button." button not registered.", $this->getSession());
+        }
+
+        $session = $this->getSession();
+        $component = $session->getPage()->find( 'xpath', '//div[@id="'.$sectionarray[$field].'"]
+        //button[@class="'.$buttonarray[$button].'"]');
+        if ($exist === "does" && empty($component)) {
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+        } else if ($exist === "does not" && !empty($component)) {
+            throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
+        }
+    }
+
+    /**
+     * Checks the existance or non existance
+     * of a certain button in certain field in Atto editor
+     *
+     * @Given I check :button in :field field :exist exist in TinyMCE editor
+     * @param  string $button button to press
+     * @param  string $field field to check
+     * @param  string $exist existance or not existance. Values: does|does not
+     * @throws ExpectationException If the field is not found, it will throw an exception.
+     */
+    public function i_check_in_field_in_tinymce_editor($button, $field, $exist) {
+        $sectionarray = array(
+            "Page content" => "fitem_id_introeditor"
+        );
+        if (empty($sectionarray[$field])) {
+            throw new ExpectationException($field." field not registered.", $this->getSession());
+        }
+        $buttonarray = array(
+            "MathType" => "id_introeditor_tiny_mce_wiris_formulaEditor_voice",
+            "ChemType" => "id_introeditor_tiny_mce_wiris_formulaEditorChemistry_voice",
+        );
+        if (empty($buttonarray[$button])) {
+            throw new ExpectationException($button." button not registered.", $this->getSession());
+        }
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//span[@id="'.$buttonarray[$button].'"]');
+        if ($exist === "does" && empty($component)) {
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+        } else if ($exist === "does not" && $component === '') {
+            echo "a is " . $component . "<br>";
+            throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
+        }
+    }
 }
