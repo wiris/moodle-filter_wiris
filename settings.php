@@ -161,10 +161,10 @@ if ($ADMIN->fulltree) {
                 $linkattributes = array('target' => '_blank');
                 $attributes = array();
                 $message .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
-                $message .= get_string('or', 'filter_wiris');
+                $message .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
                 $message .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
-                $message .= get_string('arenotinstalled', 'filter_wiris');
-                $message .= get_string('furtherinformation', 'filter_wiris');
+                $message .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
+                $message .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
 
                 $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
                 $image = html_writer::empty_tag('img', array('src' => $imageurl, 'style' => 'vertical-align:-3px;'));
