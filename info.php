@@ -237,7 +237,6 @@ echo $output;
 // Version compatibility test.
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-$wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
 $testname = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . ' versions';
 
 if (isset($plugin->version)) {
