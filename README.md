@@ -1,4 +1,4 @@
-# ![MathType](http://www.wiris.com/portal/themes/wiris_com/img/logos/mathtype/png/MY_office24.png) MathType Moodle filter plugin by WIRIS
+# ![MathType](./pix/logo-mathtype.png)  MathType Moodle filter plugin by WIRIS
 
 [![Build Status](https://travis-ci.com/wiris/moodle-filter_wiris.svg?branch=stable)](https://travis-ci.com/wiris/moodle-filter_wiris)
 
