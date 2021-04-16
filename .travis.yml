@@ -89,27 +89,14 @@ script:
   - moodle-plugin-ci validate
   - moodle-plugin-ci savepoints
   - moodle-plugin-ci mustache
-  # - if [ "$MOODLE_BRANCH" = MOODLE_35_STABLE ]; then
+  # - if [ "$MOODLE_BRANCH" = MOODLE_35_STABLE || "$MOODLE_BRANCH" = MOODLE_36_STABLE || "$MOODLE_BRANCH" = MOODLE_37_STABLE ]; then
   #     moodle-plugin-ci grunt;
   #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_36_STABLE ]; then
-  #     moodle-plugin-ci grunt;
-  #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_37_STABLE ]; then
-  #     moodle-plugin-ci grunt;
-  #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_38_STABLE ]; then
+  # - if [ "$MOODLE_BRANCH" != MOODLE_35_STABLE && "$MOODLE_BRANCH" != MOODLE_36_STABLE && "$MOODLE_BRANCH" != MOODLE_37_STABLE ]; then
   #     moodle-plugin-ci grunt -t eslint;
   #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_39_STABLE ]; then
-  #     moodle-plugin-ci grunt -t eslint;
-  #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_310_STABLE ]; then
-  #     moodle-plugin-ci grunt -t eslint;
-  #   fi
-  # - if [ "$MOODLE_BRANCH" = MOODLE_311_STABLE ]; then
-  #     moodle-plugin-ci grunt -t eslint;
-  #   fi
-  - moodle-plugin-ci phpunit
+  - if [ "$MOODLE_BRANCH" != MOODLE_311_STABLE && "$MOODLE_BRANCH" != MOODLE_310_STABLE ]; then
+      moodle-plugin-ci phpunit;
+    fi
   - moodle-plugin-ci behat
   # - moodle-plugin-ci behat --profile $PROFILE
