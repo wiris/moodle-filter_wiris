@@ -33,7 +33,6 @@ function wrs_assert($condition, $reporttext, $solutionlink) {
         return $reporttext;
     } else {
         $result = html_writer::tag('span', $reporttext);
-        // $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
         $image = html_writer::empty_tag('img', array('src' => 'img/help.gif', 'class' => 'wrs_plugin wrs_filter'));
         $result .= html_writer::link($solutionlink, $image, array('target' => '_blank'));
         return $result;
@@ -264,8 +263,8 @@ if ($filterversion == $pluginversion) {
     $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('versionsdontmatch', 'filter_wiris');
     $reporttext .= "<br>" . get_string('wirisfilterversion', 'filter_wiris') . '&nbsp;' . $filterversion;
-    $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] . '&nbsp;' .
-                    get_string('version', 'filter_wiris'). ' = ' . $pluginversion;
+    $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] .
+                    '&nbsp;' . get_string('version', 'filter_wiris'). ' = ' . $pluginversion;
     $condition = false;
 }
 

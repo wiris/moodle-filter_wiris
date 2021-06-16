@@ -90,7 +90,8 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
         if (empty($component)) {
-            throw new ExpectationException("Image with alternative text" . $alt . " is not correctly recognized.", $this->getSession());
+            throw new ExpectationException("Image with alternative text" .
+                    $alt . " is not correctly recognized.", $this->getSession());
         }
         $component->doubleClick();
     }
@@ -319,7 +320,6 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function mathtype_image_in_png_format_is_correctly_displayed() {
         $session = $this->getSession();
-        // $image = $session->getPage()->find('xpath', '//img[contains(@class,\'Wirisformula\')]');
         $image = $session->getPage()->find('xpath', '//img[contains(@src,\'data:image/png;\')]');
         if (empty($image)) {
             throw new ExpectationException('MathType formula not found.', $this->getSession());
