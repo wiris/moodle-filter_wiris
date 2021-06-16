@@ -55,7 +55,6 @@ class behat_wiris_base extends behat_base {
      * @throws  Exception If table is too long.
      */
     protected function look_in_table($text) {
-        // $menu = $this->find('xpath', "//td[text()='$text']");
         for ($i = 1; $i < self::MAX_NUNMBER_ROWS; ++$i) {
             $possible = $this->find('xpath', "(//td[@class='leftalign cell c0'])[$i]");
             if ($possible == null) {

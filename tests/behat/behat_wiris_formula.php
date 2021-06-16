@@ -78,7 +78,7 @@ class behat_wiris_formula extends behat_wiris_base {
         // Looks for a math formula in the page.
         $formula = '//img[contains(@class, \'Wirisformula\')]';
         $this->ensure_element_exists($formula, 'xpath_element');
-        // Then re-validate to throw error otherwise (?)
+        // Then re-validate to throw error otherwise (?).
         $this->wirisformula_should_exist();
     }
 
@@ -95,7 +95,7 @@ class behat_wiris_formula extends behat_wiris_base {
         // Looks for a math formula in the page.
         $formula = '//img[contains(@data-mathml, \'chemistry\')]';
         $this->ensure_element_exists($formula, 'xpath_element');
-        // Then re-validate to throw error otherwise (?)
+        // Then re-validate to throw error otherwise (?).
         $this->chemtype_formula_should_exist();
     }
 
