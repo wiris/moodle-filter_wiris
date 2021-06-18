@@ -1,6 +1,6 @@
 # ![MathType](./pix/logo-mathtype.png)  MathType Moodle filter plugin by WIRIS
 
-[![Build Status](https://travis-ci.com/wiris/moodle-filter_wiris.svg?branch=stable)](https://travis-ci.com/wiris/moodle-filter_wiris)
+[![Moodle Plugin CI](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml)
 
 [MathType](http://www.wiris.com/editor) filter allows Moodle to render MathML using MathType image service. This plugin is part of set [WIRIS math & science](https://moodle.org/plugins/browse.php?list=set&id=66).
 
