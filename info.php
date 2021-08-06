@@ -236,7 +236,7 @@ echo $output;
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-$testname = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . ' versions';
+$testname = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . ' versions';
 
 if (isset($plugin->version)) {
     $filterversion = $plugin->version;
@@ -256,11 +256,11 @@ if (isset($plugin->version)) {
 }
 
 if ($filterversion == $pluginversion) {
-    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('havesameversion', 'filter_wiris');
     $condition = true;
 } else {
-    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . 'nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
+    $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('versionsdontmatch', 'filter_wiris');
     $reporttext .= "<br>" . get_string('wirisfilterversion', 'filter_wiris') . '&nbsp;' . $filterversion;
     $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] .
