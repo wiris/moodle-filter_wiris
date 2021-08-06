@@ -139,7 +139,7 @@ jobs:
       # 5.3. Code validations
       - name: Moodle Code Checker
         if: ${{ always() }}
-        run: moodle-plugin-ci codechecker --max-warnings 1
+        run: moodle-plugin-ci codechecker --max-warnings 50
 
       - name: Validating
         if: ${{ always() }}
