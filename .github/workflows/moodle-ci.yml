@@ -1,10 +1,30 @@
+# Jobs: 
+# - "test"
+#
+# Runs tests and code analysis ( like PHPUnit, Behat, code checker, etc ) 
+# against a Moodle plugin in CI.
+# - See https://moodlehq.github.io/moodle-plugin-ci/.
+# 
+# The current matrix we are using is:
+# - ubuntu-latest
+# - PHP7.1, PHP7.4, PHP8.0
+# - Moodle from 3.5 to 3.11
+
 name: Moodle Plugin CI
 
-on: [push]
+# Run this workflow every time a new commit pushed to the repository or PR
+# is created or on demand. It also executes every morning at 6:30 so we're 
+# the first to know if tests are failing due to an update on PHP or Moodle.
+on:
+  schedule:
+    - cron: '30 6 * * *'
+  push:
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: ubuntu-18.04
+    # We will use ubuntu-latest as a virtual environment to use.
+    runs-on: ubuntu-latest
 
     services:
       # The test will be scoped to postgres only.
@@ -43,16 +63,24 @@ jobs:
             php: '7.1'
           - moodle-branch: 'MOODLE_311_STABLE'
             php: '7.1'
-          - moodle-branch: 'MOODLE_310_STABLE'
-            php: '7.2'
-          - moodle-branch: 'MOODLE_311_STABLE'
-            php: '7.2'
           - moodle-branch: 'MOODLE_35_STABLE'
             php: '7.4'
           - moodle-branch: 'MOODLE_36_STABLE'
             php: '7.4'
           - moodle-branch: 'MOODLE_37_STABLE'
             php: '7.4'
+          - moodle-branch: 'MOODLE_35_STABLE'
+            php: '8.0'
+          - moodle-branch: 'MOODLE_36_STABLE'
+            php: '8.0'
+          - moodle-branch: 'MOODLE_37_STABLE'
+            php: '8.0'
+          - moodle-branch: 'MOODLE_38_STABLE'
+            php: '8.0'
+          - moodle-branch: 'MOODLE_39_STABLE'
+            php: '8.0'
+          - moodle-branch: 'MOODLE_310_STABLE'
+            php: '8.0'
 
     steps:
       # 0. Initial step.
@@ -171,15 +199,15 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci behat --profile default -vvv
 
-      # 5.5. Upload snapshots of errors
-      # Save videos and screenshots as test artifacts
-      # https://github.com/actions/upload-artifact
-      - name: Upload behat screenshots (if, failed)
-        uses: actions/upload-artifact@master
-        # there might be no screenshots created when:
-        # - there are no test failures
-        # so only upload screenshots if previous step has failed
-        if: failure()
-        with:
-          name: screenshots-behat-${{ matrix.moodle-branch }}-${{ matrix.php }}
-          path: '$GITHUB_WORKSPACE/behatfaildumps'
+      # # 5.5. Upload snapshots of errors ( Not working )
+      # # Save videos and screenshots as test artifacts
+      # # https://github.com/actions/upload-artifact
+      # - name: Upload behat screenshots (if, failed)
+      #   uses: actions/upload-artifact@master
+      #   # there might be no screenshots created when:
+      #   # - there are no test failures
+      #   # so only upload screenshots if previous step has failed
+      #   if: failure()
+      #   with:
+      #     name: screenshots-behat-${{ matrix.moodle-branch }}-${{ matrix.php }}
+      #     path: '$GITHUB_WORKSPACE/behatfaildumps'
