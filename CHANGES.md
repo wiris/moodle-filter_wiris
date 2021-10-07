@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 7.26.1.
 
+## Unrealeased
+
+- Fix "missing ['privacy:metadata']" from @christina-roperto contribution #86
+
 ## v7.26.1
 - Feature: 'Migrate MathType plugins suite from TravisCI to Github Actions'.
 
