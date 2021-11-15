@@ -32,7 +32,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Import all available 'subfilters'.
-require_once('subfilters/php.php');
+// NO-JAVASCRIPT--changes.
+// require_once('subfilters/php.php');
 require_once('subfilters/client.php');
 
 class filter_wiris extends moodle_text_filter {
@@ -41,13 +42,17 @@ class filter_wiris extends moodle_text_filter {
         switch (get_config('filter_wiris', 'rendertype')) {
             // Client-side render: Uses the Javascript third-party lib.
             case 'client':
+            default:
                 $subfilter = new filter_wiris_client($this->context, $this->localconfig);
             break;
+            // NO-JAVASCRIPT--changes.
             // Server-sider render: Uses the PHP third-party lib (default).
+            /*
             case 'php':
             default:
-                $subfilter = new filter_wiris_php($this->context, $this->localconfig);
+                 $subfilter = new filter_wiris_php($this->context, $this->localconfig);
             break;
+            */
         }
         return $subfilter->filter($text, $options);
     }
