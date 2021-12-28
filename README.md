@@ -1,4 +1,4 @@
-# ![MathType](./pix/logo-mathtype.png)  MathType Moodle filter plugin by WIRIS
+# ![MathType](./pix/logo-mathtype.png) MathType Moodle filter plugin by WIRIS
 
 [![Moodle Plugin CI](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml)
 
@@ -35,6 +35,12 @@ This plugin uses the **MathType Web Integration JavaScript SDK** ([@wiris/html-i
 > The library's source code can be found at [@wiris/html-integrations](https://www.github.com/wiris/html-integrations) repository
 
 **Note:** More details on the `thirdpartylibs.xml` file.
+
+## Contributing
+
+We would love for you to contribute to this project and help make it better.
+
+As a contributor, the guidelines we would like you to follow are documented in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Technical Support
 
