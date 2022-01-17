@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
 
-class filter_wiris_pluginwrapperconfigurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater{
+class filter_wiris_pluginwrapperconfigurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
 
     private $customconfig;
 

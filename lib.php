@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Return an array with the position of the tags named $name on $code variable.
  * @param  String  $code       html code.
