@@ -22,14 +22,13 @@
  * @copyright  2016
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
-
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
-class filter_wiris_filter_noperformance_svg_testcase extends advanced_testcase
-{   protected $wirisfilter;
+class filter_without_performance_svg_test extends advanced_testcase {
+    protected $wirisfilter;
     protected $safexml;
     protected $xml;
     protected $instance;
