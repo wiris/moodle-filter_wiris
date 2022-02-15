@@ -8,8 +8,7 @@ I can't access the test service if the service host doesn't exists
   Scenario: Set an incorrect service
     Given the "wiris" filter is "on"
     And I log in as "admin"
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:
       | Service host | www.wipis.net |
     And I press "Save changes"
