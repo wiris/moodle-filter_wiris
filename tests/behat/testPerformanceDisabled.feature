@@ -19,8 +19,7 @@ I must not see any JSON response for images services
 
   @javascript
   Scenario: Create image in both formats and check
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode off
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
@@ -29,13 +28,13 @@ I must not see any JSON response for images services
       | Name | Test MathType for Atto on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
+    And I wait "1" seconds
     And I press accept button in MathType Editor
     And I check if MathType formula src is equals to 'http://localhost:8000/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16'
     And I go to link "/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16"
     Then an svg image is correctly displayed
     And I go back
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:
       | Image format | png |
     And I press "Save changes"
@@ -45,6 +44,7 @@ I must not see any JSON response for images services
       | Name | Test MathType for Atto on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
+    And I wait "1" seconds
     And I press accept button in MathType Editor
     And I check if MathType formula src is equals to 'http://localhost:8000/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16'
     And I go to link "/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16"

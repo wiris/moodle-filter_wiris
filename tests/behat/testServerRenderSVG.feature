@@ -27,6 +27,7 @@ I need to change the render type
       | Name | Test MathType for Atto and server side rendering on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
+    And I wait "1" seconds
     And I press accept button in MathType Editor
     And I press "Save and display"
     Then Wirisformula should exist

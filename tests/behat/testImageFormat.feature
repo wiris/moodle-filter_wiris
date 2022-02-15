@@ -16,8 +16,7 @@ I need to see the correct image format
     And I go to link "/filter/wiris/integration/test.php"
     Then MathType formula in svg format is correctly displayed
     And I go back
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:
       | Image format | png |
     And I press "Save changes"

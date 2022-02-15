@@ -9,8 +9,7 @@ I need to Check if MathType integration appears on third party libraries page
 
   @javascript
   Scenario: Check third party libraries
-    And I navigate to "Development" in site administration
-    And I follow "Third party libraries"
+    And I navigate to "Development > Third party libraries" in site administration
     Then "MathType Web Integration PHP library" "text" should exist
     Then "MathType Web Integration JavaScript SDK" "text" should exist
     And "GPL 3.0+" "text" should exist
