@@ -19,8 +19,7 @@ I must not see any JSON response for images services
 
   @javascript
   Scenario: Create image in both formats and check
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > Filter > MathType by WIRIS" in site administration
     And I check image performance mode off
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
@@ -34,8 +33,7 @@ I must not see any JSON response for images services
     And I go to link "/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16"
     Then an svg image is correctly displayed
     And I go back
-    And I navigate to "Plugins" in site administration
-    And I follow "MathType by WIRIS"
+    And I navigate to "Plugins > Filter > MathType by WIRIS" in site administration
     And I set the following fields to these values:
       | Image format | png |
     And I press "Save changes"
