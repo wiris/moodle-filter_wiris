@@ -192,7 +192,7 @@ jobs:
       # 5.4. Code testing
       # Run PHPUnit tests on Moodle3_9 only, for the moment.
       - name: PHPUnit tests
-        if: ${{ matrix.moodle-branch != 'MOODLE_311_STABLE' && matrix.moodle-branch != 'MOODLE_310_STABLE' }}
+        if: ${{ always() }}
         run: moodle-plugin-ci phpunit
       # Run Behat tests on all Moodle branches.
       - name: Behat features

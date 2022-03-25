@@ -33,7 +33,7 @@ class filter_without_performance_svg_test extends advanced_testcase {
     protected $xml;
     protected $instance;
 
-    protected function setUp() {
+    protected function setUp(): void {
         global $CFG;
         parent::setUp();
         $this->resetAfterTest(true);
