@@ -9,6 +9,7 @@ Last release of this plugin is 7.27.1 (9th of nov. 2021).
 
 ## [Unreleased]
 - fix(ci): moodle code checker warning and errors #19424.
+- fix: pass sucessfully phpunit test for moodle 310 and 311
 
 ## v7.27.1 - 9th nov. 2021
 - Fix "missing ['privacy:metadata']" from @christina-roperto contribution #86

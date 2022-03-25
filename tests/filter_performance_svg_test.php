@@ -35,7 +35,7 @@ class filter_performance_svg_test extends advanced_testcase {
     protected $image;
     protected $cachetable;
 
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest(true);
         filter_wiris_pluginwrapper::set_configuration(array('wirispluginperformance' => 'true',
