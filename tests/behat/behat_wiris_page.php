@@ -167,6 +167,7 @@ class behat_wiris_page extends behat_wiris_base {
         $buttonarray = array(
             "MathType" => "atto_wiris_button_wiris_editor",
             "ChemType" => "atto_wiris_button_wiris_chem_editor",
+            "Collapse" => "atto_collapse_button",
             "HTML" => "atto_html_button",
             "HTML pressed" => "atto_html_button"
         );
