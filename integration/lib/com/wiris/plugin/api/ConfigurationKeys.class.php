@@ -54,7 +54,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $CLEAN_CACHE_GUI = "wiriscleancachegui";
 	static $imageConfigProperties;
 	static $imageConfigPropertiesInv;
-	static $SERVICES_PARAMETERS_LIST = "mml,lang,service,latex,mode";
+	static $SERVICES_PARAMETERS_LIST = "mml,lang,service,latex,mode,ignoreStyles";
 	static function computeInverse($dict) {
 		$keys = $dict->keys();
 		$outDict = new Hash();
