@@ -30,6 +30,12 @@ class com_wiris_system_TypeTools {
 	static function isHash($o) {
 		return Std::is($o, _hx_qtype("Hash"));
 	}
+	static function isBool($o) {
+		return Std::is($o, _hx_qtype("Bool"));
+	}
+	static function toBool($o) {
+		return (($o) ? true : false);
+	}
 	static function string2ByteData_iso8859_1($str) {
 		return haxe_io_Bytes::ofString($str);
 	}

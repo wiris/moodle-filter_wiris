@@ -9,6 +9,19 @@ class com_wiris_system_Utf8 {
 	static function charCodeAt($s, $i) {
 		return haxe_Utf8::charCodeAt($s, $i);
 	}
+	static function mbSubstring($s, $i, $len) {
+		return mb_substr($s, $i, $len);
+	}
+	static function charValueAt($s, $i) {
+		$ret = 0;
+		$charUCS4 = mb_convert_encoding(mb_substr($s, $i, 1), 'UCS-4BE', 'UTF-8');
+		$byte1 = ord(substr($charUCS4, 0, 1));
+		$byte2 = ord(substr($charUCS4, 1, 1));
+		$byte3 = ord(substr($charUCS4, 2, 1));
+		$byte4 = ord(substr($charUCS4, 3, 1));
+		$ret = ($byte1 << 32) + ($byte2 << 16) + ($byte3 << 8) + $byte4;
+		return $ret;
+	}
 	static function charAt($s, $i) {
 		return com_wiris_system_Utf8_0($i, $s);
 	}
