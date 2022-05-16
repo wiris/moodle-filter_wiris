@@ -166,7 +166,7 @@ $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('lookingforfilterfiles', 'filter_wiris');
 $reporttext = get_string('wirispluginfiltermustbeinstalled', 'filter_wiris');
-$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
 $filterfiles = Array('filter.php', 'version.php');
 $exist = true;
 foreach ($filterfiles as $value) {
@@ -195,7 +195,7 @@ if (isset($plugin->release)) {
     $reporttext = get_string('impossibletofindwirisfilterversion', 'filter_wiris');
     $condition = false;
 }
-$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
@@ -204,7 +204,7 @@ echo $output;
 $output = '';
 $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
 $testname = get_string('pluginname', 'filter_wiris');
-$solutionlink = 'http://www.wiris.com/plugins/docs/moodle/moodle-2.0';
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#enable-the-filter?utm_source=moodle&utm_medium=referral';
 $filterenabled = filter_is_enabled('filter/wiris');
 if ($filterenabled) {
     $reporttext = get_string('enabled', 'filter_wiris');
@@ -221,7 +221,7 @@ $output = '';
 $testname = get_string('lookingforwirisplugin', 'filter_wiris') . '&nbsp;'  . $currenteditordata['plugin_name'];
 $reporttext = get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                 get_string('mustbeinstalled', 'filter_wiris');
-$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
 $wirisplugin = $currenteditordata['plugin_path'];
 $condition = file_exists($wirisplugin);
 if (!$condition) {
@@ -268,7 +268,7 @@ if ($filterversion == $pluginversion) {
     $condition = false;
 }
 
-$solutionlink = 'http://www.wiris.com/plugins/moodle/download';
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
 $output .= html_writer::end_tag('tr');
 echo $output;
