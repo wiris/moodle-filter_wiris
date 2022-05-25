@@ -168,7 +168,7 @@ if ($ADMIN->fulltree) {
 
                 $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
                 $image = html_writer::empty_tag('img', array('src' => $imageurl, 'style' => 'vertical-align:-3px;'));
-                $troubleshootingurl = 'http://www.wiris.com/plugins/docs/moodle/troubleshooting';
+                $troubleshootingurl = 'http://www.wiris.com/plugins/docs/moodle/troubleshooting?utm_source=moodle&utm_medium=referral';
                 $imagelink = html_writer::link($troubleshootingurl, $image, $linkattributes);
 
                 $message .= $imagelink;
