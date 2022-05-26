@@ -90,4 +90,27 @@ class behat_wiris_filter extends behat_wiris_base {
         set_config('editor_enable', $value, 'filter_wiris');
         set_config('chem_editor_enable', $value, 'filter_wiris');
     }
+
+    /**
+     * Makes the given filter the most prioritary one.
+     *
+     * @Given /^the "(?P<filter_name>(?:[^"]|\\")*)" filter has maximum priority$/
+     *
+     * @param string $filtername the name of a filter, e.g. 'glossary'.
+     */
+    public function the_filter_has_max_priority($filtername) {
+        require_once(__DIR__ . '/../../../../lib/filterlib.php');
+
+        // Get all filters
+        $filters = filter_get_global_states();
+        for ($i = $filters[$filtername]->sortorder; $i > 1; $i--) {
+            // We can only move the filter one place at a time
+            // -1 makes it more prioritary
+            filter_set_global_state($filtername, $filters[$filtername]->active, -1);
+        }
+
+        // Reset caches
+        reset_text_filters_cache();
+        core_plugin_manager::reset_caches();
+    }
 }
