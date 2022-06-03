@@ -17,7 +17,7 @@ Instead, we recommend you sending an e-mail to [support@wiris.com](mailto:suppor
 
 ## Reporting issues
 
-If you find a bug in the source code, you can help us by [submitting an issue](#submitting-an-issue) to our [GitHub Repository][github]. Even better, you can submit a Pull Request with a fix.
+If you find a bug in the source code, you can help us by [submitting an issue](#submitting-an-issue) to our [GitHub Repository](https://github.com/wiris/moodle-filter_wiris). Even better, you can submit a Pull Request with a fix.
 
 ### Submitting an Issue
 
@@ -175,6 +175,3 @@ The content of the commit message body should contain:
 
 - information about the SHA of the commit being reverted in the following format: `This reverts commit <SHA>`,
 - a clear description of the reason for reverting the commit message.
-
-[conv-commits]: https://www.conventionalcommits.org/en/v1.0.0/
-[github]: https://github.com/wiris/moodle-filter_wiris

@@ -2,9 +2,9 @@
 
 [![Moodle Plugin CI](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml)
 
-[MathType](http://www.wiris.com/editor) filter allows Moodle to render MathML using MathType image service. This plugin is part of set [WIRIS math & science](https://moodle.org/plugins/browse.php?list=set&id=66).
+MathType filter allows Moodle to render MathML using MathType image service. This plugin is part of set [WIRIS math & science](https://moodle.org/plugins/browse.php?list=set&id=66).
 
-MathType image service can be used for **free** up to a certain level of uses per natural year. Please read **license** conditions and prices at [MathType store](http://www.wiris.com/store).
+MathType image service can be used for **free** up to a certain level of uses per natural year. Please read **license** conditions and prices at [MathType store](https://www.wiris.com/en/pricing/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations).
 
 ## Requirements
 
@@ -48,8 +48,8 @@ If you have questions or need help integrating MathType, please contact us (supp
 
 ## Privacy policy
 
-The [MathType Privacy Policy](https://www.wiris.com/en/mathtype-privacy-policy/?utm_source=npmjs&utm_medium=referral) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://www.wiris.com/en/privacy-policy?utm_source=npmjs&utm_medium=referral) still applies to MathType users.
+The [MathType Privacy Policy](https://www.wiris.com/en/mathtype-privacy-policy/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations) covers the data processing operations for the MathType users. It is an addendum of the company’s general Privacy Policy and the [general Privacy Policy](https://www.wiris.com/en/privacy-policy?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations) still applies to MathType users.
 
 ## License
 
-MathType filter by [WIRIS](http://www.wiris.com/?utm_source=npmjs&utm_medium=referral) is licensed under the [GNU General Public, License Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+MathType filter by [WIRIS](https://www.wiris.com/en/terms-of-use/?utm_source=github&utm_medium=referral&utm_campaign=readme&utm_content=integrations) is licensed under the [GNU General Public, License Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html).
