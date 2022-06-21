@@ -133,9 +133,15 @@ jobs:
 
 
       # 3. Install Atto plugin ( and Quizzes ?)
-      - name: Add MathtType plugin for Atto
+      - name: Add MathType plugin for Atto
+        id: install-plugin-atto
+        continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${GITHUB_REF##*/} wiris/moodle-atto_wiris
+      - name: Add MathType plugin for Atto using the stable branch
+        if: steps.install-plugin-atto.outcome != 'success'
+        run: |
+          moodle-plugin-ci add-plugin --branch stable wiris/moodle-atto_wiris
 
       # 4. Install Moodle-plugin-ci
       - name: Install moodle-plugin-ci
