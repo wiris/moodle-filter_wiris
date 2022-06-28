@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 7.27.1 (9th of nov. 2021).
 
+## [unrelease]
+- fix: change line endings from CRLF to LF #kb-17449
 ## v7.30.0 - 1st jul. 2022
  - fix: Use branch stable as a failsafe in CI
  - ci: add moodle 4 on the ci workflow matrix
