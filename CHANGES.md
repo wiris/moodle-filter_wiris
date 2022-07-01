@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 7.27.1 (9th of nov. 2021).
 
-## [unrelease]
-- ci: add cd workflow
+## v7.30.0 - 1st jul. 2022
+ - fix: Use branch stable as a failsafe in CI
+ - ci: add moodle 4 on the ci workflow matrix
+ - ci: add cd workflow
 
 ## v7.29.0 - 20th jun. 2022
 - fix(ci): moodle code checker warning and errors #19424.
