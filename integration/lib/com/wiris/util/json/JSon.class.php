@@ -20,6 +20,9 @@ class com_wiris_util_json_JSon {
 	public function setAddNewLines($addNewLines) {
 		$this->addNewLines = $addNewLines;
 	}
+	public function encodeIntegerFormat($sb, $i) {
+		$sb->add($i->toString());
+	}
 	public function encodeLong($sb, $i) {
 		$sb->add("" . Std::string($i));
 	}
@@ -171,13 +174,17 @@ class com_wiris_util_json_JSon {
 										if(Std::is($o, _hx_qtype("haxe.Int64"))) {
 											$this->encodeLong($sb, $o);
 										} else {
-											if(com_wiris_system_TypeTools::isBool($o)) {
-												$this->encodeBoolean($sb, com_wiris_system_TypeTools::toBool($o));
+											if(Std::is($o, _hx_qtype("com.wiris.util.json.JSonIntegerFormat"))) {
+												$this->encodeIntegerFormat($sb, $o);
 											} else {
-												if(Std::is($o, _hx_qtype("Float"))) {
-													$this->encodeFloat($sb, $o);
+												if(Std::is($o, _hx_qtype("Bool"))) {
+													$this->encodeBoolean($sb, $o);
 												} else {
-													throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+													if(Std::is($o, _hx_qtype("Float"))) {
+														$this->encodeFloat($sb, $o);
+													} else {
+														throw new HException("Impossible to convert to json object of type " . Std::string(Type::getClass($o)));
+													}
 												}
 											}
 										}
