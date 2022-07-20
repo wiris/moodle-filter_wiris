@@ -114,7 +114,7 @@ if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_configselect('filter_wiris/rendertype',
                                                             get_string('rendertype', 'filter_wiris'),
                                                             get_string('rendertype_help', 'filter_wiris'),
-                                                            'default',
+                                                            'php',
                                                             array('php' => 'PHP', 'client' => 'Client')));
 
         $settings->add(new admin_setting_configselect('filter_wiris/imageformat',
