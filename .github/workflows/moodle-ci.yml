@@ -49,7 +49,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ['7.1','7.4']
-        moodle-branch: ['MOODLE_35_STABLE', 'MOODLE_36_STABLE', 'MOODLE_37_STABLE', 'MOODLE_38_STABLE', 'MOODLE_39_STABLE', 'MOODLE_310_STABLE', 'MOODLE_311_STABLE', 'MOODLE_400_STABLE', 'master']
+        moodle-branch: ['MOODLE_35_STABLE', 'MOODLE_36_STABLE', 'MOODLE_37_STABLE', 'MOODLE_38_STABLE', 'MOODLE_39_STABLE', 'MOODLE_310_STABLE', 'MOODLE_311_STABLE', 'MOODLE_400_STABLE']
         database: [pgsql]
         # browser: ['firefox', 'chrome']
         exclude:
@@ -64,8 +64,6 @@ jobs:
           - moodle-branch: 'MOODLE_311_STABLE'
             php: '7.1'
           - moodle-branch: 'MOODLE_400_STABLE'
-            php: '7.1'
-          - moodle-branch: 'master'
             php: '7.1'
           - moodle-branch: 'MOODLE_35_STABLE'
             php: '7.4'
