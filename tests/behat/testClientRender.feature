@@ -35,5 +35,6 @@ I need to change the render type
     # // This 2-step other option works also:
     # When I wait until the page is ready
     # Then Wirisformula should exist
+    And I wait "1" seconds
     Then I wait until Wirisformula formula exists
     And MathType formula in svg format is correctly displayed
