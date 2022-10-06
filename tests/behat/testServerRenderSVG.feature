@@ -30,5 +30,6 @@ I need to change the render type
     And I wait "1" seconds
     And I press accept button in MathType Editor
     And I press "Save and display"
+    And I wait "1" seconds
     Then Wirisformula should exist
     And MathType formula in svg format is correctly displayed

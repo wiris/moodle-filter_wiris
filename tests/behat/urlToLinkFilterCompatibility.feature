@@ -30,4 +30,5 @@ I need to enable the Convert URLs into links and images filter and insert a Math
     And I wait "1" seconds
     And I press accept button in MathType Editor
     And I press "Save and display"
+    And I wait "1" seconds
     Then Wirisformula should exist
