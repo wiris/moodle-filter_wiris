@@ -56,7 +56,7 @@ class com_wiris_plugin_impl_CleanCacheImpl implements com_wiris_plugin_api_Clean
 						$output .= " Your new token is: <br>";
 						$output .= "<span class=wirisplugincleancachewarning>" . haxe_Md5::encode($this->newToken) . "</span> <br>";
 						$output .= " Please copy it to your configuration.ini file <br>";
-						$output .= " For more information see <a href=http://www.wiris.com/plugins/docs/resources/configuration-table?utm_source=moodle&utm_medium=referral style=text-decoration:none>Server configuration file documentation</a>";
+						$output .= " For more information see <a href=http://www.wiris.com/plugins/docs/resources/configuration-table style=text-decoration:none>Server configuration file documentation</a>";
 					}
 				}
 			}
@@ -103,12 +103,12 @@ class com_wiris_plugin_impl_CleanCacheImpl implements com_wiris_plugin_api_Clean
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
-			return call_user_func_array($this->Â»dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call Â»'.$m.'Â»');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.CleanCacheImpl'; }
 }

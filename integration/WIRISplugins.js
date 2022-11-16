@@ -2261,12 +2261,21 @@ com.wiris.system.JsDOMUtils.addStylesheet = function(d,url) {
 	}
 }
 com.wiris.system.JsDOMUtils.loadTextFile = function(elem,func) {
+	com.wiris.system.JsDOMUtils.loadFileImpl(elem,func);
+}
+com.wiris.system.JsDOMUtils.loadPNGImageFile = function(elem,func) {
+	com.wiris.system.JsDOMUtils.loadFileImpl(elem,func,true,"image/png");
+}
+com.wiris.system.JsDOMUtils.loadFileImpl = function(elem,func,asDataURL,accept) {
+	if(asDataURL == null) asDataURL = false;
 	var w = js.Lib.window;
 	if(w.File && w.FileReader && w.FileList && w.Blob) {
 		var d = elem.ownerDocument;
 		var fileInput = d.createElement("input");
 		fileInput.setAttribute("name","data");
 		fileInput.setAttribute("type","file");
+		fileInput.setAttribute("style","display: none;");
+		if(accept != null) fileInput.setAttribute("accept",accept);
 		elem.appendChild(fileInput);
 		com.wiris.system.JsDOMUtils.init();
 		com.wiris.system.JsDOMUtils.addEventListener(fileInput,"change",function(e) {
@@ -2276,7 +2285,7 @@ com.wiris.system.JsDOMUtils.loadTextFile = function(elem,func) {
 				reader.onload = function(le) {
 					func(le.target.result);
 				};
-				reader.readAsText(file);
+				if(asDataURL) reader.readAsDataURL(file); else reader.readAsText(file);
 			}
 			elem.removeChild(fileInput);
 		});
@@ -3975,7 +3984,7 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 com.wiris.js.JsPluginViewer.USE_CREATE_IMAGE = 1;
 com.wiris.js.JsPluginViewer.DEBUG = false;
 com.wiris.js.JsPluginViewer.TECH = "@param.js.tech.discover@";
-com.wiris.js.JsPluginViewer.VERSION = "7.30.0.1453";
+com.wiris.js.JsPluginViewer.VERSION = "8.0.0.1454";
 com.wiris.system.JsBrowser.SOURCE_USER_AGENT = "userAgent";
 com.wiris.system.JsBrowser.SOURCE_VENDOR = "vendor";
 com.wiris.system.JsBrowser.SOURCE_WINDOW_OPERA = "opera";

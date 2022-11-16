@@ -72,20 +72,20 @@ class com_wiris_plugin_impl_EditorImpl implements com_wiris_plugin_api_Editor{
 		$this->addLine($output, "#links { text-align: right; margin-right: 20px; } #links_rtl {text-align: left; margin-left: 20px;} #controls { float: left; } #controls_rtl {float: right;}/*-->*/</style>");
 		$this->addLine($output, "</head><body topmargin=\"0\" leftmargin=\"0\" marginwidth=\"0\" marginheight=\"0\">");
 		$this->addLine($output, "<div id=\"container\"><div id=\"editorContainer\"></div><div id=\"controls\"></div>");
-		$this->addLine($output, "<div id=\"links\"><a href=\"http://www.wiris.com/editor3/docs/manual/latex-support?utm_source=moodle&utm_medium=referral\" id=\"a_latex\" target=\"_blank\">LaTeX</a> | ");
-		$this->addLine($output, "<a href=\"http://www.wiris.com/editor3/docs/manual?utm_source=moodle&utm_medium=referral\" target=\"_blank\" id=\"a_manual\">Manual</a></div></div></body>");
+		$this->addLine($output, "<div id=\"links\"><a href=\"http://www.wiris.com/editor3/docs/manual/latex-support\" id=\"a_latex\" target=\"_blank\">LaTeX</a> | ");
+		$this->addLine($output, "<a href=\"http://www.wiris.com/editor3/docs/manual\" target=\"_blank\" id=\"a_manual\">Manual</a></div></div></body>");
 		return $output->b;
 	}
 	public $plugin;
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
-			return call_user_func_array($this->Â»dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call Â»'.$m.'Â»');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.EditorImpl'; }
 }
