@@ -5,6 +5,7 @@ class Hash implements IteratorAggregate{
 		if(!php_Boot::$skip_constructor) {
 		$this->h = array();
 	}}
+	#[ReturnTypeWillChange]
 	public function getIterator() {
 		return $this->iterator();
 	}
