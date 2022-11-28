@@ -366,7 +366,7 @@ function _hx_has_field($o, $field) {
 }
 
 function _hx_index_of($s, $value, $startIndex = null) {
-	$x = strpos($s, $value, $startIndex);
+	$x = is_null($startIndex) ? strpos($s, $value) : strpos($s, $value, $startIndex);
 	if($x === false)
 		return -1;
 	else
@@ -400,7 +400,7 @@ function _hx_is_numeric($v)
 }
 
 function _hx_last_index_of($s, $value, $startIndex = null) {
-	$x = strrpos($s, $value, $startIndex === null ? null : strlen($s) - $startIndex);
+	$x = is_null($startIndex) ? strrpos($s, $value) : strrpos($s, $value, strlen($s) - $startIndex);
 	if($x === false)
 		return -1;
 	else
@@ -737,7 +737,7 @@ class _hx_interface extends _hx_type {}
 class HException extends Exception {
 	public function __construct($e, $message = null, $code = null, $p = null) {
 		$message = _hx_string_rec($e, '') . $message;
-		parent::__construct($message,$code);
+		is_null($code) ? parent::__construct($message) : parent::__construct($message,$code);
 		$this->e = $e;
 		$this->p = $p;
 	}
