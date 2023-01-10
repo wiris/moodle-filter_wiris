@@ -191,8 +191,14 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $configuration['wiriseditorsavemode'] = 'safeXml';
         $configuration['wirishostplatform'] = 'Moodle';
         $configuration['wirisversionplatform'] = $CFG->version;
+        $configuration['wirisversionmoodle'] = $CFG->branch;
         // Referer.
         global $COURSE;
+
+        $configuration['wiriscategorymoodle'] = $COURSE->category;
+        $configuration['wiriscoursemoodleid'] = $COURSE->id;
+        $configuration['wiriscoursemoodlename'] = $COURSE->fullname;
+
         $query = '';
         if (isset($COURSE->id)) {
             $query .= '?course=' . $COURSE->id;
