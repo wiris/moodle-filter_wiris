@@ -56,6 +56,7 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 		return new _hx_array_iterator($this->»a);
 	}
 
+	#[\ReturnTypeWillChange]
 	function getIterator() {
 		return $this->iterator();
 	}
@@ -137,15 +138,18 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 	}
 
 	// ArrayAccess methods:
+	#[\ReturnTypeWillChange]
 	function offsetExists($offset) {
 		return isset($this->»a[$offset]);
 	}
 
+	#[\ReturnTypeWillChange]
 	function offsetGet($offset) {
 		if(isset($this->»a[$offset])) return $this->»a[$offset];
 		return null;
 	}
 
+	#[\ReturnTypeWillChange]
 	function offsetSet($offset, $value) {
 		if($this->length <= $offset) {
 			$this->»a = array_merge($this->»a, array_fill(0, $offset+1-$this->length, null));
@@ -154,6 +158,7 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 		return $this->»a[$offset] = $value;
 	}
 
+	#[\ReturnTypeWillChange]
 	function offsetUnset($offset) {
 		return $this->removeAt($offset);
 	}
@@ -167,28 +172,34 @@ class _hx_array_iterator implements Iterator {
 		$this->»i = 0;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function next() {
 		if(!$this->hasNext()) return null;
 		return $this->»a[$this->»i++];
 	}
 
+	#[\ReturnTypeWillChange]
 	public function hasNext() {
 		return $this->»i < count($this->»a);
 	}
 
-	public function current() {
+	#[\ReturnTypeWillChange]
+	public function current(){
 		if (!$this->hasNext()) return false;
 		return $this->»a[$this->»i];
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->»i;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return $this->current() !== false;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->»i = 0;
 	}
@@ -366,7 +377,11 @@ function _hx_has_field($o, $field) {
 }
 
 function _hx_index_of($s, $value, $startIndex = null) {
-	$x = strpos($s, $value, $startIndex);
+	if ($startIndex == null) {
+		$x = strpos($s, $value);
+	} else {
+		$x = strpos($s, $value, $startIndex);
+	}
 	if($x === false)
 		return -1;
 	else
@@ -400,7 +415,12 @@ function _hx_is_numeric($v)
 }
 
 function _hx_last_index_of($s, $value, $startIndex = null) {
-	$x = strrpos($s, $value, $startIndex === null ? null : strlen($s) - $startIndex);
+	if ($startIndex == null) {
+		$x = strrpos($s, $value);	
+	} 
+	else {
+		$x = strrpos($s, $value, strlen($s) - $startIndex);
+	}
 	if($x === false)
 		return -1;
 	else
@@ -420,6 +440,7 @@ class _hx_list_iterator implements Iterator {
 		$this->rewind();
 	}
 
+	#[\ReturnTypeWillChange]
 	public function next() {
 		if($this->»h == null) return null;
 		$this->»counter++;
@@ -428,23 +449,28 @@ class _hx_list_iterator implements Iterator {
 		return $x;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function hasNext() {
 		return $this->»h != null;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function current() {
 		if (!$this->hasNext()) return null;
 		return $this->»h[0];
 	}
 
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->»counter;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return $this->current() !== null;
 	}
 
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		$this->»counter = -1;
 		$this->»h = $this->»list->h;
@@ -735,7 +761,7 @@ class _hx_enum extends _hx_type {}
 class _hx_interface extends _hx_type {}
 
 class HException extends Exception {
-	public function __construct($e, $message = null, $code = null, $p = null) {
+	public function __construct($e, $message = null, $code = 0, $p = null) {
 		$message = _hx_string_rec($e, '') . $message;
 		parent::__construct($message,$code);
 		$this->e = $e;
