@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype
+@filter @filter_wiris @wiris_mathtype @3.x
 Feature: Check Service host
 In order to check the service host seting
 As an admin
