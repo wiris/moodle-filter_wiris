@@ -195,9 +195,9 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         // Referer.
         global $COURSE;
 
-        $configuration['wiriscategorymoodle'] = $COURSE->category;
+        // $configuration['wiriscategorymoodle'] = $COURSE->category;
         $configuration['wiriscoursemoodleid'] = $COURSE->id;
-        $configuration['wiriscoursemoodlename'] = $COURSE->fullname;
+        // $configuration['wiriscoursemoodlename'] = $COURSE->fullname;
 
         $query = '';
         if (isset($COURSE->id)) {
