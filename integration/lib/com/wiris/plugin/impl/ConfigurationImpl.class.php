@@ -71,6 +71,10 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("hostPlatform", $this->getProperty("wirishostplatform", null));
 		$javaScriptHash->set("versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
 		$javaScriptHash->set("enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
+		$javaScriptHash->set("versionMoodle", $this->getProperty("wirisversionmoodle", null));
+		$javaScriptHash->set("categoryMoodle", $this->getProperty("wiriscategorymoodle", null));
+		$javaScriptHash->set("courseMoodleId", $this->getProperty("wiriscoursemoodleid", null));
+		$javaScriptHash->set("courseMoodleName", $this->getProperty("wiriscoursemoodlename", null));
 		$javaScriptHash->set("editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
 		$javaScriptHash->set("chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
 		$javaScriptHash->set("imageFormat", $this->getProperty("wirisimageformat", "png"));
@@ -101,8 +105,8 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 			if($version === null) {
 				$version = "Missing version";
 			}
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $ï¿½e) {
+			$_ex_ = ($ï¿½e instanceof HException) ? $ï¿½e->e : $ï¿½e;
 			$ex = $_ex_;
 			{
 				$version = "Missing version";
@@ -174,16 +178,16 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->ï¿½dynamics[$m]) && is_callable($this->ï¿½dynamics[$m]))
+			return call_user_func_array($this->ï¿½dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call ï¿½'.$m.'ï¿½');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.ConfigurationImpl'; }
 }
-function com_wiris_plugin_impl_ConfigurationImpl_0(&$»this, &$array, &$arrayClose, &$arrayOpen, &$value) {
+function com_wiris_plugin_impl_ConfigurationImpl_0(&$ï¿½this, &$array, &$arrayClose, &$arrayOpen, &$value) {
 	if(strlen($array) === 2) {
 		return "]";
 	} else {
