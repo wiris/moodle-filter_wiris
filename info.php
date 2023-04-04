@@ -24,7 +24,12 @@
  */
 
 require_once('../../config.php');
-require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
+if ($CFG->branch < 402) {
+    require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
+} else {
+    require_once($CFG->dirroot . '/lib/editor/tiny/lib.php');
+}
+
 require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
 
 // BEGIN HELPERS FUNCTIONS.
@@ -64,21 +69,47 @@ function get_current_editor_data() {
     global $CFG;
     $data = array();
 
-    $tinyeditor = new tinymce_texteditor();
+    if ($CFG->branch < 402) {
 
-    if ($CFG->version < 2012120300) {
-        $data['plugin_path'] = '../../lib/editor/tinymce/tiny_mce/' . $tinyeditor->version . '/plugins/tiny_mce_wiris';
-        $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
-        return $data;
-    }
+        $tinyeditor = new tinymce_texteditor();
 
-    if ($CFG->version >= 2012120300 && $CFG->version < 2014051200) {
-        $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-        $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
-        return $data;
-    }
+        if ($CFG->version < 2012120300) {
+            $data['plugin_path'] = '../../lib/editor/tinymce/tiny_mce/' . $tinyeditor->version . '/plugins/tiny_mce_wiris';
+            $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
+            return $data;
+        }
 
-    if ($CFG->version >= 2014051200) {
+        if ($CFG->version >= 2012120300 && $CFG->version < 2014051200) {
+            $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+            $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
+            return $data;
+        }
+
+        if ($CFG->version >= 2014051200) {
+            $editors = array_flip(explode(',', $CFG->texteditors));
+            if (count($editors) <= 0) {
+                throw new Exception(get_string('noteditorspluginsinstalled', 'filter_wiris'), 1);
+            }
+            if (count($editors) == 1) {
+                if (array_key_exists('textarea', $editors)) {
+                    throw new Exception(get_string('onlytextareaeditorinstalled', 'filter_wiris'), 1);
+                }
+            }
+
+            foreach ($editors as $editor => $value) {
+                switch ($editor) {
+                    case 'atto':
+                        $data['plugin_path'] = '../../lib/editor/atto/plugins/wiris';
+                        $data['plugin_name'] = get_string('atto', 'filter_wiris');
+                    return $data;
+                    case 'tinymce':
+                        $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+                        $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
+                    return $data;
+                }
+            }
+        }
+    } else {
         $editors = array_flip(explode(',', $CFG->texteditors));
         if (count($editors) <= 0) {
             throw new Exception(get_string('noteditorspluginsinstalled', 'filter_wiris'), 1);
@@ -96,7 +127,7 @@ function get_current_editor_data() {
                     $data['plugin_name'] = get_string('atto', 'filter_wiris');
                 return $data;
                 case 'tinymce':
-                    $data['plugin_path'] = '../../lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+                    $data['plugin_path'] = '../../lib/editor/tinymce/plugins/wiris';
                     $data['plugin_name'] = get_string('tinymce', 'filter_wiris');
                 return $data;
             }
@@ -127,8 +158,13 @@ function check_if_wiris_button_are_in_atto_toolbar() {
 }
 
 function check_if_wiris_button_are_in_tinymce_toolbar() {
-    $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
-    return (strpos($configvalue, 'tiny_mce_wiris') === false);
+    if ($CFG->branch < 402) {
+        $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
+        return (strpos($configvalue, 'tiny_mce_wiris') === false);
+    } else {
+        $configvalue = get_config("tiny_wiris", 'disabled');
+        return (empty($configvalue) === true);
+    }
 }
 
 
@@ -225,7 +261,11 @@ $solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-fo
 $wirisplugin = $currenteditordata['plugin_path'];
 $condition = file_exists($wirisplugin);
 if (!$condition) {
-    $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris';
+    if ($CFG->branch < 402) {
+        $wirisplugin = '../../lib/editor/tinymce/plugins/tiny_mce_wiris';
+    } else {
+        $wirisplugin = '../../lib/editor/tiny/plugins/wiris';
+    }
     $condition = file_exists($wirisplugin);
 }
 echo wrs_createtablerow($testname, $reporttext, $solutionlink, $condition);
@@ -243,7 +283,7 @@ if (isset($plugin->version)) {
 }
 
 // Using version.php to check release number.
-if (strtolower($currenteditordata['plugin_name']) == 'tinymce') {
+if (strtolower($currenteditordata['plugin_name']) == 'tinymce' || strtolower($currenteditordata['plugin_name']) == 'tiny') {
     require($currenteditordata['plugin_path'] . '/../version.php');
 } else {
     require($currenteditordata['plugin_path'] . '/version.php');

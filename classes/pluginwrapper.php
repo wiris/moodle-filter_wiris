@@ -160,10 +160,12 @@ class filter_wiris_pluginwrapper {
                 require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
                 $tiny = new tinymce_texteditor();
                 $tinyversion = $tiny->version;
-                if ($CFG->version >= 2012120300) { // Location for Moodle 2.4 onwards .
+                if ($CFG->version >= 2012120300 && $CFG->branch < 402) { // Location for Moodle 2.4 onwards .
                     $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-                } else { // Location for Moodle < 2.4 .
+                } else if ($CFG->version < 2012120300) { // Location for Moodle < 2.4 .
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
+                } else {
+                    $relativepath = '/lib/editor/tiny/plugins/wiris';
                 }
                 if (!file_exists($CFG->dirroot . $relativepath . '/core')) {
                     // MathType  >= 3.50 not installed.
