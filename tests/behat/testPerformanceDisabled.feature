@@ -19,6 +19,11 @@ I must not see any JSON response for images services
 
   @javascript
   Scenario: Create image in both formats and check
+    And I follow "Preferences" in the user menu
+    And I follow "Editor preferences"
+    And I set the following fields to these values:
+      | Text editor | Atto HTML editor |
+    And I press "Save changes"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode off
     And I press "Save changes"

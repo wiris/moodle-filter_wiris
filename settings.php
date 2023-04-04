@@ -156,7 +156,12 @@ if ($ADMIN->fulltree) {
                 // Due to Moodle doesn't support circular dependencies between plugins, if any editor plugin is installed
                 // a warning message is shown as a notification.
                 $message = '';
-                $tinyurl = 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
+                $tinyurl = '';
+                if ($CFG->branch < 402) {
+                    $tinyurl .= 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
+                } else {
+                    $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';  // TODO, wait until we publish the plugin on moodle.org
+                }
                 $attourl = 'https://moodle.org/plugins/atto_wiris';
                 $linkattributes = array('target' => '_blank');
                 $attributes = array();
