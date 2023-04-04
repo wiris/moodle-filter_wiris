@@ -234,6 +234,50 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
+     * Press certain button in certain field in TinyMCE 6
+     *
+     * @Given I press :button in :field field in TinyMCE 6 editor
+     * @param  string $button button to press
+     * @param  string $field field to check
+     * @throws ExpectationException If the field is not found, it will throw an exception.
+     */
+    public function i_press_in_field_in_tiny_editor($button, $field) {
+        $sectionarray = array(
+            "Page content" => "fitem_id_page",
+            "Question text" => "fitem_id_questiontext",
+            "General feedback" => "fitem_id_generalfeedback",
+            "Feedback" => "fitem_id_feedback_0"
+        );
+        if (empty($sectionarray[$field])) {
+            throw new ExpectationException($field." field not registered.", $this->getSession());
+        }
+        $buttonarray = array(
+            "MathType" => "MathType",
+            "ChemType" => "ChemType",
+            "Toggle" => "More..."
+        );
+        if (empty($buttonarray[$button])) {
+            throw new ExpectationException($button." button not registered.", $this->getSession());
+        }
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+        //*[contains(@title,\''.$buttonarray[$button].'\')]');
+        if (empty($component)) {
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+        }
+        if ($button == 'Toggle') {
+            // Clicking only if toggle button is not pressed yet.
+            $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+            //*[contains(@class,\'mceButtonActive\')]');
+            if (!empty($component)) {
+                $component->click();
+            }
+        } else {
+            $component->click();
+        }
+    }
+
+    /**
      * Enables saveMode to XML
      *
      * @Given I enable saveMode
@@ -464,6 +508,41 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//span[@id="'.$buttonarray[$button].'"]');
+        if ($exist === "does" && empty($component)) {
+            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+        } else if ($exist === "does not" && $component === '') {
+            echo "a is " . $component . "<br>";
+            throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
+        }
+    }
+
+    /**
+     * Checks the existance or non existance
+     * of a certain button in certain field in Atto editor
+     *
+     * @Given I check :button in :field field :exist exist in TinyMCE 6 editor
+     * @param  string $button button to press
+     * @param  string $field field to check
+     * @param  string $exist existance or not existance. Values: does|does not
+     * @throws ExpectationException If the field is not found, it will throw an exception.
+     */
+    public function i_check_in_field_in_tiny_editor($button, $field, $exist) {
+        $sectionarray = array(
+            "Page content" => "fitem_id_introeditor"
+        );
+        if (empty($sectionarray[$field])) {
+            throw new ExpectationException($field." field not registered.", $this->getSession());
+        }
+        $buttonarray = array(
+            "MathType" => "MathType",
+            "ChemType" => "ChemType",
+        );
+        if (empty($buttonarray[$button])) {
+            throw new ExpectationException($button." button not registered.", $this->getSession());
+        }
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+        //*[contains(@title,\''.$buttonarray[$button].'\')]');
         if ($exist === "does" && empty($component)) {
             throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
         } else if ($exist === "does not" && $component === '') {
