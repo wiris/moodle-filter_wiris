@@ -71,10 +71,6 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("hostPlatform", $this->getProperty("wirishostplatform", null));
 		$javaScriptHash->set("versionPlatform", $this->getProperty("wirisversionplatform", "unknown"));
 		$javaScriptHash->set("enableAccessibility", $this->getProperty("wirisaccessibilityenabled", null) === "true");
-		$javaScriptHash->set("versionMoodle", $this->getProperty("wirisversionmoodle", null));
-		$javaScriptHash->set("categoryMoodle", $this->getProperty("wiriscategorymoodle", null));
-		$javaScriptHash->set("courseMoodleId", $this->getProperty("wiriscoursemoodleid", null));
-		$javaScriptHash->set("courseMoodleName", $this->getProperty("wiriscoursemoodlename", null));
 		$javaScriptHash->set("editorToolbar", $this->getProperty(com_wiris_plugin_api_ConfigurationKeys::$EDITOR_TOOLBAR, null));
 		$javaScriptHash->set("chemEnabled", $this->getProperty("wirischemeditorenabled", null) === "true");
 		$javaScriptHash->set("imageFormat", $this->getProperty("wirisimageformat", "png"));
