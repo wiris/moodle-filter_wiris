@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 8.1.0 (29th of mar. 2023).
 
+## v8.2.6 - 24th apr. 2023
+- feat: Compatibility with Moodle 4.2
+- feat: Compatibility with TinyMCE 6
+
 ## v8.1.0 - 29th nov. 2023
 - fix: Added support for PHP 8.1
 - fix: Improve data reporting
