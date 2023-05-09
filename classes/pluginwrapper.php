@@ -157,12 +157,12 @@ class filter_wiris_pluginwrapper {
                     return $plugin;
                 }
             } else if ($editor == 'tinymce') {
-                require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
-                $tiny = new tinymce_texteditor();
-                $tinyversion = $tiny->version;
                 if ($CFG->version >= 2012120300 && $CFG->branch < 402) { // Location for Moodle 2.4 onwards .
                     $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
                 } else if ($CFG->version < 2012120300) { // Location for Moodle < 2.4 .
+                    require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
+                    $tiny = new tinymce_texteditor();
+                    $tinyversion = $tiny->version;
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
                 } else {
                     $relativepath = '/lib/editor/tiny/plugins/wiris';
@@ -174,7 +174,11 @@ class filter_wiris_pluginwrapper {
                 $plugin = new stdClass();
                 $plugin->url = $CFG->wwwroot . $relativepath;
                 $plugin->path = $CFG->dirroot . $relativepath;
-                $plugin->version = get_config('tinymce_tiny_mce_wiris', 'version');
+                if ($CFG->version >= 2012120300 && $CFG->branch < 402) {
+                    $plugin->version = get_config('tinymce_tiny_mce_wiris', 'version');
+                } else {
+                    $plugin->version = get_config('tiny_wiris', 'version');
+                }
                 return $plugin;
             }
         }
