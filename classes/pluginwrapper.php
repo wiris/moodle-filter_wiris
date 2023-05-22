@@ -82,9 +82,9 @@ class filter_wiris_pluginwrapper {
             // Start haxe environment.
             $this->begin();
             // Create PluginBuilder with Moodle specific configuration.
-            $this->moodleConfig = new filter_wiris_configurationupdater();
+            $this->moodleconfig = new filter_wiris_configurationupdater();
             $this->instance = com_wiris_plugin_api_PluginBuilder::newInstance();
-            $this->instance->addConfigurationUpdater($this->moodleConfig);
+            $this->instance->addConfigurationUpdater($this->moodleconfig);
             $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
             $newpluginwrapperconfiguration = new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig);
             $this->instance->addConfigurationUpdater($newpluginwrapperconfiguration);
@@ -109,19 +109,19 @@ class filter_wiris_pluginwrapper {
     public function was_cas_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wiriscasenabled', null);
-        return $this->moodleConfig->wascasenabled;
+        return $this->moodleconfig->wascasenabled;
     }
 
     public function was_editor_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wiriseditorenabled', null);
-        return $this->moodleConfig->waseditorenabled;
+        return $this->moodleconfig->waseditorenabled;
     }
 
     public function was_chem_editor_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wirischemeditorenabled', null);
-        return $this->moodleConfig->waschemeditorenabled;
+        return $this->moodleconfig->waschemeditorenabled;
     }
 
     /**
