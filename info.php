@@ -162,7 +162,7 @@ function check_if_wiris_button_are_in_tinymce_toolbar() {
         $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
         return (strpos($configvalue, 'tiny_mce_wiris') === false);
     } else {
-        $configvalue = get_config("tiny_wiris", 'disabled');
+        $configvalue = get_config("tiny_wiris/plugin", 'disabled');
         return (empty($configvalue) === true);
     }
 }

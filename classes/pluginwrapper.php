@@ -177,7 +177,7 @@ class filter_wiris_pluginwrapper {
                 if ($CFG->version >= 2012120300 && $CFG->branch < 402) {
                     $plugin->version = get_config('tinymce_tiny_mce_wiris', 'version');
                 } else {
-                    $plugin->version = get_config('tiny_wiris', 'version');
+                    $plugin->version = get_config('tiny_wiris/plugin', 'version');
                 }
                 return $plugin;
             }
