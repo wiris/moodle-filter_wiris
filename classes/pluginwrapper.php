@@ -143,9 +143,17 @@ class filter_wiris_pluginwrapper {
         if (!in_array('atto', $editors)) {
             $editors[] = 'atto';
         }
-        if (!in_array('tinymce', $editors)) {
-            $editors[] = 'tinymce';
+        if ($CFG->branch < 402) {
+            if (!in_array('tinymce', $editors)) {
+                $editors[] = 'tinymce';
+            }
+        } else {
+            if (!in_array('tiny', $editors)) {
+                $editors[] = 'tiny';
+            }
         }
+        
+
         foreach ($editors as $editor) {
             if ($editor == 'atto') {
                 $relativepath = '/lib/editor/atto/plugins/wiris';
@@ -157,16 +165,15 @@ class filter_wiris_pluginwrapper {
                     return $plugin;
                 }
             } else if ($editor == 'tinymce') {
-                if ($CFG->version >= 2012120300 && $CFG->branch < 402) { // Location for Moodle 2.4 onwards .
+                if ($CFG->version >= 2012120300) { // Location for Moodle 2.4 onwards .
                     $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
-                } else if ($CFG->version < 2012120300) { // Location for Moodle < 2.4 .
+                } else { // Location for Moodle < 2.4 .
                     require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
                     $tiny = new tinymce_texteditor();
                     $tinyversion = $tiny->version;
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
-                } else {
-                    $relativepath = '/lib/editor/tiny/plugins/wiris';
                 }
+
                 if (!file_exists($CFG->dirroot . $relativepath . '/core')) {
                     // MathType  >= 3.50 not installed.
                     continue;
@@ -174,11 +181,19 @@ class filter_wiris_pluginwrapper {
                 $plugin = new stdClass();
                 $plugin->url = $CFG->wwwroot . $relativepath;
                 $plugin->path = $CFG->dirroot . $relativepath;
-                if ($CFG->version >= 2012120300 && $CFG->branch < 402) {
+                if ($CFG->version >= 2012120300) {
                     $plugin->version = get_config('tinymce_tiny_mce_wiris', 'version');
-                } else {
-                    $plugin->version = get_config('tiny_wiris/plugin', 'version');
                 }
+
+                return $plugin;
+            } else if ($editor == 'tiny') {
+                $relativepath = '/lib/editor/tiny/plugins/wiris';
+
+                $plugin = new stdClass();
+                $plugin->url = $CFG->wwwroot . $relativepath;
+                $plugin->path = $CFG->dirroot . $relativepath;
+                $plugin->version = get_config('tiny_wiris/plugin', 'version');
+
                 return $plugin;
             }
         }
