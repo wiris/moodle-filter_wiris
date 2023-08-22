@@ -86,7 +86,7 @@ class behat_wiris_editor extends behat_wiris_base {
                 $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
                 @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
                 $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
-                return !empty($toolbar) and !empty($container);
+                return !empty($toolbar) && !empty($container);
             },
             array(),
             self::get_extended_timeout(),
@@ -113,7 +113,7 @@ class behat_wiris_editor extends behat_wiris_base {
                 $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
                 @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
                 $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
-                return !empty($toolbar) and !empty($container);
+                return !empty($toolbar) && !empty($container);
             },
             array(),
             self::get_extended_timeout(),

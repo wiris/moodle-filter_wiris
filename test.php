@@ -1,28 +1,52 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * MathType filter test page.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 function create_atto_compatibility_row($currenteditordata = null, $solutionlink = null) {
-    // Get Wiris plugin instance
+    // Get Wiris plugin instance.
     $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-    
-    // Prepare test name
+
+    // Prepare test name.
     $testname = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . ' versions';
 
-    // Get plugin version
+    // Get plugin version.
     $pluginversion = '';
-    $versionFile = (strtolower($currenteditordata['plugin_name']) == 'tinymce' || strtolower($currenteditordata['plugin_name']) == 'tiny')
+    $versionfile = (strtolower($currenteditordata['plugin_name']) == 'tinymce' || strtolower($currenteditordata['plugin_name']) == 'tiny')
         ? $currenteditordata['plugin_path'] . '/../version.php'
         : $currenteditordata['plugin_path'] . '/version.php';
 
-    if (file_exists($versionFile)) {
-        require($versionFile);
+    if (file_exists($versionfile)) {
+        require($versionfile);
         if (isset($plugin->version)) {
             $pluginversion = $plugin->version;
         }
     }
 
-    // Get filter version
+    // Get filter version.
     $filterversion = isset($plugin->version) ? $plugin->version : '';
 
-    // Check compatibility
+    // Check compatibility.
     if ($filterversion == $pluginversion) {
         $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                         get_string('havesameversion', 'filter_wiris');
@@ -36,6 +60,6 @@ function create_atto_compatibility_row($currenteditordata = null, $solutionlink 
         $condition = false;
     }
 
-    // Return the HTML output as a string
+    // Return the HTML output as a string.
     return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
 }

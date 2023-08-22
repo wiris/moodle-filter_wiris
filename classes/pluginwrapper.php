@@ -152,7 +152,6 @@ class filter_wiris_pluginwrapper {
                 $editors[] = 'tiny';
             }
         }
-        
 
         foreach ($editors as $editor) {
             if ($editor == 'atto') {
