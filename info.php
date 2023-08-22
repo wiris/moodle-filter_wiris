@@ -64,11 +64,11 @@ function get_current_editor_data($branch, $version, $texteditors) {
     $data = array();
 
     $editors = array_flip(explode(',', $texteditors));
-    $editorCount = count($editors);
+    $editorcount = count($editors);
 
-    if ($editorCount === 0) {
+    if ($editorcount === 0) {
         throw new Exception(get_string('noteditorspluginsinstalled', 'filter_wiris'), 1);
-    } elseif ($editorCount === 1 && array_key_exists('textarea', $editors)) {
+    } else if ($editorcount === 1 && array_key_exists('textarea', $editors)) {
         throw new Exception(get_string('onlytextareaeditorinstalled', 'filter_wiris'), 1);
     }
 
@@ -133,7 +133,7 @@ function check_if_wiris_button_are_in_tinymce_toolbar() {
     }
 }
 
-// Create info table
+// Create info table.
 function create_info_header() {
     $output = html_writer::tag('h1', get_string('title', 'filter_wiris'), array('class' => 'wrs_plugin wrs_filter'));
 
@@ -165,7 +165,7 @@ function create_filter_version_row($solutionlink = null) {
     $plugin = new stdClass();
     require($CFG->dirroot . '/filter/wiris/version.php');
     $testname = get_string('lookingforwirisfilterversion', 'filter_wiris');
-    
+
     if (isset($plugin->release)) {
         $reporttext = $plugin->release;
         $condition = true;
@@ -200,20 +200,22 @@ function create_atto_installed_row($currenteditordata = null, $solutionlink = nu
                     get_string('mustbeinstalled', 'filter_wiris');
     $wirisplugin = $currenteditordata['plugin_path'];
     $condition = file_exists($wirisplugin);
-    
+
     echo html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
 
     return $condition;
 }
 
 function create_atto_compatibility_row($currenteditordata = null, $solutionlink = null) {
+    global $CFG;
+
+    $plugin = new stdClass();
+    require($CFG->dirroot . '/filter/wiris/version.php');
     $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
     $testname = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . ' versions';
-    $plugin = new stdClass();
 
-    if (isset($plugin->version)) {
-        $filterversion = $plugin->version;
-    }
+    // Get filter version.
+    $filterversion = isset($plugin->version) ? $plugin->version : '';
 
     // Using version.php to check release number.
     if (strtolower($currenteditordata['plugin_name']) == 'tinymce' || strtolower($currenteditordata['plugin_name']) == 'tiny') {
@@ -322,7 +324,7 @@ if (create_atto_installed_row($currenteditordata, $solutionlink)) {
 // Tiny is installed.
 echo create_tiny_installed_row($solutionlink);
 
-// Close table
+// Close table.
 echo create_table_close();
 
 $output = '';
