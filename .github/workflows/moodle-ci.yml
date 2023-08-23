@@ -131,6 +131,17 @@ jobs:
         run: |
           moodle-plugin-ci add-plugin --branch stable wiris/moodle-atto_wiris
 
+      # 3.1 Install Tiny plugin ( and Quizzes ?)
+      - name: Add MathType plugin for TinyMCE
+        id: install-plugin-tiny
+        continue-on-error: true
+        run: |
+          moodle-plugin-ci add-plugin --branch ${GITHUB_REF##*/} wiris/moodle-tinymce_tiny_mce_wiris
+      - name: Add MathType plugin for TinyMCE using the stable branch
+        if: steps.install-plugin-tiny.outcome != 'success'
+        run: |
+          moodle-plugin-ci add-plugin --branch stable wiris/moodle-tinymce_tiny_mce_wiris
+
       # 4. Install Moodle-plugin-ci
       - name: Install moodle-plugin-ci
         run: |
@@ -296,6 +307,17 @@ jobs:
         if: steps.install-plugin-atto.outcome != 'success'
         run: |
           moodle-plugin-ci add-plugin --branch stable wiris/moodle-atto_wiris
+
+      # 3.1 Install Tiny plugin ( and Quizzes ?)
+      - name: Add MathType plugin for TinyMCE
+        id: install-plugin-tiny
+        continue-on-error: true
+        run: |
+          moodle-plugin-ci add-plugin --branch ${GITHUB_REF##*/} wiris/moodle-tiny_wiris
+      - name: Add MathType plugin for TinyMCE using the stable branch
+        if: steps.install-plugin-tiny.outcome != 'success'
+        run: |
+          moodle-plugin-ci add-plugin --branch stable wiris/moodle-tiny_wiris
 
       # 4. Install Moodle-plugin-ci
       - name: Install moodle-plugin-ci
