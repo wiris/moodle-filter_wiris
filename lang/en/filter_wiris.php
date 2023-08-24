@@ -15,6 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+/**
+ * Strings for component 'filter_wiris', language 'en'.
+ *
+ * @package    filter
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 $string['accessproviderenabled'] = 'Access control';
 $string['accessproviderenabled_help'] = 'If enabled only authenticated users can access MathType services.';
 $string['alloweditorpluginactive'] = 'Editor always active';
