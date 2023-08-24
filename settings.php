@@ -160,7 +160,7 @@ if ($ADMIN->fulltree) {
                 if ($CFG->branch < 402) {
                     $tinyurl .= 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
                 } else {
-                    $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';  // TODO, wait until we publish the plugin on moodle.org.
+                    $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';
                 }
                 $attourl = 'https://moodle.org/plugins/atto_wiris';
                 $linkattributes = array('target' => '_blank');
