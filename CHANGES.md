@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Last release of this plugin is 8.1.0 (29th of mar. 2023).
 
+## v8.4.0 - 31 aug. 2023
+
+- fix: Moodle badge Certification Issues
+- fix: Add TinyMCE to tests
+- fix: Moodle code Checker errors
+- fix: get tiny6 config if using tiny6
+
 ## v8.3.0 - 12th jun. 2023
 - fix: Improve data reporting
 - fix: Some issues with PHP 8.2
