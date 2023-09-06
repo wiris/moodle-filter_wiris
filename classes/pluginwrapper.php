@@ -143,14 +143,11 @@ class filter_wiris_pluginwrapper {
         if (!in_array('atto', $editors)) {
             $editors[] = 'atto';
         }
-        if ($CFG->branch < 402) {
-            if (!in_array('tinymce', $editors)) {
-                $editors[] = 'tinymce';
-            }
-        } else {
-            if (!in_array('tiny', $editors)) {
-                $editors[] = 'tiny';
-            }
+        if (!in_array('tinymce', $editors)) {
+            $editors[] = 'tinymce';
+        }
+        if (!in_array('tiny', $editors)) {
+            $editors[] = 'tiny';
         }
 
         foreach ($editors as $editor) {
