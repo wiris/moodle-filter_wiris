@@ -35,6 +35,7 @@ if ($ADMIN->fulltree) {
     $wirisplugin = new filter_wiris_pluginwrapper();
 
     $editorplugininstalled = filter_wiris_pluginwrapper::get_wiris_plugin();
+    $warningoutput = '';
     if (!empty($editorplugininstalled)) {
         // Editor checkbox.
         $output = '';
@@ -48,12 +49,7 @@ if ($ADMIN->fulltree) {
         // file into the editor plugin inestad of filter. Show a notification to advise
         // users to copy the file from the older location to the new one.
         if ($oldconfile = filter_wiris_pluginwrapper::get_old_configuration()) {
-            $warningoutput = get_string('oldconfiguration', 'filter_wiris', $oldconfile);
-            if ($CFG->version > 2016052300) {
-                \core\notification::warning($warningoutput);
-            } else {
-                $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
-            }
+            $warningoutput .= get_string('oldconfiguration', 'filter_wiris', $oldconfile);
         }
 
         $settings->add(new admin_setting_heading('filter_wiris/editorsettings',
@@ -155,7 +151,6 @@ if ($ADMIN->fulltree) {
             if ($CFG->version >= 2016052300) {
                 // Due to Moodle doesn't support circular dependencies between plugins, if any editor plugin is installed
                 // a warning message is shown as a notification.
-                $message = '';
                 $tinyurl = '';
                 if ($CFG->branch < 402) {
                     $tinyurl .= 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
@@ -165,21 +160,18 @@ if ($ADMIN->fulltree) {
                 $attourl = 'https://moodle.org/plugins/atto_wiris';
                 $linkattributes = array('target' => '_blank');
                 $attributes = array();
-                $message .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
-                $message .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
-                $message .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
-                $message .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
-                $message .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
+                $warningoutput .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
+                $warningoutput .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
+                $warningoutput .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
+                $warningoutput .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
+                $warningoutput .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
 
                 $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
                 $image = html_writer::empty_tag('img', array('src' => $imageurl, 'style' => 'vertical-align:-3px;'));
                 $troubleshootingurl = 'http://www.wiris.com/plugins/docs/moodle/troubleshooting?utm_source=moodle&utm_medium=referral';
                 $imagelink = html_writer::link($troubleshootingurl, $image, $linkattributes);
 
-                $message .= $imagelink;
-
-                // Moodle notification API: https://docs.moodle.org/dev/Notifications.
-                \core\notification::warning($message);
+                $warningoutput .= $imagelink;
             }
 
         }
@@ -188,6 +180,23 @@ if ($ADMIN->fulltree) {
                                                         'filter_wiris'),
                                                         get_string('filter_standalonedesc',
                                                         'filter_wiris'), false, true, false));
+    }
+
+    // If Moodle is 4.2
+    if ($CFG->version > 20230424) {
+        // If TinyMCE legacy is already installed
+        if (is_dir($CFG->dirroot.'/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
+            $warningoutput .= get_string('tinymceincompatibility', 'filter_wiris');
+        }
+    }
+
+    if (!empty($warningoutput)) {
+        if ($CFG->version > 2016052300) {
+            // Moodle notification API: https://docs.moodle.org/dev/Notifications.
+            \core\notification::warning($warningoutput);
+        } else {
+            $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
+        }
     }
 
     $wirisquizzes = dirname(__FILE__) . '/../../question/type/wq/';

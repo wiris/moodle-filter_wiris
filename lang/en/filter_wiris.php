@@ -93,6 +93,7 @@ $string['securitysettings'] = 'Security settings';
 $string['securitysettings_text'] = '';
 $string['title'] = 'MathType filter test page';
 $string['tinymce'] = 'TinyMCE';
+$string['tinymceincompatibility'] = 'MathType for TinyMCE (legacy) is not supported in Moodle 4.2 or higher, you must uninstall the plugin located on "./lib/editor/tinymce/plugins/tiny_mce_wiris" and install the MathType plugin for TinyMCE 6';
 $string['version'] = 'version';
 $string['versionsdontmatch'] = 'versions don\'t match';
 $string['windowsettings'] = 'Window settings';
