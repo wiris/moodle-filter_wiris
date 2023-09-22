@@ -138,7 +138,7 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 	}
 
 	// ArrayAccess methods:
-	#[\ReturnTypeWillChange]
+	#[\ReturnTypeWillChange]	
 	function offsetExists($offset) {
 		return isset($this->»a[$offset]);
 	}
@@ -184,7 +184,7 @@ class _hx_array_iterator implements Iterator {
 	}
 
 	#[\ReturnTypeWillChange]
-	public function current(){
+	public function current() {
 		if (!$this->hasNext()) return false;
 		return $this->»a[$this->»i];
 	}
@@ -377,6 +377,10 @@ function _hx_has_field($o, $field) {
 }
 
 function _hx_index_of($s, $value, $startIndex = null) {
+	if ($s == null || $value == null) {
+		return -1;
+	}
+
 	if ($startIndex == null) {
 		$x = strpos($s, $value);
 	} else {
@@ -416,11 +420,11 @@ function _hx_is_numeric($v)
 
 function _hx_last_index_of($s, $value, $startIndex = null) {
 	if ($startIndex == null) {
-		$x = strrpos($s, $value);	
-	} 
-	else {
+		$x = strrpos($s, $value);
+	} else {
 		$x = strrpos($s, $value, strlen($s) - $startIndex);
 	}
+
 	if($x === false)
 		return -1;
 	else
@@ -459,7 +463,7 @@ class _hx_list_iterator implements Iterator {
 		if (!$this->hasNext()) return null;
 		return $this->»h[0];
 	}
-
+	
 	#[\ReturnTypeWillChange]
 	public function key() {
 		return $this->»counter;
