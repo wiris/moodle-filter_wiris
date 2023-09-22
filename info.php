@@ -289,6 +289,18 @@ function create_table_close() {
     return $output;
 }
 
+function warning_tiny_incompatibility() {
+    global $CFG;
+
+    if ($CFG->version < 20230424) {
+        return;
+    }
+
+    if (is_dir($CFG->dirroot.'/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
+        \core\notification::warning(get_string('tinymceincompatibility', 'filter_wiris'));
+    }
+}
+
 // Page prologue.
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('title', 'filter_wiris'));
@@ -299,6 +311,8 @@ echo $OUTPUT->header();
 $currenteditordata = get_current_editor_data($CFG->branch, $CFG->version, $CFG->texteditors);
 
 $solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
+
+warning_tiny_incompatibility();
 
 // Create info table.
 create_info_header();
