@@ -419,6 +419,11 @@ function _hx_is_numeric($v)
 }
 
 function _hx_last_index_of($s, $value, $startIndex = null) {
+
+	if ($s == null || $value == null) {
+		return -1;
+	}
+
 	if ($startIndex == null) {
 		$x = strrpos($s, $value);
 	} else {
