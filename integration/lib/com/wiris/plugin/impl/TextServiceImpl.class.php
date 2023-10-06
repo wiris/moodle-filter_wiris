@@ -53,7 +53,7 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		$param["latex"] = $latex;
 		$provider = $this->plugin->newGenericParamsProvider($param);
 		$mathml = $this->service("latex2mathml", $provider);
-		return ((_hx_index_of($mathml, "Error converting", null) !== -1) ? $mathml : $latex);
+		return ((_hx_index_of($mathml, "Http Error #500", null) === -1) ? $mathml : "Error converting from latex to mathml");
 	}
 	public function mathml2latex($mml) {
 		$param = array();;
@@ -93,8 +93,8 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		$h->setParameter("httpstatus", "true");
 		try {
 			$h->request(true);
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$e = $_ex_;
 			{
 				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
@@ -133,8 +133,8 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 				$cachedServiceText = com_wiris_system_Utf8::fromBytes($s);
 				try {
 					com_wiris_util_json_JSon::decode($cachedServiceText);
-				}catch(Exception $»e) {
-					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+				}catch(Exception $Â»e) {
+					$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 					$e = $_ex_;
 					{
 						$cachedJsonResponse = new com_wiris_util_json_JsonAPIResponse();
@@ -156,12 +156,12 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	static function hasCache($serviceName) {
 		if($serviceName === "mathml2accessible") {
@@ -184,9 +184,9 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 	}
 	function __toString() { return 'com.wiris.plugin.impl.TextServiceImpl'; }
 }
-function com_wiris_plugin_impl_TextServiceImpl_0(&$»this, &$digest, &$e, &$h, &$ha, &$iter, &$provider, &$renderParams, &$serviceName, &$url) {
-	if($»this->data !== null) {
-		return $»this->data;
+function com_wiris_plugin_impl_TextServiceImpl_0(&$Â»this, &$digest, &$e, &$h, &$ha, &$iter, &$provider, &$renderParams, &$serviceName, &$url) {
+	if($Â»this->data !== null) {
+		return $Â»this->data;
 	} else {
 		return $h->getData();
 	}

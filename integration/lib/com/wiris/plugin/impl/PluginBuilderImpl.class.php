@@ -49,8 +49,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		$version = null;
 		try {
 			$version = com_wiris_system_Storage::newResourceStorage("VERSION")->read();
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$ex = $_ex_;
 			{
 				$version = "Missing version";
@@ -60,8 +60,8 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		try {
 			$tech = str_replace("\x0A", "", com_wiris_system_Storage::newResourceStorage("tech.txt")->read());
 			$tech = str_replace("\x0D", "", $tech);
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$ex2 = $_ex_;
 			{
 				$tech = "MissingTech";
@@ -87,6 +87,20 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 				}
 			} else {
 				$response->setHeader("Access-Control-Allow-Origin", "*");
+			}
+			$customHeaders = $conf->getProperty(com_wiris_plugin_api_ConfigurationKeys::$CUSTOM_HEADER_KEY, null);
+			if($customHeaders !== "") {
+				$keys = new _hx_array(array());
+				$pairs = _hx_explode(",", $customHeaders);
+				{
+					$_g1 = 0; $_g = $pairs->length;
+					while($_g1 < $_g) {
+						$i = $_g1++;
+						$keys->push(trim(_hx_array_get(_hx_explode("=", $pairs[$i]), 0)));
+						unset($i);
+					}
+				}
+				$response->setHeader("Access-Control-Allow-Headers", $keys->join(", "));
 			}
 		}
 	}
@@ -222,9 +236,6 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncTextServiceImpl($this);
 	}
 	public function newTextService() {
-		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null && $this->isEditorLicensed()) {
-			return new com_wiris_plugin_impl_TextServiceImplIntegratedServices($this);
-		}
 		return new com_wiris_plugin_impl_TextServiceImpl($this);
 	}
 	public function newCas() {
@@ -240,9 +251,6 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 		return new com_wiris_plugin_asyncimpl_AsyncRenderImpl($this);
 	}
 	public function newRender() {
-		if(Type::resolveClass("com.wiris.editor.services.PublicServices") !== null && $this->isEditorLicensed()) {
-			return new com_wiris_plugin_impl_RenderImplIntegratedServices($this);
-		}
 		return new com_wiris_plugin_impl_RenderImpl($this);
 	}
 	public function setStorageAndCache($store) {
@@ -274,12 +282,12 @@ class com_wiris_plugin_impl_PluginBuilderImpl extends com_wiris_plugin_api_Plugi
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.PluginBuilderImpl'; }
 }

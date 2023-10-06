@@ -202,12 +202,12 @@ class com_wiris_util_json_JSon {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	static function encode($o) {
 		$js = new com_wiris_util_json_JSon();
@@ -216,11 +216,11 @@ class com_wiris_util_json_JSon {
 	static function decode($str) {
 		try {
 			return com_wiris_util_json_parser_JsonParse::parse($str);
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			if(($e = $_ex_) instanceof com_wiris_system_Exception){
 				throw new HException($e->getMessage());
-			} else throw $»e;;
+			} else throw $Â»e;;
 		}
 	}
 	static function getDepth($o) {
@@ -303,11 +303,11 @@ class com_wiris_util_json_JSon {
 		try {
 			com_wiris_util_json_JSon::decode($json);
 			return true;
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			if(($e = $_ex_) instanceof com_wiris_system_Exception){
 				return false;
-			} else throw $»e;;
+			} else throw $Â»e;;
 		}
 	}
 	function __toString() { return 'com.wiris.util.json.JSon'; }

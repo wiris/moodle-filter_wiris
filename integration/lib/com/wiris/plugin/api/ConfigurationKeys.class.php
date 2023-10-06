@@ -51,6 +51,7 @@ class com_wiris_plugin_api_ConfigurationKeys {
 	static $IMPROVE_PERFORMANCE = "wirispluginperformance";
 	static $EDITOR_KEY = "wiriseditorkey";
 	static $CLEAN_CACHE_TOKEN = "wiriscleancachetoken";
+	static $CUSTOM_HEADER_KEY = "wiriscustomheaders";
 	static $CLEAN_CACHE_GUI = "wiriscleancachegui";
 	static $imageConfigProperties;
 	static $imageConfigPropertiesInv;

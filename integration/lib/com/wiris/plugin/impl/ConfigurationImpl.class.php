@@ -65,6 +65,7 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 		$javaScriptHash->set("editorUrl", $this->plugin->getImageServiceURL("editor", false));
 		$javaScriptHash->set("modalWindow", $this->getProperty("wiriseditormodalwindow", null) === "true");
 		$javaScriptHash->set("modalWindowFullScreen", $this->getProperty("wiriseditormodalwindowfullscreen", null) === "true");
+		$javaScriptHash->set("customHeaders", $this->getProperty("wiriscustomheaders", null));
 		$javaScriptHash->set("CASEnabled", $this->getProperty("wiriscasenabled", null) === "true");
 		$javaScriptHash->set("CASMathmlAttribute", $this->getProperty("wiriscasmathmlattribute", null));
 		$javaScriptHash->set("CASAttributes", $this->getProperty("wiriscaswindowattributes", null));
@@ -101,8 +102,8 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 			if($version === null) {
 				$version = "Missing version";
 			}
-		}catch(Exception $�e) {
-			$_ex_ = ($�e instanceof HException) ? $�e->e : $�e;
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex = $_ex_;
 			{
 				$version = "Missing version";
@@ -174,16 +175,16 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->�dynamics[$m]) && is_callable($this->�dynamics[$m]))
-			return call_user_func_array($this->�dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call �'.$m.'�');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.ConfigurationImpl'; }
 }
-function com_wiris_plugin_impl_ConfigurationImpl_0(&$�this, &$array, &$arrayClose, &$arrayOpen, &$value) {
+function com_wiris_plugin_impl_ConfigurationImpl_0(&$»this, &$array, &$arrayClose, &$arrayOpen, &$value) {
 	if(strlen($array) === 2) {
 		return "]";
 	} else {
