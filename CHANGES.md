@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Last release of this plugin is 8.1.0 (29th of mar. 2023).
+Last release of this plugin is 8.6.0 (October, 9th 2023).
+
+## v8.6.0 - 9 oct. 2023
+- chore: Update PHP integration to 8.5.0
+- fix: Prevent exception caused by passing null arguments to strpos in php 8.1
+- feat: Add notification regarding TinyMCE legacy incompatibility
+- fix: cfg branch not found
+- feat: Update viewer
+- feat: Add Moodle 4.3 compatibility
 
 ## v8.4.0 - 31 aug. 2023
 
