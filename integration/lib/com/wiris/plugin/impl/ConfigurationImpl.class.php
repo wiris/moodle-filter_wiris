@@ -102,8 +102,8 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 			if($version === null) {
 				$version = "Missing version";
 			}
-		}catch(Exception $Â»e) {
-			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$ex = $_ex_;
 			{
 				$version = "Missing version";
@@ -175,16 +175,16 @@ class com_wiris_plugin_impl_ConfigurationImpl implements com_wiris_plugin_api_Co
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
-			return call_user_func_array($this->Â»dynamics[$m], $a);
+		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
+			return call_user_func_array($this->»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call Â«'.$m.'Â»');
+			throw new HException('Unable to call «'.$m.'»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.ConfigurationImpl'; }
 }
-function com_wiris_plugin_impl_ConfigurationImpl_0(&$Â»this, &$array, &$arrayClose, &$arrayOpen, &$value) {
+function com_wiris_plugin_impl_ConfigurationImpl_0(&$»this, &$array, &$arrayClose, &$arrayOpen, &$value) {
 	if(strlen($array) === 2) {
 		return "]";
 	} else {

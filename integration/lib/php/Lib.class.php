@@ -28,7 +28,7 @@ class php_Lib {
 		return fpassthru(fopen($file, "r"));
 	}
 	static function toPhpArray($a) {
-		return $a->Â»a;
+		return $a->»a;
 	}
 	static function toHaxeArray($a) {
 		return new _hx_array($a);
