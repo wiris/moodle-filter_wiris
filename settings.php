@@ -183,7 +183,7 @@ if ($ADMIN->fulltree) {
     }
 
     // If Moodle is 4.2
-    if ($CFG->version > 20230424) {
+    if ($CFG->version > 2022112807) {
         // If TinyMCE legacy is already installed
         if (is_dir($CFG->dirroot.'/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
             $warningoutput .= get_string('tinymceincompatibility', 'filter_wiris');
@@ -191,7 +191,8 @@ if ($ADMIN->fulltree) {
     }
 
     if (!empty($warningoutput)) {
-        if ($CFG->version > 2016052300) {
+        if ($CFG->version > 2016052300) { 
+            $warningoutput .= $CFG->version;
             // Moodle notification API: https://docs.moodle.org/dev/Notifications.
             \core\notification::warning($warningoutput);
         } else {

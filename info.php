@@ -292,7 +292,7 @@ function create_table_close() {
 function warning_tiny_incompatibility() {
     global $CFG;
 
-    if ($CFG->version < 20230424) {
+    if ($CFG->version < 2022112807) {
         return;
     }
 
