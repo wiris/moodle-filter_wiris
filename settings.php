@@ -191,8 +191,7 @@ if ($ADMIN->fulltree) {
     }
 
     if (!empty($warningoutput)) {
-        if ($CFG->version > 2016052300) { 
-            $warningoutput .= $CFG->version;
+        if ($CFG->version > 2016052300) {
             // Moodle notification API: https://docs.moodle.org/dev/Notifications.
             \core\notification::warning($warningoutput);
         } else {
