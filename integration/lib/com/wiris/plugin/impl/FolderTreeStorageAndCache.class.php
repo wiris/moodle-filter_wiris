@@ -8,8 +8,8 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		$cache = new com_wiris_plugin_impl_CacheImpl($this->config);
 		try {
 			$cache->deleteAll();
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$e = $_ex_;
 			{
 				throw new HException("Error: can't delete cache: " . Std::string($e->getMessage()));
@@ -28,8 +28,8 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 	public function storeData($digest, $service, $stream) {
 		try {
 			$this->cache->set($digest . "." . $this->getExtension($service), haxe_io_Bytes::ofData($stream));
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$e = $_ex_;
 			{
 				throw new HException("Error: can't write on cache: " . Std::string($e->getMessage()));
@@ -56,8 +56,8 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 		$digest = com_wiris_system_Md5Tools::encodeString($content);
 		try {
 			$this->cacheFormula->set($digest . ".ini", haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($content)));
-		}catch(Exception $»e) {
-			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$e = $_ex_;
 			{
 				throw new HException("Error: can't write on cache: " . Std::string($e->getMessage()));
@@ -76,12 +76,12 @@ class com_wiris_plugin_impl_FolderTreeStorageAndCache implements com_wiris_plugi
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	static $backwards_compat = true;
 	function __toString() { return 'com.wiris.plugin.impl.FolderTreeStorageAndCache'; }

@@ -47,33 +47,33 @@ class com_wiris_plugin_impl_HttpImpl extends haxe_Http {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	function __toString() { return 'com.wiris.plugin.impl.HttpImpl'; }
 }
-function com_wiris_plugin_impl_HttpImpl_0(&$»this, &$listener, &$url, $status) {
+function com_wiris_plugin_impl_HttpImpl_0(&$Â»this, &$listener, &$url, $status) {
 	{
 	}
 }
-function com_wiris_plugin_impl_HttpImpl_1(&$»this, &$listener, &$url, $msg) {
+function com_wiris_plugin_impl_HttpImpl_1(&$Â»this, &$listener, &$url, $msg) {
 	{
-		if($»this->listener !== null) {
-			$»this->listener->onError($msg);
+		if($Â»this->listener !== null) {
+			$Â»this->listener->onError($msg);
 		} else {
 			throw new HException($msg);
 		}
 	}
 }
-function com_wiris_plugin_impl_HttpImpl_2(&$»this, &$listener, &$url, $data) {
+function com_wiris_plugin_impl_HttpImpl_2(&$Â»this, &$listener, &$url, $data) {
 	{
-		$»this->data = $data;
-		if($»this->listener !== null) {
-			$»this->listener->onData($data);
+		$Â»this->data = $data;
+		if($Â»this->listener !== null) {
+			$Â»this->listener->onData($data);
 		}
 	}
 }

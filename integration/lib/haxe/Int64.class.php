@@ -34,12 +34,12 @@ class haxe_Int64 {
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->»dynamics[$m]) && is_callable($this->»dynamics[$m]))
-			return call_user_func_array($this->»dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call «'.$m.'»');
+			throw new HException('Unable to call Â«'.$m.'Â»');
 	}
 	static function make($high, $low) {
 		return new haxe_Int64($high, $low);
@@ -200,7 +200,7 @@ class haxe_Int64 {
 	}
 	function __toString() { return $this->toString(); }
 }
-function haxe_Int64_0(&$»this, &$i, &$neg, &$str) {
+function haxe_Int64_0(&$Â»this, &$i, &$neg, &$str) {
 	{
 		$high = ~$i->high;
 		$low = -$i->low;
@@ -210,7 +210,7 @@ function haxe_Int64_0(&$»this, &$i, &$neg, &$str) {
 		return new haxe_Int64($high, $low);
 	}
 }
-function haxe_Int64_1(&$»this, &$i, &$neg, &$r, &$str, &$ten) {
+function haxe_Int64_1(&$Â»this, &$i, &$neg, &$r, &$str, &$ten) {
 	{
 		$x = $r->modulus->low;
 		if(($x >> 30 & 1) !== _hx_shift_right($x, 31)) {
