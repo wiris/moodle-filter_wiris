@@ -195,7 +195,7 @@ function create_filter_enabled_row($solutionlink = null) {
 }
 
 function create_atto_installed_row($currenteditordata = null, $solutionlink = null) {
-    $testname = get_string('lookingforwirisplugin', 'filter_wiris') . '&nbsp;'  . $currenteditordata['plugin_name'];
+    $testname = get_string('lookingforwirisplugin', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' . get_string('wirisplugininstalled', 'filter_wiris');
     $reporttext = get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
                     get_string('mustbeinstalled', 'filter_wiris');
     $wirisplugin = $currenteditordata['plugin_path'];
@@ -204,6 +204,20 @@ function create_atto_installed_row($currenteditordata = null, $solutionlink = nu
     echo html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
 
     return $condition;
+}
+
+
+function create_atto_enabled_row($currenteditordata = null, $solutionlink = null) {
+    $testname = get_string('lookingforwirisplugin', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' . get_string('wirispluginenabled', 'filter_wiris');
+    try {
+        $condition = check_if_wiris_button_are_in_toolbar($currenteditordata['plugin_name']);
+        $reporttext = ($condition) ? get_string('enabled', 'filter_wiris') : get_string('disabled', 'filter_wiris');
+    } catch (Exception $e) {
+        $condition = false;
+        $reporttext = $e->getMessage();
+    }
+
+    return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
 }
 
 function create_atto_compatibility_row($currenteditordata = null, $solutionlink = null) {
@@ -241,19 +255,6 @@ function create_atto_compatibility_row($currenteditordata = null, $solutionlink 
         $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] .
                         '&nbsp;' . get_string('version', 'filter_wiris'). ' = ' . $pluginversion;
         $condition = false;
-    }
-
-    return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
-}
-
-function create_atto_enabled_row($currenteditordata = null, $solutionlink = null) {
-    $testname = get_string('lookingforwirispluginenabled', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'];
-    try {
-        $condition = check_if_wiris_button_are_in_toolbar($currenteditordata['plugin_name']);
-        $reporttext = ($condition) ? get_string('enabled', 'filter_wiris') : get_string('disabled', 'filter_wiris');
-    } catch (Exception $e) {
-        $condition = false;
-        $reporttext = $e->getMessage();
     }
 
     return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
