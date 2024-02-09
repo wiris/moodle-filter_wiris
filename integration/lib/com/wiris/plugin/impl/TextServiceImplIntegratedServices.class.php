@@ -83,4 +83,39 @@ class com_wiris_plugin_impl_TextServiceImplIntegratedServices extends com_wiris_
 			$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_OK);
 			$jsonResponse->setResult($result);
 			return $jsonResponse->getResponse();
-		}catch(Exception $
+		}catch(Exception $»e) {
+			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
+			$e = $_ex_;
+			{
+				if(_hx_index_of($serviceName, "mathml2accessible", null) !== -1) {
+					$result->set("text", "Error converting from MathML to accessible text");
+					$jsonResponse->setResult($result);
+					$jsonResponse->setStatus(com_wiris_util_json_JsonAPIResponse::$STATUS_WARNING);
+					return $jsonResponse->getResponse();
+				} else {
+					throw new HException($e->getMessage());
+				}
+			}
+		}
+	}
+	public function service($serviceName, $provider) {
+		$digest = null;
+		if(com_wiris_plugin_impl_TextServiceImpl::hasCache($serviceName)) {
+			$digest = $this->plugin->newRender()->computeDigest(null, $provider->getRenderParameters($this->plugin->getConfiguration()));
+			$store = $this->plugin->getStorageAndCache();
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
+			$s = $store->retreiveData($digest, $ext);
+			if($s !== null) {
+				return com_wiris_system_Utf8::fromBytes($s);
+			}
+		}
+		$result = $this->serviceText($serviceName, $provider);
+		if($digest !== null) {
+			$store = $this->plugin->getStorageAndCache();
+			$ext = com_wiris_plugin_impl_TextServiceImpl::getDigestExtension($serviceName, $provider);
+			$store->storeData($digest, $ext, com_wiris_system_Utf8::toBytes($result));
+		}
+		return $result;
+	}
+	function __toString() { return 'com.wiris.plugin.impl.TextServiceImplIntegratedServices'; }
+}
