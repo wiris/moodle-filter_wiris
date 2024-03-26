@@ -3,7 +3,7 @@
     <library>
         <location>integration</location>
         <name>MathType Web Integration PHP library</name>
-        <version>8.6.2</version>
+        <version>8.6.3</version>
         <license>GPL</license>
         <licenseversion>3.0+</licenseversion>
     </library>

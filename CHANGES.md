@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-The latest release of this plugin is v8.6.2 (13 dec. 2023).
+The latest release of this plugin is v8.6.3 (26 dec. 2024).
+
+## v8.6.3 - 26 mar. 2024
+
+- docs: improve info.php atto test description.
+- fix(php): Upload incompleted files.
 
 ## v8.6.2 - 13 dec. 2023
 - chore: update PHP integration to 8.7.2
