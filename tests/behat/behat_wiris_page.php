@@ -246,7 +246,8 @@ class behat_wiris_page extends behat_wiris_base {
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
-            "Feedback" => "fitem_id_feedback_0"
+            "Feedback" => "fitem_id_feedback_0",
+            "General description" => "fitem_id_description_editor"
         );
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field." field not registered.", $this->getSession());
@@ -254,7 +255,7 @@ class behat_wiris_page extends behat_wiris_base {
         $buttonarray = array(
             "MathType" => "MathType",
             "ChemType" => "ChemType",
-            "Toggle" => "More..."
+            "Toggle" => "Reveal or hide additional toolbar items"
         );
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button." button not registered.", $this->getSession());
@@ -268,7 +269,7 @@ class behat_wiris_page extends behat_wiris_base {
         if ($button == 'Toggle') {
             // Clicking only if toggle button is not pressed yet.
             $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //*[contains(@class,\'mceButtonActive\')]');
+            //*[contains(@title,\''.$buttonarray[$button].'\') and contains(@aria-pressed,\'false\')]');
             if (!empty($component)) {
                 $component->click();
             }
@@ -484,7 +485,7 @@ class behat_wiris_page extends behat_wiris_base {
 
     /**
      * Checks the existance or non existance
-     * of a certain button in certain field in Atto editor
+     * of a certain button in certain field in Tiny editor
      *
      * @Given I check :button in :field field :exist exist in TinyMCE editor
      * @param  string $button button to press
@@ -518,7 +519,7 @@ class behat_wiris_page extends behat_wiris_base {
 
     /**
      * Checks the existance or non existance
-     * of a certain button in certain field in Atto editor
+     * of a certain button in certain field in TinyMCE 6 editor
      *
      * @Given I check :button in :field field :exist exist in TinyMCE 6 editor
      * @param  string $button button to press
