@@ -28,7 +28,7 @@ I need to change the render type
       | Text editor | Atto HTML editor |
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Page" to section "0"
+    And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
       | Name | Test MathType for Atto and client side rendering on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
