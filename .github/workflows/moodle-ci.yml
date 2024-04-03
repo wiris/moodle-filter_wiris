@@ -245,9 +245,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.0']
-        moodle-branch: [master]
+        php: ['8.0', '8.1', '8.2']
+        moodle-branch: [MOODLE_401_STABLE, MOODLE_402_STABLE, MOODLE_403_STABLE, main]
         database: [pgsql]
+        exclude:
+          # Exclude Moodle+PHP incompatible versions
+          # See: https://docs.moodle.org/dev/Moodle_and_PHP
+          - moodle-branch: 'MOODLE_403_STABLE'
+            php: '8.0'
+          - moodle-branch: 'main'
+            php: '8.0'
+          - moodle-branch: 'main'
+            php: '8.1'
+          - moodle-branch: 'MOODLE_401_STABLE'
+            php: '8.2'
 
     steps:
       # 0. Initial step.
@@ -368,4 +379,8 @@ jobs:
         run: moodle-plugin-ci phpunit
       # Run Behat tests on all Moodle branches.
       - name: Behat features
-        run: moodle-plugin-ci behat --profile default -vvv
+        run: |
+          docker run -d --rm --name=selenium --net=host --shm-size=2g -v /home/runner/work/moodle-filter_wiris/moodle-filter_wiris/moodle:/home/runner/work/moodle-filter_wiris/moodle-filter_wiris/moodle selenium/standalone-chrome:3
+          nohup php -S localhost:8000 -t /home/runner/work/moodle-filter_wiris/moodle-filter_wiris/moodle > phpd.log 2>&1 &
+          php moodle/admin/tool/behat/cli/run.php --tags=filter_wiris_current --profile=chrome --suite=default --auto-rerun=2 --verbose -vvv
+          docker stop selenium

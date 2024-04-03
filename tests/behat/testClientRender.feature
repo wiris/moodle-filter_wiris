@@ -1,4 +1,4 @@
-@filter @filter_wiris @filter_wiris_render @filter_wiris_render_client @wiris_mathtype @3.x
+@filter @filter_wiris @filter_wiris_render @filter_wiris_render_client @wiris_mathtype @filter_wiris_current
 Feature: Client-side rendering
 In order to enable client-side rendering
 As an admin

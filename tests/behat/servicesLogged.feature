@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @3.x
+@filter @filter_wiris @wiris_mathtype @3.x @filter_wiris_current
 Feature: Check access provider for logged users
 In order to check access provider
 As an admin

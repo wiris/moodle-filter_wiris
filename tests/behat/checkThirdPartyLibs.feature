@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @3.x
+@filter @filter_wiris @wiris_mathtype @3.x @filter_wiris_current
 Feature: Check MathType integration as a third party lib
 In order to check if MathType integration is a third party library
 As an admin
