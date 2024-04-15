@@ -1,4 +1,4 @@
-@filter @filter_wiris @3.x
+@filter @filter_wiris @3.x @3.x_filter @4.0 @4.0_filter
 Feature: Check performance
 In order to check the performance setting
 As an admin

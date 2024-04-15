@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @filter_wiris_current
+@filter @filter_wiris @filter_wiris_current @wiris_mathtype @4.0 @4.0_filter
 Feature: Check access provider for non logged users
 In order to check access provider
 As an logged user

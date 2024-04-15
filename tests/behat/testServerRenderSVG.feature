@@ -1,4 +1,4 @@
-@filter @filter_wiris @filter_wiris_render @filter_wiris_render_server @wiris_mathtype @filter_wiris_current
+@filter @filter_wiris @filter_wiris_current @filter_wiris_render @filter_wiris_render_server @wiris_mathtype 
 Feature: Server-side rendering to SVG
 In order to enable server-side rendering
 As an admin

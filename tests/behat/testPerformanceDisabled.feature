@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @filter_wiris_current
+@filter @filter_wiris @filter_wiris_current @wiris_mathtype 
 Feature: Check performance
 In order to check the performance setting
 As an admin

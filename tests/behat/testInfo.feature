@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @3.x @filter_wiris_current
+@filter @filter_wiris @filter_wiris_current @wiris_mathtype @3.x @3.x_filter @4.0 @4.0_filter
 Feature: Check test page
 In order to check the test page
 As a user

@@ -1,4 +1,4 @@
-@filter @filter_wiris @3.x
+@filter @filter_wiris @3.x @3.x_filter @4.0 @4.0_filter
 Feature: Server-side rendering to PNG
 In order to enable server-side rendering
 As an admin
