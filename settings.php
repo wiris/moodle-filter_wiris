@@ -29,6 +29,8 @@ if ($ADMIN->fulltree) {
     global $CFG;
     global $wirisconfigurationclass;
 
+    \core\notification::fetch();
+
     require_once("$CFG->dirroot/filter/wiris/lib.php");
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
     wrs_loadclasses();
