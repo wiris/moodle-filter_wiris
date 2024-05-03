@@ -25,11 +25,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// Moodle notification API: https://docs.moodle.org/dev/Notifications.
+use \core\notification;
+
 if ($ADMIN->fulltree) {
     global $CFG;
     global $wirisconfigurationclass;
 
-    \core\notification::fetch();
+    // Moodle doesn't render page headings on some cases, but saves them for later, causing multiple headings
+    // Using fetch immediately renders without saving.
+    notification::fetch();
 
     require_once("$CFG->dirroot/filter/wiris/lib.php");
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
@@ -194,8 +199,7 @@ if ($ADMIN->fulltree) {
 
     if (!empty($warningoutput)) {
         if ($CFG->version > 2016052300) {
-            // Moodle notification API: https://docs.moodle.org/dev/Notifications.
-            \core\notification::warning($warningoutput);
+            notification::warning($warningoutput);
         } else {
             $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
         }
