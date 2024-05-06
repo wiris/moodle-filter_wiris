@@ -1,4 +1,4 @@
-@filter @filter_wiris @filter_wiris_current @wiris_mathtype 
+@filter @filter_wiris @3.x @3.x_filter @4.0 @4.0_filter
 Feature: Check performance
 In order to check the performance setting
 As an admin
@@ -28,7 +28,7 @@ I must not see any JSON response for images services
     And I check image performance mode off
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Page" to section "0" using the activity chooser
+    And I add a "Page" to section "0"
     And I set the following fields to these values:
       | Name | Test MathType for Atto on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
@@ -44,7 +44,7 @@ I must not see any JSON response for images services
       | Image format | png |
     And I press "Save changes"
     And I am on "Course 1" course homepage
-    And I add a "Page" to section "0" using the activity chooser
+    And I add a "Page" to section "0"
     And I set the following fields to these values:
       | Name | Test MathType for Atto on Moodle |
     And I press "MathType" in "Page content" field in Atto editor

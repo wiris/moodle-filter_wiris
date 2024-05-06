@@ -1,5 +1,5 @@
-@filter @filter_wiris @filter_wiris_current @filter_wiris_render @filter_wiris_render_server @wiris_mathtype 
-Feature: Server-side rendering to SVG
+@filter @filter_wiris @3.x @3.x_filter @4.0 @4.0_filter
+Feature: Server-side rendering to PNG
 In order to enable server-side rendering
 As an admin
 I need to change the render type
@@ -8,7 +8,7 @@ I need to change the render type
     Given the following config values are set as admin:
       | config | value | plugin |
       | toolbar | math = wiris | editor_atto |
-      | imageformat | svg | filter_wiris |
+      | imageformat | png | filter_wiris |
     And the following "courses" exist:
       | fullname | shortname | format |
       | Course 1 | C1        | topics |
@@ -27,7 +27,7 @@ I need to change the render type
       | Text editor | Atto HTML editor |
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
-    And I add a "Page" to section "0" using the activity chooser
+    And I add a "Page" to section "0"
     And I set the following fields to these values:
       | Name | Test MathType for Atto and server side rendering on Moodle |
     And I press "MathType" in "Page content" field in Atto editor
@@ -37,4 +37,4 @@ I need to change the render type
     And I press "Save and display"
     And I wait "1" seconds
     Then Wirisformula should exist
-    And MathType formula in svg format is correctly displayed
+    And MathType formula in png format is correctly displayed

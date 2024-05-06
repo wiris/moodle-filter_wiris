@@ -242,6 +242,8 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_tiny_editor($button, $field) {
+        global $CFG;
+
         $sectionarray = array(
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
@@ -257,6 +259,11 @@ class behat_wiris_page extends behat_wiris_base {
             "ChemType" => "ChemType",
             "Toggle" => "Reveal or hide additional toolbar items"
         );
+        // Toggle text renamed from Moodle 4.4. This is for retrocompatibility to avoid duplicated tests.
+        if ($CFG->branch <= 403 && $button == "Toggle") {
+            $buttonarray[$button] = "More...";
+        }
+
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button." button not registered.", $this->getSession());
         }
