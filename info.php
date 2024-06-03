@@ -24,8 +24,8 @@
  */
 
 require_once('../../config.php');
-require_once($CFG->branch < 402 ? $CFG->dirroot . '/lib/editor/tinymce/lib.php' : $CFG->dirroot . '/lib/editor/tiny/lib.php');
 require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
+require_once($CFG->dirroot . '/lib/editorlib.php');
 
 // BEGIN HELPERS FUNCTIONS.
 
@@ -41,7 +41,7 @@ function check_if_wiris_button_are_in_toolbar($editor = null) {
         case 'TinyMCE':
         case 'tinymce':
         case 'tiny':
-            return check_if_wiris_button_are_in_tinymce_toolbar();
+            return check_if_wiris_button_are_in_tinymce_toolbar($editor);
         default:
             throw new Exception($editor . '&nbsp;' . get_string('notsupportededitor', 'filter_wiris', 1));
     }
@@ -52,15 +52,14 @@ function check_if_wiris_button_are_in_atto_toolbar() {
     return (strpos($configvalue, 'wiris') !== false);
 }
 
-function check_if_wiris_button_are_in_tinymce_toolbar() {
-    global $CFG;
-
-    if ($CFG->branch < 402) {
-        $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
-        return (strpos($configvalue, 'tiny_mce_wiris') === false);
-    } else {
+function check_if_wiris_button_are_in_tinymce_toolbar($editor)
+{
+    if ($editor === 'tiny') {
         $configvalue = get_config("tiny_wiris/plugin", 'disabled');
         return (empty($configvalue) === true);
+    } else {
+        $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
+        return (strpos($configvalue, 'tiny_mce_wiris') === false);
     }
 }
 
@@ -97,6 +96,7 @@ function table_open() {
     echo $output;
 }
 
+// Create table row to show test and result
 function create_table_row($test, $outcome, $index, $subindex) {
     if(is_null($outcome)) {
         // Dont show the empty infomation
@@ -132,6 +132,7 @@ function create_table_row($test, $outcome, $index, $subindex) {
 }
 
 function table_close($instalationresult) {
+    // Prepare result text (success or failure)
     $statustext = '';
     if ($instalationresult) {
         $statustext .= html_writer::tag('span', get_test_text('success'), array('class' => 'wrs_ok wrs_plugin wrs_filter'));
@@ -139,7 +140,7 @@ function table_close($instalationresult) {
         $statustext .= html_writer::tag('span', get_test_text('failure'), array('class' => 'wrs_error wrs_plugin wrs_filter'));
     }
 
-    // Instalation result
+    // Show Instalation result
     $output = html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
     $output .= html_writer::tag('td', get_test_text('integrationinstallation'), array('class' => 'wrs_plugin wrs_filter title'));
     $output .= html_writer::start_tag('td', array('class' => 'wrs_plugin wrs_filter'));
@@ -152,29 +153,35 @@ function table_close($instalationresult) {
 
     $output .= html_writer::start_tag('p');
     $output .= html_writer::start_tag('br');
+
     echo $output;
 }
 
 // Function to increment index and subindex based on outcome
-// &$current_index, &$current_subindex pass as reference in order to increment or reset
-function process_table_row($test, $outcome, &$current_index, &$current_subindex) {
+// &$current_subindex pass as reference in order to increment
+function process_table_row($test, $outcome, $current_index, &$current_subindex) {
     create_table_row($test, $outcome, $current_index, $current_subindex);
     
     if (!is_null($outcome)) {
-        if ($current_subindex == 0) {
-            $current_subindex++;
-        } else {
-            $current_subindex++;
-        }
+        $current_subindex++;
     }
 }
 
 // Reset subindex and increment index if starting a new group
+// &$current_index, &$current_subindex pass as reference in order to increment or reset
 function start_new_group(&$current_index, &$current_subindex) {
-    $current_index++;
+    // $current_index is not equal to 0 mean the previous test is not skipped
+    if($current_subindex != 0) {
+        $current_index++;
+    }
     $current_subindex = 0;
 }
 
+
+// Functions to perform tests
+// @return null|string|bool If it returns a string, it will return the requested text data (e.g., version number).
+//                          If it returns a boolean, it will be true (test result is YES) or false (test result is NO).
+//                          If it returns null, it means the entire test will be skipped and not displayed.
 function get_moodle_version(){
     global $CFG;
     return $CFG->release;
@@ -207,13 +214,18 @@ function get_exists_editor($editorname) {
     global $CFG;
 
     if ($editorname === 'tinymce' && $CFG->branch > 402 ) {
-        // if Moodle version is 4.1 or prior, dont check if tiny (legacy) exist
+        // if Moodle version is 4.1 or prior, do not check if tiny (legacy) exists
         return null;
     }
 
-    $editors = array_flip(explode(',', $CFG->texteditors));
+    // get_texteditor returns (boolean)false if not exists or an object if the editor exists
+    $editor = get_texteditor($editorname);
 
-    return isset($editors[$editorname]);
+    if ($editor === false) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 function get_exists_mt_editor($existeditor, $plugins, $editorname) {
@@ -246,6 +258,8 @@ function get_mt_editor_enabled($existsmteditor, $editorname) {
 }
 
 function get_instalation_check($filterenabled, $filterversion, $enabledpluginsversion) {
+    // Precondition - all plugins passed as the argument $enabledpluginsversion have been checked and are enabled.
+
     // Condition 1 - at least 1 editor installed and enabled
     $editorinstalledenabled = (count($enabledpluginsversion) > 0) ? true : false;
 
@@ -269,19 +283,20 @@ function get_instalation_check($filterenabled, $filterversion, $enabledpluginsve
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('title', 'filter_wiris'));
 $PAGE->set_url('/filter/wiris/info.php', array());
+
 echo $OUTPUT->header();
-
-$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
-
 warning_tiny_incompatibility();
 
 global $CFG;
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
-
+// Array of arrays witch contains all necesaty information for testing
 $plugins = filter_wiris_pluginwrapper::get_wiris_plugins_information();
+
+// Save version of all enabled plugins for test
 $enabledplugins = [];
 
+// Start to check all tests
 $moodleversion = get_moodle_version();
 $existsfilter = get_exists_mt_filter($plugins);
 $filterversion = get_mt_filter_version($existsfilter, $plugins);
@@ -307,11 +322,13 @@ $enabledplugins['tiny'] = ($mttinycurrentenabled) ? $mttinycurrentversion : null
 
 $instalationresult = get_instalation_check($filterenabled,$filterversion, $enabledplugins);
 
+// Construct table
 table_open();
 
 $current_index = 1;
 $current_subindex = 0;
 
+// Show all tests
 process_table_row(get_test_text('moodleversion'), $moodleversion, $current_index, $current_subindex);
 
 start_new_group($current_index, $current_subindex);
@@ -338,6 +355,10 @@ process_table_row(get_test_text('pluginversion', 'mttinymcecurrent'), $mttinycur
 process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrentenabled, $current_index, $current_subindex);
 
 table_close($instalationresult);
+
+
+// Footer information
+$solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
 
 $output = '';
 echo get_test_text('clickwirisplugincorrectlyinstalled') . "<br/>";

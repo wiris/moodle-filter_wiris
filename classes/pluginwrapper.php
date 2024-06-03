@@ -39,6 +39,8 @@ if (!class_exists('moodledbcache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
 }
 
+require_once($CFG->dirroot . '/lib/editorlib.php');
+
 class filter_wiris_pluginwrapper {
     private $isinit = false;
     private $installed = false;
@@ -198,14 +200,23 @@ class filter_wiris_pluginwrapper {
         return false;
     }
 
+    /**
+     * Retrieves information about all integrated WIRIS plugins.
+     *
+     * This function gathers and returns details about the WIRIS plugins for different text editors 
+     * (Atto, TinyMCE, Tiny) configured in the system. It checks if the plugins exist, and if so, 
+     * it retrieves their version, release information, and their paths.
+     *
+     * @return array An array containing information about all available WIRIS plugins, 
+     *               including their URL, path, version, and release.
+     */
     public static function get_wiris_plugins_information() {
         global $CFG;
         // Initialize an array to store plugin information.
         $plugins = [];
     
-        // Loop over atto, tinymce (legacy), and tiny (current) in the order defined by the configuration.
+        // Loop over atto, tinymce (legacy), and tiny (current) in the order defined by the configuration.        
         $editors = explode(',', $CFG->texteditors);
-
         // Before loop, check if exists filter
         $plugin = new stdClass();
         $filterrelativepath = '/filter/wiris';
