@@ -40,8 +40,9 @@ function check_if_wiris_button_are_in_toolbar($editor = null) {
             return check_if_wiris_button_are_in_atto_toolbar();
         case 'TinyMCE':
         case 'tinymce':
+            return check_if_wiris_button_are_in_tinymce_toolbar();
         case 'tiny':
-            return check_if_wiris_button_are_in_tinymce_toolbar($editor);
+            return check_if_wiris_button_are_in_tiny_toolbar();
         default:
             throw new Exception($editor . '&nbsp;' . get_string('notsupportededitor', 'filter_wiris', 1));
     }
@@ -52,15 +53,17 @@ function check_if_wiris_button_are_in_atto_toolbar() {
     return (strpos($configvalue, 'wiris') !== false);
 }
 
-function check_if_wiris_button_are_in_tinymce_toolbar($editor)
+function check_if_wiris_button_are_in_tinymce_toolbar()
 {
-    if ($editor === 'tiny') {
-        $configvalue = get_config("tiny_wiris/plugin", 'disabled');
-        return (empty($configvalue) === true);
-    } else {
-        $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
-        return (strpos($configvalue, 'tiny_mce_wiris') === false);
-    }
+    $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
+    return (strpos($configvalue, 'tiny_mce_wiris') === false);
+}
+
+function check_if_wiris_button_are_in_tiny_toolbar()
+{
+    $configvalue = get_config("tiny_wiris/plugin", 'disabled');
+    return (empty($configvalue) === true);
+
 }
 
 function warning_tiny_incompatibility() {
@@ -83,7 +86,7 @@ function get_test_text($title, $editor = null) {
     }
 }
 
-function table_open() {
+function start_table() {
     $output = html_writer::tag('h1', get_string('title', 'filter_wiris'), array('class' => 'wrs_plugin wrs_filter'));
 
     $output .= html_writer::start_tag('table', array('id' => 'wrs_filter_info_table', 'class' => 'wrs_plugin wrs_filter'));
@@ -97,7 +100,7 @@ function table_open() {
 }
 
 // Create table row to show test and result
-function create_table_row($test, $outcome, $index, $subindex) {
+function add_table_row($test, $outcome, $index, $subindex) {
     if(is_null($outcome)) {
         // Dont show the empty infomation
         return;
@@ -131,7 +134,7 @@ function create_table_row($test, $outcome, $index, $subindex) {
     echo $output;
 }
 
-function table_close($instalationresult) {
+function end_table($instalationresult) {
     // Prepare result text (success or failure)
     $statustext = '';
     if ($instalationresult) {
@@ -160,7 +163,7 @@ function table_close($instalationresult) {
 // Function to increment index and subindex based on outcome
 // &$current_subindex pass as reference in order to increment
 function process_table_row($test, $outcome, $current_index, &$current_subindex) {
-    create_table_row($test, $outcome, $current_index, $current_subindex);
+    add_table_row($test, $outcome, $current_index, $current_subindex);
     
     if (!is_null($outcome)) {
         $current_subindex++;
@@ -214,7 +217,7 @@ function get_exists_editor($editorname) {
     global $CFG;
 
     if ($editorname === 'tinymce' && $CFG->branch > 402 ) {
-        // if Moodle version is 4.1 or prior, do not check if tiny (legacy) exists
+        // if Moodle version is 4.1 or later, do not check if tiny (legacy) exists
         return null;
     }
 
@@ -257,6 +260,7 @@ function get_mt_editor_enabled($existsmteditor, $editorname) {
     }
 }
 
+// Validates that MathType is usable at least in one of the text editors supported
 function get_instalation_check($filterenabled, $filterversion, $enabledpluginsversion) {
     // Precondition - all plugins passed as the argument $enabledpluginsversion have been checked and are enabled.
 
@@ -322,8 +326,8 @@ $enabledplugins['tiny'] = ($mttinycurrentenabled) ? $mttinycurrentversion : null
 
 $instalationresult = get_instalation_check($filterenabled,$filterversion, $enabledplugins);
 
-// Construct table
-table_open();
+// Construct new html table
+start_table();
 
 $current_index = 1;
 $current_subindex = 0;
@@ -354,7 +358,8 @@ process_table_row(get_test_text('existsinmoodle', 'mttinymcecurrent'), $existsmt
 process_table_row(get_test_text('pluginversion', 'mttinymcecurrent'), $mttinycurrentversion, $current_index, $current_subindex);
 process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrentenabled, $current_index, $current_subindex);
 
-table_close($instalationresult);
+// Close html table
+end_table($instalationresult);
 
 
 // Footer information
