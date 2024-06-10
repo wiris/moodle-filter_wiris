@@ -17,6 +17,10 @@ tr.wrs_plugin.wrs_filter {
     border: solid 1px #000;
     border-collapse: collapse;
     padding: 5px;
+    white-space: pre;
+}
+td.title.wrs_plugin.wrs_filter {
+    font-weight: bold;
 }
 th.wrs_plugin.wrs_filter {
     background-color: #eee;
