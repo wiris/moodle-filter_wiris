@@ -143,6 +143,21 @@ class behat_wiris_formula extends behat_wiris_base {
     }
 
     /**
+     * Check if a Wirisformula containing certain value doesn't exist
+     *
+     * @Then a Wirisformula containing :value should not exist
+     * @param  string $value the formula should contains
+     * @throws ExpectationException If Wirisformula with a certain value is not found, it will throw an exception.
+     */
+    public function a_wirisformula_containing_should_not_exist($value) {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \''.$value.'\')]');
+        if (!empty($formula)) {
+            throw new ExpectationException('Wirisformula with value '.$value.' found.', $this->getSession());
+        }
+    }
+
+    /**
      * Check if a Wirisformula containing certain html entity value exist
      *
      * @Then a Wirisformula containing html entity :value should exist
@@ -387,4 +402,37 @@ class behat_wiris_formula extends behat_wiris_base {
         }
     }
 
+    /**
+     * Click on a certain WirisFormula with specific alternative text.
+     *
+     * @Given I click on WirisFormula with alt equals to :alt
+     * @param  string $alt formula alternative text
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
+     */
+    public function i_click_on_wirisformula_with_alt_text($alt) {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
+        if (empty($component)) {
+            throw new ExpectationException("Formula with alternative text" .
+                    $alt . " is not correctly recognized.", $this->getSession());
+        }
+        $component->click();
+    }
+
+    /**
+     * DbClick on a certain WirisFormula with specific alternative text.
+     *
+     * @Given I dbClick on WirisFormula with alt equals to :alt
+     * @param  string $alt formula alternative text
+     * @throws ExpectationException If the formula is not found, it will throw an exception.
+     */
+    public function i_dbclick_on_wirisformula_with_alt_text($alt) {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
+        if (empty($component)) {
+            throw new ExpectationException("Formula with alternative text" .
+                    $alt . " is not correctly recognized.", $this->getSession());
+        }
+        $component->doubleClick();
+    }
 }
