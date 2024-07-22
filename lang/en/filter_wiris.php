@@ -102,7 +102,8 @@ $string['moodleversion'] = 'Moodle version';
 $string['themathtypefilter'] = 'the MathType filter';
 $string['mathtypefilter'] = 'MathType filter';
 $string['pluginversion'] = '{$a} version';
-$string['existsinmoodle'] = 'Does {$a} exist in Moodle?';
+$string['existsinmoodle'] = 'Does the {$a} exist in Moodle?';
+$string['existsandenabledinmoodle'] = 'Does the {$a} exist and is it enabled in Moodle?';
 $string['isenabled'] = 'Is {$a} enabled?';
 
 $string['tinymcelegacy'] = 'TinyMCE (legacy)';
@@ -112,6 +113,7 @@ $string['tinymcecurrent'] = 'TinyMCE (current)';
 $string['mttinymcecurrent'] = 'MathType for TinyMCE (current)';
 
 $string['integrationinstallation'] = 'Integration Installation';
+$string['versionmustbethesame'] = 'Versions of MathType for any HTML Editor and MathType Viewer MUST be the same for the plugin to work properly.';
 
 $string['yes'] = 'Yes';
 $string['no'] = 'No';

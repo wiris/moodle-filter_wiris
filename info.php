@@ -61,9 +61,8 @@ function check_if_wiris_button_are_in_tinymce_toolbar()
 
 function check_if_wiris_button_are_in_tiny_toolbar()
 {
-    $configvalue = get_config("tiny_wiris/plugin", 'disabled');
+    $configvalue = get_config("tiny_wiris", 'disabled');
     return (empty($configvalue) === true);
-
 }
 
 function warning_tiny_incompatibility() {
@@ -213,7 +212,7 @@ function get_mt_filter_enabled($existsfilter){
     return $filterenabled;
 }
 
-function get_exists_editor($editorname) {
+function get_editor_exists_and_enabled($editorname) {
     global $CFG;
 
     if ($editorname === 'tinymce' && $CFG->branch > 402 ) {
@@ -221,14 +220,14 @@ function get_exists_editor($editorname) {
         return null;
     }
 
-    // get_texteditor returns (boolean)false if not exists or an object if the editor exists
-    $editor = get_texteditor($editorname);
-
-    if ($editor === false) {
-        return false;
-    } else {
-        return true;
+    if ($editorname === 'tiny' && $CFG->branch < 401 ) {
+        // if Moodle version is 4.1 or prior, do not check if tiny (current) exists
+        return null;
     }
+
+    // get_texteditor returns (boolean)false if not exists or an object if the editor exists
+    $editors = array_keys(editors_get_enabled());
+    return in_array($editorname, $editors);
 }
 
 function get_exists_mt_editor($existeditor, $plugins, $editorname) {
@@ -306,19 +305,19 @@ $existsfilter = get_exists_mt_filter($plugins);
 $filterversion = get_mt_filter_version($existsfilter, $plugins);
 $filterenabled = get_mt_filter_enabled($existsfilter);
 
-$exisatto = get_exists_editor('atto');
+$exisatto = get_editor_exists_and_enabled('atto');
 $existsmtatto = get_exists_mt_editor($exisatto, $plugins, 'atto');
 $mtattoversion = get_mt_editor_version($existsmtatto, $plugins, 'atto');
 $mtattoenabled = get_mt_editor_enabled($existsmtatto, 'atto');
 $enabledplugins['atto'] = ($mtattoenabled) ? $mtattoversion : null;
 
-$existstinylegacy = get_exists_editor('tinymce');
+$existstinylegacy = get_editor_exists_and_enabled('tinymce');
 $existsmttinylegacy = get_exists_mt_editor($existstinylegacy,  $plugins, 'tinymce');
 $mttinylegacyversion = get_mt_editor_version($existsmttinylegacy,  $plugins, 'tinymce');
 $mttinylegacyenabled = get_mt_editor_enabled($existsmttinylegacy, 'tinymce');
 $enabledplugins['tinymce'] = ($mttinylegacyenabled) ? $mttinylegacyversion : null;
 
-$existstinycurrent = get_exists_editor('tiny');
+$existstinycurrent = get_editor_exists_and_enabled('tiny');
 $existsmttinycurrent = get_exists_mt_editor($existstinycurrent, $plugins, 'tiny');
 $mttinycurrentversion = get_mt_editor_version($existsmttinycurrent, $plugins, 'tiny');
 $mttinycurrentenabled = get_mt_editor_enabled($existsmttinycurrent, 'tiny');
@@ -341,19 +340,19 @@ process_table_row(get_test_text('pluginversion', 'mathtypefilter'), $filterversi
 process_table_row(get_test_text('isenabled', 'themathtypefilter'), $filterenabled, $current_index, $current_subindex);
 
 start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'atto'), $exisatto, $current_index, $current_subindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'atto'), $exisatto, $current_index, $current_subindex);
 process_table_row(get_test_text('existsinmoodle', 'mtatto'), $existsmtatto, $current_index, $current_subindex);
 process_table_row(get_test_text('pluginversion', 'mtatto'), $mtattoversion, $current_index, $current_subindex);
 process_table_row(get_test_text('isenabled', 'mtatto'), $mtattoenabled, $current_index, $current_subindex);
 
 start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'tinymcelegacy'), $existstinylegacy, $current_index, $current_subindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcelegacy'), $existstinylegacy, $current_index, $current_subindex);
 process_table_row(get_test_text('existsinmoodle', 'mttinymcelegacy'), $existsmttinylegacy, $current_index, $current_subindex);
 process_table_row(get_test_text('pluginversion', 'mttinymcelegacy'), $mttinylegacyversion, $current_index, $current_subindex);
 process_table_row(get_test_text('isenabled', 'mttinymcelegacy'), $mttinylegacyenabled, $current_index, $current_subindex);
 
 start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'tinymcecurrent'), $existstinycurrent, $current_index, $current_subindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcecurrent'), $existstinycurrent, $current_index, $current_subindex);
 process_table_row(get_test_text('existsinmoodle', 'mttinymcecurrent'), $existsmttinycurrent, $current_index, $current_subindex);
 process_table_row(get_test_text('pluginversion', 'mttinymcecurrent'), $mttinycurrentversion, $current_index, $current_subindex);
 process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrentenabled, $current_index, $current_subindex);
@@ -362,8 +361,12 @@ process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrent
 end_table($instalationresult);
 
 
+
 // Footer information
 $solutionlink = 'https://docs.wiris.com/mathtype/en/mathtype-for-lms/mathtype-for-moodle.html#install-mathtype-for-moodle?utm_source=moodle&utm_medium=referral';
+
+// Warning information
+echo html_writer::end_tag('p') . get_string('versionmustbethesame', 'filter_wiris') . html_writer::end_tag('p');
 
 $output = '';
 echo get_test_text('clickwirisplugincorrectlyinstalled') . "<br/>";
