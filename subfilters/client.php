@@ -52,7 +52,7 @@ class filter_wiris_client extends moodle_text_filter {
     public function filter($text, array $options = array()) {
         global $PAGE;
         // Add the Javascript Thir-party library to the page.
-        $PAGE->requires->js( new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true') );
+        $PAGE->requires->js(new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&blacklist=[data-fieldtype="editor"]'));
         // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
         // Therefore, this filter does not affect the markup server-side.
         // Options
