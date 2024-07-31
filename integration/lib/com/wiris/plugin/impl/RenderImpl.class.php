@@ -9,8 +9,8 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 		try {
 			$text = $this->plugin->newTextService()->mathml2accessible($mml, $lang, $param);
 			return $text;
-		}catch(Exception $Ã¯¿½e) {
-			$_ex_ = ($Ã¯¿½e instanceof HException) ? $Ã¯¿½e->e : $Ã¯¿½e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$ex = $_ex_;
 			{
 				return "";
@@ -82,8 +82,8 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 		$bs = null;
 		try {
 			$bs = $this->showImage($digest, null, null);
-		}catch(Exception $Ã¯¿½e) {
-			$_ex_ = ($Ã¯¿½e instanceof HException) ? $Ã¯¿½e->e : $Ã¯¿½e;
+		}catch(Exception $Â»e) {
+			$_ex_ = ($Â»e instanceof HException) ? $Â»e->e : $Â»e;
 			$e = $_ex_;
 			{
 				return "";
@@ -265,7 +265,6 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 				$h->setParameter($key, $renderParams->get($key));
 				unset($key);
 			}
-			com_wiris_plugin_impl_RequestHeadersStoreImpl::dumpInto($h);
 			$h->request(true);
 			$b = haxe_io_Bytes::ofString($h->getData());
 			$store->storeData($digest, $this->plugin->getConfiguration()->getProperty("wirisimageformat", "png"), $b->b);
@@ -340,12 +339,12 @@ class com_wiris_plugin_impl_RenderImpl implements com_wiris_plugin_api_Render{
 	public function __call($m, $a) {
 		if(isset($this->$m) && is_callable($this->$m))
 			return call_user_func_array($this->$m, $a);
-		else if(isset($this->Ã¯¿½dynamics[$m]) && is_callable($this->Ã¯¿½dynamics[$m]))
-			return call_user_func_array($this->Ã¯¿½dynamics[$m], $a);
+		else if(isset($this->Â»dynamics[$m]) && is_callable($this->Â»dynamics[$m]))
+			return call_user_func_array($this->Â»dynamics[$m], $a);
 		else if('toString' == $m)
 			return $this->__toString();
 		else
-			throw new HException('Unable to call Ã¯¿½'.$m.'Ã¯¿½');
+			throw new HException('Unable to call Â»'.$m.'Â»');
 	}
 	static function concatPath($s1, $s2) {
 		if(_hx_last_index_of($s1, "/", null) === strlen($s1) - 1) {

@@ -6,7 +6,7 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		$this->plugin = $plugin;
 	}}
 	public function onError($msg) {
-		if("mathml2accessible" === $this->serviceName) {
+		if($this->serviceName === "mathml2accessible") {
 			$this->status = com_wiris_util_json_JsonAPIResponse::$STATUS_WARNING;
 			$this->data = "Error converting from MathML to accessible text.";
 		} else {
@@ -91,7 +91,6 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			unset($k);
 		}
 		$h->setParameter("httpstatus", "true");
-		com_wiris_plugin_impl_RequestHeadersStoreImpl::dumpInto($h);
 		try {
 			$h->request(true);
 		}catch(Exception $»e) {
@@ -165,10 +164,16 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 			throw new HException('Unable to call «'.$m.'»');
 	}
 	static function hasCache($serviceName) {
-		return $serviceName === "mathml2accessible";
+		if($serviceName === "mathml2accessible") {
+			return true;
+		}
+		return false;
 	}
 	static function hasStats($serviceName) {
-		return $serviceName === "latex2mathml";
+		if($serviceName === "latex2mathml") {
+			return true;
+		}
+		return false;
 	}
 	static function getDigestExtension($serviceName, $provider) {
 		$lang = $provider->getParameter("lang", "en");
