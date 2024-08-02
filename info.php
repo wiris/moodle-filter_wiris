@@ -278,7 +278,7 @@ function get_instalation_check($filterenabled, $filterversion, $enabledpluginsve
     }
 
     // Special case: if user has the last version of MT for Tiny (legacy), always return true
-    if($enabledpluginsversion['tiny'] == '8.6.2 ' && $filterenabled) {
+    if($enabledpluginsversion['tinymce'] == '8.6.2' && $filterenabled) {
         return true;
     }
 
