@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @3.x @3.x_filter @4.0 @4.0_filter @4.x @4.x_filter @moodle_activities @page_render @mtmoodle-6
+@filter @filter_wiris @wiris_mathtype @moodle_activities @page_render @mtmoodle-6
 Feature: Render in moodle forums
   In order to check the pages rendering
   As an admin
@@ -18,7 +18,30 @@ Feature: Render in moodle forums
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
-  @javascript
+@javascript @4.x @4.x_filter
+  Scenario: MTMOODLE-6 - Check MathType renders a wiris formula in moodle forums
+    # set text editor to "atto HTML"
+    And I follow "Preferences" in the user menu
+    And I follow "Editor preferences"
+    And I set the following fields to these values:
+      | Text editor | Atto HTML editor |
+    And I press "Save changes"
+    # create new forum in existing course
+    And I am on "Course 1" course homepage with editing mode on
+    And I add a "Forum" to section "0" using the activity chooser
+    And I set the following fields to these values:
+      | Forum name | Test MathType for wiris formula render in forums |
+    # insert Wirisformula in forum
+    And I press "MathType" in "Description" field in Atto editor
+    And I wait "3" seconds
+    And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>1</mn></math>'
+    And I wait "3" seconds
+    And I press accept button in MathType Editor
+    And I wait "1" seconds
+    # check that Wirisformula exists in forum
+    Then a Wirisformula containing "1 plus 1" should exist
+
+@javascript @3.x @3.x_filter @4.0 @4.0_filter
   Scenario: MTMOODLE-6 - Check MathType renders a wiris formula in moodle forums
     # set text editor to "atto HTML"
     And I follow "Preferences" in the user menu
