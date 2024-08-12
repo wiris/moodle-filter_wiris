@@ -14,15 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * This class loads the environment that MathType filter needs to work.
- *
- * @package    filter
- * @subpackage wiris
- * @copyright  WIRIS Europe (Maths for more S.L)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 // This classes are shared between Wiris Quizzes and MathType
@@ -41,37 +32,101 @@ if (!class_exists('moodledbcache')) {
 
 require_once($CFG->dirroot . '/lib/editorlib.php');
 
+/**
+ * This class loads the environment that MathType filter needs to work.
+ *
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class filter_wiris_pluginwrapper {
+
+
+    /**
+     * @var bool $isinit Indicates whether the initialization is done.
+     */
     private $isinit = false;
+
+    /**
+     * @var bool $installed Indicates whether the plugin is installed.
+     */
     private $installed = false;
+
+    /**
+     * @var mixed $moodleconfig The Moodle configuration instance.
+     */
     private $moodleconfig;
+
+    /**
+     * @var mixed $instance The instance of the plugin.
+     */
     private $instance;
+
+    /**
+     * @var mixed $pluginwrapperconfig The static configuration for the plugin wrapper.
+     */
     private static $pluginwrapperconfig;
 
+    /**
+     * Sets the configuration for the plugin wrapper.
+     *
+     * @param mixed $config The configuration to be set.
+     * @return void
+     */
     public static function set_configuration($config) {
         self::$pluginwrapperconfig = $config;
     }
 
+    /**
+     * Constructor for the PluginWrapper class.
+     */
     public function __construct() {
         $this->init();
     }
 
+    /**
+     * Begins the execution of the plugin wrapper.
+     *
+     * This method is responsible for starting the execution of the plugin wrapper by calling the `start()` method of the `com_wiris_system_CallWrapper` class.
+     */
     public function begin() {
         com_wiris_system_CallWrapper::getInstance()->start();
     }
 
+    /**
+     * Stops the WIRIS system call wrapper.
+     */
     public function end() {
         com_wiris_system_CallWrapper::getInstance()->stop();
     }
 
+    /**
+     * Check if the WIRIS plugin is installed.
+     *
+     * @return bool Returns true if the WIRIS plugin is installed, false otherwise.
+     */
     public function is_installed() {
         $editorplugin = self::get_wiris_plugin();
         return !empty($editorplugin);
     }
 
+    /**
+     * Initializes the plugin wrapper.
+     *
+     * This method initializes the plugin wrapper by performing the following steps:
+     * 1. Checks if the plugin wrapper has already been initialized.
+     * 2. Initializes the Haxe environment by including the necessary files.
+     * 3. Starts the Haxe environment.
+     * 4. Creates a PluginBuilder object with Moodle specific configuration.
+     * 5. Adds configuration updaters to the PluginBuilder.
+     * 6. Sets the file cache and formula cache objects for the PluginBuilder.
+     * 7. Stops the Haxe environment.
+     *
+     * @return void
+     */
     private function init() {
         if (!$this->isinit) {
-
             $this->isinit = true;
 
             global $CFG;
@@ -103,23 +158,50 @@ class filter_wiris_pluginwrapper {
         }
     }
 
+    /**
+     * Retrieves the instance of the plugin.
+     *
+     * This method initializes the plugin and returns its instance.
+     *
+     * @return mixed The instance of the plugin.
+     */
     public function get_instance() {
         $this->init();
         return $this->instance;
     }
 
+    /**
+     * Retrieves the status of the CAS authentication plugin.
+     *
+     * This method checks if the CAS authentication plugin is enabled or not.
+     * It forces the configuration to load and retrieves the value of the 'wiriscasenabled' property.
+     *
+     * @return bool The status of the CAS authentication plugin.
+     */
     public function was_cas_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wiriscasenabled', null);
         return $this->moodleconfig->wascasenabled;
     }
 
+    /**
+     * Returns whether the editor was enabled or not.
+     *
+     * @return bool The status of the editor.
+     */
     public function was_editor_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wiriseditorenabled', null);
         return $this->moodleconfig->waseditorenabled;
     }
 
+    /**
+     * Retrieves the status of the chemical editor.
+     *
+     * This method checks if the chemical editor was enabled or not.
+     *
+     * @return bool The status of the chemical editor.
+     */
     public function was_chem_editor_enabled() {
         // Force configuration load.
         $this->get_instance()->getConfiguration()->getProperty('wirischemeditorenabled', null);

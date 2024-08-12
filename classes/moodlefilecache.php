@@ -18,15 +18,26 @@
  * This class implements WIRIS StorageAndCache interface
  * to store WIRIS data on MUC and Moodle database.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class moodlefilecache {
 
+    /**
+     * @var mixed $cache The cache instance.
+     */
     private $cache;
+
+    /**
+     * @var mixed $area The area instance.
+     */
     public $area;
+
+    /**
+     * @var mixed $module The module instance.
+     */
     public $module;
 
     /**
@@ -43,22 +54,22 @@ class moodlefilecache {
     /**
      * Delete the given key from the cache
      * @param key The key to delete.
-     * @throw Error On unexpected exception.
+     * @throws Error On unexpected exception.
      */
     public function delete($key) {
     }
 
     /**
      * Deletes all the data in the cache.
-     * @throw moodle_exception failing purgue the cache.
+     * @throws moodle_exception failing purgue the cache.
      */
     // @codingStandardsIgnoreStart
-    public function deleteAll() {
-    // @codingStandardsIgnoreEnd
+    public function deleteAll()
+    {
+        // @codingStandardsIgnoreEnd
         if (!$this->cache->purgue()) {
             throw new moodle_exception(get_string('errordeletingcache', 'filter_wiris', $this->area), $this->module);
         }
-
     }
 
     /**
@@ -78,7 +89,7 @@ class moodlefilecache {
      * Stores a (key, value) pair to the cache.
      * @param key The key for the data being requested.
      * @param value The data to set against the key.
-     * @throw moodle_exception when the data can't be written to the cache.
+     * @throws moodle_exception when the data can't be written to the cache.
      */
     public function set($key, $value) {
         if (!$this->cache->set($key, $value)) {

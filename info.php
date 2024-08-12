@@ -17,7 +17,7 @@
 /**
  * MathType filter test page.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,8 +29,15 @@ require_once($CFG->dirroot . '/lib/editorlib.php');
 
 // BEGIN HELPERS FUNCTIONS.
 
+/**
+ * Checks if the WIRIS buttons are present in the toolbar of the specified editor.
+ *
+ * @param  string|null $editor The name of the editor. Defaults to null.
+ * @return bool Returns true if the WIRIS buttons are present in the toolbar, false otherwise.
+ * @throws Exception Throws an exception if the editor name is null or not supported.
+ */
 function check_if_wiris_button_are_in_toolbar($editor = null) {
-    if ( is_null($editor) ) {
+    if (is_null($editor)) {
         throw new Exception(get_string('editornameexpected', 'filter_wiris'), 1);
     }
 
@@ -48,6 +55,11 @@ function check_if_wiris_button_are_in_toolbar($editor = null) {
     }
 }
 
+/**
+ * Checks if the WIRIS buttons are present in the Atto toolbar.
+ *
+ * @return bool Returns true if the WIRIS buttons are present in the Atto toolbar, false otherwise.
+ */
 function check_if_wiris_button_are_in_atto_toolbar() {
     $configvalue = get_config('editor_atto', 'toolbar');
     return (strpos($configvalue, 'wiris') !== false);
@@ -65,6 +77,15 @@ function check_if_wiris_button_are_in_tiny_toolbar()
     return (empty($configvalue) === true);
 }
 
+/**
+ * Checks for a tiny incompatibility and displays a warning if found.
+ *
+ * This function checks if the current version of the system is greater than or equal to 2022112807.
+ * If it is, it checks if the directory '/lib/editor/tinymce/plugins/tiny_mce_wiris' exists.
+ * If the directory exists, it displays a warning message using the 'tinymceincompatibility' string from the 'filter_wiris' language pack.
+ *
+ * @return void
+ */
 function warning_tiny_incompatibility() {
     global $CFG;
 
@@ -72,7 +93,7 @@ function warning_tiny_incompatibility() {
         return;
     }
 
-    if (is_dir($CFG->dirroot.'/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
+    if (is_dir($CFG->dirroot . '/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
         \core\notification::warning(get_string('tinymceincompatibility', 'filter_wiris'));
     }
 }
@@ -393,7 +414,7 @@ $output .= html_writer::end_tag('p');
 
 $output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('br');
-$output .= html_writer::start_tag('span', array('style' => 'font-size:14px; font-weight:normal;'));
+$output .= html_writer::start_tag('span', ['style' => 'font-size:14px; font-weight:normal;']);
 $output .= get_string('contact', 'filter_wiris');
 $output .= " (<a href=\"mailto:support@wiris.com\">support@wiris.com</a>)";
 $output .= html_writer::end_tag('span');

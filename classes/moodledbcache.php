@@ -18,16 +18,33 @@
  * This class implements WIRIS cache interface
  * to store WIRIS cache on Moodle database.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class moodledbcache {
 
+
+
+    /**
+     * @var mixed $cachetable The cache table instance.
+     */
     private $cachetable;
+
+    /**
+     * @var mixed $keyfield The key field instance.
+     */
     private $keyfield;
+
+    /**
+     * @var mixed $valuefield The value field instance.
+     */
     private $valuefield;
+
+    /**
+     * @var mixed $timecreatedfield The time created field instance.
+     */
     private $timecreatedfield;
 
     /**
@@ -46,18 +63,19 @@ class moodledbcache {
     /**
      * Delete the given key from the cache
      * @param key The key to delete.
-     * @throw Error On unexpected exception.
+     * @throws Error On unexpected exception.
      */
     public function delete($key) {
     }
 
     /**
      * Deletes all the data in the cache.
-     * @throw Error on unexpected exception.
+     * @throws Error on unexpected exception.
      */
     // @codingStandardsIgnoreStart
-    public function deleteAll() {
-    // @codingStandardsIgnoreEnd
+    public function deleteAll()
+    {
+        // @codingStandardsIgnoreEnd
         global $DB;
         $DB->delete_records($this->cachetable, null);
     }
@@ -72,8 +90,8 @@ class moodledbcache {
         $parsedkey = $this->parse_key($key);
 
         global $DB;
-        if ($DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
-            $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
+        if ($DB->record_exists($this->cachetable, [$this->keyfield => $parsedkey])) {
+            $record = $DB->get_record($this->cachetable, [$this->keyfield => $parsedkey]);
             // Cache interface returns an array of Bytes. When we are using the database to
             // store cache the data should be converted to a Bytes object.
             $valuefield = $this->valuefield;
@@ -81,12 +99,11 @@ class moodledbcache {
         } else {
             return null;
         }
-
     }
 
     /**
      * Retrieves the name of the key for the cache without the extension.
-     * @key The key with a extension.
+     * @param string key The key with a extension.
      */
     private function parse_key($key) {
         $separatedkey = explode(".", $key);
@@ -95,20 +112,23 @@ class moodledbcache {
 
     /**
      * Stores a (key, value) pair to the cache. If the key exists, updates the value.
-     * @param key The key for the data being requested.
+     * @param string key The key for the data being requested.
      * @param value The data to set against the key.
-     * @throw Error On unexpected exception storing the value.
+     * @throws Error On unexpected exception storing the value.
      */
     public function set($key, $value) {
 
         $parsedkey = $this->parse_key($key);
 
         global $DB;
-        if (!$DB->record_exists($this->cachetable, array($this->keyfield => $parsedkey))) {
+        if (!$DB->record_exists($this->cachetable, [$this->keyfield => $parsedkey])) {
             // Variable $value is a a array of bytes, we need the content of the array.
             try {
-                $DB->insert_record($this->cachetable, array($this->keyfield => $parsedkey, $this->valuefield => $value->b,
-                                    $this->timecreatedfield => time()));
+                $DB->insert_record($this->cachetable, [
+                    $this->keyfield => $parsedkey,
+                    $this->valuefield => $value->b,
+                    $this->timecreatedfield => time(),
+                ]);
             } catch (dml_exception $ex) {
                 // Concurrent write access to the same - unexisting - md5
                 // are possible in some scenarios (like a quiz)
@@ -120,7 +140,7 @@ class moodledbcache {
                 throw $ex;
             }
         } else {
-            $record = $DB->get_record($this->cachetable, array($this->keyfield => $parsedkey));
+            $record = $DB->get_record($this->cachetable, [$this->keyfield => $parsedkey]);
             $record->value = $value->b;
             $DB->update_record($this->cachetable, $record);
         }

@@ -17,12 +17,11 @@
 /**
  * MathType filter test page.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 function create_atto_compatibility_row($currenteditordata = null, $solutionlink = null) {
     // Get Wiris plugin instance.
     $wirisplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
@@ -37,7 +36,7 @@ function create_atto_compatibility_row($currenteditordata = null, $solutionlink 
         : $currenteditordata['plugin_path'] . '/version.php';
 
     if (file_exists($versionfile)) {
-        require($versionfile);
+        include($versionfile);
         if (isset($plugin->version)) {
             $pluginversion = $plugin->version;
         }
@@ -49,17 +48,17 @@ function create_atto_compatibility_row($currenteditordata = null, $solutionlink 
     // Check compatibility.
     if ($filterversion == $pluginversion) {
         $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
-                        get_string('havesameversion', 'filter_wiris');
+            get_string('havesameversion', 'filter_wiris');
         $condition = true;
     } else {
         $reporttext = get_string('wirispluginfilterfor', 'filter_wiris') . '&nbsp;' . $currenteditordata['plugin_name'] . '&nbsp;' .
-                        get_string('versionsdontmatch', 'filter_wiris');
+            get_string('versionsdontmatch', 'filter_wiris');
         $reporttext .= "<br>" . get_string('wirisfilterversion', 'filter_wiris') . '&nbsp;' . $filterversion;
         $reporttext .= "<br>" . get_string('wirispluginfor', 'filter_wiris') . '&nbsp;' .  $currenteditordata['plugin_name'] .
-                        '&nbsp;' . get_string('version', 'filter_wiris'). ' = ' . $pluginversion;
+            '&nbsp;' . get_string('version', 'filter_wiris') . ' = ' . $pluginversion;
         $condition = false;
     }
 
     // Return the HTML output as a string.
-    return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), array('class' => 'wrs_plugin wrs_filter'));
+    return html_writer::tag('tr', wrs_createtablerow($testname, $reporttext, $solutionlink, $condition), ['class' => 'wrs_plugin wrs_filter']);
 }

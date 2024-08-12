@@ -17,7 +17,7 @@
 /**
  * Database upgrade for MathType.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,7 +28,7 @@ function xmldb_filter_wiris_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2016101701) {
-         // Define table filter_wiris to be created.
+        // Define table filter_wiris to be created.
         $table = new xmldb_table('filter_wiris_formulas');
 
         // Adding fields to table filter_wiris.
@@ -37,8 +37,8 @@ function xmldb_filter_wiris_upgrade($oldversion) {
         $table->add_field('content', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'md5');
 
         // Adding keys to table filter_wiris.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->add_key('md5', XMLDB_KEY_UNIQUE, array('md5'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('md5', XMLDB_KEY_UNIQUE, ['md5']);
 
         // Conditionally launch create table for filter_wiris.
         if (!$dbman->table_exists($table)) {
@@ -47,11 +47,9 @@ function xmldb_filter_wiris_upgrade($oldversion) {
 
         // Wiris savepoint reached.
         upgrade_plugin_savepoint(true, 2016101701, 'filter', 'wiris');
-
     }
 
     if ($oldversion < 2017030100) {
-
         // Define field jsoncontent to be added to filter_wiris_formulas.
         $table = new xmldb_table('filter_wiris_formulas');
         $field = new xmldb_field('jsoncontent', XMLDB_TYPE_TEXT, null, null, null, null, null, 'content');
@@ -73,7 +71,6 @@ function xmldb_filter_wiris_upgrade($oldversion) {
     }
 
     if ($oldversion < 2017050800) {
-
         // Define field timecreated to be added to filter_wiris_formulas.
         $table = new xmldb_table('filter_wiris_formulas');
         $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'alt');
@@ -88,7 +85,7 @@ function xmldb_filter_wiris_upgrade($oldversion) {
 
         // Define key md5 (unique) to be dropped form filter_wiris_formulas.
         $table = new xmldb_table('filter_wiris_formulas');
-        $index = new xmldb_index('md5', XMLDB_INDEX_UNIQUE, array('md5'));
+        $index = new xmldb_index('md5', XMLDB_INDEX_UNIQUE, ['md5']);
 
         $dbman->drop_index($table, $index);
 
@@ -98,7 +95,7 @@ function xmldb_filter_wiris_upgrade($oldversion) {
         // Launch change of precision for field md5.
         $dbman->change_field_precision($table, $field);
 
-        $key = new xmldb_key('md5', XMLDB_KEY_UNIQUE, array('md5'));
+        $key = new xmldb_key('md5', XMLDB_KEY_UNIQUE, ['md5']);
 
         // Launch add key md5.
         $dbman->add_key($table, $key);

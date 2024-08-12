@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="filter/wiris/db" VERSION="20170413" COMMENT="XMLDB file for Moodle filter/wiris"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
->
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
     <TABLE NAME="filter_wiris_formulas" COMMENT="Default comment for filter_wiris, please edit me">
       <FIELDS>

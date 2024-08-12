@@ -27,21 +27,56 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
+/**
+ * Class filter_without_performance_png_test
+ *
+ * This class represents a test case for the filter_without_performance_png class.
+ * It extends the advanced_testcase class.
+ *
+ * @package MOODLE_39_STABLE/filter/wiris/tests
+ */
 class filter_without_performance_png_test extends advanced_testcase {
+
+
+    /**
+     * @var filter_wiris The WIRIS filter instance.
+     */
     protected $wirisfilter;
+
+    /**
+     * @var string Safe XML representation of a math formula.
+     */
     protected $safexml;
+
+    /**
+     * @var string XML representation of a math formula.
+     */
     protected $xml;
+
+    /**
+     * @var string Image representation of a math formula.
+     */
     protected $image;
+
+    /**
+     * @var object Instance of the filter.
+     */
     protected $instance;
+
+    /**
+     * @var string Name of the cache table.
+     */
     protected $cachetable;
 
     protected function setUp(): void {
         global $CFG;
         parent::setUp();
         $this->resetAfterTest(true);
-        filter_wiris_pluginwrapper::set_configuration(array('wirispluginperformance' => 'false',
-                                                            'wirisimageformat' => 'png'));
-        $this->wirisfilter = new filter_wiris(context_system::instance(), array());
+        filter_wiris_pluginwrapper::set_configuration([
+            'wirispluginperformance' => 'false',
+            'wirisimageformat' => 'png',
+        ]);
+        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
         $this->cachetable = 'filter_wiris_formulas';
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';

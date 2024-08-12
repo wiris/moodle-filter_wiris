@@ -17,7 +17,7 @@
 /**
  * Cache definition for MathType.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,11 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$definitions = array(
-    'images' => array(
-        'mode' => cache_store::MODE_APPLICATION
-    ),
-    'formulas' => array(
-        'mode' => cache_store::MODE_APPLICATION
-    )
-);
+$definitions = [
+    'images' => [
+        'mode' => cache_store::MODE_APPLICATION,
+    ],
+    'formulas' => [
+        'mode' => cache_store::MODE_APPLICATION,
+    ],
+];

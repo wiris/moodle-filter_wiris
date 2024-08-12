@@ -15,38 +15,51 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-/**
- * This class implements WIRIS com_wiris_plugin_configuration_ConfigurationUpdater interface
- * to use a custom Moodle configuration.
- *
- * @package    filter
- * @subpackage wiris
- * @copyright  WIRIS Europe (Maths for more S.L)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
 
+/**
+ * This class implements WIRIS com_wiris_plugin_configuration_ConfigurationUpdater interface
+ * to use a custom Moodle configuration.
+ *
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class filter_wiris_pluginwrapperconfigurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
 
+
+    /**
+     * @var mixed $customconfig The custom configuration instance.
+     */
     private $customconfig;
 
+    /**
+     * Constructor for the PluginWrapperConfigurationUpdater class.
+     *
+     * @param mixed $config The custom configuration for the plugin wrapper.
+     */
     public function __construct($config) {
         $this->customconfig = $config;
     }
 
     // @codingStandardsIgnoreStart
     // Can't change implemented interface method name.
-    public function updateConfiguration(&$configuration) {
+    /**
+     * Updates the configuration array with custom configuration values.
+     *
+     * @param array $configuration The configuration array to be updated.
+     * @return void
+     */
+    public function updateConfiguration(&$configuration)
+    {
         if (isset($this->customconfig)) {
             foreach ($this->customconfig as $key => $value) {
                 $configuration[$key] = $value;
             }
         }
-
     }
-    public function init($obj) {
-    }
+    public function init($obj) {}
 }

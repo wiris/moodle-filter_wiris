@@ -19,12 +19,14 @@
  * This filter does nothing to the received text.
  * Adds a Javascript library that will do all the heavy-lifting.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_wiris_client extends moodle_text_filter {
+
+
 
     /**
      * Set any context-specific configuration for this filter.
@@ -49,7 +51,7 @@ class filter_wiris_client extends moodle_text_filter {
      *
      * @return [text] the received text as it is.
      */
-    public function filter($text, array $options = array()) {
+    public function filter($text, array $options = []) {
         global $PAGE;
         // Add the Javascript Thir-party library to the page.
         $PAGE->requires->js(new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]'));
@@ -98,8 +100,8 @@ class filter_wiris_client extends moodle_text_filter {
         if (array_key_exists('urltolink', $avaliablecontextfilters)) {
             $urltolinkfilter = $avaliablecontextfilters['urltolink'];
             $urltolinkfilteractive = $urltolinkfilter->localstate == TEXTFILTER_ON ||
-                                   ($urltolinkfilter->localstate == TEXTFILTER_INHERIT &&
-                                    $urltolinkfilter->inheritedstate == TEXTFILTER_ON);
+                ($urltolinkfilter->localstate == TEXTFILTER_INHERIT &&
+                    $urltolinkfilter->inheritedstate == TEXTFILTER_ON);
         }
         return $urltolinkfilteractive;
     }

@@ -14,38 +14,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 /**
  * Steps definitions base class for wiris.
- *
  * To extend by the steps definitions of the different Moodle components.
- *
  * It can not contain steps definitions to avoid duplicates, only utility
  * methods shared between steps.
- */
-
-/**
  * This class provides necessary methods to run behat scripts for MathType.
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-// NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
-
-
-require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
-
 class behat_wiris_base extends behat_base {
 
+
     /**
-     * @Transform /^(\d+)$/
+     * Transforms a string to a number.
+     *
+     * @param string $string The string to transform.
+     * @return int The transformed number.
+     * Transform /^(\d+)$/
      */
     public function cast_string_to_number($string) {
         return intval($string);
     }
 
+    /**
+     * Maximum number of rows for a specific operation.
+     *
+     * @var int
+     */
     const MAX_NUNMBER_ROWS = 500;
+
     /**
      * Looks for the position of an element in the first row in a table given certain text displayed.
      *

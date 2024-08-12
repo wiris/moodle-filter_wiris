@@ -20,12 +20,15 @@
  * it uses the integration/ classes to make calls to the wiris.net services,
  * converting safeXML and XML math formulas to images.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_wiris_php extends moodle_text_filter {
+
+
+
 
     /**
      * Set any context-specific configuration for this filter.
@@ -38,7 +41,14 @@ class filter_wiris_php extends moodle_text_filter {
         $this->localconfig = $localconfig;
     }
 
-    public function filter($text, array $options = array()) {
+    /**
+     * Filters the given text for math and applet elements using the Wiris plugin.
+     *
+     * @param string $text The text to filter.
+     * @param array $options An array of options (optional).
+     * @return string The filtered text.
+     */
+    public function filter($text, array $options = []) {
         global $CFG, $DB;
 
         $n0 = mb_stripos($text, '«math');
@@ -122,8 +132,8 @@ class filter_wiris_php extends moodle_text_filter {
         if (array_key_exists('mathjaxloader', $avaliablecontextfilters)) {
             $mathjaxfilter = $avaliablecontextfilters['mathjaxloader'];
             $mathjaxfilteractive = $mathjaxfilter->localstate == TEXTFILTER_ON ||
-                                   ($mathjaxfilter->localstate == TEXTFILTER_INHERIT &&
-                                    $mathjaxfilter->inheritedstate == TEXTFILTER_ON);
+                ($mathjaxfilter->localstate == TEXTFILTER_INHERIT &&
+                    $mathjaxfilter->inheritedstate == TEXTFILTER_ON);
         }
 
         // Check filter orders.
