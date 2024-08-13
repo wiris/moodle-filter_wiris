@@ -78,11 +78,6 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci codechecker --max-warnings 50 ./plugin
 
-      - name: Moodle PHPdoc Code Checker (DEPRECATED)
-        if: ${{ always() }}
-        continue-on-error: true
-        run: moodle-plugin-ci phpdoc ./plugin
-
       - name: Check upgrade savepoints
         if: ${{ always() }}
         run: moodle-plugin-ci savepoints ./plugin
