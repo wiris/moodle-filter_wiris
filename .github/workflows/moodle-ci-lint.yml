@@ -1,4 +1,4 @@
-name: Moodle Plugin CI Code Lint for WIRIS_Moodle_filter
+name: Moodle Plugin CI Code Lint for WIRIS_Moodle_Filter
 
 on:
   push:
@@ -56,13 +56,13 @@ jobs:
           CODECHECKER_IGNORE_PATHS: classes/privacy,ignore,node_modules,integration,render
           PHPUNIT_IGNORE_PATHS: classes/privacy,ignore,node_modules,integration,render
 
-      # 5. Run all tests.
-      # 5.1. Lint
+      # 3. Run all tests.
+      # 3.1. Lint
       - name: PHP Lint
         if: ${{ always() }}
         run: moodle-plugin-ci phplint ./plugin
 
-      # 5.2. PHP Detectors
+      # 3.2. PHP Detectors
       - name: PHP Copy/Paste Detector (DEPRECATED)
         continue-on-error: true # This step will show errors but will not fail
         if: ${{ always() }}
@@ -73,7 +73,7 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci phpmd ./plugin
 
-      # 5.3. Code validations
+      # 3.3. Code validations
       - name: Moodle Code Checker
         if: ${{ always() }}
         run: moodle-plugin-ci codechecker --max-warnings 50 ./plugin
