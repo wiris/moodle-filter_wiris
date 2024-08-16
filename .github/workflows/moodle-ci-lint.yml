@@ -1,4 +1,4 @@
-name: Moodle Plugin CI Code Lint for WIRIS_Moodle_Filter
+name: Moodle Plugin CI Code Lint
 
 on:
   push:
