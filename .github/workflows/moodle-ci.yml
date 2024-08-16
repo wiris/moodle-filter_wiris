@@ -1,4 +1,4 @@
-name: Moodle Plugin CI Tests for WIRIS_Moodle_filter
+name: Moodle Plugin CI Tests
 
 # The workflow is triggered on push to the stable branch, main branch, pull requests and every day at 6:30 UTC.
 on:
@@ -11,7 +11,7 @@ on:
       - "*"
   schedule:
     - cron: "30 6 * * *"
-  
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
             "MOODLE_404_STABLE",
           ]
         database: [pgsql]
-        browser: [ "chrome","firefox" ]
+        browser: ["chrome", "firefox"]
         exclude:
           # Exclude Moodle+PHP incompatible versions
           # See: https://docs.moodle.org/dev/Moodle_and_PHP
@@ -131,7 +131,7 @@ jobs:
           coverage: none
 
       - name: Setup Node.js
-        run  : |
+        run: |
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
           export NVM_DIR="$HOME/.nvm"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
