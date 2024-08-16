@@ -42,7 +42,7 @@ jobs:
           ini-values: max_input_vars=10000
           coverage: none
 
-      # 2. Setup Moodle-plugin-ci
+      # 2. Setup Moodle-plugin-ci version 4. This is the latest version. Keep it updated.
       - name: Initialise moodle-plugin-ci
         run: |
           composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^4
