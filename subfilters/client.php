@@ -52,7 +52,7 @@ class filter_wiris_client extends moodle_text_filter {
     public function filter($text, array $options = array()) {
         global $PAGE;
         // Add the Javascript Thir-party library to the page.
-        $PAGE->requires->js(new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_latex_containers=[data-fieldtype="editor"]&ignored_mathml_containers=[data-fieldtype="editor"]'));
+        $PAGE->requires->js(new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]'));
 
 
 
