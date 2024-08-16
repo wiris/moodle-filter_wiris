@@ -103,12 +103,23 @@ jobs:
           path: plugin
 
       # 0.1 Log
+      - name: Set branch name
+        id: get_branch
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "BRANCH_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
+          else
+            echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
+          fi
+
       - name: Log info
         run: |
           curl ifconfig.me
           echo "PHP: ${{ matrix.php }}"
           echo "Moodle: ${{ matrix.moodle-branch }}"
           echo "Database: ${{ matrix.database }}"
+          echo "Browser: ${{ matrix.browser }}"
+          echo "Branch: ${{ env.BRANCH_NAME }}"
 
       # 1. Setup PHP using the matrix described on the strategy section.
       - name: Setup PHP ${{ matrix.php }}
@@ -146,7 +157,7 @@ jobs:
         id: install-plugin-atto
         continue-on-error: true
         run: |
-          moodle-plugin-ci add-plugin --branch ${{ github.ref_name }} wiris/moodle-atto_wiris
+          moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-atto_wiris
       - name: Add MathType plugin for Atto using the stable branch
         if: steps.install-plugin-atto.outcome != 'success'
         run: |
@@ -159,7 +170,7 @@ jobs:
 
         continue-on-error: true
         run: |
-          moodle-plugin-ci add-plugin --branch ${{ github.ref_name }} wiris/moodle-tiny_wiris
+          moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-tiny_wiris
       - name: Add MathType plugin for TinyMCE using the stable branch
         if: contains(fromJson('["MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle-branch) && steps.install-plugin-tiny.outcome != 'success'
         run: |
@@ -176,7 +187,7 @@ jobs:
         if: ${{ always() }}
         continue-on-error: true
         run: |
-          moodle-plugin-ci add-plugin --branch ${{ github.ref_name }} wiris/moodle-qtype_wq
+          moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }}wiris/moodle-qtype_wq
       - name: Add Wiris Quizzes plugin using the stable branch
         if: steps.install-plugin-quizzes.outcome != 'success'
         run: |
@@ -194,12 +205,12 @@ jobs:
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit ./plugin
 
-      # 5.1 Moodle Code Validator
+      # 5.2 Moodle Code Validator
       - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate ./plugin
 
-      # 5.2 Behat tests
+      # 6 Behat tests
 
       # Run Behat tests on all Moodle branches.
       # Known tags: @3.x_plugin, @4.0_plugin, @4.x_plugin
