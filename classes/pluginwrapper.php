@@ -39,6 +39,8 @@ if (!class_exists('moodledbcache')) {
     require_once($CFG->dirroot . '/filter/wiris/classes/moodledbcache.php');
 }
 
+require_once($CFG->dirroot . '/lib/editorlib.php');
+
 class filter_wiris_pluginwrapper {
     private $isinit = false;
     private $installed = false;
@@ -198,6 +200,82 @@ class filter_wiris_pluginwrapper {
         return false;
     }
 
+    /**
+     * Retrieves information about all integrated WIRIS plugins.
+     *
+     * This function gathers and returns details about the WIRIS plugins for different text editors 
+     * (Atto, TinyMCE, Tiny) configured in the system. It checks if the plugins exist, and if so, 
+     * it retrieves their version, release information, and their paths.
+     *
+     * @return array An array containing information about all available WIRIS plugins, 
+     *               including their URL, path, version, and release.
+     */
+    public static function get_wiris_plugins_information() {
+        global $CFG;
+        // Initialize an array to store plugin information.
+        $plugins = [];
+    
+        // Loop over atto, tinymce (legacy), and tiny (current) in the order defined by the configuration.        
+        $editors = explode(',', $CFG->texteditors);
+        // Before loop, check if exists filter
+        $plugin = new stdClass();
+        $filterrelativepath = '/filter/wiris';
+        require($CFG->dirroot . $filterrelativepath . '/version.php');
+        if (isset($plugin->release) || $plugin->maturity == MATURITY_BETA) {
+            $plugins['filter'] ['url'] = $CFG->wwwroot . $filterrelativepath;
+            $plugins['filter'] ['path'] = $CFG->dirroot . $filterrelativepath;
+            $plugins['filter'] ['version'] = isset($plugin->version) ? $plugin->version : '';
+            $plugins['filter'] ['release'] = isset($plugin->release) ? $plugin->release : '';
+        }
+
+        foreach ($editors as $editor) {
+            if ($editor == 'atto') {
+                $relativepath = '/lib/editor/atto/plugins/wiris';
+                if (file_exists($CFG->dirroot . $relativepath . '/version.php')) {
+                    $plugin = new stdClass();
+                    require($CFG->dirroot . $relativepath . '/version.php');
+
+                    $plugins['atto'] ['url'] = $CFG->wwwroot . $relativepath;
+                    $plugins['atto'] ['path'] = $CFG->dirroot . $relativepath;
+                    $plugins['atto'] ['version'] = isset($plugin->version) ? $plugin->version : '';
+                    $plugins['atto'] ['release'] = isset($plugin->release) ? $plugin->release : '';
+                }
+            } else if ($editor == 'tinymce') {
+                if ($CFG->version >= 2012120300) { // Location for Moodle 2.4 onwards.
+                    $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
+                } else { // Location for Moodle < 2.4.
+                    require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
+                    $tiny = new tinymce_texteditor();
+                    $tinyversion = $tiny->version;
+                    $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
+                }
+
+                if (file_exists($CFG->dirroot .  $relativepath . '/../version.php')) {
+                    $plugin = new stdClass();
+                    require($CFG->dirroot .  $relativepath . '/../version.php');
+
+                    $plugins['tinymce'] ['url'] = $CFG->wwwroot . $relativepath;
+                    $plugins['tinymce'] ['path'] = $CFG->dirroot . $relativepath;
+                    $plugins['tinymce'] ['version'] = isset($plugin->version) ? $plugin->version : '';
+                    $plugins['tinymce'] ['release'] = isset($plugin->release) ? $plugin->release : '';
+                }
+            } else if ($editor == 'tiny') {
+                $relativepath = '/lib/editor/tiny/plugins/wiris';
+                if (file_exists($CFG->dirroot . $relativepath . '/version.php')) {
+                    $plugin = new stdClass();
+                    require($CFG->dirroot . $filterrelativepath . '/version.php');
+
+                    $plugins['tiny']['url'] = $CFG->wwwroot . $relativepath;
+                    $plugins['tiny']['path'] = $CFG->dirroot . $relativepath;
+                    $plugins['tiny']['version'] = isset($plugin->version) ? $plugin->version : '';
+                    $plugins['tiny']['release'] = isset($plugin->release) ? $plugin->release : '';
+                }
+            }
+        }
+
+        // Return the array containing information about all available plugins
+        return $plugins;
+    }
     /**
      * Since version 2016030200 configuration.ini file is
      * has been moved from editor plugin folder to filte folder.
