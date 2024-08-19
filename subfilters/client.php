@@ -28,11 +28,13 @@ class filter_wiris_client extends moodle_text_filter {
 
 
 
+
+
     /**
      * Set any context-specific configuration for this filter.
      *
-     * @param context $context The current context.
-     * @param array $localconfig Any context-specific configuration for this filter.
+     * @param context $context     The current context.
+     * @param array   $localconfig Any context-specific configuration for this filter.
      */
     public function __construct($context, array $localconfig) {
         $this->context = $context;
@@ -54,9 +56,9 @@ class filter_wiris_client extends moodle_text_filter {
     public function filter($text, array $options = []) {
         global $PAGE;
         // Add the Javascript Thir-party library to the page.
-        $PAGE->requires->js(new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]'));
-
-
+        $PAGE->requires->js(
+            new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]')
+        );
 
         // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
         // Therefore, this filter does not affect the markup server-side.

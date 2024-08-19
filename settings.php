@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Moodle notification API: https://docs.moodle.org/dev/Notifications.
-use \core\notification;
+use core\notification;
 
 if ($ADMIN->fulltree) {
     global $CFG;

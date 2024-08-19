@@ -83,11 +83,11 @@ class behat_wiris_filter extends behat_wiris_base {
     }
 
         /**
-     * Check Image performance mode on on MathType filter page
-     *
-     * @Given I check image performance mode on
-     * @throws ExpectationException If image performance mode is not found, it will throw an exception.
-     */
+         * Check Image performance mode on on MathType filter page
+         *
+         * @Given I check image performance mode on
+         * @throws ExpectationException If image performance mode is not found, it will throw an exception.
+         */
     public function i_check_image_performance_mode_on() {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_pluginperformance" ]');

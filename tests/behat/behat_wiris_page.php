@@ -55,7 +55,7 @@ class behat_wiris_page extends behat_wiris_base {
     }
 
     /**
-     * Check input element 'value' equals an expected result 
+     * Check input element 'value' equals an expected result
      *
      * @Then :field input value is equal to :value
      * @param  field input element which value is wanted
@@ -63,13 +63,13 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the element's true 'value' is not equal to the expected one, it will throw an exception.
      */
     public function input_value_is_equal_to($field, $value) {
-        $fieldarray = array(
-            "Service host" => "id_s_filter_wiris_imageservicehost"
-        );
-        $valuearray = array(
+        $fieldarray = [
+            "Service host" => "id_s_filter_wiris_imageservicehost",
+        ];
+        $valuearray = [
             "wiris.net" => "www.wiris.net",
-            "wipis.net" => "www.wipis.net"
-        );
+            "wipis.net" => "www.wipis.net",
+        ];
         if (empty($fieldarray[$field])) {
             throw new ExpectationException($field." field not registered.", $this->getSession());
         }
@@ -112,10 +112,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $field field to click on
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
-    public function i_click_on_field_in_TinyMCE_6($field) {
-        $fieldarray = array(
+    public function i_click_on_field_in_tinymce_6($field) {
+        $fieldarray = [
             "Page content" => "id_page",
-        );
+        ];
         if (empty($fieldarray[$field])) {
             throw new ExpectationException($field." field not registered.");
         }
@@ -200,10 +200,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $field field to check
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
-    public function i_place_caret_at_position_in_field_in_TinyMCE_6($position, $field) {
-        $fieldarray = array(
-            "Page Content" => "tinymce"
-        );
+    public function i_place_caret_at_position_in_field_in_tinymce_6($position, $field) {
+        $fieldarray = [
+            "Page Content" => "tinymce",
+        ];
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//body[@id="tinymce"]');
         if (empty($component)) {
@@ -237,8 +237,8 @@ class behat_wiris_page extends behat_wiris_base {
             "General feedback" => "fitem_id_generalfeedback",
             "Feedback" => "fitem_id_feedback_0",
             "Description" => "fitem_id_introeditor",
-            "Message" => "fitem_id_message"
-        );
+            "Message" => "fitem_id_message",
+        ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
@@ -284,7 +284,7 @@ class behat_wiris_page extends behat_wiris_base {
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "Insert a math equation - MathType",
             "ChemType" => "Insert a chemistry formula - ChemType",
             "Toggle" => "pdw_toggle",
@@ -324,16 +324,17 @@ class behat_wiris_page extends behat_wiris_base {
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
-            "Feedback" => "fitem_id_feedback_0"
-        );
+            "Feedback" => "fitem_id_feedback_0",
+        ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
         $buttonarray = [
             "MathType" => "MathType",
             "ChemType" => "ChemType",
-            "Toggle" => "More..."
-        );
+            "Toggle" => "More...",
+        ];
+
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
@@ -571,16 +572,16 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_check_in_field_in_tinymce_editor($button, $field, $exist) {
-        $sectionarray = array(
-            "Page content" => "content"
-        );
+        $sectionarray = [
+            "Page content" => "content",
+        ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "Insert a math equation - MathType",
             "ChemType" => "Insert a chemistry formula - ChemType",
-        );
+        ];
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
@@ -601,10 +602,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $button button to click on
      * @throws ExpectationException If the button is not found, it will throw an exception.
      */
-    public function i_click_on_in_TinyMCE_6_editor_toolbar($button) {
-        $buttonarray = array(
+    public function i_click_on_in_tinymce_6_editor_toolbar($button) {
+        $buttonarray = [
             "More options" => "More...",
-        );
+        ];
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button." button not registered.");
         }
