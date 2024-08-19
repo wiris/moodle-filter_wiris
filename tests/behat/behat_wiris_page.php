@@ -14,21 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Methods related to the interaction with the MathType.
- * @package    filter
- * @subpackage wiris
- * @copyright  WIRIS Europe (Maths for more S.L)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
 
 require_once(__DIR__ . '/behat_wiris_base.php');
 
 use Behat\Mink\Exception\ExpectationException;
 
+/**
+ * Methods related to the interaction with the MathType.
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class behat_wiris_page extends behat_wiris_base {
+
 
     /**
      * Check the size of the formula in full screen mode
@@ -39,23 +39,23 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_press_mathtype_in_full_screen_mode($button) {
         $session = $this->getSession();
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "mce_fullscreen_tiny_mce_wiris_formulaEditor",
             "ChemType" => "mce_fullscreen_tiny_mce_wiris_formulaEditorChemistry",
-            "Full screen" => "mce_fullscreen_fullscreen"
-        );
+            "Full screen" => "mce_fullscreen_fullscreen",
+        ];
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
-        $component = $session->getPage()->find('xpath', '//*[@id="'.$buttonarray[$button].'"]');
+        $component = $session->getPage()->find('xpath', '//*[@id="' . $buttonarray[$button] . '"]');
         if (empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in full screen mode', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in full screen mode', $this->getSession());
         }
         $component->click();
     }
 
     /**
-     * Check input element 'value' equals an expected result 
+     * Check input element 'value' equals an expected result
      *
      * @Then :field input value is equal to :value
      * @param  field input element which value is wanted
@@ -63,13 +63,13 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the element's true 'value' is not equal to the expected one, it will throw an exception.
      */
     public function input_value_is_equal_to($field, $value) {
-        $fieldarray = array(
-            "Service host" => "id_s_filter_wiris_imageservicehost"
-        );
-        $valuearray = array(
+        $fieldarray = [
+            "Service host" => "id_s_filter_wiris_imageservicehost",
+        ];
+        $valuearray = [
             "wiris.net" => "www.wiris.net",
-            "wipis.net" => "www.wipis.net"
-        );
+            "wipis.net" => "www.wipis.net",
+        ];
         if (empty($fieldarray[$field])) {
             throw new ExpectationException($field." field not registered.", $this->getSession());
         }
@@ -88,19 +88,19 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_click_on_field($field) {
-        $fieldarray = array(
+        $fieldarray = [
             "Page content" => "id_pageeditable",
             "Question text" => "id_questiontexteditable",
             "General feedback" => "id_generalfeedbackeditable",
-            "Feedback" => "id_feedback_0editable"
-        );
+            "Feedback" => "id_feedback_0editable",
+        ];
         if (empty($fieldarray[$field])) {
-            throw new ExpectationException($field." field not registered.");
+            throw new ExpectationException($field . " field not registered.");
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//div[@id="'.$fieldarray[$field].'"]');
+        $component = $session->getPage()->find('xpath', '//div[@id="' . $fieldarray[$field] . '"]');
         if (empty($component)) {
-            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
+            throw new ExpectationException($field . " field not correctly recognized.", $this->getSession());
         }
         $component->click();
     }
@@ -112,10 +112,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $field field to click on
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
-    public function i_click_on_field_in_TinyMCE_6($field) {
-        $fieldarray = array(
+    public function i_click_on_field_in_tinymce_6($field) {
+        $fieldarray = [
             "Page content" => "id_page",
-        );
+        ];
         if (empty($fieldarray[$field])) {
             throw new ExpectationException($field." field not registered.");
         }
@@ -139,7 +139,7 @@ class behat_wiris_page extends behat_wiris_base {
         $component = $session->getPage()->find('xpath', '//img[contains(@alt, "' . $alt . '")]');
         if (empty($component)) {
             throw new ExpectationException("Image with alternative text" .
-                    $alt . " is not correctly recognized.", $this->getSession());
+                $alt . " is not correctly recognized.", $this->getSession());
         }
         $component->doubleClick();
     }
@@ -167,28 +167,28 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_place_caret_at_position_in_field($position, $field) {
-        $fieldarray = array(
+        $fieldarray = [
             "Page content" => "id_pageeditable",
             "Question text" => "id_questiontexteditable",
             "General feedback" => "id_generalfeedbackeditable",
-            "Feedback" => "id_feedback_0editable"
-        );
+            "Feedback" => "id_feedback_0editable",
+        ];
         if (empty($fieldarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//div[@id="'.$fieldarray[$field].'"]');
+        $component = $session->getPage()->find('xpath', '//div[@id="' . $fieldarray[$field] . '"]');
         if (empty($component)) {
-            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
+            throw new ExpectationException($field . " field not correctly recognized.", $this->getSession());
         }
         $session = $this->getSession();
         $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
-            .'node = document.getElementById(\''.$fieldarray[$field].'\').firstChild;'
-            .'window.parent.document.getSelection().removeAllRanges();'
-            .'range.setStart(node,'.$position.');'
-            .'range.setEnd(node,'.$position.');'
-            .'window.parent.document.getSelection().addRange(range);'
-            .'window.parent.document.body.focus();';
+            . 'node = document.getElementById(\'' . $fieldarray[$field] . '\').firstChild;'
+            . 'window.parent.document.getSelection().removeAllRanges();'
+            . 'range.setStart(node,' . $position . ');'
+            . 'range.setEnd(node,' . $position . ');'
+            . 'window.parent.document.getSelection().addRange(range);'
+            . 'window.parent.document.body.focus();';
         $session->executeScript($script);
     }
 
@@ -200,10 +200,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $field field to check
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
-    public function i_place_caret_at_position_in_field_in_TinyMCE_6($position, $field) {
-        $fieldarray = array(
-            "Page Content" => "tinymce"
-        );
+    public function i_place_caret_at_position_in_field_in_tinymce_6($position, $field) {
+        $fieldarray = [
+            "Page Content" => "tinymce",
+        ];
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//body[@id="tinymce"]');
         if (empty($component)) {
@@ -231,26 +231,26 @@ class behat_wiris_page extends behat_wiris_base {
     public function i_press_in_field_in_atto_editor($button, $field) {
         global $CFG;
 
-        $sectionarray = array(
+        $sectionarray = [
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
             "Feedback" => "fitem_id_feedback_0",
             "Description" => "fitem_id_introeditor",
-            "Message" => "fitem_id_message"
-        );
+            "Message" => "fitem_id_message",
+        ];
         if (empty($sectionarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "atto_wiris_button_wiris_editor",
             "ChemType" => "atto_wiris_button_wiris_chem_editor",
             "Collapse" => "atto_collapse_button",
             "HTML" => "atto_html_button",
-            "HTML pressed" => "atto_html_button"
-        );
+            "HTML pressed" => "atto_html_button",
+        ];
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
 
         if ($CFG->version >= 2018051700 && $CFG->version < 2018120300) {
@@ -258,10 +258,10 @@ class behat_wiris_page extends behat_wiris_base {
         }
 
         $session = $this->getSession();
-        $component = $session->getPage()->find( 'xpath', '//div[@id="'.$sectionarray[$field].'"]
-        //button[@class="'.$buttonarray[$button].'"]');
+        $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+        //button[@class="' . $buttonarray[$button] . '"]');
         if (empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
         $component->click();
     }
@@ -275,33 +275,33 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_tinymce_editor($button, $field) {
-        $sectionarray = array(
+        $sectionarray = [
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
-            "Feedback" => "fitem_id_feedback_0"
-        );
+            "Feedback" => "fitem_id_feedback_0",
+        ];
         if (empty($sectionarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "Insert a math equation - MathType",
             "ChemType" => "Insert a chemistry formula - ChemType",
             "Toggle" => "pdw_toggle",
-            "Full screen" => "fullscreen"
-        );
+            "Full screen" => "fullscreen",
+        ];
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
         //*[contains(@title,\''.$buttonarray[$button].'\')]');
         if (empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
         if ($button == 'Toggle') {
             // Clicking only if toggle button is not pressed yet.
-            $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
             //*[contains(@class,\'mceButtonActive\')]');
             if (!empty($component)) {
                 $component->click();
@@ -320,28 +320,29 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_tiny_editor($button, $field) {
-        $sectionarray = array(
+        $sectionarray = [
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
-            "Feedback" => "fitem_id_feedback_0"
-        );
+            "Feedback" => "fitem_id_feedback_0",
+        ];
         if (empty($sectionarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "MathType",
             "ChemType" => "ChemType",
-            "Toggle" => "More..."
-        );
+            "Toggle" => "More...",
+        ];
+
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
-        //*[contains(@title,\''.$buttonarray[$button].'\')]');
+        $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+        //*[contains(@title,\'' . $buttonarray[$button] . '\')]');
         if (empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
         if ($button == 'Toggle') {
             // Clicking only if toggle button is not pressed yet.
@@ -382,7 +383,7 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_check_if_mathtype_formula_src_is_equals_to($link) {
         $session = $this->getSession();
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].src == \''.$link.'\'';
+        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].src == \'' . $link . '\'';
         $session->evaluateScript($script);
     }
 
@@ -536,27 +537,27 @@ class behat_wiris_page extends behat_wiris_base {
     public function i_check_in_field_in_atto_editor($button, $field, $exist) {
         global $CFG;
 
-        $sectionarray = array(
-            "Page content" => "fitem_id_page"
-        );
+        $sectionarray = [
+            "Page content" => "fitem_id_page",
+        ];
         if (empty($sectionarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "atto_wiris_button_wiris_editor",
-            "ChemType" => "atto_wiris_button_wiris_chem_editor"
-        );
+            "ChemType" => "atto_wiris_button_wiris_chem_editor",
+        ];
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
 
         $session = $this->getSession();
-        $component = $session->getPage()->find( 'xpath', '//div[@id="'.$sectionarray[$field].'"]
-        //button[@class="'.$buttonarray[$button].'"]');
+        $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+        //button[@class="' . $buttonarray[$button] . '"]');
         if ($exist === "does" && empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         } else if ($exist === "does not" && !empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button found in "' . $field . '" field', $this->getSession());
         }
     }
 
@@ -571,26 +572,26 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_check_in_field_in_tinymce_editor($button, $field, $exist) {
-        $sectionarray = array(
-            "Page content" => "content"
-        );
+        $sectionarray = [
+            "Page content" => "content",
+        ];
         if (empty($sectionarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $buttonarray = array(
+        $buttonarray = [
             "MathType" => "Insert a math equation - MathType",
             "ChemType" => "Insert a chemistry formula - ChemType",
-        );
+        ];
         if (empty($buttonarray[$button])) {
-            throw new ExpectationException($button." button not registered.", $this->getSession());
+            throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
         $session = $this->getSession();
         $component = $session->getPage()->find( 'xpath', '//button[@title="'.$buttonarray[$button].'"]');
         if ($exist === "does" && empty($component)) {
-            throw new ExpectationException ('"'.$button.'" button not found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         } else if ($exist === "does not" && $component === '') {
             echo "a is " . $component . "<br>";
-            throw new ExpectationException ('"'.$button.'" button found in "'.$field.'" field', $this->getSession());
+            throw new ExpectationException('"' . $button . '" button found in "' . $field . '" field', $this->getSession());
         }
     }
 
@@ -601,10 +602,10 @@ class behat_wiris_page extends behat_wiris_base {
      * @param  string $button button to click on
      * @throws ExpectationException If the button is not found, it will throw an exception.
      */
-    public function i_click_on_in_TinyMCE_6_editor_toolbar($button) {
-        $buttonarray = array(
+    public function i_click_on_in_tinymce_6_editor_toolbar($button) {
+        $buttonarray = [
             "More options" => "More...",
-        );
+        ];
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button." button not registered.");
         }

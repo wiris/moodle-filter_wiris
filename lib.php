@@ -17,7 +17,7 @@
 /**
  * Library functions for MathType filter.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,15 +25,16 @@
 
 /**
  * Return an array with the position of the tags named $name on $code variable.
+ *
  * @param  String  $code       html code.
  * @param  String  $name       tag name.
  * @param  String  $autoclosed indicates if the tag is autoclosed.
  * @param  boolean $all        indicates if the array should contain all the tags or only the first one.
- * @param  int     $offset      search will start this number of characters counted from the beginning of the string
+ * @param  int     $offset     search will start this number of characters counted from the beginning of the string
  * @return array
  */
 function wrs_getelementsbynamefromstring($code, $name, $autoclosed, $all = false, $offset = 0) {
-    $elements = array();
+    $elements = [];
     $code = strtolower($code);
     $name = strtolower($name);
     $start = strpos($code, "<" . $name . " ", $offset);
@@ -50,7 +51,7 @@ function wrs_getelementsbynamefromstring($code, $name, $autoclosed, $all = false
 
         if ($end) {
             $end += strlen($endstring);
-            $element = array();
+            $element = [];
             $element['start'] = $start;
             $element['end'] = $end;
             $elements[$i] = $element;
@@ -63,7 +64,6 @@ function wrs_getelementsbynamefromstring($code, $name, $autoclosed, $all = false
         if (!$all) {
             break;
         }
-
     }
 
     return $elements;
@@ -71,10 +71,11 @@ function wrs_getelementsbynamefromstring($code, $name, $autoclosed, $all = false
 
 /**
  * Create CAS initial session id.
+ *
  * @return String
  */
 function wrs_createsessionid() {
-    $template = array(8, 4, 4, 4, 12);
+    $template = [8, 4, 4, 4, 12];
     $id = '';
     for ($j = 0; $j < count($template); $j++) {
         if ($j > 0) {
@@ -90,8 +91,9 @@ function wrs_createsessionid() {
 
 /**
  * Set initial session on server
- * @param  String $sessionid CAS session id.
- * @param  String $xml       xml session.
+ *
+ * @param String $sessionid CAS session id.
+ * @param String $xml       xml session.
  */
 function wrs_setinitialsession($sessionid, $xml) {
     $wrap = com_wiris_system_CallWrapper::getInstance();
@@ -108,6 +110,7 @@ function wrs_setinitialsession($sessionid, $xml) {
 /**
  * Includes a <nonapplet> tag on all the <APPLET> tags with an image linking a CAS jnlp containing the applet session.
  * This allows to download CAS jnlp for chrome browsers.
+ *
  * @param  String $text with <APPLET_TAGS>
  * @return String Filtered text.
  */
@@ -131,13 +134,13 @@ function wrs_filterapplettojnlp($text) {
             $langend = strpos($appletcode, ' version="', $langstart);
             $lang = substr($appletcode, $langstart, $langend - $langstart - 1);
 
-            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid.'&lang='.$lang;
-            $output .= html_writer::start_tag('a', array('href' => $hreflink));
+            $hreflink = 'http://stateful.wiris.net/demo/wiris/wiriscas.jnlp?session_id=' . $sessionid . '&lang=' . $lang;
+            $output .= html_writer::start_tag('a', ['href' => $hreflink]);
             $img = '';
             if (method_exists('html_writer', 'img')) {
                 $img = html_writer::img($src, 'CAS');
             } else {
-                $img .= html_writer::start_tag('img', array('src' => $src));
+                $img .= html_writer::start_tag('img', ['src' => $src]);
                 $img .= html_writer::end_tag('img');
             }
             $output .= $img;
@@ -165,16 +168,15 @@ function wrs_filterapplettojnlp($text) {
 /**
  * Automatic class loading not avaliable for Moodle 2.4 and 2.5.
  * This method loads all files under "classes" folder.
- *
  */
 function wrs_loadclasses() {
     global $CFG;
 
     if ($CFG->version < 2013111800) {
-        require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
-        require_once($CFG->dirroot . '/filter/wiris/classes/paramsprovider.php');
-        require_once($CFG->dirroot . '/filter/wiris/classes/configurationupdater.php');
-        require_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapperconfigurationupdater.php');
-        require_once($CFG->dirroot . '/filter/wiris/classes/accessprovider.php');
+        include_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapper.php');
+        include_once($CFG->dirroot . '/filter/wiris/classes/paramsprovider.php');
+        include_once($CFG->dirroot . '/filter/wiris/classes/configurationupdater.php');
+        include_once($CFG->dirroot . '/filter/wiris/classes/pluginwrapperconfigurationupdater.php');
+        include_once($CFG->dirroot . '/filter/wiris/classes/accessprovider.php');
     }
 }

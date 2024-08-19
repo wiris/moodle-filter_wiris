@@ -22,7 +22,7 @@
  * Replaces all substrings '«math ... «/math»' '<math ... </math>'
  * generated with MathType by the corresponding image.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -35,19 +35,32 @@ defined('MOODLE_INTERNAL') || die();
 require_once('subfilters/php.php');
 require_once('subfilters/client.php');
 
+/**
+ * Class filter_wiris
+ * This class extends the moodle_text_filter and provides a method to filter text using the Wiris filter.
+ */
 class filter_wiris extends moodle_text_filter {
-    public function filter($text, array $options = array()) {
+
+
+    /**
+     * Filters the given text using the Wiris filter.
+     *
+     * @param  string $text    The text to be filtered.
+     * @param  array  $options An array of options for the filter (optional).
+     * @return string The filtered text.
+     */
+    public function filter($text, array $options = []) {
 
         switch (get_config('filter_wiris', 'rendertype')) {
-            // Client-side render: Uses the Javascript third-party lib.
+                // Client-side render: Uses the Javascript third-party lib.
             case 'client':
                 $subfilter = new filter_wiris_client($this->context, $this->localconfig);
-            break;
-            // Server-sider render: Uses the PHP third-party lib (default).
+                break;
+                // Server-sider render: Uses the PHP third-party lib (default).
             case 'php':
             default:
                 $subfilter = new filter_wiris_php($this->context, $this->localconfig);
-            break;
+                break;
         }
 
         // Our custom Haxe-transpiled EReg was obsolete, so we have to do a replacement that used to happen in
@@ -55,9 +68,13 @@ class filter_wiris extends moodle_text_filter {
         // This fixes the xmlns=¨http://www.w3.org/1998/Math/MathML¨ being converted into a link by the
         // "Convert URLs into links and images" filter by Moodle when it is applied before the Wiris filter.
         // Looks for every SafeXML instance, and within there, removes the surrounding <a>...</a>.
-        $text = preg_replace_callback('/«math.*?«\\/math»/', function ($matches) {
-            return preg_replace('/<a href="[^\"]*"[^>]*>([^<]*)<\\/a>|<a href="[^\"]*">/', '$1', $matches[0]);
-        }, $text);
+        $text = preg_replace_callback(
+            '/«math.*?«\\/math»/',
+            function ($matches) {
+                return preg_replace('/<a href="[^\"]*"[^>]*>([^<]*)<\\/a>|<a href="[^\"]*">/', '$1', $matches[0]);
+            },
+            $text
+        );
 
         return $subfilter->filter($text, $options);
     }

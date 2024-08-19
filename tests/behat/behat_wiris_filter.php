@@ -16,7 +16,7 @@
 
 /**
  * Methods related to MathType filter settings.
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,7 +28,17 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 
 use Behat\Mink\Exception\ExpectationException;
 
+/**
+ * Class behat_wiris_filter
+ *
+ * This class is used for testing the behat_wiris_filter functionality.
+ *
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class behat_wiris_filter extends behat_wiris_base {
+
 
     /**
      * Turns MathType filter off in Filter settings
@@ -73,11 +83,11 @@ class behat_wiris_filter extends behat_wiris_base {
     }
 
         /**
-     * Check Image performance mode on on MathType filter page
-     *
-     * @Given I check image performance mode on
-     * @throws ExpectationException If image performance mode is not found, it will throw an exception.
-     */
+         * Check Image performance mode on on MathType filter page
+         *
+         * @Given I check image performance mode on
+         * @throws ExpectationException If image performance mode is not found, it will throw an exception.
+         */
     public function i_check_image_performance_mode_on() {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_pluginperformance" ]');

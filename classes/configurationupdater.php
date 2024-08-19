@@ -15,29 +15,51 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-/**
- * This class implements com_wiris_plugin_configuration_ConfigurationUpdater interface
- * to use a custom Moodle configuration.
- *
- * @package    filter
- * @subpackage wiris
- * @copyright  WIRIS Europe (Maths for more S.L)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
 
+/**
+ * This class implements com_wiris_plugin_configuration_ConfigurationUpdater interface
+ * to use a custom Moodle configuration.
+ *
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @copyright  WIRIS Europe (Maths for more S.L)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class filter_wiris_configurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
 
+    /**
+     * @var mixed $waseditorenabled Indicates whether the WYSIWYG editor was enabled.
+     */
     public $waseditorenabled;
+
+    /**
+     * @var mixed $wascasenabled Indicates whether CAS was enabled.
+     */
     public $wascasenabled;
+
+    /**
+     * @var mixed $waschemeditorenabled Indicates whether the scheme editor was enabled.
+     */
     public $waschemeditorenabled;
+
+    /**
+     * @var mixed $oldconfiguration The old configuration instance.
+     */
     private $oldconfiguration;
 
+    /**
+     * @var mixed $editorplugin The editor plugin instance.
+     */
     public $editorplugin;
 
+    /**
+     * Class ConfigurationUpdater
+     *
+     * This class is responsible for updating the configuration settings for the WIRIS filter plugin.
+     */
     public function __construct() {
         $scriptname = explode('/', $_SERVER["SCRIPT_FILENAME"]);
         $scriptname = array_pop($scriptname);
@@ -50,12 +72,22 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         $this->editorplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
         $this->oldconfiguration = filter_wiris_pluginwrapper::get_old_configuration();
-
     }
 
+    /**
+     * Initializes the configuration updater.
+     *
+     * @param mixed $obj The object to be initialized.
+     * @return void
+     */
     public function init($obj) {
     }
 
+    /**
+     * Retrieves the status of the LaTeX filter.
+     *
+     * @return bool The status of the LaTeX filter.
+     */
     private function get_latex_status() {
         global $CFG;
 
@@ -65,14 +97,29 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         return $status;
     }
 
+    /**
+     * Evaluates a parameter.
+     *
+     * This method evaluates the given parameter and returns a boolean value based on the evaluation.
+     *
+     * @param mixed $param The parameter to be evaluated.
+     * @return bool The evaluation result as a boolean value.
+     */
     private function eval_parameter($param) {
         return ($param == 1 || $param == "true");
     }
 
     // @codingStandardsIgnoreStart
     // Can't change implemented interface method name.
-    public function updateConfiguration(&$configuration) {
-    // @codingStandardsIgnoreEnd
+    /**
+     * Updates the configuration settings.
+     *
+     * @param array $configuration The configuration settings to be updated.
+     * @return void
+     */
+    public function updateConfiguration(&$configuration)
+    {
+        // @codingStandardsIgnoreEnd
         global $CFG;
 
         // Old configuration.ini.
@@ -158,8 +205,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
             // We need to convert all boolean values to text because $configuration object expects as values
             // the same objects as configuration.ini (i.e strings). This is mandatory due to cross-technology.
             $wiriseditorenabled = ($this->waseditorenabled &&
-                                   $this->eval_parameter(get_config('filter_wiris', 'editor_enable')) &&
-                                   $filterenabled) ? "true" : "false";
+                $this->eval_parameter(get_config('filter_wiris', 'editor_enable')) &&
+                $filterenabled) ? "true" : "false";
             $configuration['wiriseditorenabled'] = $wiriseditorenabled;
         } else {
             $configuration['wiriseditorenabled'] = "false";
@@ -168,7 +215,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $this->wascasenabled = $this->eval_parameter($configuration['wiriscasenabled']);
         if (isset($CFG->filter_wiris_cas_enable)) {
             $wiriscasenabled = ($this->wascasenabled &&
-                                $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
+                $this->eval_parameter($CFG->filter_wiris_cas_enable) && $filterenabled) ? "true" : "false";
             $configuration['wiriscasenabled'] = $wiriscasenabled;
         } else {
             $configuration['wiriscasenabled'] = false;
@@ -178,8 +225,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $this->waschemeditorenabled = $this->eval_parameter($configuration['wirischemeditorenabled']);
         if (get_config('filter_wiris', 'chem_editor_enable')) {
             $wirischemeditorenabled = $this->waschemeditorenabled &&
-                                      $this->eval_parameter(get_config('filter_wiris', 'chem_editor_enable')) &&
-                                      $filterenabled ? "true" : "false";
+                $this->eval_parameter(get_config('filter_wiris', 'chem_editor_enable')) &&
+                $filterenabled ? "true" : "false";
             $configuration['wirischemeditorenabled'] = $wirischemeditorenabled;
         } else {
             $configuration['wirischemeditorenabled'] = false;

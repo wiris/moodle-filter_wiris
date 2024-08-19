@@ -17,7 +17,7 @@
 /**
  * MathType filter test page.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,8 +29,15 @@ require_once($CFG->dirroot . '/lib/editorlib.php');
 
 // BEGIN HELPERS FUNCTIONS.
 
+/**
+ * Checks if the WIRIS buttons are present in the toolbar of the specified editor.
+ *
+ * @param  string|null $editor The name of the editor. Defaults to null.
+ * @return bool Returns true if the WIRIS buttons are present in the toolbar, false otherwise.
+ * @throws Exception Throws an exception if the editor name is null or not supported.
+ */
 function check_if_wiris_button_are_in_toolbar($editor = null) {
-    if ( is_null($editor) ) {
+    if (is_null($editor)) {
         throw new Exception(get_string('editornameexpected', 'filter_wiris'), 1);
     }
 
@@ -48,23 +55,45 @@ function check_if_wiris_button_are_in_toolbar($editor = null) {
     }
 }
 
+/**
+ * Checks if the WIRIS buttons are present in the Atto toolbar.
+ *
+ * @return bool Returns true if the WIRIS buttons are present in the Atto toolbar, false otherwise.
+ */
 function check_if_wiris_button_are_in_atto_toolbar() {
     $configvalue = get_config('editor_atto', 'toolbar');
     return (strpos($configvalue, 'wiris') !== false);
 }
 
-function check_if_wiris_button_are_in_tinymce_toolbar()
-{
+/**
+ * Checks if the WIRIS buttons are present in the TinyMCE toolbar.
+ *
+ * @return bool Returns true if the WIRIS buttons are enabled in the TinyMCE toolbar, false otherwise.
+ */
+function check_if_wiris_button_are_in_tinymce_toolbar() {
     $configvalue = get_config('editor_tinymce', 'disabledsubplugins');
     return (strpos($configvalue, 'tiny_mce_wiris') === false);
 }
 
-function check_if_wiris_button_are_in_tiny_toolbar()
-{
+/**
+ * Checks if the WIRIS buttons are enabled in the TinyMCE toolbar.
+ *
+ * @return bool Returns true if the WIRIS buttons are enabled, false otherwise.
+ */
+function check_if_wiris_button_are_in_tiny_toolbar() {
     $configvalue = get_config("tiny_wiris", 'disabled');
     return (empty($configvalue) === true);
 }
 
+/**
+ * Checks for a tiny incompatibility and displays a warning if found.
+ *
+ * This function checks if the current version of the system is greater than or equal to 2022112807.
+ * If it is, it checks if the directory '/lib/editor/tinymce/plugins/tiny_mce_wiris' exists.
+ * If the directory exists, it displays a warning message using the 'tinymceincompatibility' string from the 'filter_wiris' language pack.
+ *
+ * @return void
+ */
 function warning_tiny_incompatibility() {
     global $CFG;
 
@@ -72,43 +101,63 @@ function warning_tiny_incompatibility() {
         return;
     }
 
-    if (is_dir($CFG->dirroot.'/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
+    if (is_dir($CFG->dirroot . '/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
         \core\notification::warning(get_string('tinymceincompatibility', 'filter_wiris'));
     }
 }
 
+/**
+ * Retrieves the test text based on the given title and editor.
+ *
+ * @param  string      $title  The title of the test text.
+ * @param  string|null $editor The editor for the test text. Default is null.
+ * @return string The test text.
+ */
 function get_test_text($title, $editor = null) {
-    if($editor == null) {
+    if ($editor == null) {
         return get_string($title, 'filter_wiris');
     } else {
         return get_string($title, 'filter_wiris', get_string($editor, 'filter_wiris'));
     }
 }
 
+/**
+ * Function to start a table for displaying filter information.
+ *
+ * @return void
+ */
 function start_table() {
-    $output = html_writer::tag('h1', get_string('title', 'filter_wiris'), array('class' => 'wrs_plugin wrs_filter'));
+    $output = html_writer::tag('h1', get_string('title', 'filter_wiris'), ['class' => 'wrs_plugin wrs_filter']);
 
-    $output .= html_writer::start_tag('table', array('id' => 'wrs_filter_info_table', 'class' => 'wrs_plugin wrs_filter'));
+    $output .= html_writer::start_tag('table', ['id' => 'wrs_filter_info_table', 'class' => 'wrs_plugin wrs_filter']);
 
-    $output .= html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-    $output .= html_writer::tag('th', 'Test', array('class' => 'wrs_plugin wrs_filter'));
-    $output .= html_writer::tag('th', 'Test Outcome', array('class' => 'wrs_plugin wrs_filter'));
+    $output .= html_writer::start_tag('tr', ['class' => 'wrs_plugin wrs_filter']);
+    $output .= html_writer::tag('th', 'Test', ['class' => 'wrs_plugin wrs_filter']);
+    $output .= html_writer::tag('th', 'Test Outcome', ['class' => 'wrs_plugin wrs_filter']);
     $output .= html_writer::end_tag('tr');
 
     echo $output;
 }
 
-// Create table row to show test and result
+/**
+ * Adds a table row to display test information.
+ *
+ * @param  mixed $test     The test name.
+ * @param  mixed $outcome  The test outcome.
+ * @param  int   $index    The index of the test.
+ * @param  int   $subindex The subindex of the test.
+ * @return void
+ */
 function add_table_row($test, $outcome, $index, $subindex) {
-    if(is_null($outcome)) {
+    if (is_null($outcome)) {
         // Dont show the empty infomation
         return;
     }
 
     $testname = "";
 
-    if($subindex != 0) {
-        $testname = "\t" . $index . '.' . $subindex ." - " . $test;
+    if ($subindex != 0) {
+        $testname = "\t" . $index . '.' . $subindex . " - " . $test;
     } else {
         $testname = $index . " - " . $test;
     }
@@ -116,36 +165,41 @@ function add_table_row($test, $outcome, $index, $subindex) {
     $outcometext = $outcome;
 
     // If `$outcome` is a boolean, convert into "Yes" or "No", instead of 1 or 0
-    if((is_bool($outcome))) {
-        $outcometext = ($outcome)?  get_test_text('yes') :  get_test_text('no');
+    if ((is_bool($outcome))) {
+        $outcometext = ($outcome) ? get_test_text('yes') : get_test_text('no');
     }
 
-    $testnamestyle = array('class' => 'wrs_plugin wrs_filter');
-    if($subindex == 0) {
-        $testnamestyle = array('class' => 'wrs_plugin wrs_filter title');
+    $testnamestyle = ['class' => 'wrs_plugin wrs_filter'];
+    if ($subindex == 0) {
+        $testnamestyle = ['class' => 'wrs_plugin wrs_filter title'];
     }
 
-    $output = html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
+    $output = html_writer::start_tag('tr', ['class' => 'wrs_plugin wrs_filter']);
     $output .= html_writer::tag('td', $testname, $testnamestyle);
-    $output .= html_writer::tag('td', $outcometext, array('class' => 'wrs_plugin wrs_filter'));
+    $output .= html_writer::tag('td', $outcometext, ['class' => 'wrs_plugin wrs_filter']);
     $output .= html_writer::end_tag('tr');
 
     echo $output;
 }
-
+/**
+ * Function to display the installation result in a table.
+ *
+ * @param  bool $instalationresult The installation result (true for success, false for failure).
+ * @return void
+ */
 function end_table($instalationresult) {
     // Prepare result text (success or failure)
     $statustext = '';
     if ($instalationresult) {
-        $statustext .= html_writer::tag('span', get_test_text('success'), array('class' => 'wrs_ok wrs_plugin wrs_filter'));
+        $statustext .= html_writer::tag('span', get_test_text('success'), ['class' => 'wrs_ok wrs_plugin wrs_filter']);
     } else {
-        $statustext .= html_writer::tag('span', get_test_text('failure'), array('class' => 'wrs_error wrs_plugin wrs_filter'));
+        $statustext .= html_writer::tag('span', get_test_text('failure'), ['class' => 'wrs_error wrs_plugin wrs_filter']);
     }
 
     // Show Instalation result
-    $output = html_writer::start_tag('tr', array('class' => 'wrs_plugin wrs_filter'));
-    $output .= html_writer::tag('td', get_test_text('integrationinstallation'), array('class' => 'wrs_plugin wrs_filter title'));
-    $output .= html_writer::start_tag('td', array('class' => 'wrs_plugin wrs_filter'));
+    $output = html_writer::start_tag('tr', ['class' => 'wrs_plugin wrs_filter']);
+    $output .= html_writer::tag('td', get_test_text('integrationinstallation'), ['class' => 'wrs_plugin wrs_filter title']);
+    $output .= html_writer::start_tag('td', ['class' => 'wrs_plugin wrs_filter']);
     $output .= $statustext;
     $output .= html_writer::end_tag('td');
     $output .= html_writer::end_tag('tr');
@@ -161,40 +215,79 @@ function end_table($instalationresult) {
 
 // Function to increment index and subindex based on outcome
 // &$current_subindex pass as reference in order to increment
-function process_table_row($test, $outcome, $current_index, &$current_subindex) {
-    add_table_row($test, $outcome, $current_index, $current_subindex);
-    
+/**
+ * Process a table row.
+ *
+ * This function adds a table row to the specified test, outcome, current index, and current subindex.
+ * If the outcome is not null, it increments the current subindex.
+ *
+ * @param  mixed $test             The test to add the row to.
+ * @param  mixed $outcome          The outcome of the row.
+ * @param  int   $currentindex     The current index.
+ * @param  int   &$currentsubindex The current subindex.
+ * @return void
+ */
+function process_table_row($test, $outcome, $currentindex, &$currentsubindex) {
+    add_table_row($test, $outcome, $currentindex, $currentsubindex);
+
     if (!is_null($outcome)) {
-        $current_subindex++;
+        $currentsubindex++;
     }
 }
 
 // Reset subindex and increment index if starting a new group
 // &$current_index, &$current_subindex pass as reference in order to increment or reset
-function start_new_group(&$current_index, &$current_subindex) {
+/**
+ * Starts a new group.
+ *
+ * This function is used to start a new group. It increments the current index by 1 and resets the current subindex to 0.
+ *
+ * @param  int $currentindex    The current index.
+ * @param  int $currentsubindex The current subindex.
+ * @return void
+ */
+function start_new_group(&$currentindex, &$currentsubindex) {
     // $current_index is not equal to 0 mean the previous test is not skipped
-    if($current_subindex != 0) {
-        $current_index++;
+    if ($currentsubindex != 0) {
+        $currentindex++;
     }
-    $current_subindex = 0;
+    $currentsubindex = 0;
 }
 
 
 // Functions to perform tests
 // @return null|string|bool If it returns a string, it will return the requested text data (e.g., version number).
-//                          If it returns a boolean, it will be true (test result is YES) or false (test result is NO).
-//                          If it returns null, it means the entire test will be skipped and not displayed.
-function get_moodle_version(){
+// If it returns a boolean, it will be true (test result is YES) or false (test result is NO).
+// If it returns null, it means the entire test will be skipped and not displayed.
+/**
+ * Retrieves the Moodle version.
+ *
+ * @return string The Moodle version.
+ */
+function get_moodle_version() {
     global $CFG;
     return $CFG->release;
 }
 
-function get_exists_mt_filter($plugins){
-    return isset($plugins['filter']); 
+/**
+ * Checks if the 'filter' plugin exists in the given array of plugins.
+ *
+ * @param  array $plugins The array of plugins.
+ * @return bool Returns true if the 'filter' plugin exists, false otherwise.
+ */
+function get_exists_mt_filter($plugins) {
+    return isset($plugins['filter']);
 }
 
-function get_mt_filter_version($existsfilter, $plugins){
-    if(!$existsfilter) {
+/**
+ * Retrieves the version of the MT filter.
+ *
+ * @param  bool  $existsfilter Indicates whether the MT filter exists.
+ * @param  array $plugins      The array containing the plugins.
+ * @return string|null The version of the MT filter, or null if the filter does not exist.
+ */
+function get_mt_filter_version($existsfilter, $plugins) {
+    if (!$existsfilter) {
         return null;
     }
 
@@ -202,8 +295,16 @@ function get_mt_filter_version($existsfilter, $plugins){
 }
 
 
-function get_mt_filter_enabled($existsfilter){
-    if(!$existsfilter) {
+/**
+ * Retrieves the status of the "filter/wiris" filter.
+ *
+ * This function checks if the "filter/wiris" filter is enabled or not.
+ *
+ * @param  bool $existsfilter Indicates whether the filter exists or not.
+ * @return bool|null The status of the "filter/wiris" filter. Returns null if the filter does not exist.
+ */
+function get_mt_filter_enabled($existsfilter) {
+    if (!$existsfilter) {
         return null;
     }
 
@@ -212,15 +313,21 @@ function get_mt_filter_enabled($existsfilter){
     return $filterenabled;
 }
 
+/**
+ * Checks if the specified editor exists and is enabled.
+ *
+ * @param  string $editorname The name of the editor to check.
+ * @return bool|null Returns true if the editor exists and is enabled, false if it does not exist, and null if the check is skipped based on the Moodle version.
+ */
 function get_editor_exists_and_enabled($editorname) {
     global $CFG;
 
-    if ($editorname === 'tinymce' && $CFG->branch > 402 ) {
+    if ($editorname === 'tinymce' && $CFG->branch > 402) {
         // if Moodle version is 4.1 or later, do not check if tiny (legacy) exists
         return null;
     }
 
-    if ($editorname === 'tiny' && $CFG->branch < 401 ) {
+    if ($editorname === 'tiny' && $CFG->branch < 401) {
         // if Moodle version is 4.1 or prior, do not check if tiny (current) exists
         return null;
     }
@@ -230,24 +337,47 @@ function get_editor_exists_and_enabled($editorname) {
     return in_array($editorname, $editors);
 }
 
+/**
+ * Checks if a specific editor exists in the given plugins array.
+ *
+ * @param  bool   $existeditor Whether the editor exists or not.
+ * @param  array  $plugins     The array of plugins.
+ * @param  string $editorname  The name of the editor to check.
+ * @return bool|null Returns true if the editor exists, false if it doesn't, or null if $existeditor is false.
+ */
 function get_exists_mt_editor($existeditor, $plugins, $editorname) {
-    if(!$existeditor) {
+    if (!$existeditor) {
         return null;
     }
 
     return isset($plugins[$editorname]);
 }
 
+/**
+ * Retrieves the version of the specified editor.
+ *
+ * @param  bool   $exismtteditor Indicates whether the editor exists.
+ * @param  array  $plugins       An array containing information about the plugins.
+ * @param  string $editorname    The name of the editor.
+ * @return mixed|null The version of the editor, or null if the editor does not exist.
+ */
 function get_mt_editor_version($exismtteditor, $plugins, $editorname) {
-    if(!$exismtteditor) {
+    if (!$exismtteditor) {
         return null;
     }
 
     return $plugins[$editorname]['release'];
 }
 
+/**
+ * Retrieves the status of the MathType editor for a given editor.
+ *
+ * @param  bool   $existsmteditor Indicates if the MathType editor exists.
+ * @param  string $editorname     The name of the editor.
+ * @return bool|null The status of the MathType editor for the given editor, or null if an exception occurs.
+ */
 function get_mt_editor_enabled($existsmteditor, $editorname) {
-    if(!$existsmteditor){
+    if (!$existsmteditor) {
         return null;
     }
 
@@ -260,6 +390,14 @@ function get_mt_editor_enabled($existsmteditor, $editorname) {
 }
 
 // Validates that MathType is usable at least in one of the text editors supported
+/**
+ * Checks the installation status of the WIRIS filter in Moodle.
+ *
+ * @param  bool   $filterenabled         Whether the WIRIS filter is enabled.
+ * @param  string $filterversion         The version of the WIRIS filter.
+ * @param  array  $enabledpluginsversion The versions of the enabled editor plugins.
+ * @return bool Returns true if the installation is successful, false otherwise.
+ */
 function get_instalation_check($filterenabled, $filterversion, $enabledpluginsversion) {
     // Precondition - all plugins passed as the argument $enabledpluginsversion have been checked and are enabled.
 
@@ -278,7 +416,7 @@ function get_instalation_check($filterenabled, $filterversion, $enabledpluginsve
     }
 
     // Special case: if user has the last version of MT for Tiny (legacy), always return true
-    if($enabledpluginsversion['tinymce'] == '8.6.2' && $filterenabled) {
+    if ($enabledpluginsversion['tinymce'] == '8.6.2' && $filterenabled) {
         return true;
     }
 
@@ -290,7 +428,7 @@ function get_instalation_check($filterenabled, $filterversion, $enabledpluginsve
 // Page prologue.
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('title', 'filter_wiris'));
-$PAGE->set_url('/filter/wiris/info.php', array());
+$PAGE->set_url('/filter/wiris/info.php', []);
 
 echo $OUTPUT->header();
 warning_tiny_incompatibility();
@@ -328,39 +466,39 @@ $mttinycurrentversion = get_mt_editor_version($existsmttinycurrent, $plugins, 't
 $mttinycurrentenabled = get_mt_editor_enabled($existsmttinycurrent, 'tiny');
 $enabledplugins['tiny'] = ($mttinycurrentenabled) ? $mttinycurrentversion : null;
 
-$instalationresult = get_instalation_check($filterenabled,$filterversion, $enabledplugins);
+$instalationresult = get_instalation_check($filterenabled, $filterversion, $enabledplugins);
 
 // Construct new html table
 start_table();
 
-$current_index = 1;
-$current_subindex = 0;
+$currentindex = 1;
+$currentsubindex = 0;
 
 // Show all tests
-process_table_row(get_test_text('moodleversion'), $moodleversion, $current_index, $current_subindex);
+process_table_row(get_test_text('moodleversion'), $moodleversion, $currentindex, $currentsubindex);
 
-start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'themathtypefilter'), $existsfilter, $current_index, $current_subindex);
-process_table_row(get_test_text('pluginversion', 'mathtypefilter'), $filterversion, $current_index, $current_subindex);
-process_table_row(get_test_text('isenabled', 'themathtypefilter'), $filterenabled, $current_index, $current_subindex);
+start_new_group($currentindex, $currentsubindex);
+process_table_row(get_test_text('existsinmoodle', 'themathtypefilter'), $existsfilter, $currentindex, $currentsubindex);
+process_table_row(get_test_text('pluginversion', 'mathtypefilter'), $filterversion, $currentindex, $currentsubindex);
+process_table_row(get_test_text('isenabled', 'themathtypefilter'), $filterenabled, $currentindex, $currentsubindex);
 
-start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsandenabledinmoodle', 'atto'), $exisatto, $current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'mtatto'), $existsmtatto, $current_index, $current_subindex);
-process_table_row(get_test_text('pluginversion', 'mtatto'), $mtattoversion, $current_index, $current_subindex);
-process_table_row(get_test_text('isenabled', 'mtatto'), $mtattoenabled, $current_index, $current_subindex);
+start_new_group($currentindex, $currentsubindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'atto'), $exisatto, $currentindex, $currentsubindex);
+process_table_row(get_test_text('existsinmoodle', 'mtatto'), $existsmtatto, $currentindex, $currentsubindex);
+process_table_row(get_test_text('pluginversion', 'mtatto'), $mtattoversion, $currentindex, $currentsubindex);
+process_table_row(get_test_text('isenabled', 'mtatto'), $mtattoenabled, $currentindex, $currentsubindex);
 
-start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcelegacy'), $existstinylegacy, $current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'mttinymcelegacy'), $existsmttinylegacy, $current_index, $current_subindex);
-process_table_row(get_test_text('pluginversion', 'mttinymcelegacy'), $mttinylegacyversion, $current_index, $current_subindex);
-process_table_row(get_test_text('isenabled', 'mttinymcelegacy'), $mttinylegacyenabled, $current_index, $current_subindex);
+start_new_group($currentindex, $currentsubindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcelegacy'), $existstinylegacy, $currentindex, $currentsubindex);
+process_table_row(get_test_text('existsinmoodle', 'mttinymcelegacy'), $existsmttinylegacy, $currentindex, $currentsubindex);
+process_table_row(get_test_text('pluginversion', 'mttinymcelegacy'), $mttinylegacyversion, $currentindex, $currentsubindex);
+process_table_row(get_test_text('isenabled', 'mttinymcelegacy'), $mttinylegacyenabled, $currentindex, $currentsubindex);
 
-start_new_group($current_index, $current_subindex);
-process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcecurrent'), $existstinycurrent, $current_index, $current_subindex);
-process_table_row(get_test_text('existsinmoodle', 'mttinymcecurrent'), $existsmttinycurrent, $current_index, $current_subindex);
-process_table_row(get_test_text('pluginversion', 'mttinymcecurrent'), $mttinycurrentversion, $current_index, $current_subindex);
-process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrentenabled, $current_index, $current_subindex);
+start_new_group($currentindex, $currentsubindex);
+process_table_row(get_test_text('existsandenabledinmoodle', 'tinymcecurrent'), $existstinycurrent, $currentindex, $currentsubindex);
+process_table_row(get_test_text('existsinmoodle', 'mttinymcecurrent'), $existsmttinycurrent, $currentindex, $currentsubindex);
+process_table_row(get_test_text('pluginversion', 'mttinymcecurrent'), $mttinycurrentversion, $currentindex, $currentsubindex);
+process_table_row(get_test_text('isenabled', 'mttinymcecurrent'), $mttinycurrentenabled, $currentindex, $currentsubindex);
 
 // Close html table
 end_table($instalationresult);
@@ -393,7 +531,7 @@ $output .= html_writer::end_tag('p');
 
 $output .= html_writer::start_tag('p');
 $output .= html_writer::start_tag('br');
-$output .= html_writer::start_tag('span', array('style' => 'font-size:14px; font-weight:normal;'));
+$output .= html_writer::start_tag('span', ['style' => 'font-size:14px; font-weight:normal;']);
 $output .= get_string('contact', 'filter_wiris');
 $output .= " (<a href=\"mailto:support@wiris.com\">support@wiris.com</a>)";
 $output .= html_writer::end_tag('span');

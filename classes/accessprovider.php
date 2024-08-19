@@ -18,7 +18,7 @@
  * This class implements com_wiris_plugin_api_Accesprovider interface
  * to use Moodle access methods to control access to services.
  *
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -35,7 +35,13 @@ if (!interface_exists('com_wiris_util_sys_AccessProvider')) {
     require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/util/sys/AccessProvider.interface.php');
 }
 
+/**
+ * This class is the access provider for the WIRIS filter in Moodle.
+ * It implements the com_wiris_util_sys_AccessProvider interface.
+ */
 class filter_wiris_accessprovider implements com_wiris_util_sys_AccessProvider {
+
+
     /**
      * This method is called before all service. We use it as a wrapper to call
      * Moodle require_login() method. Any WIRIS service can't be called without a
@@ -43,8 +49,9 @@ class filter_wiris_accessprovider implements com_wiris_util_sys_AccessProvider {
      */
 
     // @codingStandardsIgnoreStart
-    function requireAccess() {
-    // @codingStandardsIgnoreEnd
+    function requireAccess()
+    {
+        // @codingStandardsIgnoreEnd
         // Moodle require_login() method.
         require_login();
         // Not logged in: require_login throws and exception or exit so if we reach this point
@@ -56,7 +63,8 @@ class filter_wiris_accessprovider implements com_wiris_util_sys_AccessProvider {
      * Not implemented.
      */
     // @codingStandardsIgnoreStart
-    function isEnabled() {
-    // @codingStandardsIgnoreEnd
+    function isEnabled()
+    {
+        // @codingStandardsIgnoreEnd
     }
 }

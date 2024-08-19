@@ -23,4 +23,4 @@ Feature: Test page
     And "Error" "text" should not exist
     And "KO" "text" should not exist
     And "DISABLED" "text" should not exist
-    And "OK" "text" should exist
+    And "SUCCESS" "text" should exist

@@ -16,7 +16,7 @@
 
 /**
  * Methods related to the interaction with the MathType.
- * @package    filter
+ * @package    filter_wiris
  * @subpackage wiris
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,11 +28,21 @@ require_once(__DIR__ . '/behat_wiris_base.php');
 
 use Behat\Mink\Exception\ExpectationException;
 
+/**
+ * Class behat_wiris_formula
+ *
+ * This class is used for testing the behat_wiris_formula functionality.
+ *
+ * @package    filter_wiris
+ * @subpackage wiris
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class behat_wiris_formula extends behat_wiris_base {
 
-     /**
-      * @Transform /^(\d+)$/
-      */
+
+    /**
+     * Transform /^(\d+)$/
+     */
     public function cast_string_to_number($string) {
         return intval($string);
     }
@@ -136,9 +146,9 @@ class behat_wiris_formula extends behat_wiris_base {
      */
     public function a_wirisformula_containing_should_exist($value) {
         $session = $this->getSession();
-        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \''.$value.'\')]');
+        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \'' . $value . '\')]');
         if (empty($formula)) {
-            throw new ExpectationException('Wirisformula with value '.$value.' not found.', $this->getSession());
+            throw new ExpectationException('Wirisformula with value ' . $value . ' not found.', $this->getSession());
         }
     }
 
@@ -166,11 +176,11 @@ class behat_wiris_formula extends behat_wiris_base {
      */
     public function a_wirisformula_containing_html_entity_should_exist($value) {
         $session = $this->getSession();
-        $script = 'element = document.createElement("textarea"); element.innerHTML=\''.$value.'\'; return element.value';
+        $script = 'element = document.createElement("textarea"); element.innerHTML=\'' . $value . '\'; return element.value';
         $element = $session->executeScript($script);
-        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \''.$element.'\')]');
+        $formula = $session->getPage()->find('xpath', '//img[contains(@alt, \'' . $element . '\')]');
         if (empty($formula)) {
-            throw new ExpectationException('Wirisformula with value '.$value.' not found.', $this->getSession());
+            throw new ExpectationException('Wirisformula with value ' . $value . ' not found.', $this->getSession());
         }
     }
 
@@ -183,25 +193,27 @@ class behat_wiris_formula extends behat_wiris_base {
      * @throws ExpectationException If the field or the button is not found, it will throw an exception.
      */
     public function a_wirisformula_containing_should_exist_in_field($value, $field) {
-        $fieldarray = array(
-            "Page content" => "id_page_ifr"
-        );
+        $fieldarray = [
+            "Page content" => "id_page_ifr",
+        ];
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
-        $component = $session->getPage()->find('xpath', '//*[@id="'.$fieldarray[$field].'"]');
+        $component = $session->getPage()->find('xpath', '//*[@id="' . $fieldarray[$field] . '"]');
         if (empty($component)) {
-            throw new ExpectationException("\"".$field."\" field not correctly recognized.", $this->getSession());
+            throw new ExpectationException("\"" . $field . "\" field not correctly recognized.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document
-        .evaluate("//img[@alt=\''.$value.'\' and not(@data-mce-src)]", document.getElementById(\''.$fieldarray[$field].'\')
+        $script = 'return document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document
+        .evaluate("//img[@alt=\'' . $value . '\' and not(@data-mce-src)]", document.getElementById(\'' . $fieldarray[$field] . '\')
         .contentWindow.document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue';
         $formula = $this->getSession()->evaluateScript($script);
         if (empty($formula)) {
-            throw new ExpectationException('Wirisformula with value '.$value.' not found in "'.$field.'" field',
-            $this->getSession());
+            throw new ExpectationException(
+                'Wirisformula with value ' . $value . ' not found in "' . $field . '" field',
+                $this->getSession()
+            );
         }
     }
 
@@ -223,8 +235,8 @@ class behat_wiris_formula extends behat_wiris_base {
         if (empty($formula)) {
             throw new ExpectationException('Formula not found.', $this->getSession(), $this->getSession());
         }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
+        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].height >= ' . ($height - $error) .
+            ' && document.getElementsByClassName(\'Wirisformula\')[0].height <=' . ($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image height is not correct.', $this->getSession());
@@ -249,8 +261,8 @@ class behat_wiris_formula extends behat_wiris_base {
         if (empty($formula)) {
             throw new ExpectationException('Formula not found.', $this->getSession());
         }
-        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
+        $script = 'return document.getElementsByClassName(\'Wirisformula\')[0].width >= ' . ($width - $error) .
+            ' && document.getElementsByClassName(\'Wirisformula\')[0].width <=' . ($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image width is not correct.', $this->getSession());
@@ -271,24 +283,24 @@ class behat_wiris_formula extends behat_wiris_base {
         if ('integer' !== gettype($width) || 'integer' !== gettype($error)) {
             throw new ExcepExpectationExceptiontion('Integer value expected.', $this->getSession());
         }
-        $fieldarray = array(
-            "Page content" => "id_page_ifr"
-        );
+        $fieldarray = [
+            "Page content" => "id_page_ifr",
+        ];
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
+        $script = 'return document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
             throw new ExpectationException('Formula not found.', $this->getSession());
         }
-        $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
+        $script = 'return document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
+        getElementsByClassName(\'Wirisformula\')[0].width >= ' . ($width - $error) .
+            ' && document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
+        getElementsByClassName(\'Wirisformula\')[0].width <=' . ($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image width is not correct.', $this->getSession());
@@ -309,24 +321,24 @@ class behat_wiris_formula extends behat_wiris_base {
         if ('integer' !== gettype($height) || 'integer' !== gettype($error)) {
             throw new ExpectationException('Integer value expected.', $this->getSession());
         }
-        $fieldarray = array(
-            "Page content" => "id_page_ifr"
-        );
+        $fieldarray = [
+            "Page content" => "id_page_ifr",
+        ];
         $session = $this->getSession();
         if (empty($fieldarray[$field])) {
-            throw new ExpectationException($field." field not registered.", $this->getSession());
+            throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
         // As tinymce editor is insde an iframe, the search should be done inside the document of it.
-        $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
+        $script = 'return document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
         getElementsByClassName(\'Wirisformula\')';
         $formula = $session->evaluateScript($script);
         if (empty($formula)) {
             throw new ExpectationException('Formula not found.', $this->getSession());
         }
-        $script = 'return document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementById(\''.$fieldarray[$field].'\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
+        $script = 'return document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
+        getElementsByClassName(\'Wirisformula\')[0].height >= ' . ($height - $error) .
+            ' && document.getElementById(\'' . $fieldarray[$field] . '\').contentWindow.document.
+        getElementsByClassName(\'Wirisformula\')[0].height <=' . ($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image height is not correct.', $this->getSession());
@@ -359,9 +371,9 @@ class behat_wiris_formula extends behat_wiris_base {
             throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width >= '.($width - $error).
-        ' && document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].width <='.($width + $error);
+        getElementsByClassName(\'Wirisformula\')[0].width >= ' . ($width - $error) .
+            ' && document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
+        getElementsByClassName(\'Wirisformula\')[0].width <=' . ($width + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image width is not correct.', $this->getSession());
@@ -394,8 +406,8 @@ class behat_wiris_formula extends behat_wiris_base {
             throw new ExpectationException('Formula not found.', $this->getSession());
         }
         $script = 'return document.getElementById(\'mce_fullscreen_ifr\').contentWindow.document.
-        getElementsByClassName(\'Wirisformula\')[0].height >= '.($height - $error).
-        ' && document.getElementsByClassName(\'Wirisformula\')[0].height <='.($height + $error);
+        getElementsByClassName(\'Wirisformula\')[0].height >= ' . ($height - $error) .
+            ' && document.getElementsByClassName(\'Wirisformula\')[0].height <=' . ($height + $error);
         $equals = $this->getSession()->evaluateScript($script);
         if (!$equals) {
             throw new ExpectationException('Image height is not correct.', $this->getSession());
