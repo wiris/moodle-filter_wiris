@@ -140,4 +140,121 @@ class behat_wiris_editor extends behat_wiris_base {
         $component->click();
     }
 
+    /**
+     * Check if Mathtype button is in full-screen mode
+     *
+     * @Then I check editor is in full-screen mode
+     * @throws ExpectationException If the full screen button is not found, it will throw an exception.
+     */
+    public function i_check_editor_is_in_full_screen_mode() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//a[@title=\'Exit full-screen\']');
+        if (empty($component)) {
+            throw new ExpectationException('Exit full-screen button not found.', $this->getSession());
+        }
+        $component->click();
+    }
+
+    /**
+     * Click on MathType right to left screen button
+     *
+     * @Given I click on MathType right to left button
+     * @throws ExpectationException If the full screen button is not found, it will throw an exception.
+     */
+    public function i_click_on_mathtype_right_to_left_button() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//button[@title=\'Right to left editing\']');
+        if (empty($component)) {
+            throw new ExpectationException('Right to Left button not found.', $this->getSession());
+        }
+        $component->click();
+    }
+
+    /**
+     * Follows the page redirection. Use this step after clicking the editor's maximize button
+     *
+     * @Then full screen modal window is opened
+     * @param  string $seconds time to wait
+     */
+    public function full_screen_modal_window_is_opened() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//div[contains(@class, "wrs_modal_overlay wrs_modal_desktop wrs_maximized")]');
+        if (empty($component) || !$component->isVisible()) {
+            throw new ExpectationException("Full-screen modal window is opened.", $this->getSession());
+        }
+    }
+
+    /**
+     * Look whether MathType editor exist
+     *
+     * @Then MathType editor should exist
+     * @throws ExpectationException If MathType editor not found, it will throw an exception.
+     */
+    public function mathtype_editor_should_exist() {
+        $session = $this->getSession();
+        $formula = $session->getPage()->find('xpath', '//div[contains(@id, \'wrs_modal_wrapper\')]');
+        if (empty($formula)) {
+            throw new ExpectationException('MathType editor not found.', $this->getSession());
+        }
+    }
+
+    /**
+     * Waits the excution until the MathType editor displays
+     *
+     * @Then i wait until MathType editor is displayed
+     */
+    public function i_wait_until_mathtype_editor_is_displayed() {
+        // Looks for a math formula in the page.
+        $formula = '//div[contains(@id, \'wrs_modal_wrapper\')]';
+        $this->ensure_element_exists($formula, 'xpath_element');
+        // Then re-validate to throw error otherwise (?).
+        $this->mathtype_editor_should_exist();
+    }
+
+    /**
+     * Waits the excution until the MathType editor displays
+     *
+     * @Then text should exist
+     */
+    public function text_should_exist() {
+        $session = $this->getSession();
+        $text = $session->getPage()->find('xpath', '//div[@id="id_introeditoreditable"]/text()');
+        if (empty($text)) {
+            throw new ExpectationException('MathType editor not found.', $this->getSession());
+        }
+    }
+
+    /**
+     * Enters the inframe inside the specified tinymce editor
+     * @Given I switch to iframe with locator :locator
+     * @param String $locator
+    */
+    public function iSwitchToIFrameWithLocator($locator)
+    {
+
+        $javascript = "(function(){
+        var iframes = document.getElementsByTagName('iframe');
+        for (var i = 0; i < iframes.length; i++) {
+            iframes[i].name = 'iframe_number_' + (i + 1) ;
+        }
+        })()";
+
+        $this->getSession()->executeScript($javascript);
+        $iframe = $this->getSession()->getPage()->find('xpath', '//iframe[@id="'.$locator.'"]');
+        if (empty($iframe)) {
+            throw new ExpectationException('Iframe with locator \''.$locator.'\' not found', $this->getSession());
+        }
+        $iframeName = $iframe->getAttribute("name");
+        $this->getSession()->getDriver()->switchToIFrame($iframeName);
+    }
+
+    /**
+     * Exits the current iframe and return to the default frame
+     * @Given I return to default frame
+     * @param String $locator
+    */
+    public function i_return_to_default_frame()
+    {
+        $this->getSession()->getDriver()->switchToIFrame(NULL);
+    }
 }

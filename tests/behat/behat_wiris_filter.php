@@ -72,6 +72,36 @@ class behat_wiris_filter extends behat_wiris_base {
         $component->uncheck();
     }
 
+        /**
+     * Check Image performance mode on on MathType filter page
+     *
+     * @Given I check image performance mode on
+     * @throws ExpectationException If image performance mode is not found, it will throw an exception.
+     */
+    public function i_check_image_performance_mode_on() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_pluginperformance" ]');
+        if (empty($component)) {
+            throw new ExpectationException('Image performance checkbox not found.', $this->getSession());
+        }
+        $component->check();
+    }
+
+    /**
+     * Check full-screen mode on on MathType filter page
+     *
+     * @Given I check full-screen mode on
+     * @throws ExpectationException If full-screen mode is not found, it will throw an exception.
+     */
+    public function i_check_full_screen_mode_on() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//*[@id="id_s_filter_wiris_editormodalwindowfullscreen" ]');
+        if (empty($component)) {
+            throw new ExpectationException('Full-screen checkbox not found.', $this->getSession());
+        }
+        $component->check();
+    }
+
     /**
      * Set the MathType filter render type to the given value.
      *
