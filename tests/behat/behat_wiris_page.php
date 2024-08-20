@@ -344,16 +344,7 @@ class behat_wiris_page extends behat_wiris_base {
         if (empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
-        if ($button == 'Toggle') {
-            // Clicking only if toggle button is not pressed yet.
-            $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //*[contains(@class,\'mceButtonActive\')]');
-            if (!empty($component)) {
-                $component->click();
-            }
-        } else {
-            $component->click();
-        }
+        $component->click();
     }
 
     /**
