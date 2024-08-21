@@ -231,4 +231,4 @@ jobs:
               TAG="@filter"
               ;;
           esac
-          moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv --format pretty --out std
+          moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv --suite moodle_list
