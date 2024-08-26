@@ -342,11 +342,11 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
         //*[contains(@title,\'' . $buttonarray[$button] . '\')]');
-        
+
         // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
         if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
-            //*[contains(@title,"Reveal or hide")]');        
+            //*[contains(@title,"Reveal or hide")]');
         }
         
         if (empty($component)) {
