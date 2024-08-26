@@ -215,6 +215,7 @@ jobs:
       # Known tags: @3.x_plugin, @4.0_plugin, @4.x_plugin
       # Run Behat tests on all Moodle branches.
       - name: Behat features for ( ${{ matrix.moodle-branch }} on PHP ${{ matrix.php }} )
+        id: behat  
         if: ${{ always() }}
         run: |
           case "${{ matrix.moodle-branch }}" in
@@ -232,3 +233,11 @@ jobs:
               ;;
           esac
           moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
+      - name: Upload Behat Faildump
+        if: ${{ failure() && steps.behat.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Behat Faildump (${{ join(matrix.*, ', ') }})
+          path: ${{ github.workspace }}/moodledata/behat_dump
+          retention-days: 7
+          if-no-files-found: ignore
