@@ -348,7 +348,7 @@ class behat_wiris_page extends behat_wiris_base {
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
             //*[contains(@title,"Reveal or hide")]');
         }
-        
+
         if (empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
