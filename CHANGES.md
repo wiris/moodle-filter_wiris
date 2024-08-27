@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-The latest release of this plugin is v8.7.0 (23 apr. 2024).
+The latest release of this plugin is v8.7.1 (27 aug. 2024).
+
+## v8.7.1 - 27 aug. 2024
+
+- test: Improve and add test coverage.
+- fix: Latex being deleted from editors. #KB-49186
+- refactor: Moodle test page. #KB-43810
+- fix: Fetch notification when load setting page. #KB-44423
 
 ## v8.7.0 - 23 apr. 2024
 
