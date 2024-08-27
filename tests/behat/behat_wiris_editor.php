@@ -142,6 +142,29 @@ class behat_wiris_editor extends behat_wiris_base {
     }
 
     /**
+     * Press on minimize button in MathType Editor
+     *
+     * @Given I press minimize button in MathType Editor
+     * @throws ExpectationException If minimize button is not found, it will throw an exception.
+     */
+    public function i_press_minimize_button_in_mathtype_editor() {
+        $exception = new ExpectationException('Minimize button not found.', $this->getSession());
+        $this->spin(
+            function ($context) {
+                $button = $context->getSession()->getPage()->find('xpath', '//a[@id=\'wrs_modal_minimize_button[0]\']');
+                return !empty($button);
+            },
+            [],
+            self::get_extended_timeout(),
+            $exception,
+            true
+        );
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//a[@id=\'wrs_modal_minimize_button[0]\']');
+        $component->click();
+    }
+
+    /**
      * Click on MathType editor title bar
      *
      * @Given I click on MathType editor title bar
@@ -239,7 +262,28 @@ class behat_wiris_editor extends behat_wiris_base {
             throw new ExpectationException('MathType editor not found.', $this->getSession());
         }
     }
+    /**
+     * Enters the div inside the specified editor
+     * @Given I switch to div with locator :locator
+     * @param String $locator
+     */
+    public function iswitchtodivwithlocator($locator) {
 
+        $javascript = "(function(){
+        var divs = document.getElementsByTagName('div');
+        for (var i = 0; i < divs.length; i++) {
+            divs[i].name = 'div_number_' + (i + 1) ;
+        }
+        })()";
+
+        $this->getSession()->executeScript($javascript);
+        $div = $this->getSession()->getPage()->find('xpath', '//div[@id="'.$locator.'"]');
+        if (empty($div)) {
+            throw new ExpectationException('div with locator \''.$locator.'\' not found', $this->getSession());
+        }
+        $divname = $div->getAttribute("name");
+        $this->getSession()->getDriver()->switchToDiv($divname);
+    }
     /**
      * Enters the inframe inside the specified tinymce editor
      * @Given I switch to iframe with locator :locator

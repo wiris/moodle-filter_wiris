@@ -320,6 +320,7 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the field is not found, it will throw an exception.
      */
     public function i_press_in_field_in_tiny_editor($button, $field) {
+        global $CFG;
         $sectionarray = [
             "Page content" => "fitem_id_page",
             "Question text" => "fitem_id_questiontext",
@@ -341,19 +342,17 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
         //*[contains(@title,\'' . $buttonarray[$button] . '\')]');
+
+        // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
+        if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@title,"Reveal or hide")]');
+        }
+
         if (empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
-        if ($button == 'Toggle') {
-            // Clicking only if toggle button is not pressed yet.
-            $component = $session->getPage()->find('xpath', '//div[@id="'.$sectionarray[$field].'"]
-            //*[contains(@class,\'mceButtonActive\')]');
-            if (!empty($component)) {
-                $component->click();
-            }
-        } else {
-            $component->click();
-        }
+        $component->click();
     }
 
     /**
@@ -603,6 +602,7 @@ class behat_wiris_page extends behat_wiris_base {
      * @throws ExpectationException If the button is not found, it will throw an exception.
      */
     public function i_click_on_in_tinymce_6_editor_toolbar($button) {
+        global $CFG;
         $buttonarray = [
             "More options" => "More...",
         ];
@@ -611,6 +611,10 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="'.$buttonarray[$button].'"]');
+        if ($CFG->version >= 2024042202.02) {
+            $component = $session->getPage()->find('xpath', '//*[contains(@title,"Reveal or hide")]');
+        }
+
         if (empty($component)) {
             throw new ExpectationException($button." button not correctly recognized.", $this->getSession());
         }
