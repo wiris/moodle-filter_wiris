@@ -128,7 +128,7 @@ class behat_wiris_editor extends behat_wiris_base {
                 @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//div[@class=\'wrs_panelContainer\']');
                 $container = $context->getSession()->getPage()->find('xpath', '//div[@id=\'wrs_modal_dialogContainer[0]\' and
                 @class=\'wrs_modal_dialogContainer wrs_modal_desktop wrs_stack\']//span[@class=\'wrs_container\']');
-                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
+                $button = $context->getSession()->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_cancel[0]\']');
                 return !empty($toolbar) && !empty($container);
             },
             [],
@@ -137,7 +137,7 @@ class behat_wiris_editor extends behat_wiris_base {
             true
         );
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
+        $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_cancel[0]\']');
         $component->click();
     }
 
@@ -243,11 +243,20 @@ class behat_wiris_editor extends behat_wiris_base {
      * @Then i wait until MathType editor is displayed
      */
     public function i_wait_until_mathtype_editor_is_displayed() {
-        // Looks for a math formula in the page.
-        $formula = '//div[contains(@id, \'wrs_modal_wrapper\')]';
-        $this->ensure_element_exists($formula, 'xpath_element');
-        // Then re-validate to throw error otherwise (?).
-        $this->mathtype_editor_should_exist();
+        // Looks for a the MT editor opened in the page.
+        $editor = '//div[contains(@id, \'wrs_modal_wrapper\')]';
+        $this->ensure_element_is_visible($editor, 'xpath_element');
+    }
+    
+        /**
+     * Waits the excution until the ChemType editor displays
+     *
+     * @Then i wait until ChemType editor is displayed
+     */
+    public function i_wait_until_chemtype_editor_is_displayed() {
+        // Looks for a the CT editor opened in the page.
+        $chemTab = '//button[contains(@title, \'Chemistry tab\')]';
+        $this->ensure_element_is_visible($chemTab, 'xpath_element');
     }
 
     /**
