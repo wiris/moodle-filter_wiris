@@ -247,7 +247,7 @@ class behat_wiris_editor extends behat_wiris_base {
         $editor = '//div[contains(@id, \'wrs_modal_wrapper\')]';
         $this->ensure_element_is_visible($editor, 'xpath_element');
     }
-    
+
     /**
      * Waits the excution until the ChemType editor displays
      *
