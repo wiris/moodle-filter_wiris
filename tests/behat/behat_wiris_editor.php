@@ -248,15 +248,15 @@ class behat_wiris_editor extends behat_wiris_base {
         $this->ensure_element_is_visible($editor, 'xpath_element');
     }
     
-        /**
+    /**
      * Waits the excution until the ChemType editor displays
      *
      * @Then i wait until ChemType editor is displayed
      */
     public function i_wait_until_chemtype_editor_is_displayed() {
         // Looks for a the CT editor opened in the page.
-        $chemTab = '//button[contains(@title, \'Chemistry tab\')]';
-        $this->ensure_element_is_visible($chemTab, 'xpath_element');
+        $chemtab = '//button[contains(@title, \'Chemistry tab\')]';
+        $this->ensure_element_is_visible($chemtab, 'xpath_element');
     }
 
     /**
