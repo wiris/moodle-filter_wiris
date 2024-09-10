@@ -2,6 +2,7 @@ name: Moodle Plugin CI Tests
 
 # The workflow is triggered on push to the stable branch, main branch, pull requests and every day at 6:30 UTC.
 on:
+  workflow_dispatch:
   push:
     branches:
       - stable
@@ -161,7 +162,7 @@ jobs:
       - name: Add MathType plugin for Atto using the stable branch
         if: steps.install-plugin-atto.outcome != 'success'
         run: |
-          moodle-plugin-ci add-plugin --branch stable wiris/moodle-atto_wiris
+          moodle-plugin-ci add-plugin --branch main wiris/moodle-atto_wiris
 
       # 3.3 Install Tiny plugin
       - name: Add MathType plugin for TinyMCE
@@ -174,7 +175,7 @@ jobs:
       - name: Add MathType plugin for TinyMCE using the stable branch
         if: contains(fromJson('["MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle-branch) && steps.install-plugin-tiny.outcome != 'success'
         run: |
-          moodle-plugin-ci add-plugin --branch stable wiris/moodle-tiny_wiris
+          moodle-plugin-ci add-plugin --branch main wiris/moodle-tiny_wiris
 
       - name: Add legacy MathType plugin for TinyMCE
         if: contains(fromJson('["MOODLE_38_STABLE", "MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE"]'), matrix.moodle-branch)
