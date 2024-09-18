@@ -3,6 +3,11 @@ name: Moodle Plugin CI Tests
 # The workflow is triggered on push to the stable branch, main branch, pull requests and every day at 6:30 UTC.
 on:
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Select tags you want to use (without @)'
+        required: false
+        default: ''
   push:
     branches:
       - stable
@@ -217,7 +222,7 @@ jobs:
       # Run Behat tests on all Moodle branches.
       - name: Behat features for ( ${{ matrix.moodle-branch }} on PHP ${{ matrix.php }} )
         id: behat  
-        if: ${{ always() }}
+        if: github.event.inputs.tags == ''
         run: |
           case "${{ matrix.moodle-branch }}" in
             "MOODLE_38_STABLE"|"MOODLE_39_STABLE"|"MOODLE_311_STABLE")
@@ -228,6 +233,25 @@ jobs:
               ;;
             "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE")
               TAG="@4.x_filter"
+              ;;
+            *)
+              TAG="@filter"
+              ;;
+          esac
+          moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
+      - name: Behat features for ( ${{ matrix.moodle-branch }} on PHP ${{ matrix.php }} ), using the tag ${{ github.event.inputs.tags }}
+        id: behatCustomTags  
+        if: github.event.inputs.tags != ''
+        run: |
+          case "${{ matrix.moodle-branch }}" in
+            "MOODLE_38_STABLE"|"MOODLE_39_STABLE"|"MOODLE_311_STABLE")
+              TAG="@3.x_filter&&@${{ github.event.inputs.tags }}"
+              ;;
+            "MOODLE_400_STABLE")
+              TAG="@4.0_filter&&@${{ github.event.inputs.tags }}"
+              ;;
+            "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE")
+              TAG="@4.x_filter&&@${{ github.event.inputs.tags }}"
               ;;
             *)
               TAG="@filter"
