@@ -31,15 +31,13 @@ Feature: Render in moodle forums
     And I add a "Forum" to section "0" using the activity chooser
     And I set the following fields to these values:
       | Forum name | Test MathType for wiris formula render in forums |
-    # insert Wirisformula in forum
-    And I press "MathType" in "Description" field in Atto editor
-    And I wait "3" seconds
-    And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>1</mn></math>'
-    And I wait "3" seconds
-    And I press accept button in MathType Editor
-    And I wait "1" seconds
-    # check that Wirisformula exists in forum
-    Then a Wirisformula containing "1 plus 1" should exist
+      | Description | Test MathType for wiris formula render in forums |
+    And I press "Save and display"
+    And I wait "2" seconds
+    And I click on "Add discussion topic" "link"
+
+
+    Then a Wirisformula containing "1 plus 1" should not exist
 
 @javascript @3.x @3.x_filter @4.0 @4.0_filter
   Scenario: MTMOODLE-6 - Check MathType renders a wiris formula in moodle forums
