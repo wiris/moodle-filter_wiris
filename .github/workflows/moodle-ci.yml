@@ -237,6 +237,7 @@ jobs:
               TAG="@filter"
               ;;
           esac
+          echo "moodle-plugin-ci behat --tags=$TAG{{ github.event.inputs.tags }} --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv"
           moodle-plugin-ci behat --tags=$TAG{{ github.event.inputs.tags }} --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
       
       - name: Upload Behat Faildump
