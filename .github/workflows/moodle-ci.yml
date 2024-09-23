@@ -3,6 +3,11 @@ name: Moodle Plugin CI Tests
 # The workflow is triggered on push to the stable branch, main branch, pull requests and every day at 6:30 UTC.
 on:
   workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Adds an additional tags to the tests. It needs the && to concat other tags and a starting @. Usage: "&&@mtmoodle-x"'
+        required: false
+        default: ''
   push:
     branches:
       - stable
@@ -198,7 +203,7 @@ jobs:
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }}wiris/moodle-qtype_wq
-      - name: Add Wiris Quizzes plugin using the stable branch
+      - name: Add Wiris Quizzes plugin using the main branch
         if: steps.install-plugin-quizzes.outcome != 'success'
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-qtype_wq
@@ -226,7 +231,6 @@ jobs:
       # Run Behat tests on all Moodle branches.
       - name: Behat features for ( ${{ matrix.moodle-branch }} on PHP ${{ matrix.php }} )
         id: behat  
-        if: ${{ always() }}
         run: |
           case "${{ matrix.moodle-branch }}" in
             "MOODLE_38_STABLE"|"MOODLE_39_STABLE"|"MOODLE_311_STABLE")
@@ -242,7 +246,8 @@ jobs:
               TAG="@filter"
               ;;
           esac
-          moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
+          moodle-plugin-ci behat --tags=$TAG${{ github.event.inputs.tags }} --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
+      
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
