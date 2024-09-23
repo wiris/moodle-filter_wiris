@@ -40,6 +40,7 @@ jobs:
             "MOODLE_402_STABLE",
             "MOODLE_403_STABLE",
             "MOODLE_404_STABLE",
+            "main",
           ]
         database: [pgsql]
         browser: ["chrome", "firefox"]
@@ -53,12 +54,16 @@ jobs:
             php: "7.4"
           - moodle-branch: "MOODLE_404_STABLE"
             php: "7.4"
+          - moodle-branch: "main"
+            php: "7.4"
 
           - moodle-branch: "MOODLE_38_STABLE"
             php: "8.0"
           - moodle-branch: "MOODLE_39_STABLE"
             php: "8.0"
           - moodle-branch: "MOODLE_404_STABLE"
+            php: "8.0"
+          - moodle-branch: "main"
             php: "8.0"
 
           - moodle-branch: "MOODLE_38_STABLE"
@@ -79,6 +84,8 @@ jobs:
           - moodle-branch: "MOODLE_400_STABLE"
             php: "8.2"
           - moodle-branch: "MOODLE_401_STABLE"
+            php: "8.2"
+          - moodle-branch: "main"
             php: "8.2"
 
           - moodle-branch: "MOODLE_38_STABLE"
@@ -94,6 +101,8 @@ jobs:
           - moodle-branch: "MOODLE_402_STABLE"
             php: "8.3"
           - moodle-branch: "MOODLE_403_STABLE"
+            php: "8.3"
+          - moodle-branch: "main"
             php: "8.3"
 
     steps:
@@ -159,7 +168,7 @@ jobs:
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-atto_wiris
-      - name: Add MathType plugin for Atto using the stable branch
+      - name: Add MathType plugin for Atto using the main branch
         if: steps.install-plugin-atto.outcome != 'success'
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-atto_wiris
@@ -172,7 +181,7 @@ jobs:
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-tiny_wiris
-      - name: Add MathType plugin for TinyMCE using the stable branch
+      - name: Add MathType plugin for TinyMCE using the main branch
         if: contains(fromJson('["MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle-branch) && steps.install-plugin-tiny.outcome != 'success'
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-tiny_wiris
@@ -180,7 +189,7 @@ jobs:
       - name: Add legacy MathType plugin for TinyMCE
         if: contains(fromJson('["MOODLE_38_STABLE", "MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE"]'), matrix.moodle-branch)
         run: |
-          moodle-plugin-ci add-plugin --branch stable wiris/moodle-tinymce_tiny_mce_wiris
+          moodle-plugin-ci add-plugin --branch main wiris/moodle-tinymce_tiny_mce_wiris
 
       # 3.4 install wirisquizzes
       - name: Add Wiris Quizzes plugin
@@ -226,7 +235,7 @@ jobs:
             "MOODLE_400_STABLE")
               TAG="@4.0_filter"
               ;;
-            "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE")
+            "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE"|"main")
               TAG="@4.x_filter"
               ;;
             *)
@@ -240,5 +249,5 @@ jobs:
         with:
           name: Behat Faildump (${{ join(matrix.*, ', ') }})
           path: ${{ github.workspace }}/moodledata/behat_dump
-          retention-days: 7
+          retention-days: 1
           if-no-files-found: ignore
