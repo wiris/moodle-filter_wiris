@@ -25,7 +25,7 @@
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_php extends moodle_text_filter {
+class filter_wiris_php extends \core_filters\text_filter {
 
 
 
