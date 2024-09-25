@@ -43,8 +43,8 @@ require_once("$CFG->dirroot/filter/wiris/subfilters/php.php");
  * Class filter_wiris
  * This class extends the moodle_text_filter and provides a method to filter text using the Wiris filter.
  */
-class text_filter extends \core_filters\text_filter
-{
+class text_filter extends \core_filters\text_filter {
+
 
 
     /**
@@ -54,8 +54,7 @@ class text_filter extends \core_filters\text_filter
      * @param  array  $options An array of options for the filter (optional).
      * @return string The filtered text.
      */
-    public function filter($text, array $options = [])
-    {
+    public function filter($text, array $options = []) {
 
         switch (get_config('filter_wiris', 'rendertype')) {
                 // Client-side render: Uses the Javascript third-party lib.

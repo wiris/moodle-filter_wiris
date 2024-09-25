@@ -33,7 +33,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/Cal
  *
  * This class contains unit tests for the MathType filter with SVG image format.
  */
-class filter_performance_svg_test extends advanced_testcase {
+final class filter_performance_svg_test extends advanced_testcase {
 
 
 
@@ -106,19 +106,19 @@ class filter_performance_svg_test extends advanced_testcase {
         $this->svg .= '+</mo><mn>2</mn></math>--><defs><style type="text/css">@font-face{font-family:';
     }
 
-    public function test_filter_safexml_with_performance_svg() {
+    public function test_filter_safexml_with_performance_svg(): void {
         $output = $this->wirisfilter->filter($this->safexml);
         $assertion = strrpos($output, $this->imagesvgperformance) !== false;
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_xml_with_performance() {
+    public function test_filter_xml_with_performance(): void {
         $output = $this->wirisfilter->filter($this->xml);
         $assertion = strrpos($output, $this->imagesvgperformance) !== false;
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_cache_svg() {
+    public function test_filter_safexml_with_performance_cache_svg(): void {
         $this->wirisfilter = new filter_wiris(context_system::instance(), []);
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
@@ -129,7 +129,7 @@ class filter_performance_svg_test extends advanced_testcase {
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_cache_formula() {
+    public function test_filter_safexml_with_performance_cache_formula(): void {
         $this->wirisfilter = new filter_wiris(context_system::instance(), []);
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'formulas');
@@ -139,7 +139,7 @@ class filter_performance_svg_test extends advanced_testcase {
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_safexml_with_performance_alt_cache() {
+    public function test_filter_safexml_with_performance_alt_cache(): void {
         $this->wirisfilter = new filter_wiris(context_system::instance(), []);
         $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
@@ -149,7 +149,7 @@ class filter_performance_svg_test extends advanced_testcase {
     }
 
 
-    public function test_filter_xml_with_performance_special_chars() {
+    public function test_filter_xml_with_performance_special_chars(): void {
         $output = $this->wirisfilter->filter($this->specialcharsimagesafexml);
         $assertion = strrpos($output, $this->imagesvgspecialchars) !== false;
         $this->assertTrue($assertion);
