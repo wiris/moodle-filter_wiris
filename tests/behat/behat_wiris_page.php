@@ -346,7 +346,7 @@ class behat_wiris_page extends behat_wiris_base {
         // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
         if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
-            //*[contains(@title,"Reveal or hide")]');
+            //*[contains(@aria-label,"Reveal or hide")]');
         }
 
         if (empty($component)) {
@@ -603,6 +603,7 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_click_on_in_tinymce_6_editor_toolbar($button) {
         global $CFG;
+        echo $CFG->version;
         $buttonarray = [
             "More options" => "More...",
         ];
@@ -612,7 +613,7 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="'.$buttonarray[$button].'"]');
         if ($CFG->version >= 2024042202.02) {
-            $component = $session->getPage()->find('xpath', '//*[contains(@title,"Reveal or hide")]');
+            $component = $session->getPage()->find('xpath', '//*[contains(@aria-label,"Reveal or hide")]');
         }
 
         if (empty($component)) {
