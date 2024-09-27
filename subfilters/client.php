@@ -16,6 +16,8 @@
 //
 
 namespace filter_wiris\subfilters;
+
+use moodle_url;
 /**
  * This filter does nothing to the received text.
  * Adds a Javascript library that will do all the heavy-lifting.

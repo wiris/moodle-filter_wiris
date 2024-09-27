@@ -17,6 +17,8 @@
 
 namespace filter_wiris\subfilters;
 
+use filter_wiris_pluginwrapper;
+
 /**
  * This filter implements the default behaviour of the Wiris filter:
  * it uses the integration/ classes to make calls to the wiris.net services,
