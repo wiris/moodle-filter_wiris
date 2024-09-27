@@ -30,12 +30,13 @@
 
 namespace filter_wiris;
 
-use filter_wiris_client;
-use filter_wiris_php;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die(); 
 
 // Import all available 'subfilters'.
+use filter_wiris\subfilters\filter_wiris_client;
+use filter_wiris\subfilters\filter_wiris_php;
+
 require_once("$CFG->dirroot/filter/wiris/subfilters/client.php");
 require_once("$CFG->dirroot/filter/wiris/subfilters/php.php");
 
@@ -43,9 +44,7 @@ require_once("$CFG->dirroot/filter/wiris/subfilters/php.php");
  * Class filter_wiris
  * This class extends the moodle_text_filter and provides a method to filter text using the Wiris filter.
  */
-class text_filter extends \core_filters\text_filter {
-
-
+class text_filter extends \core_filters\text_filter{
 
     /**
      * Filters the given text using the Wiris filter.

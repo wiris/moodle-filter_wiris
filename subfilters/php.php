@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+namespace filter_wiris\subfilters;
+
 /**
  * This filter implements the default behaviour of the Wiris filter:
  * it uses the integration/ classes to make calls to the wiris.net services,
@@ -26,9 +28,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_wiris_php extends \core_filters\text_filter {
-
-
-
 
     /**
      * Set any context-specific configuration for this filter.

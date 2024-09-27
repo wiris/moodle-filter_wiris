@@ -12,18 +12,22 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file is empty because the class filter_wiris is an alias of the class filter_wiris\text_filter.
- * This is done to maintain compatibility with previous versions of the plugin.
- * The new class filter_wiris\text_filter is located in the file main/filter/wiris/classes/text_filter.php.
+ * File only retained to mantain compatibility with old versions of the filter.
  *
+ * @deprecated This file is no longer required in Moodle 4.5+.
  * @package    filter_wiris
  * @subpackage wiris
  * @copyright  2023 WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
 
-class_alias(\filter_wiris\text_filter::class, \filter_wiris::class);
-
+// For backwards compatibility with Moodle 4.4 and below.
+if ($CFG->branch < 405) {
+    class_alias('\moodle_text_filter', '\core_filters\text_filter');
+    require_once(__DIR__ . '/classes/text_filter.php');
+    class_alias('filter_wiris\text_filter', '\filter_wiris');
+}
