@@ -202,21 +202,17 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_place_caret_at_position_in_field_in_tinymce_6($position, $field) {
         $fieldarray = [
-            "Page Content" => "tinymce",
+            "Page Content" => "id_page",
         ];
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//body[@id="tinymce"]');
-        if (empty($component)) {
-            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
-        }
-        $session = $this->getSession();
-        $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
-            .'node = document.getElementById(\''.$fieldarray[$field].'\').firstChild;'
-            .'window.parent.document.getSelection().removeAllRanges();'
-            .'range.setStart(node,'.$position.');'
-            .'range.setEnd(node,'.$position.');'
-            .'window.parent.document.getSelection().addRange(range);'
-            .'window.parent.document.body.focus();';
+
+        $script = 'var editor = tinymce.get(\'' . $fieldarray[$field] . '\');'
+            .'editor.focus();'
+            .'var body = editor.getBody();'
+            .'var textNode = body.querySelector(\'p\').firstChild;'
+            .'var offset = ' . $position . ';'
+            .'editor.selection.setCursorLocation(textNode, offset);';
+        
         $session->executeScript($script);
     }
 
@@ -351,8 +347,6 @@ class behat_wiris_page extends behat_wiris_base {
 
         // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
         if ($button != 'Toggle' && $CFG->version >= 2024092400) {
-            echo '//div[@id="' . $sectionarray[$field] . '"]
-            //*[contains(@aria-label,"' . $buttonarray[$button] . '")]';
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
             //*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
         }
@@ -611,7 +605,6 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_click_on_in_tinymce_6_editor_toolbar($button) {
         global $CFG;
-        echo $CFG->version;
         $buttonarray = [
             "More options" => "More...",
         ];
