@@ -349,6 +349,14 @@ class behat_wiris_page extends behat_wiris_base {
             //*[contains(@aria-label,"Reveal or hide")]');
         }
 
+        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        if ($button != 'Toggle' && $CFG->version >= 2024092400) {
+            echo '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@aria-label,"' . $buttonarray[$button] . '")]';
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
+        }
+
         if (empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
