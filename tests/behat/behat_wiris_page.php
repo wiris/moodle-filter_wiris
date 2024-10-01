@@ -574,7 +574,7 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_check_in_field_in_tinymce_editor($button, $field, $exist) {
         $sectionarray = [
-            "Page content" => "content",
+            "Page content" => "fitem_id_page",
         ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
@@ -588,6 +588,13 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $session = $this->getSession();
         $component = $session->getPage()->find( 'xpath', '//button[@title="'.$buttonarray[$button].'"]');
+        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        global $CFG;
+        if ($button != 'Toggle' && $CFG->version >= 2024092400) {
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@aria-label,"' . $button . '")]');
+        }
+
         if ($exist === "does" && empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         } else if ($exist === "does not" && $component === '') {
