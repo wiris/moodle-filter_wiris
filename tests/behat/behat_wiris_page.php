@@ -212,7 +212,7 @@ class behat_wiris_page extends behat_wiris_base {
             .'var textNode = body.querySelector(\'p\').firstChild;'
             .'var offset = ' . $position . ';'
             .'editor.selection.setCursorLocation(textNode, offset);';
-        
+
         $session->executeScript($script);
     }
 
