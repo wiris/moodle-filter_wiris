@@ -27,7 +27,7 @@ require_once($CFG->dirroot . '/filter/wiris/filter.php');
  * @copyright  2016
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
  */
-class filter_without_performance_svg_test extends advanced_testcase {
+final class filter_without_performance_svg_test extends advanced_testcase {
 
 
 
@@ -103,30 +103,30 @@ class filter_without_performance_svg_test extends advanced_testcase {
         $this->instance = $wirispluginwrapper->get_instance();
     }
 
-    public function test_filter_safexml_without_performance_svg() {
+    public function test_filter_safexml_without_performance_svg(): void {
         $output = $this->wirisfilter->filter($this->safexml);
         $this->assertEquals($output, $this->imagesvg);
     }
 
-    public function test_filter_xml_without_performance_svg() {
+    public function test_filter_xml_without_performance_svg(): void {
         $output = $this->wirisfilter->filter($this->xml);
         $this->assertEquals($output, $this->imagesvg);
     }
-    public function test_filter_safexml_without_performance_svg_cache_formula() {
+    public function test_filter_safexml_without_performance_svg_cache_formula(): void {
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'formulas');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
         $assertion = strrpos($fileresult, $this->xml) !== false;
         $this->assertTrue($assertion);
     }
-    public function test_filter_safexml_without_performance_svg_alt_cache() {
+    public function test_filter_safexml_without_performance_svg_alt_cache(): void {
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.en.txt');
         $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
         $this->assertTrue($assertion);
     }
-    public function test_filter_safexml_without_performance_svg_cache() {
+    public function test_filter_safexml_without_performance_svg_cache(): void {
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.svg');

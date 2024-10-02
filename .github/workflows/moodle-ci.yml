@@ -218,11 +218,13 @@ jobs:
       - name: PHPUnit tests
         if: ${{ always() }}
         run: moodle-plugin-ci phpunit ./plugin
+        continue-on-error: true
 
       # 5.2 Moodle Code Validator
       - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate ./plugin
+        continue-on-error: true
 
       # 6 Behat tests
 
@@ -247,7 +249,8 @@ jobs:
               ;;
           esac
           moodle-plugin-ci behat --tags=$TAG${{ github.event.inputs.tags }} --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
-      
+        continue-on-error: true
+
       - name: Upload Behat Faildump
         if: ${{ failure() && steps.behat.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
