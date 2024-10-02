@@ -202,21 +202,17 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_place_caret_at_position_in_field_in_tinymce_6($position, $field) {
         $fieldarray = [
-            "Page Content" => "tinymce",
+            "Page Content" => "id_page",
         ];
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//body[@id="tinymce"]');
-        if (empty($component)) {
-            throw new ExpectationException($field." field not correctly recognized.", $this->getSession());
-        }
-        $session = $this->getSession();
-        $script = 'range = window.parent.document.getSelection().getRangeAt(0);'
-            .'node = document.getElementById(\''.$fieldarray[$field].'\').firstChild;'
-            .'window.parent.document.getSelection().removeAllRanges();'
-            .'range.setStart(node,'.$position.');'
-            .'range.setEnd(node,'.$position.');'
-            .'window.parent.document.getSelection().addRange(range);'
-            .'window.parent.document.body.focus();';
+
+        $script = 'var editor = tinymce.get(\'' . $fieldarray[$field] . '\');'
+            .'editor.focus();'
+            .'var body = editor.getBody();'
+            .'var textNode = body.querySelector(\'p\').firstChild;'
+            .'var offset = ' . $position . ';'
+            .'editor.selection.setCursorLocation(textNode, offset);';
+
         $session->executeScript($script);
     }
 
@@ -346,7 +342,13 @@ class behat_wiris_page extends behat_wiris_base {
         // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
         if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
-            //*[contains(@title,"Reveal or hide")]');
+            //*[contains(@aria-label,"Reveal or hide")]');
+        }
+
+        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        if ($button != 'Toggle' && $CFG->version >= 2024092400) {
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
         }
 
         if (empty($component)) {
@@ -572,7 +574,7 @@ class behat_wiris_page extends behat_wiris_base {
      */
     public function i_check_in_field_in_tinymce_editor($button, $field, $exist) {
         $sectionarray = [
-            "Page content" => "content",
+            "Page content" => "fitem_id_page",
         ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
@@ -586,6 +588,13 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $session = $this->getSession();
         $component = $session->getPage()->find( 'xpath', '//button[@title="'.$buttonarray[$button].'"]');
+        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        global $CFG;
+        if ($button != 'Toggle' && $CFG->version >= 2024092400) {
+            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            //*[contains(@aria-label,"' . $button . '")]');
+        }
+
         if ($exist === "does" && empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         } else if ($exist === "does not" && $component === '') {
@@ -612,7 +621,7 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="'.$buttonarray[$button].'"]');
         if ($CFG->version >= 2024042202.02) {
-            $component = $session->getPage()->find('xpath', '//*[contains(@title,"Reveal or hide")]');
+            $component = $session->getPage()->find('xpath', '//*[contains(@aria-label,"Reveal or hide")]');
         }
 
         if (empty($component)) {

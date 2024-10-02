@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/Cal
  * @package wiris-moodle-docker
  * @subpackage MOODLE_39_STABLE/filter/wiris/tests
  */
-class filter_performance_png_test extends advanced_testcase {
+final class filter_performance_png_test extends advanced_testcase {
 
 
     /**
@@ -102,18 +102,18 @@ class filter_performance_png_test extends advanced_testcase {
         $this->imagepng .= 'xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»\'/>';
     }
 
-    public function test_filter_safexml_with_performance_png() {
+    public function test_filter_safexml_with_performance_png(): void {
         $output = $this->wirisfilter->filter($this->safexml);
         $assertion = strrpos($output, $this->minuspngbase64uri) !== false;
         $this->assertTrue($assertion);
     }
 
-    public function test_filter_xml_with_performance_png() {
+    public function test_filter_xml_with_performance_png(): void {
         $output = $this->wirisfilter->filter($this->xml);
         $assertion = strrpos($output, $this->pluspngbase64uri) !== false;
         $this->assertTrue($assertion);
     }
-    public function test_filter_safexml_with_performance_png_cache_formula() {
+    public function test_filter_safexml_with_performance_png_cache_formula(): void {
         $this->wirisfilter->filter($this->safexml);
         $cachefile = new moodlefilecache('filter_wiris', 'formulas');
 
@@ -121,7 +121,7 @@ class filter_performance_png_test extends advanced_testcase {
         $assertion = strrpos($fileresult, $this->minusxml) !== false;
         $this->assertTrue($assertion);
     }
-    public function test_filter_safexml_with_performance_png_alt_cache() {
+    public function test_filter_safexml_with_performance_png_alt_cache(): void {
         $this->wirisfilter->filter($this->safexml);
 
         $cachefile = new moodlefilecache('filter_wiris', 'images');
@@ -129,7 +129,7 @@ class filter_performance_png_test extends advanced_testcase {
         $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
         $this->assertTrue($assertion);
     }
-    public function test_filter_safexml_with_performance_png_cache() {
+    public function test_filter_safexml_with_performance_png_cache(): void {
         $this->wirisfilter->filter($this->xml);
         $cachefile = new moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.png');

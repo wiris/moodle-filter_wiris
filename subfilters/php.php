@@ -15,6 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+namespace filter_wiris\subfilters;
+
+use filter_wiris_pluginwrapper;
+
 /**
  * This filter implements the default behaviour of the Wiris filter:
  * it uses the integration/ classes to make calls to the wiris.net services,
@@ -25,10 +29,7 @@
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_php extends moodle_text_filter {
-
-
-
+class filter_wiris_php extends \core_filters\text_filter {
 
     /**
      * Set any context-specific configuration for this filter.
