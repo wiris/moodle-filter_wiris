@@ -180,6 +180,53 @@ class behat_wiris_editor extends behat_wiris_base {
     }
 
     /**
+     * Move the MathType editor
+     *
+     * @Given I move the MathType editor
+     * @throws ExpectationException If the editor title bar is not found, it will throw an exception.
+     */
+    public function i_move_mathtype_editor_window() {
+        $session = $this->getSession();
+        $component = $session->getPage()->find('xpath', '//div[@class=\'wrs_modal_title\']');
+        if (empty($component)) {
+            throw new ExpectationException('Editor title bar not found.', $this->getSession());
+        }
+        // JavaScript to simulate drag and drop
+        $script = <<<JS
+        var element = document.evaluate("//div[@class='wrs_modal_title']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        var rect = element.getBoundingClientRect();
+        
+        var startX = rect.left + rect.width / 2;
+        var startY = rect.top + rect.height / 2;
+        var endX = startX - 200;  // Move 200px to the left
+        var endY = startY - 100;   // Move 100px up
+    
+        var dataTransfer = new DataTransfer();
+    
+        element.dispatchEvent(new MouseEvent('mousedown', {
+            clientX: startX,
+            clientY: startY,
+            bubbles: true
+        }));
+    
+        document.dispatchEvent(new MouseEvent('mousemove', {
+            clientX: endX,
+            clientY: endY,
+            bubbles: true
+        }));
+    
+        document.dispatchEvent(new MouseEvent('mouseup', {
+            clientX: endX,
+            clientY: endY,
+            bubbles: true
+        }));
+    JS;
+    
+        // Execute the script
+        $session->executeScript($script);
+    }
+
+    /**
      * Check if Mathtype button is in full-screen mode
      *
      * @Then I check editor is in full-screen mode
