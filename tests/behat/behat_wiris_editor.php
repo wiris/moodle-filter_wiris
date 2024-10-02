@@ -195,33 +195,27 @@ class behat_wiris_editor extends behat_wiris_base {
         $script = <<<JS
         var element = document.evaluate("//div[@class='wrs_modal_title']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         var rect = element.getBoundingClientRect();
-        
         var startX = rect.left + rect.width / 2;
         var startY = rect.top + rect.height / 2;
         var endX = startX - 200;  // Move 200px to the left
         var endY = startY - 100;   // Move 100px up
-    
         var dataTransfer = new DataTransfer();
-    
         element.dispatchEvent(new MouseEvent('mousedown', {
             clientX: startX,
             clientY: startY,
             bubbles: true
         }));
-    
         document.dispatchEvent(new MouseEvent('mousemove', {
             clientX: endX,
             clientY: endY,
             bubbles: true
         }));
-    
         document.dispatchEvent(new MouseEvent('mouseup', {
             clientX: endX,
             clientY: endY,
             bubbles: true
         }));
     JS;
-    
         // Execute the script
         $session->executeScript($script);
     }
