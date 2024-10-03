@@ -236,19 +236,19 @@ jobs:
         run: |
           case "${{ matrix.moodle-branch }}" in
             "MOODLE_38_STABLE"|"MOODLE_39_STABLE"|"MOODLE_311_STABLE")
-              TAG="@3.x_filter"
+              TAG="@3.x_filter${{ github.event.inputs.tags }}"
               ;;
             "MOODLE_400_STABLE")
-              TAG="@4.0_filter"
+              TAG="@4.0_filter${{ github.event.inputs.tags }}"
               ;;
             "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE"|"main")
-              TAG="@4.x_filter"
+              TAG="@4.x_filter${{ github.event.inputs.tags }}"
               ;;
             *)
-              TAG="@filter"
+              TAG="@filter${{ github.event.inputs.tags }}"
               ;;
           esac
-          moodle-plugin-ci behat --tags=$TAG${{ github.event.inputs.tags }} --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
+          moodle-plugin-ci behat --tags=$TAG --profile ${{ matrix.browser }} --auto-rerun=2 --verbose -vvv
         continue-on-error: true
 
       - name: Upload Behat Faildump
