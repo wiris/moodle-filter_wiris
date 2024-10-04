@@ -15,7 +15,7 @@ Feature: Compatibility with the Convert URLs into links and images filter by Moo
       | user  | course | role           |
       | admin | C1     | editingteacher |
     And the "wiris" filter is "on"
-    And the "urltolink" filter is "off"
+    And the "urltolink" filter is "on"
     And the "urltolink" filter has maximum priority
     And I log in as "admin"
 
