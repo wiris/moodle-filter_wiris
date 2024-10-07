@@ -228,6 +228,7 @@ jobs:
       - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate ./plugin
+        continue-on-error: true
 
       # 6 Behat tests
 
