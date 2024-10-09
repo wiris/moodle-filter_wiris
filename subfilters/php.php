@@ -55,8 +55,8 @@ class filter_wiris_php extends \core_filters\text_filter {
         $n0 = mb_stripos($text, '«math');
         $n1 = stripos($text, '<math');
         $n2 = mb_stripos($text, '«applet');
-        
-        //find LateX
+
+        // find LateX
         $matches = [];
         $latexpattern = '/\$\$(.*?)\$\$/';
         preg_match_all($latexpattern, $text, $matches);
@@ -93,11 +93,11 @@ class filter_wiris_php extends \core_filters\text_filter {
         {
             foreach ($matches[0] as $latex) {
                 $response = $textservice->getMathML(null, $latex);
-        
-                $decodedResponse = json_decode($response, true);
-                if (isset($decodedResponse['status']) && $decodedResponse['status'] === "ok") {
-                    $mathml = $decodedResponse['result']['text'];
-                    
+
+                $decodedresponse = json_decode($response, true);
+                if (isset($decodedresponse['status']) && $decodedresponse['status'] === "ok") {
+                    $mathml = $decodedresponse['result']['text'];
+
                     $text = str_replace($latex, $mathml, $text);
                 }
             }
@@ -161,7 +161,7 @@ class filter_wiris_php extends \core_filters\text_filter {
                 $mathjaxpreference = true;
             }
         }
-        
+
         return $mathjaxpreference;
     }
 }
