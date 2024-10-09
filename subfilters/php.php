@@ -161,6 +161,7 @@ class filter_wiris_php extends \core_filters\text_filter {
                 $mathjaxpreference = true;
             }
         }
+        
         return $mathjaxpreference;
     }
 }
