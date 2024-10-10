@@ -88,7 +88,7 @@ class filter_wiris_php extends \core_filters\text_filter {
             $query .= 'category=' . $COURSE->category;
         }
 
-        // If MathJax don't have preference and wiriseditorparselatex = true, parse LateX into MathML
+        // If MathJax don't have preference and wiriseditorparselatex = true, parse LateX into MathML.
         if (!$this->mathjax_have_preference() && $wirispluginwrapper->wiris_editor_parse_latex()) {
             foreach ($matches[0] as $latex) {
                 $response = $textservice->getMathML(null, $latex);
