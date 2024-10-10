@@ -56,7 +56,7 @@ class filter_wiris_php extends \core_filters\text_filter {
         $n1 = stripos($text, '<math');
         $n2 = mb_stripos($text, '«applet');
 
-        // find LateX
+        // Find LateX.
         $matches = [];
         $latexpattern = '/\$\$(.*?)\$\$/';
         preg_match_all($latexpattern, $text, $matches);
