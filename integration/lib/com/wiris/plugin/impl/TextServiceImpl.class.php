@@ -49,14 +49,14 @@ class com_wiris_plugin_impl_TextServiceImpl implements com_wiris_plugin_impl_Htt
 		}
 	}
 	public function latex2mathml($latex) {
-		$param = array();;
+		$param = array();
 		$param["latex"] = $latex;
 		$provider = $this->plugin->newGenericParamsProvider($param);
 		$mathml = $this->service("latex2mathml", $provider);
 		return ((_hx_index_of($mathml, "Http Error #500", null) === -1) ? $mathml : "Error converting from latex to mathml");
 	}
 	public function mathml2latex($mml) {
-		$param = array();;
+		$param = array();
 		$param["mml"] = $mml;
 		$provider = $this->plugin->newGenericParamsProvider($param);
 		return $this->service("mathml2latex", $provider);

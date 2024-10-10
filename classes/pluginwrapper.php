@@ -209,6 +209,18 @@ class filter_wiris_pluginwrapper {
     }
 
     /**
+     * Checks whether the LaTeX parsing feature is enabled.
+     *
+     * This method retrieves the configuration setting for LaTeX.
+     *
+     * @return bool True if LaTeX parsing is enabled, false otherwise.
+     */
+    public function wiris_editor_parse_latex() {
+        $value = $this->get_instance()->getConfiguration()->getProperty('wiriseditorparselatex', null);
+        return ($value == "true") ? true : false;
+    }
+
+    /**
      * Returns MathType plugin data from the plugin installed in the default Moodle
      * HTML editor (or the first available), or false if none found.
      *
