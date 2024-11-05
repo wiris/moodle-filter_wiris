@@ -24,7 +24,7 @@ You can use git:
 $ git clone https://github.com/wiris/moodle-filter_wiris.git filter/wiris
 ```
 
-Alternatively, you can [download the plugin](https://github.com/wiris/moodle-filter_wiris/archive/stable.zip) and unzip the file into filters folder, and then rename the new folder to `wiris`.
+Alternatively, you can [download the plugin](https://github.com/wiris/moodle-filter_wiris/archive/main.zip) and unzip the file into filters folder, and then rename the new folder to `wiris`.
 
 ## Releases
 
