@@ -93,9 +93,9 @@ class filter_wiris_php extends \core_filters\text_filter {
             foreach ($matches[0] as $latex) {
                 $editing = optional_param('action', '', PARAM_ALPHA) === 'edit' || optional_param('update', 0, PARAM_INT) > 0;
 
-                //! Avoid transforming LaTeX in editing context to prevent unnecessary rendering requests.
-                //! Editors may inject the string "$$\pi$$" during tests, which previously caused excessive rendering requests.
-                //! This check ensures LaTeX is not transformed if we are in an editing context.
+                // ! Avoid transforming LaTeX in editing context to prevent unnecessary rendering requests.
+                // ! Editors may inject the string "$$\pi$$" during tests, which previously caused excessive rendering requests.
+                // ! This check ensures LaTeX is not transformed if we are in an editing context.
 
                 if (!$editing) {
                     $response = $textservice->getMathML(null, $latex);
