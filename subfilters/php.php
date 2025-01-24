@@ -91,13 +91,14 @@ class filter_wiris_php extends \core_filters\text_filter {
         // If MathJax doesn't have preference and wiriseditorparselatex = true, parse LateX into MathML.
         if (!$this->mathjax_have_preference() && $wirispluginwrapper->wiris_editor_parse_latex()) {
             foreach ($matches[0] as $latex) {
-                $editing = optional_param('action', '', PARAM_ALPHA) === 'edit' || optional_param('update', 0, PARAM_INT) > 0;
 
                 // ! Avoid transforming LaTeX in editing context to prevent unnecessary rendering requests.
                 // ! Editors may inject the string "$$\pi$$" during tests, which previously caused excessive rendering requests.
-                // ! This check ensures LaTeX is not transformed if we are in an editing context.
+                // ! This check ensures that the string "$$\pi$$" is not transformed by the service.
 
-                if (!$editing) {
+                if ($latex === '$$\pi$$') {
+                    $text = str_replace($latex, '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&pi;</mi></math>', $text);
+                } else {
                     $response = $textservice->getMathML(null, $latex);
 
                     $decodedresponse = json_decode($response, true);
