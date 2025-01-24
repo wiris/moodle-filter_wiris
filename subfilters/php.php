@@ -92,9 +92,10 @@ class filter_wiris_php extends \core_filters\text_filter {
         if (!$this->mathjax_have_preference() && $wirispluginwrapper->wiris_editor_parse_latex()) {
             foreach ($matches[0] as $latex) {
 
-                // ! Avoid transforming LaTeX in editing context to prevent unnecessary rendering requests.
-                // ! Editors may inject the string "$$\pi$$" during tests, which previously caused excessive rendering requests.
-                // ! This check ensures that the string "$$\pi$$" is not transformed by the service.
+                // ! For some reason, strayed `pi` LaTeX expressions are included in some Moodle pages by default. 
+                // ! This implies our services having to convert them into MathML and then rendering them as an image without the user even interacting with MathType to begin with.
+                // ! To avoid this extra requests, which may impact our services, we just hardcoded it´s conversion to MathML.
+                // ! NOTE: requests to latex2mahtml service aren't cached, worsening this situation.
 
                 if ($latex === '$$\pi$$') {
                     $text = str_replace($latex, '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>&pi;</mi></math>', $text);
