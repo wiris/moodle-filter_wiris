@@ -455,8 +455,8 @@ $mtattoenabled = get_mt_editor_enabled($existsmtatto, 'atto');
 $enabledplugins['atto'] = ($mtattoenabled) ? $mtattoversion : null;
 
 $existstinylegacy = get_editor_exists_and_enabled('tinymce');
-$existsmttinylegacy = get_exists_mt_editor($existstinylegacy,  $plugins, 'tinymce');
-$mttinylegacyversion = get_mt_editor_version($existsmttinylegacy,  $plugins, 'tinymce');
+$existsmttinylegacy = get_exists_mt_editor($existstinylegacy, $plugins, 'tinymce');
+$mttinylegacyversion = get_mt_editor_version($existsmttinylegacy, $plugins, 'tinymce');
 $mttinylegacyenabled = get_mt_editor_enabled($existsmttinylegacy, 'tinymce');
 $enabledplugins['tinymce'] = ($mttinylegacyenabled) ? $mttinylegacyversion : null;
 
