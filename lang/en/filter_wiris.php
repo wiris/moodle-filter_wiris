@@ -119,5 +119,3 @@ $string['wirispluginfortinymce'] = 'MathType for TinyMCE';
 
 
 $string['yes'] = 'Yes';
-
-
