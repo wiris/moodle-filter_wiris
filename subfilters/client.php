@@ -56,7 +56,7 @@ class filter_wiris_client extends \core_filters\text_filter {
         global $PAGE;
         // Add the Javascript Thir-party library to the page.
         $PAGE->requires->js(
-            new moodle_url('/filter/wiris/integration/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]')
+            new moodle_url('/filter/wiris/render/WIRISplugins.js?viewer=image&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]')
         );
 
         // Uses the option 'safeXml' to True to render directly from Safe MathML as stored on the database.
