@@ -26,6 +26,18 @@ $ git clone https://github.com/wiris/moodle-filter_wiris.git filter/wiris
 
 Alternatively, you can [download the plugin](https://github.com/wiris/moodle-filter_wiris/archive/main.zip) and unzip the file into filters folder, and then rename the new folder to `wiris`.
 
+## Uninstall
+
+This project is a dependency of the following:
+
+* MathType for Atto
+* MathType for TinyMCE
+* MathTypw for WirisQuizzes
+
+
+To uninstall the Wiris filter in Moodle, all the previous plugins mentioned must also be uninstalled. If any of these plugins are still installed, the Wiris filter cannot be removed.
+
+
 ## Releases
 
 Since version 7.24.0, all notable changes to this project are documented in the [CHANGES.md](CHANGES.md) file. You can download any release of this plugin from the [Official Moodle's page](https://moodle.org/plugins/filter_wiris).
