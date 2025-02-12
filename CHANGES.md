@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 The latest release of this plugin is v8.8.2 (9 jan. 2025).
 
+## v8.8.3 - 30 jan. 2025
+
+- fix: Improved services performance.
+- fix: wiriseditorparselatex now works with latex.
+
 ## v8.8.2 - 9 jan. 2025
 
 - fix: MathType formulas not displayed correctly
@@ -16,6 +21,7 @@ The latest release of this plugin is v8.8.2 (9 jan. 2025).
 - fix: LaTeX formulas not being rendered with PHP Render Type.
 
 ## v8.8.0 - 7 oct. 2024
+
 - test: Improve test coverage for 4.5
 - feat: Add compatibility with Moodle 4.5.
 
