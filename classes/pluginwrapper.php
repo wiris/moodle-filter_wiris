@@ -41,8 +41,6 @@ require_once($CFG->dirroot . '/lib/editorlib.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_wiris_pluginwrapper {
-
-
     /**
      * @var bool $isinit Indicates whether the initialization is done.
      */

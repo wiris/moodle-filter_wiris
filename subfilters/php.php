@@ -30,7 +30,6 @@ use filter_wiris_pluginwrapper;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filter_wiris_php extends \core_filters\text_filter {
-
     /**
      * Set any context-specific configuration for this filter.
      *
@@ -91,7 +90,6 @@ class filter_wiris_php extends \core_filters\text_filter {
         // If MathJax doesn't have preference and wiriseditorparselatex = true, parse LateX into MathML.
         if (!$this->mathjax_have_preference() && $wirispluginwrapper->wiris_editor_parse_latex()) {
             foreach ($matches[0] as $latex) {
-
                 // For some reason, strayed `pi` LaTeX expressions are included in some Moodle pages by default.
                 // This implies our services having to convert them into MathML and then rendering them as an image without the user even interacting with MathType to begin with.
                 // To avoid this extra requests, which may impact our services, we just hardcoded it´s conversion to MathML.
