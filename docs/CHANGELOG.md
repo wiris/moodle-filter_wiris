@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v8.8.3 - 30 jan. 2025
 
-- fix: Improved services performance.
+- Fix: Improved services performance.
 - fix: wiriseditorparselatex now works with latex.
 
 ## v8.8.2 - 9 jan. 2025
