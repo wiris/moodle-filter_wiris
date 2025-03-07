@@ -34,7 +34,7 @@ This format leads to **easier to read commit history**.
 - The `body` is optional but suggested for those that need long explanations.
   When the body is present it has to follow the [Commit Message Body](#commit-message-body) format.
 
-- The `footer` is optional. The [Commit Message Footer](#commit-message-footer) format describes what the footer is used for and the structure it must have.
+- The `footer` is optional. The [Commit Message Footer](#commit-message-footer) format describes what the footer is used for, and the structure it must have.
 
 ### Commit Message Header
 
