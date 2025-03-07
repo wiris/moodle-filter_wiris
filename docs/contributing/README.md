@@ -67,7 +67,7 @@ This commit message should explain _why_ you are making the change.
 
 ### Commit Message Footer
 
-The `footer` can contain information about breaking changes and deprecations and is also the place to reference GitHub issues, Kanbanize card, Jira tickets, and other PRs that this commit closes or is related to.
+The `footer` can contain information about breaking changes and deprecations, and it is also the place to reference GitHub issues, Kanbanize cards, Jira tickets, and other PRs that this commit closes or is related to.
 
 For example:
 
