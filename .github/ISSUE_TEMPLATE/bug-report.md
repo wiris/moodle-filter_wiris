@@ -12,11 +12,15 @@ _What does the bug consist in?_
 
 ## Environment
 
+_Please, include a screenshot of the page https://{domain}/filter/wiris/info.php for us to gather the necessary information._
+
 _Which version of MathType Filter does this happen in?_
 
 _What is the relevant software and their versions?_
 
 - _Editor (Atto, TinyMCE)_
+- _Moodle version_
+- _PHP version_
 
 ## Steps to reproduce
 
