@@ -14,7 +14,7 @@ To contribute to MathType filter is mandatory to set-up the Development Environm
 
 ## Conventional Commits
 
-We encourage ypu to follow the rules over how our Git commit messages must be formatted.
+We encourage you to follow the rules over how our Git commit messages must be formatted.
 This format leads to **easier to read commit history**.
 
 - Wrap message lines to a few characters, not long sentences.
