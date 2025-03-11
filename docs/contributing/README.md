@@ -10,7 +10,7 @@ To contribute to MathType filter is mandatory to set-up the Development Environm
 
 - Follow the [Conventional Commits Format guideline](#conventional-commits).
 - Lint the code.
-- One the forked the project, create a new branch from the `main` one.
+- Fork the repository and create a new branch from the `main` one.
 
 ## Conventional Commits
 
