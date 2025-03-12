@@ -230,21 +230,18 @@ if ($ADMIN->fulltree) {
                 } else {
                     $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';
                 }
-                $attourl = 'https://moodle.org/plugins/atto_wiris';
+                $attourl = '';
+                if ($CFG->branch < 500) {
+                    $attourl .= 'https://moodle.org/plugins/atto_wiris';
+                    $warningoutput .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
+                    $warningoutput .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
+                }
                 $linkattributes = ['target' => '_blank'];
                 $attributes = [];
-                $warningoutput .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
-                $warningoutput .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
+                
                 $warningoutput .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
                 $warningoutput .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
                 $warningoutput .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
-
-                $imageurl = "https://www.wiris.com/system/files/attachments/1689/WIRIS_manual_icon_17_17.png";
-                $image = html_writer::empty_tag('img', ['src' => $imageurl, 'style' => 'vertical-align:-3px;']);
-                $troubleshootingurl = 'http://www.wiris.com/plugins/docs/moodle/troubleshooting?utm_source=moodle&utm_medium=referral';
-                $imagelink = html_writer::link($troubleshootingurl, $image, $linkattributes);
-
-                $warningoutput .= $imagelink;
             }
         }
         $settings->add(
