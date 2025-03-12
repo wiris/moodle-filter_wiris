@@ -114,8 +114,4 @@ $string['wirispluginfilterfor'] = 'MathType filter and MathType for';
 $string['wirispluginfor'] = 'MathType for';
 $string['wirispluginforatto'] = 'MathType for Atto';
 $string['wirispluginfortinymce'] = 'MathType for TinyMCE';
-
-
-
-
 $string['yes'] = 'Yes';
