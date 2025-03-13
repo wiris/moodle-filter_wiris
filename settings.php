@@ -224,12 +224,14 @@ if ($ADMIN->fulltree) {
             if ($CFG->version >= 2016052300) {
                 // Due to Moodle doesn't support circular dependencies between plugins, if any editor plugin is installed
                 // a warning message is shown as a notification.
+                // TinyMCE used version 3 for Moodle 4.1 and under and latest version for Moodle 4.2 and above.
                 $tinyurl = '';
                 if ($CFG->branch < 402) {
                     $tinyurl .= 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
                 } else {
                     $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';
                 }
+                // Atto is deprecated since version 5.0. Create the warning message only if Atto exists on Moodle.
                 $attourl = '';
                 if ($CFG->branch < 500) {
                     $attourl .= 'https://moodle.org/plugins/atto_wiris';
