@@ -42,3 +42,15 @@ To uninstall the Wiris filter in Moodle, all the previous plugins mentioned must
 Follow this [guideline offered by Moodle](https://docs.moodle.org/405/en/Installing_plugins#Installing_a_plugin) to learn how to install any plugin to a production environment.
 
 The [MathType filter](https://moodle.org/plugins/filter_wiris) wiris can be found on the Moodle plugins directory, or click on the previous link.
+
+## Dependencies of MathType filter
+
+This project contains the following external dependency:
+
+The MathType Web Integration JavaScript SDK is released as a npm package: [@wiris/mathtype-html-integration-devkit](https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit).
+
+This plugin uses the **MathType Web Integration JavaScript SDK** ([@wiris/html-integrations](https://github.com/wiris/html-integrations)), released under GNU GPLv3 license as a npm package: [@wiris/mathtype-html-integration-devkit](https://www.npmjs.com/package/@wiris/mathtype-html-integration-devkit).
+
+> The library's source code can be found at [@wiris/html-integrations](https://www.github.com/wiris/html-integrations) repository
+
+**Note:** More details on the `thirdpartylibs.xml` file.
