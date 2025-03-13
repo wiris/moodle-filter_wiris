@@ -2,23 +2,13 @@
 
 [![Moodle Plugin CI](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml/badge.svg)](https://github.com/wiris/moodle-filter_wiris/actions/workflows/moodle-ci.yml)
 
-The goal of this project is to provide the MathType Filter plugin for Moodle, which that integrates WIRIS tools to enable users to render mathematical expressions, in MathML and LaTeX, within Moodle courses.
+This repository contains the MathType Filter plugin for Moodle, which integrates WIRIS tools to enable users to render mathematical expressions, in MathML and LaTeX, within Moodle courses.
 
 For a better understanding about Moodle plugins, read the following document:
 
 - [An explanation on what Moodle plugins are](https://docs.moodle.org/405/en/Installing_plugins#Why_install_additional_plugins?)
 
-This project is following *Herodotos* documentation organization, please use the [**documentation entrypoint**](docs/README.md) to find out more information about this project.
-
-## Who's to Blame
-
-The [issue reporting](docs/ISSUE_REPORTING.md) document provides insights on how to report an issue on github or the support team.
-
-## Changelog
-
-Since version 7.24.0, all notable changes to this project are documented in the [Changelog](./CHANGELOG.md) file.
-
-You can download any release of this plugin from the [Official Moodle's page](https://moodle.org/plugins/filter_wiris).
+This repository follows *Herodotos* documentation, please use the [**documentation entrypoint**](docs/README.md) to find out more information about this repository.
 
 ## Privacy policy
 

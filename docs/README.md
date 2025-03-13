@@ -32,3 +32,9 @@ This repository is maintained by Maths for More, S.L. Read [Issue reporting](./m
 ### Repository structure
 
 - [Structure of the repository](./misc/STRUCTURE.md)
+
+## Changelog
+
+Since version 7.24.0, all notable changes to this project are documented in the [Changelog](./CHANGELOG.md) file.
+
+You can download any release of this plugin from the [Official Moodle's page](https://moodle.org/plugins/filter_wiris).
