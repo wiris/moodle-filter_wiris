@@ -17,10 +17,6 @@ Before starting to develop, please read the following guides:
 
 - [Using MathType filter](./usage/README.md)
 
-## Misc
-
-* [Dependencies of MathType filter](./misc/DEPENDENCIES.md)
-
 ### Authors
 
 This repository is maintained by Maths for More, S.L. Read [Issue reporting](./misc/ISSUE_REPORTING.md) document to know how to leave feedback or report bugs.
