@@ -80,7 +80,7 @@ Fixes #{issue_number}
 #taskid {card_number}
 ```
 
-## Revert commits
+### Revert commits
 
 A revert commit should begin with `revert: `, followed by the header of the reverted commit.
 
