@@ -41,7 +41,7 @@ To uninstall the Wiris filter in Moodle, all the previous plugins mentioned must
 
 Follow this [guideline offered by Moodle](https://docs.moodle.org/405/en/Installing_plugins#Installing_a_plugin) to learn how to install any plugin to a production environment.
 
-The [MathType filter](https://moodle.org/plugins/filter_wiris) wiris can be found on the Moodle plugins directory, or click on the previous link.
+The Wiris [MathType filter](https://moodle.org/plugins/filter_wiris) can be found on the Moodle plugins directory, or clicking on the previous link.
 
 ## Dependencies of MathType filter
 
