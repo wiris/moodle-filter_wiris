@@ -16,3 +16,9 @@ MathType filter renders any MathML or LaTeX expression into an image. To use it 
 
 > Note: LaTeX expressions can also be edited with MathType and rendered afterwards.
 
+
+## Production
+
+Follow this [guideline offered by Moodle](https://docs.moodle.org/405/en/Installing_plugins#Installing_a_plugin) to learn how to install any plugin to a production environment.
+
+The Wiris [MathType filter](https://moodle.org/plugins/filter_wiris) can be found on the Moodle plugins directory, or clicking on the previous link.

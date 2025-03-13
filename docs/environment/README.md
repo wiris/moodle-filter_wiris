@@ -37,12 +37,6 @@ This project is a dependency of the following:
 
 To uninstall the Wiris filter in Moodle, all the previous plugins mentioned must also be uninstalled. If any of these plugins are still present, the MathType filter cannot be removed.
 
-## Production
-
-Follow this [guideline offered by Moodle](https://docs.moodle.org/405/en/Installing_plugins#Installing_a_plugin) to learn how to install any plugin to a production environment.
-
-The Wiris [MathType filter](https://moodle.org/plugins/filter_wiris) can be found on the Moodle plugins directory, or clicking on the previous link.
-
 ## Dependencies of MathType filter
 
 This project contains the following external dependency:
