@@ -175,12 +175,13 @@ jobs:
 
       # 3.2 Install Atto plugin
       - name: Add MathType plugin for Atto
+        if: ${{ matrix.moodle-branch != 'main' }}
         id: install-plugin-atto
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-atto_wiris
       - name: Add MathType plugin for Atto using the main branch
-        if: steps.install-plugin-atto.outcome != 'success'
+        if: ${{ steps.install-plugin-atto.outcome != 'success' && matrix.moodle-branch != 'main' }}
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-atto_wiris
 
