@@ -5,11 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-The latest release of this plugin is v8.8.2 (9 jan. 2025).
-
 ## v8.8.3 - 30 jan. 2025
 
-- fix: Improved services performance.
+- Fix: Improved services performance.
 - fix: wiriseditorparselatex now works with latex.
 
 ## v8.8.2 - 9 jan. 2025
@@ -129,3 +127,4 @@ The latest release of this plugin is v8.8.2 (9 jan. 2025).
 - Fix & upgrade TravisCI job configuration.
 - Update project documentation by improving the main `README` file.
 - Start using `CHANGES` file as changelog.
+
