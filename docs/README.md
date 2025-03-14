@@ -19,7 +19,7 @@ Before starting to develop, please read the following guides:
 
 ### Authors
 
-This repository is maintained by Maths for More, S.L. Read [Issue reporting](./misc/ISSUE_REPORTING.md) document to know how to leave feedback or report bugs.
+This repository is maintained by Maths for More, S.L. Specifically, the Integrations squad.
 
 ### Issue reporting
 
