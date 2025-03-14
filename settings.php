@@ -240,7 +240,6 @@ if ($ADMIN->fulltree) {
                 }
                 $linkattributes = ['target' => '_blank'];
                 $attributes = [];
-                
                 $warningoutput .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
                 $warningoutput .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
                 $warningoutput .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
