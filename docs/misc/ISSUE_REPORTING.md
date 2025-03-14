@@ -19,4 +19,4 @@ To help us reproduce bugs effectively, we ask that you provide a **minimal repro
 
 Unfortunately, we are not able to investigate or fix bugs without a minimal reproduction. In that case, we'll have to close the report.
 
-You can file new issues by selecting from our [new issue templates](https://github.com/wiris/moodle-filter_wiris/issues/new/choose) and filling out the issue template.
+You can file new issues by selecting our [new issue template](https://github.com/wiris/moodle-filter_wiris/issues/new/choose) and filling it out.
