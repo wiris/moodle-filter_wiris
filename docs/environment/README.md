@@ -1,6 +1,6 @@
 # Environment
 
-This project can be run in two different environments: [development](#development) and [production](../usage/README.md#production).
+This project can be run in two different environments. To run in a development environment, follow the instructions in the [development](#development) section of this very document. If what you need are instructions about how to use it in a production environment, please head to the [usage documentation](../usage/README.md#production).
 
 ## Requirements
 
