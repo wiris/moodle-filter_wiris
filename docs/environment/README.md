@@ -18,7 +18,7 @@ In order to use MathType and ChemType for editing and generate mathematical expr
 
 It is necessary to have a [Moodle development environment](https://github.com/moodlehq/moodle-docker) configured. 
 
-Install the plugin like any other plugin to the folder `/filter/wiris`.
+Install the plugin like any other plugin in the folder `/filter/wiris`.
 
 You can use git:
 
