@@ -2,15 +2,16 @@
 
 We would love for you to contribute to this project and help make it better.
 
-This file explains the guidelines we would like you to follow, as a contributor.
+This file explains the guidelines we would like you to follow as a contributor.
 
 ## Requirements
 
-To contribute to MathType filter is mandatory to set-up the Development Environment as is described in the [Environment](../environment/README.md) documentation.
+To contribute to MathType filter, set-up the Development Environment as is described in the [Environment](../environment/README.md) documentation.
 
+- Fork the repository and create a new branch from the `release` one.
 - Follow the [Conventional Commits Format guideline](#conventional-commits).
 - Lint the code.
-- Fork the repository and create a new branch from the `main` one.
+- Validate all tests pass.
 
 ## Conventional Commits
 
@@ -82,7 +83,7 @@ Fixes #{issue_number}
 
 ### Revert commits
 
-A revert commit should begin with `revert: `, followed by the header of the reverted commit.
+A revert commit should begin with `revert:`, followed by the header of the reverted commit.
 
 The content of the commit message body should contain:
 
@@ -91,13 +92,15 @@ The content of the commit message body should contain:
 
 ## Git flow
 
-This project is strict with testing to ensure a good quality product. Each time a pull request opens or a commit is made to an opened pull request, a GitHub action running all the test for the repository will execute. 
+The development team in charge of maintaining this project will follow the internal guides to create branches, tags, handling issues and tasks.
 
-If that fails, the pull request can not be merged.
+This project is strict with testing to ensure a good quality product. Each time a pull request opens or a commit is made to an opened pull request, a GitHub action running all the test for the repository will execute. If that fails, the pull request can not be merged.
 
 ## Software Dependencies Update Plan
 
-This project contains [dependencies](../misc/DEPENDENCIES.md) from other company projects. Those are updated by the development team in charge of maintaining the MathType filter.
+This project contains [dependencies](../environment/README.md#dependencies-of-mathtype-filter) from other company projects. Those are updated by the development team in charge of maintaining the MathType filter on their own repositories.
 
-**Note:** More details on the `thirdpartylibs.xml` file.
+The development team is also in charge of updating the versions used for the other projects. As soon as one of the dependencies releases a new version with changes related to the MathType filter, the development team will update it in this project.
+
+> **Note:** More details on the `thirdpartylibs.xml` file.
 
