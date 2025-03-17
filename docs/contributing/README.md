@@ -6,7 +6,7 @@ This file explains the guidelines we would like you to follow as a contributor.
 
 ## Requirements
 
-To contribute to MathType filter set-up the Development Environment as is described in the [Environment](../environment/README.md) documentation.
+To contribute to MathType filter, set-up the Development Environment as is described in the [Environment](../environment/README.md) documentation.
 
 - Fork the repository and create a new branch from the `release` one.
 - Follow the [Conventional Commits Format guideline](#conventional-commits).
