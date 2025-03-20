@@ -1,4 +1,4 @@
-@filter @filter_wiris @wiris_mathtype @3.x @3.x_filter @4.0 @4.0_filter @4.x @4.x_filter @5.x_filter @test_page @mtmoodle-11
+@filter @filter_wiris @wiris_mathtype @3.x @3.x_filter @4.0 @4.0_filter @4.x @4.x_filter @test_page @mtmoodle-11
 Feature: Test page
   In order to check the test page
   As a user
@@ -7,7 +7,7 @@ Feature: Test page
   Background:
     Given the following config values are set as admin:
       | config  | value        | plugin      |
-      | toolbar | math = wiris | editor_tiny |
+      | toolbar | math = wiris | editor_atto |
     And the following "courses" exist:
       | fullname | shortname | format |
       | Course 1 | C1        | topics |

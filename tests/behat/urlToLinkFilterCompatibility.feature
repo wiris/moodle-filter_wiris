@@ -7,7 +7,7 @@ Feature: Compatibility with the Convert URLs into links and images filter by Moo
   Background:
     Given the following config values are set as admin:
       | config  | value        | plugin      |
-      | toolbar | math = wiris | editor_tiny |
+      | toolbar | math = wiris | editor_atto |
     And the following "courses" exist:
       | fullname | shortname | format |
       | Course 1 | C1        | topics |
@@ -19,19 +19,18 @@ Feature: Compatibility with the Convert URLs into links and images filter by Moo
     And the "urltolink" filter has maximum priority
     And I log in as "admin"
 
-  @javascript @4.x @4.x_filter @5.x_filter
+  @javascript @4.x @4.x_filter
   Scenario: MTMOODLE-30 - Insert a formula with the Convert URLs into links and images filter on
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
       | Name | Insert a formula with the Convert URLs into links and images filter on |
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "2" seconds
@@ -45,14 +44,13 @@ Feature: Compatibility with the Convert URLs into links and images filter by Moo
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
     And I set the following fields to these values:
       | Name | Insert a formula with the Convert URLs into links and images filter on |
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "2" seconds

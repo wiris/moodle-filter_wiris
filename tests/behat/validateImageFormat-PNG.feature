@@ -7,7 +7,7 @@ Feature: Filter Settings - Image Settings - Render in PNG
   Background:
     Given the following config values are set as admin:
       | config      | value        | plugin       |
-      | toolbar     | math = wiris | editor_tiny  |
+      | toolbar     | math = wiris | editor_atto  |
       | imageformat | png          | filter_wiris |
     And the following "courses" exist:
       | fullname | shortname | format |
@@ -19,22 +19,21 @@ Feature: Filter Settings - Image Settings - Render in PNG
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
-  @javascript @4.x @4.x_filter @5.x_filter
+  @javascript @4.x @4.x_filter
   Scenario: MTMOODLE-13 - Add a MathML formula and check MathType renders an PNG image correctly with server side rendering
-    # set text editor to "TinyMCE"
+    # set text editor to "atto HTML"
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     # create new page in existing course
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
-      | Name | Test MathType for Tiny and server side rendering on Moodle |
+      | Name | Test MathType for Atto and server side rendering on Moodle |
     # insert Wirisformula
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "1" seconds
@@ -46,26 +45,25 @@ Feature: Filter Settings - Image Settings - Render in PNG
     # check that Wirisformula is in png format
     And MathType formula in png format is correctly displayed
 
-  @javascript @4.x @4.x_filter @5.x_filter
+  @javascript @4.x @4.x_filter
   Scenario: MTMOODLE-13 - Add a MathML formula and check MathType renders an PNG image correctly with client side rendering
     # set render type to "client"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And the MathType filter render type is set to "client"
     And I press "Save changes"
-    # set text editor to "TinyMCE"
+    # set text editor to "atto HTML"
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     # create new page in existing course
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
-      | Name | Test MathType for Tiny and server side rendering on Moodle |
+      | Name | Test MathType for Atto and server side rendering on Moodle |
     # insert Wirisformula
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "1" seconds
@@ -79,20 +77,19 @@ Feature: Filter Settings - Image Settings - Render in PNG
 
   @javascript @3.x @3.x_filter @4.0 @4.0_filter
   Scenario: MTMOODLE-13 - Add a MathML formula and check MathType renders an PNG image correctly with server side rendering
-    # set text editor to "TinyMCE"
+    # set text editor to "atto HTML"
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     # create new page in existing course
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
     And I set the following fields to these values:
-      | Name | Test MathType for Tiny and server side rendering on Moodle |
+      | Name | Test MathType for Atto and server side rendering on Moodle |
     # insert Wirisformula
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "1" seconds
@@ -110,20 +107,19 @@ Feature: Filter Settings - Image Settings - Render in PNG
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And the MathType filter render type is set to "client"
     And I press "Save changes"
-    # set text editor to "TinyMCE"
+    # set text editor to "atto HTML"
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | TinyMCE editor |
+      | Text editor | Atto HTML editor |
     And I press "Save changes"
     # create new page in existing course
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
     And I set the following fields to these values:
-      | Name | Test MathType for Tiny and server side rendering on Moodle |
+      | Name | Test MathType for Atto and server side rendering on Moodle |
     # insert Wirisformula
-    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
-    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
+    And I press "MathType" in "Page content" field in Atto editor
     And I wait until MathType editor is displayed
     And I set MathType formula to '<math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mrow><mo>(</mo><mfrac><mi>p</mi><mn>2</mn></mfrac><mo>)</mo></mrow><msup><mi>x</mi><mn>2</mn></msup><msup><mi>y</mi><mrow><mi>p</mi><mo>-</mo><mn>2</mn></mrow></msup><mo>-</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><mi>x</mi></mrow></mfrac><mfrac><mn>1</mn><mrow><mn>1</mn><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mrow></math>'
     And I wait "1" seconds
