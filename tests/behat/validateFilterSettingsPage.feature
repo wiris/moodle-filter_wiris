@@ -18,7 +18,7 @@ Feature: Filter settings page
     And "Wiris Quizzes settings" "text" should exist
     And "Multimedia plugins" "text" should exist
 
-  @javascript @4.x @4.x_filter @4.0 @4.0_filter
+  @javascript @4.x @4.x_filter @5.x_filter @4.0 @4.0_filter
     Scenario: MTMOODLE-10 - Check that different categories of settings exist
     And I navigate to "Plugins > Filters" in site administration
     Then "Common filter settings" "text" should exist

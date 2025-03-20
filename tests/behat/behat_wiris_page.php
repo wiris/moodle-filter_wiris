@@ -320,6 +320,7 @@ class behat_wiris_page extends behat_wiris_base {
             "Question text" => "fitem_id_questiontext",
             "General feedback" => "fitem_id_generalfeedback",
             "Feedback" => "fitem_id_feedback_0",
+            "Message" => "fitem_id_message",
         ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
@@ -562,7 +563,7 @@ class behat_wiris_page extends behat_wiris_base {
 
     /**
      * Checks the existance or non existance
-     * of a certain button in certain field in Atto editor
+     * of a certain button in certain field in TinyMCE 6 editor 
      *
      * @Given I check :button in :field field :exist exist in TinyMCE editor
      * @param  string $button button to press

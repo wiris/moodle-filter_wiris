@@ -7,7 +7,7 @@ Feature: Filter Settings - Image Settings - Performance mode
   Background:
     Given the following config values are set as admin:
       | config  | value        | plugin      |
-      | toolbar | math = wiris | editor_atto |
+      | toolbar | math = wiris | editor_tiny |
     And the following "courses" exist:
       | fullname | shortname | format |
       | Course 1 | C1        | topics |
@@ -17,12 +17,12 @@ Feature: Filter Settings - Image Settings - Performance mode
     And the "wiris" filter is "on"
     And I log in as "admin"
 
-  @javascript @4.x @4.x_filter
+  @javascript @4.x @4.x_filter @5.x_filter
   Scenario: MTMOODLE-17 - Validate formula renders with Performance mode OFF
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | Atto HTML editor |
+      | Text editor | TinyMCE editor |
     And I press "Save changes"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode off
@@ -30,8 +30,9 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
-      | Name | Test MathType for Atto on Moodle |
-    And I press "MathType" in "Page content" field in Atto editor
+      | Name | Test MathType for Tiny on Moodle |
+    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
+    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
     And I wait "1" seconds
     And I press accept button in MathType Editor
@@ -39,12 +40,12 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I go to link "/filter/wiris/integration/showimage.php?formula=44f73ec2e9d0d59f10516949d446049e&cw=27&ch=19&cb=16"
     Then an svg image is correctly displayed
 
-  @javascript @4.x @4.x_filter
+  @javascript @4.x @4.x_filter @5.x_filter @fixdavid
   Scenario: MTMOODLE-17 - Validate formula renders with Performance mode ON
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | Atto HTML editor |
+      | Text editor | TinyMCE editor |
     And I press "Save changes"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode on
@@ -52,8 +53,9 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0" using the activity chooser
     And I set the following fields to these values:
-      | Name | Test MathType for Atto on Moodle |
-    And I press "MathType" in "Page content" field in Atto editor
+      | Name | Test MathType for Tiny on Moodle |
+    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
+    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
     And I wait "1" seconds
     And I press accept button in MathType Editor
@@ -66,7 +68,7 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | Atto HTML editor |
+      | Text editor | TinyMCE editor |
     And I press "Save changes"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode off
@@ -74,8 +76,9 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
     And I set the following fields to these values:
-      | Name | Test MathType for Atto on Moodle |
-    And I press "MathType" in "Page content" field in Atto editor
+      | Name | Test MathType for Tiny on Moodle |
+    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
+    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
     And I wait "1" seconds
     And I press accept button in MathType Editor
@@ -88,7 +91,7 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"
     And I set the following fields to these values:
-      | Text editor | Atto HTML editor |
+      | Text editor | TinyMCE editor |
     And I press "Save changes"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I check image performance mode on
@@ -96,8 +99,9 @@ Feature: Filter Settings - Image Settings - Performance mode
     And I am on "Course 1" course homepage with editing mode on
     And I add a "Page" to section "0"
     And I set the following fields to these values:
-      | Name | Test MathType for Atto on Moodle |
-    And I press "MathType" in "Page content" field in Atto editor
+      | Name | Test MathType for Tiny on Moodle |
+    And I press "Toggle" in "Page content" field in TinyMCE 6 editor
+    And I press "MathType" in "Page content" field in TinyMCE 6 editor 
     And I set MathType formula to '<math><msqrt><mi>x</mi></msqrt></math>'
     And I wait "1" seconds
     And I press accept button in MathType Editor
