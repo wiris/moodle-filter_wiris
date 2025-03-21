@@ -10,7 +10,7 @@ MathType image service can be used for **free** up to a certain level of uses pe
 
 In order to use MathType and ChemType for editing you need to install this plugin along with one of the following:
 
-- [MathType for Atto](https://github.com/wiris/mooodle-atto_wiris)
+- [MathType for Atto](https://github.com/wiris/mooodle-atto_wiris) for Moodle versions under 5.0.
 - [MathType for TinyMCE 3.x](https://github.com/wiris/moodle-tinymce_tiny_mce_wiris) for Moodle versions under 4.2.
 - [MathType for TinyMCE 6.x](https://github.com/wiris/moodle-tinymce6_wiris) for Moodle versions above 4.2.
 
