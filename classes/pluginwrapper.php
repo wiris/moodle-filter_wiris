@@ -281,6 +281,11 @@ class filter_wiris_pluginwrapper {
             } else if ($editor == 'tiny') {
                 $relativepath = '/lib/editor/tiny/plugins/wiris';
 
+                if (!file_exists($CFG->dirroot . $relativepath . '/js/plugin.min.js')) {
+                    // MathType not installed.
+                    continue;
+                }
+
                 $plugin = new stdClass();
                 $plugin->url = $CFG->wwwroot . $relativepath;
                 $plugin->path = $CFG->dirroot . $relativepath;
