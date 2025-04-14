@@ -199,7 +199,7 @@ jobs:
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-tiny_wiris
       - name: Add MathType plugin for TinyMCE using the main branch
-        if: ${{ !contains(fromJson('["MOODLE_38_STABLE", "MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE"]'), matrix.moodle-branch) }} && steps.install-plugin-tiny.outcome != 'success'
+        if: ${{ !contains(fromJson('["MOODLE_38_STABLE", "MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE"]'), matrix.moodle-branch) && steps.install-plugin-tiny.outcome != 'success' }}
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-tiny_wiris
 
