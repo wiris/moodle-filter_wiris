@@ -119,7 +119,9 @@ jobs:
             php: "8.3"
           - moodle-branch: "MOODLE_403_STABLE"
             php: "8.3"
-    
+          - moodle-branch: "main"
+            php: "8.3"
+            
           - moodle-branch: "MOODLE_38_STABLE"
             php: "8.4"
           - moodle-branch: "MOODLE_39_STABLE"
