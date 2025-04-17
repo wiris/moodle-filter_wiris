@@ -41,10 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Supported database engines.
-        database: ["pgsql"]
-        # PHP 7.4 compatibility with Moodle.
         include:
+        # PHP 7.4 compatibility
           - { php: "7.4", moodle_branch: "MOODLE_38_STABLE"}
           - { php: "7.4", moodle_branch: "MOODLE_39_STABLE"}
           - { php: "7.4", moodle_branch: "MOODLE_311_STABLE"}
@@ -108,8 +106,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.composer/cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}-
 
       # 1. Setup PHP for the current matrix.
       - name: Setup PHP ${{ matrix.php }}
@@ -119,13 +117,6 @@ jobs:
           extensions: ${{ matrix.extensions }}
           ini-values: max_input_vars=10000
           coverage: none
-
-      # 2. Setup Node.js (v18 LTS).
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
 
       # 3. Install moodle-plugin-ci tool.
       - name: Initialise moodle-plugin-ci
