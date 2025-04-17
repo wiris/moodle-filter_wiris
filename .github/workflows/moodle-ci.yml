@@ -41,53 +41,64 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.4", "8.0", "8.1", "8.2", "8.3"]
-        moodle-branch:
-          [
-            "MOODLE_38_STABLE",
-            "MOODLE_39_STABLE",
-            "MOODLE_311_STABLE",
-            "MOODLE_400_STABLE",
-            "MOODLE_401_STABLE",
-            "MOODLE_402_STABLE",
-            "MOODLE_403_STABLE",
-            "MOODLE_404_STABLE",
-            "MOODLE_405_STABLE",
-            "MOODLE_500_STABLE",
-            "main",
-          ]
         include:
-          # PHP 7.4 compatibility
-          - { php: "7.4", moodle_branch: "MOODLE_38_STABLE" }
-          - { php: "7.4", moodle_branch: "MOODLE_39_STABLE" }
-          - { php: "7.4", moodle_branch: "MOODLE_311_STABLE" }
-          - { php: "7.4", moodle_branch: "MOODLE_400_STABLE" }
-          - { php: "7.4", moodle_branch: "MOODLE_401_STABLE" }
-          # PHP 8.0 compatibility
-          - { php: "8.0", moodle_branch: "MOODLE_311_STABLE" }
-          - { php: "8.0", moodle_branch: "MOODLE_400_STABLE" }
-          - { php: "8.0", moodle_branch: "MOODLE_401_STABLE" }
-          - { php: "8.0", moodle_branch: "MOODLE_402_STABLE" }
-          - { php: "8.0", moodle_branch: "MOODLE_403_STABLE" }
-          # PHP 8.1 compatibility
-          - { php: "8.1", moodle_branch: "MOODLE_401_STABLE" }
-          - { php: "8.1", moodle_branch: "MOODLE_402_STABLE" }
-          - { php: "8.1", moodle_branch: "MOODLE_403_STABLE" }
-          - { php: "8.1", moodle_branch: "MOODLE_404_STABLE" }
-          - { php: "8.1", moodle_branch: "MOODLE_405_STABLE" }
-          # PHP 8.2 compatibility
-          - { php: "8.2", moodle_branch: "MOODLE_402_STABLE" }
-          - { php: "8.2", moodle_branch: "MOODLE_403_STABLE" }
-          - { php: "8.2", moodle_branch: "MOODLE_404_STABLE" }
-          - { php: "8.2", moodle_branch: "MOODLE_405_STABLE" }
-          - { php: "8.2", moodle_branch: "MOODLE_500_STABLE" }
-          # PHP 8.3 compatibility
-          - { php: "8.3", moodle_branch: "MOODLE_404_STABLE" }
-          - { php: "8.3", moodle_branch: "MOODLE_405_STABLE" }
-          - { php: "8.3", moodle_branch: "MOODLE_500_STABLE" }
-          # PHP 8.4 compatibility
-          - { php: "8.4", moodle_branch: "MOODLE_500_STABLE" }
-          - { php: "8.4", moodle_branch: "main" }
+        # PHP 7.4 compatibility
+        - php: "7.4"
+          moodle_branch: "MOODLE_38_STABLE"
+        - php: "7.4"
+          moodle_branch: "MOODLE_39_STABLE"
+        - php: "7.4"
+          moodle_branch: "MOODLE_311_STABLE"
+        - php: "7.4"
+          moodle_branch: "MOODLE_400_STABLE"
+        - php: "7.4"
+          moodle_branch: "MOODLE_401_STABLE"
+        # PHP 8.0 compatibility
+        - php: "8.0"
+          moodle_branch: "MOODLE_311_STABLE"
+        - php: "8.0"
+          moodle_branch: "MOODLE_400_STABLE"
+        - php: "8.0"
+          moodle_branch: "MOODLE_401_STABLE"
+        - php: "8.0"
+          moodle_branch: "MOODLE_402_STABLE"
+        - php: "8.0"
+          moodle_branch: "MOODLE_403_STABLE"
+        # PHP 8.1 compatibility
+        - php: "8.1"
+          moodle_branch: "MOODLE_401_STABLE"
+        - php: "8.1"
+          moodle_branch: "MOODLE_402_STABLE"
+        - php: "8.1"
+          moodle_branch: "MOODLE_403_STABLE"
+        - php: "8.1"
+          moodle_branch: "MOODLE_404_STABLE"
+        - php: "8.1"
+          moodle_branch: "MOODLE_405_STABLE"
+        # PHP 8.2 compatibility
+        - php: "8.2"
+          moodle_branch: "MOODLE_402_STABLE"
+        - php: "8.2"
+          moodle_branch: "MOODLE_403_STABLE"
+        - php: "8.2"
+          moodle_branch: "MOODLE_404_STABLE"
+        - php: "8.2"
+          moodle_branch: "MOODLE_405_STABLE"
+        - php: "8.2"
+          moodle_branch: "MOODLE_500_STABLE"
+        # PHP 8.3 compatibility
+        - php: "8.3"
+          moodle_branch: "MOODLE_404_STABLE"
+        - php: "8.3"
+          moodle_branch: "MOODLE_405_STABLE"
+        - php: "8.3"
+          moodle_branch: "MOODLE_500_STABLE"
+        # PHP 8.4 compatibility
+        - php: "8.4"
+          moodle_branch: "MOODLE_500_STABLE"
+        - php: "8.4"
+          moodle_branch: "main"
+
         # Browsers for Behat testing.
         browser: ["chrome", "firefox"]
         database: ["pgsql"]
