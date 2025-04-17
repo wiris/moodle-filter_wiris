@@ -130,7 +130,7 @@ jobs:
             php: "8.3"
           - moodle_branch: "main"
             php: "8.3"
-            
+
           - moodle_branch: "MOODLE_38_STABLE"
             php: "8.4"
           - moodle_branch: "MOODLE_39_STABLE"
@@ -179,9 +179,11 @@ jobs:
       - name: Cache Composer dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.composer/cache
-          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}-
+          path: |
+            ${{ github.workspace }}/.composer/cache
+            ${{ github.workspace }}/.npm
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.moodle_branch }}
 
       # 1. Setup PHP for the current matrix.
       - name: Setup PHP ${{ matrix.php }}
