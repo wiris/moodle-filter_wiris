@@ -126,7 +126,6 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: plugin/package-lock.json
 
       # 3. Install moodle-plugin-ci tool.
       - name: Initialise moodle-plugin-ci
