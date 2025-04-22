@@ -27,4 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 
 class_alias(\moodle_text_filter::class, \core_filters\text_filter::class);
 require_once(__DIR__ . '/classes/text_filter.php');
-class_alias(\filter_wiris\text_filter::class, alias: \filter_wiris::class);
+class_alias(\filter_wiris\text_filter::class, \filter_wiris::class);
