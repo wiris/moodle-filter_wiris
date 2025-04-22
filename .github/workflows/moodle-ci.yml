@@ -1,6 +1,6 @@
 name: Moodle Plugin CI Tests
 
-# Trigger the workflow on push to stable and main branches, on pull requests, and daily at 6:00 UTC.
+# Automatically triggered on push to main branch, on pull requests, and daily at 6:00 UTC.
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,6 @@ on:
         default: ""
   push:
     branches:
-      - stable
       - main
   pull_request:
     branches:
@@ -263,7 +262,7 @@ jobs:
         run: moodle-plugin-ci phpunit ./plugin
         continue-on-error: true
 
-      # 5.2 Run Moodle code validation.
+      # 5.1 Run Moodle code validation.
       - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate ./plugin
