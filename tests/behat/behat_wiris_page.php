@@ -321,6 +321,7 @@ class behat_wiris_page extends behat_wiris_base {
             "General feedback" => "fitem_id_generalfeedback",
             "Feedback" => "fitem_id_feedback_0",
             "Message" => "fitem_id_message",
+            "Text Block" => "fitem_id_config_text"
         ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
@@ -335,18 +336,18 @@ class behat_wiris_page extends behat_wiris_base {
             throw new ExpectationException($button . " button not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+        $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
         //*[contains(@title,\'' . $buttonarray[$button] . '\')]');
 
         // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
         if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
-            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
             //*[contains(@aria-label,"Reveal or hide")]');
         }
 
         // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
         if ($button != 'Toggle' && $CFG->version >= 2024092400) {
-            $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
+            $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
             //*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
         }
 
