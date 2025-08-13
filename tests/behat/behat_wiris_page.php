@@ -321,7 +321,7 @@ class behat_wiris_page extends behat_wiris_base {
             "General feedback" => "fitem_id_generalfeedback",
             "Feedback" => "fitem_id_feedback_0",
             "Message" => "fitem_id_message",
-            "Text Block" => "fitem_id_config_text"
+            "Text Block" => "fitem_id_config_text",
         ];
         if (empty($sectionarray[$field])) {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
