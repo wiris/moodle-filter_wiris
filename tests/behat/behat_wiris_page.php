@@ -614,6 +614,7 @@ class behat_wiris_page extends behat_wiris_base {
         global $CFG;
         $buttonarray = [
             "More options" => "More...",
+            "Align left" => "Align left"
         ];
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button . " button not registered.");
@@ -621,9 +622,9 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="' . $buttonarray[$button] . '"]');
         if ($CFG->version >= 2024042202.02) {
-            $component = $session->getPage()->find('xpath', '//*[contains(@aria-label,"Reveal or hide")]');
+            $buttonarray["More options"] = "Reveal or hide..."; // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
+            $component = $session->getPage()->find('xpath', '//*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
         }
-
         if (empty($component)) {
             throw new ExpectationException($button . " button not correctly recognized.", $this->getSession());
         }
