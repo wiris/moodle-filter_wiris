@@ -26,6 +26,17 @@ jobs:
   behat-tests:
     runs-on: ubuntu-latest
 
+    # Define required services.
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: "postgres"
+          POSTGRES_HOST_AUTH_METHOD: "trust"
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     strategy:
       fail-fast: false
       matrix:
@@ -44,15 +55,8 @@ jobs:
             "MOODLE_500_STABLE",
             "main",
           ]
+        database: [pgsql]
         browser: ["chrome", "firefox"]
-
-        # postgres version by default
-        postgres: ["14"]
-
-        include:
-          - moodle_branch: "main"
-            postgres: "17"
-
         exclude:
           # Exclude Moodle+PHP incompatible versions
           # See: https://docs.moodle.org/dev/Moodle_and_PHP
