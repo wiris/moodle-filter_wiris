@@ -108,6 +108,7 @@ class behat_wiris_editor extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_accept[0]\']');
 
+        // Hack to allow accept button to be clicked even outside of window bounds.
         if (!$component) {
             throw new Exception("Accept button not found");
         }
@@ -144,8 +145,10 @@ class behat_wiris_editor extends behat_wiris_base {
         );
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@id=\'wrs_modal_button_cancel[0]\']');
+
+        // Hack to allow cancel button to be clicked even outside of window bounds.
         if (!$component) {
-            throw new Exception("Accept button not found");
+            throw new Exception("Cancel button not found");
         }
 
         $session->wait(500); // 500ms
