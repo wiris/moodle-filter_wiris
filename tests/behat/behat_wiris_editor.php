@@ -117,7 +117,9 @@ class behat_wiris_editor extends behat_wiris_base {
         
         $session->executeScript("
             var btn = document.getElementById('wrs_modal_button_accept[0]');
-            if (btn) { btn.click(); }
+            if (btn) { 
+                btn.click(); 
+            }
         ");
     }
 
