@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v8.10.0 - 08 oct. 2025
+
+- feat: Comaptibility with Moodle 5.1.
+- fix: Tests.
+
 ## v8.9.2 - 10 jun. 2025
 
 - feat: Updated to the newest SDK version (v8.13.2).
@@ -139,4 +144,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix & upgrade TravisCI job configuration.
 - Update project documentation by improving the main `README` file.
 - Start using `CHANGES` file as changelog.
-
