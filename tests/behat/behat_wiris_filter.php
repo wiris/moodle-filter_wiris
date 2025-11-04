@@ -151,4 +151,43 @@ class behat_wiris_filter extends behat_wiris_base {
         reset_text_filters_cache();
         core_plugin_manager::reset_caches();
     }
+
+    /**
+     * Checks that a successful JSON response is not present on the page.
+     * This is specifically for MTMOODLE-16 tests where services should not return successful JSON
+     * when accessed by non-logged users.
+     *
+     * @Then the json response should not be visible
+     * @throws ExpectationException
+     */
+    public function the_json_response_should_not_be_visible() {
+        $session = $this->getSession();
+        $page = $session->getPage();
+        $pageContent = $page->getContent();
+                
+        // Check for JSON structure with status:ok
+        $jsonPatterns = [
+            '/"status"\s*:\s*"ok"/',
+            '/\{\s*"status"\s*:\s*"ok"/',
+            '/"status":"ok"/',
+            '/{"status":"ok"/'
+        ];
+        
+        $foundJson = false;
+        foreach ($jsonPatterns as $pattern) {
+            if (preg_match($pattern, $pageContent)) {
+                $foundJson = true;
+                break;
+            }
+        }
+               
+        // Check for any text that looks like JSON with status:ok
+        if (preg_match('/\{[^}]*"status"\s*:\s*"ok"[^}]*\}/', $pageContent, $matches)) {
+            $foundJson = true;
+        }
+        
+        if ($foundJson) {
+            throw new ExpectationException("JSON response with status:ok was found on the page, but it should not be visible for non-logged users", $session);
+        }
+    }
 }
