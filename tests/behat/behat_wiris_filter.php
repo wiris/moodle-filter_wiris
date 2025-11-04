@@ -163,31 +163,33 @@ class behat_wiris_filter extends behat_wiris_base {
     public function the_json_response_should_not_be_visible() {
         $session = $this->getSession();
         $page = $session->getPage();
-        $pageContent = $page->getContent();
+        $pagecontent = $page->getContent();
 
-        // Check for JSON structure with status:ok
-        $jsonPatterns = [
+        // Check for JSON structure with status:ok.
+        $jsonpatterns = [
             '/"status"\s*:\s*"ok"/',
             '/\{\s*"status"\s*:\s*"ok"/',
             '/"status":"ok"/',
             '/{"status":"ok"/',
         ];
 
-        $foundJson = false;
-        foreach ($jsonPatterns as $pattern) {
-            if (preg_match($pattern, $pageContent)) {
-                $foundJson = true;
+        $foundjson = false;
+        foreach ($jsonpatterns as $pattern) {
+            if (preg_match($pattern, $pagecontent)) {
+                $foundjson = true;
                 break;
             }
         }
 
-        // Check for any text that looks like JSON with status:ok
-        if (preg_match('/\{[^}]*"status"\s*:\s*"ok"[^}]*\}/', $pageContent, $matches)) {
-            $foundJson = true;
+        // Check for any text that looks like JSON with status:ok.
+        if (preg_match('/\{[^}]*"status"\s*:\s*"ok"[^}]*\}/', $pagecontent, $matches)) {
+            $foundjson = true;
         }
 
-        if ($foundJson) {
-            throw new ExpectationException("JSON response with status:ok was found on the page, but it should not be visible for non-logged users", $session);
+        if ($foundjson) {
+            $message = "JSON response with status:ok was found on the page, " .
+                      "but it should not be visible for non-logged users";
+            throw new ExpectationException($message, $session);
         }
     }
 }
