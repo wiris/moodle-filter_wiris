@@ -164,15 +164,15 @@ class behat_wiris_filter extends behat_wiris_base {
         $session = $this->getSession();
         $page = $session->getPage();
         $pageContent = $page->getContent();
-                
+
         // Check for JSON structure with status:ok
         $jsonPatterns = [
             '/"status"\s*:\s*"ok"/',
             '/\{\s*"status"\s*:\s*"ok"/',
             '/"status":"ok"/',
-            '/{"status":"ok"/'
+            '/{"status":"ok"/',
         ];
-        
+
         $foundJson = false;
         foreach ($jsonPatterns as $pattern) {
             if (preg_match($pattern, $pageContent)) {
@@ -180,7 +180,7 @@ class behat_wiris_filter extends behat_wiris_base {
                 break;
             }
         }
-               
+
         // Check for any text that looks like JSON with status:ok
         if (preg_match('/\{[^}]*"status"\s*:\s*"ok"[^}]*\}/', $pageContent, $matches)) {
             $foundJson = true;
