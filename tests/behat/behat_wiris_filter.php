@@ -185,7 +185,7 @@ class behat_wiris_filter extends behat_wiris_base {
         if (preg_match('/\{[^}]*"status"\s*:\s*"ok"[^}]*\}/', $pageContent, $matches)) {
             $foundJson = true;
         }
-        
+
         if ($foundJson) {
             throw new ExpectationException("JSON response with status:ok was found on the page, but it should not be visible for non-logged users", $session);
         }
