@@ -7,7 +7,7 @@ Feature: Integration Services availability - Not logged users
   Background:
     Given the following config values are set as admin:
       | config                  | value | plugin       |
-      | access_provider_enabled | 1     | filter_wiris |
+      | access_provider_enabled |     1 | filter_wiris |
 
   @javascript
   Scenario: MTMOODLE-16 - configurationjs.php
@@ -24,13 +24,13 @@ Feature: Integration Services availability - Not logged users
   @javascript
   Scenario: MTMOODLE-16 - showimage.php
     And I go to link "/filter/wiris/integration/showimage.php?mml=<math><mo>x</mo></math>&lang=en"
-    Then "status" "text" should not exist
+    Then the json response should not be visible
     And " as a guest" "text" should exist
 
   @javascript
   Scenario: MTMOODLE-16 - service.php
     And I go to link "/filter/wiris/integration/service.php?service=mathml2accessible&mml=<math xmlns='http://www.w3.org/1998/Math/MathML'><mn>1</mn><mo>+</mo><mn>2</mn></math>&lang=en"
-    Then "status" "text" should not exist
+    Then the json response should not be visible
     And " as a guest" "text" should exist
 
   @javascript
