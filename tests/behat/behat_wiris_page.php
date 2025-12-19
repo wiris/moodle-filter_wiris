@@ -355,6 +355,10 @@ class behat_wiris_page extends behat_wiris_base {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
         $component->click();
+        // Move mouse away to dismiss tooltip.
+        $this->getSession()->executeScript('document.dispatchEvent(new MouseEvent("mousedown", {clientX: 100, clientY: 100, bubbles: true}));');
+        $this->getSession()->wait(500, 'document.querySelectorAll(".tox-tooltip__body").length === 0');
+
     }
 
     /**
