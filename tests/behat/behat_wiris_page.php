@@ -72,9 +72,11 @@ class behat_wiris_page extends behat_wiris_base {
             throw new ExpectationException($field . " field not registered.", $this->getSession());
         }
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//input[@id="' . $fieldarray[$field] . '" and @value="' . $valuearray[$value] . '"]');
+        $xpath = '//input[@id="' . $fieldarray[$field] . '" and @value="' . $valuearray[$value] . '"]';
+        $component = $session->getPage()->find('xpath', $xpath);
         if (empty($component)) {
-            throw new ExpectationException('"' . $field . '" input value attribute is not equal to "' . $valuearray[$value] . '"', $this->getSession());
+            $message = '"' . $field . '" input value attribute is not equal to "' . $valuearray[$value] . '"';
+            throw new ExpectationException($message, $this->getSession());
         }
     }
 
@@ -339,22 +341,26 @@ class behat_wiris_page extends behat_wiris_base {
         $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
         //*[contains(@title,\'' . $buttonarray[$button] . '\')]');
 
-        // In Moodle 4.4 the button has change from "More.." to "Reveal or hide..."
+        // In Moodle 4.4 the button has change from "More.." to "Reveal or hide...".
         if ($button == 'Toggle' && $CFG->version >= 2024042202.02) {
             $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
             //*[contains(@aria-label,"Reveal or hide")]');
         }
 
-        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        // From 4.5, the button is not found via id but via data-mce-name. TODO verify if 4.x may always work like this.
         if ($button != 'Toggle' && $CFG->version >= 2024092400) {
-            $component = $session->getPage()->find('xpath', '//div[contains(@id,"' . $sectionarray[$field] . '")]
-            //*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
+            $xpath = '//div[contains(@id,"' . $sectionarray[$field] . '")]' .
+                '//*[contains(@aria-label,"' . $buttonarray[$button] . '")]';
+            $component = $session->getPage()->find('xpath', $xpath);
         }
 
         if (empty($component)) {
             throw new ExpectationException('"' . $button . '" button not found in "' . $field . '" field', $this->getSession());
         }
         $component->click();
+        // Move mouse away to dismiss tooltip.
+        $this->getSession()->executeScript('document.dispatchEvent(new MouseEvent("mousedown", {clientX: 100, clientY: 100, bubbles: true}));');
+        $this->getSession()->wait(500, 'document.querySelectorAll(".tox-tooltip__body").length === 0');
     }
 
     /**
@@ -588,7 +594,7 @@ class behat_wiris_page extends behat_wiris_base {
         }
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="' . $buttonarray[$button] . '"]');
-        // From 4.5, the button is not found via id but via data-mce-name //TODO verify if 4.x may always work like this
+        // From 4.5, the button is not found via id but via data-mce-name. TODO verify if 4.x may always work like this.
         global $CFG;
         if ($button != 'Toggle' && $CFG->version >= 2024092400) {
             $component = $session->getPage()->find('xpath', '//div[@id="' . $sectionarray[$field] . '"]
@@ -614,7 +620,7 @@ class behat_wiris_page extends behat_wiris_base {
         global $CFG;
         $buttonarray = [
             "More options" => "More...",
-            "Align left" => "Align left"
+            "Align left" => "Align left",
         ];
         if (empty($buttonarray[$button])) {
             throw new ExpectationException($button . " button not registered.");
@@ -622,9 +628,11 @@ class behat_wiris_page extends behat_wiris_base {
         $session = $this->getSession();
         $component = $session->getPage()->find('xpath', '//button[@title="' . $buttonarray[$button] . '"]');
         if ($CFG->version >= 2024042202.02) {
-            $buttonarray["More options"] = "Reveal or hide"; // In Moodle 4.4 the button has change from "More.." to "Reveal or hide"
+            // In Moodle 4.4 the button has change from "More.." to "Reveal or hide...".
+            $buttonarray["More options"] = "Reveal or hide";
             echo '//*[contains(@aria-label,"' . $buttonarray[$button] . '")]';
-            $component = $session->getPage()->find('xpath', '//*[contains(@aria-label,"' . $buttonarray[$button] . '")]');
+            $xpath = '//*[contains(@aria-label,"' . $buttonarray[$button] . '")]';
+            $component = $session->getPage()->find('xpath', $xpath);
         }
         if (empty($component)) {
             throw new ExpectationException($button . " button not correctly recognized.", $this->getSession());
