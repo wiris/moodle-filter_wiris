@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_wiris;
+
 /**
  * This class implements WIRIS StorageAndCache interface
  * to store WIRIS data on MUC and Moodle database.
@@ -97,9 +99,9 @@ class moodledbjsoncache {
         if ($DB->record_exists($this->cachetable, [$this->keyfield => $parsedkey])) {
             $record = $DB->get_record($this->cachetable, [$this->keyfield => $parsedkey]);
             if (strpos($key, '.svg') !== false) {
-                return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$jsonfield));
+                return \haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$jsonfield));
             } else if (strpos($key, '.txt') !== false) {
-                return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->alt));
+                return \haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->alt));
             } else {
                 return null;
             }
@@ -150,9 +152,9 @@ class moodledbjsoncache {
      */
     public function set($key, $value) {
 
-        $jsonhash = new Hash();
+        $jsonhash = new \Hash();
         $jsonhash->set('status', 'ok');
-        $innerhash = new Hash();
+        $innerhash = new \Hash();
         $innerhash->set('content', '');
         $innerhash->set('alt', '');
         $jsonhash->set('result', $innerhash);
@@ -183,12 +185,12 @@ class moodledbjsoncache {
                         ]
                     );
                 }
-            } catch (dml_exception $ex) {
+            } catch (\dml_exception $ex) {
                 // Concurrent write access to the same - unexisting - md5
                 // are possible in some scenarios (like a quiz)
                 // if a write_exception occurs, formula has been created
                 // is not a real exception.
-                if ($ex instanceof dml_write_exception) {
+                if ($ex instanceof \dml_write_exception) {
                     return;
                 }
                 throw $ex;

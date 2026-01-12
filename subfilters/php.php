@@ -17,8 +17,6 @@
 
 namespace filter_wiris\subfilters;
 
-use filter_wiris_pluginwrapper;
-
 /**
  * This filter implements the default behaviour of the Wiris filter:
  * it uses the integration/ classes to make calls to the wiris.net services,
@@ -70,7 +68,7 @@ class filter_wiris_php extends \core_filters\text_filter {
         // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
         wrs_loadclasses();
 
-        $wirispluginwrapper = new filter_wiris_pluginwrapper();
+        $wirispluginwrapper = new \filter_wiris\pluginwrapper();
 
         $wirispluginwrapper->begin();
         $textservice = $wirispluginwrapper->get_instance()->newTextService();

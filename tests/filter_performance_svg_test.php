@@ -25,7 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/filter/wiris/filter.php');
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/CallWrapper.class.php');
 
 /**
@@ -35,7 +34,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/Cal
  */
 final class filter_performance_svg_test extends advanced_testcase {
     /**
-     * @var filter_wiris The WIRIS filter instance.
+     * @var \filter_wiris The WIRIS filter instance.
      */
     protected $wirisfilter;
 
@@ -59,14 +58,39 @@ final class filter_performance_svg_test extends advanced_testcase {
      */
     protected $cachetable;
 
+    /**
+     * @var string Safe XML used for images containing special characters.
+     */
+    protected $specialcharsimagesafexml;
+
+    /**
+     * @var string Encoded SVG data URL used in tests for special characters.
+     */
+    protected $imagesvgspecialchars;
+
+    /**
+     * @var string Alt text (JSON) for special characters image.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var string Encoded SVG data URL used in performance tests.
+     */
+    protected $imagesvgperformance;
+
+    /**
+     * @var string SVG markup expected in cache.
+     */
+    protected $svg;
+
     protected function setUp(): void {
         parent::setUp();
         $this->resetAfterTest(true);
-        filter_wiris_pluginwrapper::set_configuration([
+        \filter_wiris\pluginwrapper::set_configuration([
             'wirispluginperformance' => 'true',
             'wirisimageformat' => 'svg',
         ]);
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->cachetable = 'filter_wiris_formulas';
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
@@ -115,9 +139,9 @@ final class filter_performance_svg_test extends advanced_testcase {
     }
 
     public function test_filter_safexml_with_performance_cache_svg(): void {
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
 
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.svg');
         $assertion = strrpos($fileresult, $this->svg) !== false;
@@ -126,9 +150,9 @@ final class filter_performance_svg_test extends advanced_testcase {
     }
 
     public function test_filter_safexml_with_performance_cache_formula(): void {
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'formulas');
 
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
         $assertion = strrpos($fileresult, $this->xml) !== false;
@@ -136,10 +160,10 @@ final class filter_performance_svg_test extends advanced_testcase {
     }
 
     public function test_filter_safexml_with_performance_alt_cache(): void {
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->wirisfilter->filter($this->specialcharsimagesafexml);
 
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('fc13b6ac6aec34845457b164dd4af76a.en.txt');
         $this->assertEquals($this->specialcharsalt, $fileresult);
     }

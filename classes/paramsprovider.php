@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_wiris;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -30,7 +32,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/api
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider {
+class paramsprovider implements com_wiris_plugin_api_ParamsProvider {
     /**
      * @var array $parameters The list of parameters.
      */
@@ -50,7 +52,7 @@ class filter_wiris_paramsprovider implements com_wiris_plugin_api_ParamsProvider
      * Constructor for the ParamsProvider class.
      */
     public function __construct() {
-        $this->wrap = com_wiris_system_CallWrapper::getInstance();
+        $this->wrap = \com_wiris_system_CallWrapper::getInstance();
     }
 
     /**

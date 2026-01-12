@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_wiris;
+
 /**
  * This class implements WIRIS cache interface
  * to store WIRIS cache on Moodle database.
@@ -92,7 +94,7 @@ class moodledbcache {
             // Cache interface returns an array of Bytes. When we are using the database to
             // store cache the data should be converted to a Bytes object.
             $valuefield = $this->valuefield;
-            return haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$valuefield));
+            return \haxe_io_Bytes::ofData(com_wiris_system_Utf8::toBytes($record->$valuefield));
         } else {
             return null;
         }
@@ -126,12 +128,12 @@ class moodledbcache {
                     $this->valuefield => $value->b,
                     $this->timecreatedfield => time(),
                 ]);
-            } catch (dml_exception $ex) {
+            } catch (\dml_exception $ex) {
                 // Concurrent write access to the same - unexisting - md5
                 // are possible in some scenarios (like a quiz)
                 // if a write_exception occurs, formula has been created
                 // is not a real exception.
-                if ($ex instanceof dml_write_exception) {
+                if ($ex instanceof \dml_write_exception) {
                     return;
                 }
                 throw $ex;
