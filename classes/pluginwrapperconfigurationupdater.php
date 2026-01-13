@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+namespace filter_wiris;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
@@ -28,7 +30,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/con
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_pluginwrapperconfigurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
+class pluginwrapperconfigurationupdater implements \com_wiris_plugin_configuration_ConfigurationUpdater {
     /**
      * @var mixed $customconfig The custom configuration instance.
      */

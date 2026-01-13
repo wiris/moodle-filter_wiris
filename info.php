@@ -442,7 +442,7 @@ global $CFG;
 $plugin = new stdClass();
 require($CFG->dirroot . '/filter/wiris/version.php');
 // Array of arrays witch contains all necesaty information for testing
-$plugins = filter_wiris_pluginwrapper::get_wiris_plugins_information();
+$plugins = \filter_wiris\pluginwrapper::get_wiris_plugins_information();
 
 // Save version of all enabled plugins for test
 $enabledplugins = [];

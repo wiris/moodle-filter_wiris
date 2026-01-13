@@ -17,7 +17,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/filter/wiris/filter.php');
 
 /**
  * Unit tests for MathType filter.
@@ -44,16 +43,28 @@ final class filter_without_performance_svg_test extends advanced_testcase {
      * @var mixed $instance The instance used for testing.
      */
     protected $instance;
+    /**
+     * @var mixed $imagesvg The SVG image instance used for testing.
+     */
+    protected $imagesvg;
+    /**
+     * @var mixed $imagesvgcontent The SVG image content instance used for testing.
+     */
+    protected $imagesvgcontent;
+    /**
+     * @var mixed $specialcharsalt The special characters alt instance used for testing.
+     */
+    protected $specialcharsalt;
 
     protected function setUp(): void {
         global $CFG;
         parent::setUp();
         $this->resetAfterTest(true);
-        filter_wiris_pluginwrapper::set_configuration([
+        \filter_wiris\pluginwrapper::set_configuration([
             'wirispluginperformance' => 'false',
             'wirisimageformat' => 'svg',
         ]);
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»+«/mo»«mn»2«/mn»«/math»';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
 
@@ -96,7 +107,7 @@ final class filter_without_performance_svg_test extends advanced_testcase {
         $this->imagesvgcontent .= 'h117e62166fc8586dfa4d1bc0e17" font-size="16" text-anchor="middle" x="16.5" y="16">+</text><t';
         $this->imagesvgcontent .= 'ext font-family="Arial" font-size="16" text-anchor="middle" x="28.5" y="16">2</text></svg>';
 
-        $wirispluginwrapper = new filter_wiris_pluginwrapper();
+        $wirispluginwrapper = new \filter_wiris\pluginwrapper();
         $this->instance = $wirispluginwrapper->get_instance();
     }
 
@@ -111,21 +122,21 @@ final class filter_without_performance_svg_test extends advanced_testcase {
     }
     public function test_filter_safexml_without_performance_svg_cache_formula(): void {
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'formulas');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.ini');
         $assertion = strrpos($fileresult, $this->xml) !== false;
         $this->assertTrue($assertion);
     }
     public function test_filter_safexml_without_performance_svg_alt_cache(): void {
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.en.txt');
         $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
         $this->assertTrue($assertion);
     }
     public function test_filter_safexml_without_performance_svg_cache(): void {
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.svg');
         $assertion = strrpos($fileresult, $this->imagesvgcontent) !== false;
         $this->assertTrue($assertion);

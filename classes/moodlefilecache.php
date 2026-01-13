@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_wiris;
+
 /**
  * This class implements WIRIS StorageAndCache interface
  * to store WIRIS data on MUC and Moodle database.
@@ -47,7 +49,7 @@ class moodlefilecache {
     public function __construct($area, $module) {
         $this->area = $area;
         $this->module = $module;
-        $this->cache = cache::make($area, $module);
+        $this->cache = \core_cache\cache::make($area, $module);
     }
 
     /**
@@ -60,14 +62,14 @@ class moodlefilecache {
 
     /**
      * Deletes all the data in the cache.
-     * @throws moodle_exception failing purgue the cache.
+     * @throws \core\exception\moodle_exception failing purgue the cache.
      */
     // @codingStandardsIgnoreStart
     public function deleteAll()
     {
         // @codingStandardsIgnoreEnd
         if (!$this->cache->purgue()) {
-            throw new moodle_exception(get_string('errordeletingcache', 'filter_wiris', $this->area), $this->module);
+            throw new \core\exception\moodle_exception(get_string('errordeletingcache', 'filter_wiris', $this->area), $this->module);
         }
     }
 
@@ -92,7 +94,7 @@ class moodlefilecache {
      */
     public function set($key, $value) {
         if (!$this->cache->set($key, $value)) {
-            throw new moodle_exception(get_string('errorsavingcache', 'filter_wiris', $this->area), $this->module);
+            throw new \core\exception\moodle_exception(get_string('errorsavingcache', 'filter_wiris', $this->area), $this->module);
         }
     }
 }

@@ -24,6 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace filter_wiris;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -39,7 +41,7 @@ if (!interface_exists('com_wiris_util_sys_AccessProvider')) {
  * This class is the access provider for the WIRIS filter in Moodle.
  * It implements the com_wiris_util_sys_AccessProvider interface.
  */
-class filter_wiris_accessprovider implements com_wiris_util_sys_AccessProvider {
+class accessprovider implements com_wiris_util_sys_AccessProvider {
     /**
      * This method is called before all service. We use it as a wrapper to call
      * Moodle require_login() method. Any WIRIS service can't be called without a

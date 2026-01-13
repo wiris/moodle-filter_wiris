@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace filter_wiris;
+
 defined('MOODLE_INTERNAL') || die();
 
 // This classes are shared between Wiris Quizzes and MathType
@@ -40,7 +42,7 @@ require_once($CFG->dirroot . '/lib/editorlib.php');
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_pluginwrapper {
+class pluginwrapper {
     /**
      * @var bool $isinit Indicates whether the initialization is done.
      */
@@ -86,17 +88,17 @@ class filter_wiris_pluginwrapper {
     /**
      * Begins the execution of the plugin wrapper.
      *
-     * This method is responsible for starting the execution of the plugin wrapper by calling the `start()` method of the `com_wiris_system_CallWrapper` class.
+     * This method is responsible for starting the execution of the plugin wrapper by calling the `start()` method of the `\com_wiris_system_CallWrapper` class.
      */
     public function begin() {
-        com_wiris_system_CallWrapper::getInstance()->start();
+        \com_wiris_system_CallWrapper::getInstance()->start();
     }
 
     /**
      * Stops the WIRIS system call wrapper.
      */
     public function end() {
-        com_wiris_system_CallWrapper::getInstance()->stop();
+        \com_wiris_system_CallWrapper::getInstance()->stop();
     }
 
     /**
@@ -129,24 +131,24 @@ class filter_wiris_pluginwrapper {
 
             global $CFG;
             // Init haxe environment.
-            if (!class_exists('com_wiris_system_CallWrapper')) {
+            if (!class_exists('\com_wiris_system_CallWrapper')) {
                 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/CallWrapper.class.php');
             }
-            com_wiris_system_CallWrapper::getInstance()->init($CFG->dirroot . '/filter/wiris/integration');
+            \com_wiris_system_CallWrapper::getInstance()->init($CFG->dirroot . '/filter/wiris/integration');
 
             // Start haxe environment.
             $this->begin();
             // Create PluginBuilder with Moodle specific configuration.
-            $this->moodleconfig = new filter_wiris_configurationupdater();
-            $this->instance = com_wiris_plugin_api_PluginBuilder::newInstance();
+            $this->moodleconfig = new \filter_wiris\configurationupdater();
+            $this->instance = \com_wiris_plugin_api_PluginBuilder::newInstance();
             $this->instance->addConfigurationUpdater($this->moodleconfig);
-            $this->instance->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
-            $newpluginwrapperconfiguration = new filter_wiris_pluginwrapperconfigurationupdater(self::$pluginwrapperconfig);
+            $this->instance->addConfigurationUpdater(new \com_wiris_plugin_web_PhpConfigurationUpdater());
+            $newpluginwrapperconfiguration = new \filter_wiris\pluginwrapperconfigurationupdater(self::$pluginwrapperconfig);
             $this->instance->addConfigurationUpdater($newpluginwrapperconfiguration);
 
             // Class to manage file cache.
-            $cachefile = new moodlefilecache('filter_wiris', 'images');
-            $cacheformula = new moodlefilecache('filter_wiris', 'formulas');
+            $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
+            $cacheformula = new \filter_wiris\moodlefilecache('filter_wiris', 'formulas');
 
             $this->instance->setStorageAndCacheCacheObject($cachefile);
             // Class to manage formulas (i.e plain text) cache.
@@ -250,7 +252,7 @@ class filter_wiris_pluginwrapper {
             if ($editor == 'atto') {
                 $relativepath = '/lib/editor/atto/plugins/wiris';
                 if (file_exists($CFG->dirroot . $relativepath . '/version.php')) {
-                    $plugin = new stdClass();
+                    $plugin = new \stdClass();
                     $plugin->url = $CFG->wwwroot . $relativepath;
                     $plugin->path = $CFG->dirroot . $relativepath;
                     $plugin->version = get_config('atto_atto_wiris', 'version');
@@ -261,7 +263,7 @@ class filter_wiris_pluginwrapper {
                     $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
                 } else { // Location for Moodle < 2.4 .
                     require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
-                    $tiny = new tinymce_texteditor();
+                    $tiny = new \tinymce_texteditor();
                     $tinyversion = $tiny->version;
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
                 }
@@ -270,7 +272,7 @@ class filter_wiris_pluginwrapper {
                     // MathType  >= 3.50 not installed.
                     continue;
                 }
-                $plugin = new stdClass();
+                $plugin = new \stdClass();
                 $plugin->url = $CFG->wwwroot . $relativepath;
                 $plugin->path = $CFG->dirroot . $relativepath;
                 if ($CFG->version >= 2012120300) {
@@ -286,7 +288,7 @@ class filter_wiris_pluginwrapper {
                     continue;
                 }
 
-                $plugin = new stdClass();
+                $plugin = new \stdClass();
                 $plugin->url = $CFG->wwwroot . $relativepath;
                 $plugin->path = $CFG->dirroot . $relativepath;
                 $plugin->version = get_config('tiny_wiris/plugin', 'version');
@@ -315,7 +317,7 @@ class filter_wiris_pluginwrapper {
         // Loop over atto, tinymce (legacy), and tiny (current) in the order defined by the configuration.
         $editors = explode(',', $CFG->texteditors);
         // Before loop, check if exists filter
-        $plugin = new stdClass();
+        $plugin = new \stdClass();
         $filterrelativepath = '/filter/wiris';
         require($CFG->dirroot . $filterrelativepath . '/version.php');
         if (isset($plugin->release) || $plugin->maturity == MATURITY_BETA) {
@@ -329,7 +331,7 @@ class filter_wiris_pluginwrapper {
             if ($editor == 'atto') {
                 $relativepath = '/lib/editor/atto/plugins/wiris';
                 if (file_exists($CFG->dirroot . $relativepath . '/version.php')) {
-                    $plugin = new stdClass();
+                    $plugin = new \stdClass();
                     require($CFG->dirroot . $relativepath . '/version.php');
 
                     $plugins['atto']['url'] = $CFG->wwwroot . $relativepath;
@@ -342,13 +344,13 @@ class filter_wiris_pluginwrapper {
                     $relativepath = '/lib/editor/tinymce/plugins/tiny_mce_wiris/tinymce';
                 } else { // Location for Moodle < 2.4.
                     require_once($CFG->dirroot . '/lib/editor/tinymce/lib.php');
-                    $tiny = new tinymce_texteditor();
+                    $tiny = new \tinymce_texteditor();
                     $tinyversion = $tiny->version;
                     $relativepath = '/lib/editor/tinymce/tiny_mce/' . $tinyversion . '/plugins/tiny_mce_wiris';
                 }
 
                 if (file_exists($CFG->dirroot .  $relativepath . '/../version.php')) {
-                    $plugin = new stdClass();
+                    $plugin = new \stdClass();
                     require($CFG->dirroot .  $relativepath . '/../version.php');
 
                     $plugins['tinymce']['url'] = $CFG->wwwroot . $relativepath;
@@ -359,7 +361,7 @@ class filter_wiris_pluginwrapper {
             } else if ($editor == 'tiny') {
                 $relativepath = '/lib/editor/tiny/plugins/wiris';
                 if (file_exists($CFG->dirroot . $relativepath . '/version.php')) {
-                    $plugin = new stdClass();
+                    $plugin = new \stdClass();
                     require($CFG->dirroot . $filterrelativepath . '/version.php');
 
                     $plugins['tiny']['url'] = $CFG->wwwroot . $relativepath;

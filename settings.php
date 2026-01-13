@@ -39,9 +39,9 @@ if ($ADMIN->fulltree) {
     require_once("$CFG->dirroot/filter/wiris/lib.php");
     // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
     wrs_loadclasses();
-    $wirisplugin = new filter_wiris_pluginwrapper();
+    $wirisplugin = new \filter_wiris\pluginwrapper();
 
-    $editorplugininstalled = filter_wiris_pluginwrapper::get_wiris_plugin();
+    $editorplugininstalled = \filter_wiris\pluginwrapper::get_wiris_plugin();
     $warningoutput = '';
     if (!empty($editorplugininstalled)) {
         // Editor checkbox.
@@ -55,7 +55,7 @@ if ($ADMIN->fulltree) {
         // Backwards compatibility: some old installations could have the configuration
         // file into the editor plugin inestad of filter. Show a notification to advise
         // users to copy the file from the older location to the new one.
-        if ($oldconfile = filter_wiris_pluginwrapper::get_old_configuration()) {
+        if ($oldconfile = \filter_wiris\pluginwrapper::get_old_configuration()) {
             $warningoutput .= get_string('oldconfiguration', 'filter_wiris', $oldconfile);
         }
 

@@ -34,16 +34,16 @@ if ($moodle) {
         }
     }
     $wrap->start();
-    $pluginBuilder->addConfigurationUpdater(new filter_wiris_configurationupdater());
-    $pluginBuilder->setCustomParamsProvider(new filter_wiris_paramsprovider());
+    $pluginBuilder->addConfigurationUpdater(new \filter_wiris\configurationupdater());
+    $pluginBuilder->setCustomParamsProvider(new \filter_wiris\paramsprovider());
     $pluginBuilder->addConfigurationUpdater(new com_wiris_plugin_web_PhpConfigurationUpdater());
     $pluginBuilder->getConfiguration()->getFullConfiguration();
     if ($pluginBuilder->getConfiguration()->getProperty('wirisaccessproviderenabled', 'false') == 'true') {
-        $pluginBuilder->setAccessProvider(new filter_wiris_accessprovider());
+        $pluginBuilder->setAccessProvider(new \filter_wiris\accessprovider());
     }
     // Class to manage file cache.
-    $cachefile = new moodlefilecache('filter_wiris', 'images');
-    $cacheformula = new moodlefilecache('filter_wiris', 'formulas');
+    $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
+    $cacheformula = new \filter_wiris\moodlefilecache('filter_wiris', 'formulas');
 
     $pluginBuilder->setStorageAndCacheCacheObject($cachefile);
     // Class to manage formulas (i.e plain text) cache.

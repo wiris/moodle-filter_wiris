@@ -25,7 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/filter/wiris/filter.php');
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/system/CallWrapper.class.php');
 
 /**
@@ -58,15 +57,34 @@ final class filter_performance_png_test extends advanced_testcase {
      */
     protected $imagepng;
 
+    /**
+     * @var mixed $minusxml The minus XML instance used for testing.
+     */
+    protected $minusxml;
+
+    /**
+     * @var mixed $plusxml The plus XML instance used for testing.
+     */
+    protected $minuspngbase64uri;
+
+    /**
+     * @var mixed $specialcharsalt The special characters alt instance used for testing.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var mixed $pluspngbase64uri The plus PNG base64 URI instance used for testing.
+     */
+    protected $pluspngbase64uri;
     protected function setUp(): void {
         global $CFG;
         parent::setUp();
         $this->resetAfterTest(true);
-        filter_wiris_pluginwrapper::set_configuration([
+        \filter_wiris\pluginwrapper::set_configuration([
             'wirispluginperformance' => 'true',
             'wirisimageformat' => 'png',
         ]);
-        $this->wirisfilter = new filter_wiris(context_system::instance(), []);
+        $this->wirisfilter = new \filter_wiris\text_filter(context_system::instance(), []);
         $this->safexml = '«math xmlns=¨http://www.w3.org/1998/Math/MathML¨»«mn»1«/mn»«mo»-«/mo»«mn»2«/mn»«/math»';
         $this->minusxml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>-</mo><mn>2</mn></math>';
         $this->xml = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>2</mn></math>';
@@ -113,7 +131,7 @@ final class filter_performance_png_test extends advanced_testcase {
     }
     public function test_filter_safexml_with_performance_png_cache_formula(): void {
         $this->wirisfilter->filter($this->safexml);
-        $cachefile = new moodlefilecache('filter_wiris', 'formulas');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'formulas');
 
         $fileresult = $cachefile->get('c77c09fe164db49c5c7aea508ffead95.ini');
         $assertion = strrpos($fileresult, $this->minusxml) !== false;
@@ -122,14 +140,14 @@ final class filter_performance_png_test extends advanced_testcase {
     public function test_filter_safexml_with_performance_png_alt_cache(): void {
         $this->wirisfilter->filter($this->safexml);
 
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('c77c09fe164db49c5c7aea508ffead95.en.txt');
         $assertion = strrpos($fileresult, $this->specialcharsalt) !== false;
         $this->assertTrue($assertion);
     }
     public function test_filter_safexml_with_performance_png_cache(): void {
         $this->wirisfilter->filter($this->xml);
-        $cachefile = new moodlefilecache('filter_wiris', 'images');
+        $cachefile = new \filter_wiris\moodlefilecache('filter_wiris', 'images');
         $fileresult = $cachefile->get('cd345a63d1346d7a11b5e73bb97e5bb7.png');
         $assertion = strrpos($fileresult, $this->xml) !== false;
         $this->assertTrue($assertion);

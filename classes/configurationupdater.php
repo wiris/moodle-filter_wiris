@@ -15,6 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+namespace filter_wiris;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/configuration/ConfigurationUpdater.interface.php');
@@ -28,7 +30,7 @@ require_once($CFG->dirroot . '/filter/wiris/integration/lib/com/wiris/plugin/con
  * @copyright  WIRIS Europe (Maths for more S.L)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class filter_wiris_configurationupdater implements com_wiris_plugin_configuration_ConfigurationUpdater {
+class configurationupdater implements \com_wiris_plugin_configuration_ConfigurationUpdater {
     /**
      * @var mixed $waseditorenabled Indicates whether the WYSIWYG editor was enabled.
      */
@@ -69,8 +71,8 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         global $CFG;
 
-        $this->editorplugin = filter_wiris_pluginwrapper::get_wiris_plugin();
-        $this->oldconfiguration = filter_wiris_pluginwrapper::get_old_configuration();
+        $this->editorplugin = \filter_wiris\pluginwrapper::get_wiris_plugin();
+        $this->oldconfiguration = \filter_wiris\pluginwrapper::get_old_configuration();
     }
 
     /**
@@ -129,7 +131,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
         $scriptname = explode('/', $_SERVER["SCRIPT_FILENAME"]);
         $scriptname = array_pop($scriptname);
 
-        com_wiris_system_CallWrapper::getInstance()->stop();
+        \com_wiris_system_CallWrapper::getInstance()->stop();
 
         // Configuration.ini wrapper.
 
@@ -189,7 +191,7 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
                 $refererquery = implode('&', explode('/', optional_param('refererquery', null, PARAM_RAW)));
                 $configuration['wirisreferer'] = $CFG->wwwroot . $refererquery;
             }
-            com_wiris_system_CallWrapper::getInstance()->start();
+            \com_wiris_system_CallWrapper::getInstance()->start();
             return;
         }
 
@@ -251,6 +253,6 @@ class filter_wiris_configurationupdater implements com_wiris_plugin_configuratio
 
         $configuration['wirisreferer'] = $CFG->wwwroot . $query;
 
-        com_wiris_system_CallWrapper::getInstance()->start();
+        \com_wiris_system_CallWrapper::getInstance()->start();
     }
 }
