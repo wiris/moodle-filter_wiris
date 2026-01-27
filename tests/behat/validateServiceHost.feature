@@ -4,12 +4,14 @@ Feature: Filter Settings - Connection Settings - Service host
   As an admin
   I should be able to access the test service depending if the service host exists
 
-  @javascript
-  Scenario: MTMOODLE-27 - Set an incorrect service host
+  Background:
     Given the "wiris" filter is "on"
     And the "wiris" filter has maximum priority
     And I log in as "admin"
-    And I navigate to "Plugins > MathType by WIRIS" in site administration
+
+  @javascript
+  Scenario: MTMOODLE-27 - Set an incorrect service host
+    Given I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:
       | Service host | www.wipis.net |
     And I press "Save changes"
@@ -18,8 +20,7 @@ Feature: Filter Settings - Connection Settings - Service host
 
   @javascript
   Scenario: MTMOODLE-27 - Set a correct service host
-    Given the "wiris" filter is "on"
-    And the "wiris" filter has maximum priority
+    Given I navigate to "Plugins > MathType by WIRIS" in site administration
     And I log in as "admin"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:
