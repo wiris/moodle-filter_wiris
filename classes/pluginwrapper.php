@@ -86,7 +86,8 @@ class filter_wiris_pluginwrapper {
     /**
      * Begins the execution of the plugin wrapper.
      *
-     * This method is responsible for starting the execution of the plugin wrapper by calling the `start()` method of the `com_wiris_system_CallWrapper` class.
+     * This method is responsible for starting the execution of the plugin wrapper by
+     * calling the `start()` method of the `com_wiris_system_CallWrapper` class.
      */
     public function begin() {
         com_wiris_system_CallWrapper::getInstance()->start();
@@ -314,7 +315,7 @@ class filter_wiris_pluginwrapper {
 
         // Loop over atto, tinymce (legacy), and tiny (current) in the order defined by the configuration.
         $editors = explode(',', $CFG->texteditors);
-        // Before loop, check if exists filter
+        // Before loop, check if exists filter.
         $plugin = new stdClass();
         $filterrelativepath = '/filter/wiris';
         require($CFG->dirroot . $filterrelativepath . '/version.php');
@@ -370,7 +371,7 @@ class filter_wiris_pluginwrapper {
             }
         }
 
-        // Return the array containing information about all available plugins
+        // Return the array containing information about all available plugins.
         return $plugins;
     }
     /**

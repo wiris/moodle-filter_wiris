@@ -213,9 +213,11 @@ class behat_wiris_editor extends behat_wiris_base {
         if (empty($component)) {
             throw new ExpectationException('Editor title bar not found.', $this->getSession());
         }
-        // JavaScript to simulate drag and drop
+        // JavaScript to simulate drag and drop.
         $script = <<<JS
-        var element = document.evaluate("//div[@class='wrs_modal_title']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        var element = document.evaluate(
+            "//div[@class='wrs_modal_title']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null
+        ).singleNodeValue;
         var rect = element.getBoundingClientRect();
         var startX = rect.left + rect.width / 2;
         var startY = rect.top + rect.height / 2;
@@ -238,7 +240,7 @@ class behat_wiris_editor extends behat_wiris_base {
             bubbles: true
         }));
     JS;
-        // Execute the script
+        // Execute the script.
         $session->executeScript($script);
     }
 
@@ -280,7 +282,10 @@ class behat_wiris_editor extends behat_wiris_base {
      */
     public function full_screen_modal_window_is_opened() {
         $session = $this->getSession();
-        $component = $session->getPage()->find('xpath', '//div[contains(@class, "wrs_modal_overlay wrs_modal_desktop wrs_maximized")]');
+        $component = $session->getPage()->find(
+            'xpath',
+            '//div[contains(@class, "wrs_modal_overlay wrs_modal_desktop wrs_maximized")]'
+        );
         if (empty($component) || !$component->isVisible()) {
             throw new ExpectationException("Full-screen modal window is opened.", $this->getSession());
         }

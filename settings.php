@@ -263,9 +263,9 @@ if ($ADMIN->fulltree) {
         );
     }
 
-    // If Moodle is 4.2
+    // If Moodle is 4.2.
     if ($CFG->version > 2022112807) {
-        // If TinyMCE legacy is already installed
+        // If TinyMCE legacy is already installed.
         if (is_dir($CFG->dirroot . '/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
             $warningoutput .= get_string('tinymceincompatibility', 'filter_wiris');
         }
