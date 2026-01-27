@@ -6,6 +6,7 @@ Feature: Check WirisQuizzes settings link
 
   Background:
     Given the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And I log in as "admin"
 
   @javascript
