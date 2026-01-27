@@ -248,7 +248,7 @@ function process_table_row($test, $outcome, $currentindex, &$currentsubindex) {
  * @return void
  */
 function start_new_group(&$currentindex, &$currentsubindex) {
-    // $current_index is not equal to 0 mean the previous test is not skipped.
+    // If $current_index is not equal to 0 mean the previous test is not skipped.
     if ($currentsubindex != 0) {
         $currentindex++;
     }
@@ -325,21 +325,21 @@ function get_editor_exists_and_enabled($editorname) {
     global $CFG;
 
     if ($editorname === 'atto' && $CFG->branch >= 500) {
-        // if Moodle version is 5.0 or later, do not check if atto exists.
+        // If Moodle version is 5.0 or later, do not check if atto exists.
         return null;
     }
 
     if ($editorname === 'tinymce' && $CFG->branch > 402) {
-        // if Moodle version is 4.1 or later, do not check if tiny (legacy) exists.
+        // If Moodle version is 4.1 or later, do not check if tiny (legacy) exists.
         return null;
     }
 
     if ($editorname === 'tiny' && $CFG->branch < 401) {
-        // if Moodle version is 4.1 or prior, do not check if tiny (current) exists.
+        // If Moodle version is 4.1 or prior, do not check if tiny (current) exists.
         return null;
     }
 
-    // get_texteditor returns (boolean)false if not exists or an object if the editor exists.
+    // Returns (boolean)false if not exists or an object if the editor exists.
     $editors = array_keys(editors_get_enabled());
     return in_array($editorname, $editors);
 }

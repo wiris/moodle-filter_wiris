@@ -283,7 +283,8 @@ class behat_wiris_editor extends behat_wiris_base {
     public function full_screen_modal_window_is_opened() {
         $session = $this->getSession();
         $component = $session->getPage()->find(
-            'xpath', '//div[contains(@class, "wrs_modal_overlay wrs_modal_desktop wrs_maximized")]'
+            'xpath',
+            '//div[contains(@class, "wrs_modal_overlay wrs_modal_desktop wrs_maximized")]'
         );
         if (empty($component) || !$component->isVisible()) {
             throw new ExpectationException("Full-screen modal window is opened.", $this->getSession());
