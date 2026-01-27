@@ -15,6 +15,7 @@ Feature: Filter Settings - Image Settings - Performance mode
       | user  | course | role           |
       | admin | C1     | editingteacher |
     And the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And I log in as "admin"
 @javascript @5.x
   Scenario: MTMOODLE-17 - Validate formula renders with Performance mode OFF

@@ -16,6 +16,7 @@ Feature: Filter Settings - Image Settings - Render in PNG
       | user  | course | role           |
       | admin | C1     | editingteacher |
     And the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 

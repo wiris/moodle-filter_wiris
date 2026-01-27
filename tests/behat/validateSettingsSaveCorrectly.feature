@@ -7,6 +7,7 @@ Feature: Check filters settings save correctly
   @javascript
   Scenario: MTMOODLE-29 - Validate settings are saved correctly
     Given the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And I log in as "admin"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
     And I set the following fields to these values:

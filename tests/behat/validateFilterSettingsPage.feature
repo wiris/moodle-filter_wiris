@@ -6,11 +6,13 @@ Feature: Filter settings page
 
   Background:
     Given the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And I log in as "admin"
 
   @javascript @4.0 @4.0_filter @4.x @4.x_filter @5.x @5.x_filter
     Scenario: MTMOODLE-10 - Check that different categories of settings exist
     And I navigate to "Plugins > Filters" in site administration
+    # And I wait "60" seconds
     Then "Common filter settings" "text" should exist
     Then "Convert URLs into links and images" "text" should exist
     And "Display emoticons as images" "text" should exist

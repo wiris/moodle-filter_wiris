@@ -12,6 +12,7 @@ Feature: Render in moodle forums
       | activity | course | idnumber | name            | type    |
       | forum    | C1     | forum1   | Test forum name | general |
     And the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
