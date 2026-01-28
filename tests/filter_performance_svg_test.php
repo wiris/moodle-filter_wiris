@@ -55,6 +55,31 @@ final class filter_performance_svg_test extends advanced_testcase {
     protected $image;
 
     /**
+     * @var string $specialcharsimagesafexml The special characters for image svg.
+     */
+    protected $specialcharsimagesafexml;
+
+    /**
+     * @var string $imagesvgspecialchars Special characters for svg image.
+     */
+    protected $imagesvgspecialchars;
+
+    /**
+     * @var string $specialcharsalt Special characters for alt attribute.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var string $imagesvgperformance The svg content for performance tests.
+     */
+    protected $imagesvgperformance;
+
+    /**
+     * @var string $svg The <svg> content.
+     */
+    protected $svg;
+
+    /**
      * @var string Name of the cache table.
      */
     protected $cachetable;

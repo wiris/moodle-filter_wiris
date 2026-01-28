@@ -58,6 +58,26 @@ final class filter_performance_png_test extends advanced_testcase {
      */
     protected $imagepng;
 
+    /**
+     * @var mixed $minusxml The minus XML instance used for testing.
+     */
+    protected $minusxml;
+
+    /**
+     * @var string $minuspngbase64uri The minus png base64 URI.
+     */
+    protected $minuspngbase64uri;
+
+    /**
+     * @var string $specialcharsalt Special characters for alt attribute.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var string $pluspngbase64uri The plus png base64 URI.
+     */
+    protected $pluspngbase64uri;
+
     protected function setUp(): void {
         global $CFG;
         parent::setUp();
