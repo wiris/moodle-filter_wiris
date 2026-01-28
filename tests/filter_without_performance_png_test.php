@@ -57,6 +57,21 @@ final class filter_without_performance_png_test extends advanced_testcase {
     protected $image;
 
     /**
+     * @var string $imagepng The <img> content containing the png.
+     */
+    protected $imagepng;
+
+    /**
+     * @var string Special characters for alt attribute.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var string $imagesvg The <img> content containing the svg.
+     */
+    protected $imagesvg;
+
+    /**
      * @var object Instance of the filter.
      */
     protected $instance;
