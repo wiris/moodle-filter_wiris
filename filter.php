@@ -25,6 +25,19 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-class_alias(\moodle_text_filter::class, \core_filters\text_filter::class);
-require_once(__DIR__ . '/classes/text_filter.php');
-class_alias(\filter_wiris\text_filter::class, \filter_wiris::class);
+// Maintain compatibility with older Moodle versions but avoid fatal redeclaration errors
+// when core classes already exist. Only create aliases if the alias name isn't already
+// declared.
+if (!class_exists('core_filters\\text_filter', false)) {
+    if (class_exists(\moodle_text_filter::class, false)) {
+        class_alias(\moodle_text_filter::class, 'core_filters\\text_filter');
+    }
+
+    require_once(__DIR__ . '/classes/text_filter.php');
+}
+
+if (!class_exists('filter_wiris', false)) {
+    if (class_exists(\filter_wiris\text_filter::class, false)) {
+        class_alias(\filter_wiris\text_filter::class, 'filter_wiris');
+    }
+}
