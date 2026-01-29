@@ -15,6 +15,7 @@ Feature: Filter Settings - Image Settings - Render Type
       | user  | course | role           |
       | admin | C1     | editingteacher |
     And the "wiris" filter is "on"
+    And the "wiris" filter has maximum priority
     And the "urltolink" filter is "off"
     And I log in as "admin"
 
