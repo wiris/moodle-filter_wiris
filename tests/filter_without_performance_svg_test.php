@@ -45,6 +45,21 @@ final class filter_without_performance_svg_test extends advanced_testcase {
      */
     protected $instance;
 
+    /**
+     * @var string $specialcharsalt Special characters for alt attribute.
+     */
+    protected $specialcharsalt;
+
+    /**
+     * @var string $imagesvg The <img> content containing the svg.
+     */
+    protected $imagesvg;
+
+    /**
+     * @var string $imagesvgcontent The <svg> content.
+     */
+    protected $imagesvgcontent;
+
     protected function setUp(): void {
         global $CFG;
         parent::setUp();
