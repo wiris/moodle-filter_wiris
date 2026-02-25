@@ -29,7 +29,7 @@ class Type {
 		}
 	}
 	static function getEnum($o) {
-		if(!$o instanceof Enum) {
+		if(!$o instanceof HxEnum) {
 			return null;
 		} else {
 			return _hx_ttype(get_class($o));

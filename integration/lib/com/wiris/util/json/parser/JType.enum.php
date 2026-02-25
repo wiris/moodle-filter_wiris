@@ -1,6 +1,6 @@
 <?php
 
-class com_wiris_util_json_parser_JType extends Enum {
+class com_wiris_util_json_parser_JType extends HxEnum {
 	public static $TYPE_ARRAY;
 	public static $TYPE_CONSTANT;
 	public static $TYPE_HEURISTIC;
