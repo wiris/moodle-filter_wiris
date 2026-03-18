@@ -1,290 +1,102 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// dummy settings page to test the login/logout button and token saving logic.
 
-/**
- * MathType filter settings.
- *
- * @package    filter_wiris
- * @subpackage wiris
- * @copyright  WIRIS Europe (Maths for more S.L)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-defined('MOODLE_INTERNAL') || die();
-
-// Moodle notification API: https://docs.moodle.org/dev/Notifications.
-use core\notification;
+defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    global $CFG;
-    global $wirisconfigurationclass;
 
-    // Moodle doesn't render page headings on some cases, but saves them for later, causing multiple headings
-    // Using fetch immediately renders without saving.
-    notification::fetch();
+    if (!class_exists('admin_setting_wiris_login_button')) {
+        class admin_setting_wiris_login_button extends admin_setting {
 
-    require_once("$CFG->dirroot/filter/wiris/lib.php");
-    // Automatic class loading not avaliable for Moodle 2.4 and 2.5.
-    wrs_loadclasses();
-    $wirisplugin = new filter_wiris_pluginwrapper();
+            public function __construct($name, $visiblename, $description, $defaultsetting) {
+                parent::__construct($name, $visiblename, $description, $defaultsetting);
+            }
 
-    $editorplugininstalled = filter_wiris_pluginwrapper::get_wiris_plugin();
-    $warningoutput = '';
-    if (!empty($editorplugininstalled)) {
-        // Editor checkbox.
-        $output = '';
-        $wirisplugin->begin();
-        $waseditorenabled = $wirisplugin->was_editor_enabled();
-        $waschemeditorenabled = $wirisplugin->was_chem_editor_enabled();
-        $conf = $wirisplugin->get_instance()->getConfiguration();
-        $wirisplugin->end();
+            public function get_setting() { return true; }
+            public function write_setting($data) { return ''; }
 
-        // Backwards compatibility: some old installations could have the configuration
-        // file into the editor plugin inestad of filter. Show a notification to advise
-        // users to copy the file from the older location to the new one.
-        if ($oldconfile = filter_wiris_pluginwrapper::get_old_configuration()) {
-            $warningoutput .= get_string('oldconfiguration', 'filter_wiris', $oldconfile);
-        }
+            public function output_html($data, $query = '') {
+                global $PAGE;
 
-        $settings->add(
-            new admin_setting_heading(
-                'filter_wiris/editorsettings',
-                get_string('editorsettings', 'filter_wiris'),
-                get_string('editorsettings_text', 'filter_wiris')
-            )
-        );
-
-        if ($waseditorenabled) {
-            $settings->add(
-                new admin_setting_configcheckbox(
-                    'filter_wiris/editor_enable',
-                    get_string('wirismatheditor', 'filter_wiris'),
-                    get_string('wirismatheditor_help', 'filter_wiris'),
-                    '1'
-                )
-            );
-        }
-
-        if ($waschemeditorenabled) {
-            $settings->add(
-                new admin_setting_configcheckbox(
-                    'filter_wiris/chem_editor_enable',
-                    get_string('wirischemeditor', 'filter_wiris'),
-                    get_string('wirischemeditor_help', 'filter_wiris'),
-                    '1'
-                )
-            );
-        }
-
-        // Allow MathType be enabled despite of the filter is disabled on a course.
-        $settings->add(
-            new admin_setting_configcheckbox(
-                'filter_wiris/allow_editorplugin_active_course',
-                get_string('alloweditorpluginactive', 'filter_wiris'),
-                get_string('alloweditorpluginactive_help', 'filter_wiris'),
-                '0'
-            )
-        );
-
-        // Configuration.ini wrapper.
-
-
-        // Connection properties.
-        $settings->add(
-            new admin_setting_heading(
-                'filter_wiris/connectionsettings',
-                get_string('connectionsettings', 'filter_wiris'),
-                get_string('connectionsettings_text', 'filter_wiris')
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configtext(
-                'filter_wiris/imageservicehost',
-                get_string('imageservicehost', 'filter_wiris'),
-                get_string('imageservicehost_help', 'filter_wiris'),
-                'www.wiris.net',
-                PARAM_URL
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configtext(
-                'filter_wiris/imageservicepath',
-                get_string('imageservicepath', 'filter_wiris'),
-                get_string('imageservicepath_help', 'filter_wiris'),
-                '/demo/editor/render',
-                PARAM_LOCALURL
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configselect(
-                'filter_wiris/imageserviceprotocol',
-                get_string('imageserviceprotocol', 'filter_wiris'),
-                get_string('imageserviceprotocol_help', 'filter_wiris'),
-                'https',
-                ['http' => 'http', 'https' => 'https']
-            )
-        );
-
-        // Image properties.
-
-        $settings->add(
-            new admin_setting_heading(
-                'filter_wiris/imagesettings',
-                get_string('imagesettings', 'filter_wiris'),
-                get_string('imagesettings_text', 'filter_wiris')
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configselect(
-                'filter_wiris/rendertype',
-                get_string('rendertype', 'filter_wiris'),
-                get_string('rendertype_help', 'filter_wiris'),
-                'php',
-                ['php' => 'PHP', 'client' => 'Client']
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configselect(
-                'filter_wiris/imageformat',
-                get_string('imageformat', 'filter_wiris'),
-                get_string('imageformat_help', 'filter_wiris'),
-                'svg',
-                ['svg' => 'svg', 'png' => 'png']
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configcheckbox(
-                'filter_wiris/pluginperformance',
-                get_string('pluginperformance', 'filter_wiris'),
-                get_string('pluginperformance_help', 'filter_wiris'),
-                '1'
-            )
-        );
-
-        // Window properties.
-
-        $settings->add(
-            new admin_setting_heading(
-                'filter_wiris/windowsettings',
-                get_string('windowsettings', 'filter_wiris'),
-                get_string('windowsettings_text', 'filter_wiris')
-            )
-        );
-
-
-        $settings->add(
-            new admin_setting_configcheckbox(
-                'filter_wiris/editormodalwindowfullscreen',
-                get_string('editormodalwindowfullscreen', 'filter_wiris'),
-                get_string('editormodalwindowfullscreen_help', 'filter_wiris'),
-                '0'
-            )
-        );
-
-        // Access Provider: If enabled MathType services can not be accessed from non logged users.
-
-        $settings->add(
-            new admin_setting_heading(
-                'securitysettings',
-                get_string('securitysettings', 'filter_wiris'),
-                get_string('securitysettings_text', 'filter_wiris')
-            )
-        );
-
-        $settings->add(
-            new admin_setting_configcheckbox(
-                'filter_wiris/access_provider_enabled',
-                get_string('accessproviderenabled', 'filter_wiris'),
-                get_string('accessproviderenabled_help', 'filter_wiris'),
-                '0'
-            )
-        );
-    } else {
-        if (!get_config('filter_wiris', 'filter_standalone')) {
-            // Moodle notification API since Moodel 3.1.
-            if ($CFG->version >= 2016052300) {
-                // Due to Moodle doesn't support circular dependencies between plugins, if any editor plugin is installed
-                // a warning message is shown as a notification.
-                // TinyMCE used version 3 for Moodle 4.1 and under and latest version for Moodle 4.2 and above.
-                $tinyurl = '';
-                if ($CFG->branch < 402) {
-                    $tinyurl .= 'https://moodle.org/plugins/tinymce_tiny_mce_wiris';
+                $html = '<div class="form-item row">';
+                $html .= '<div class="form-label text-sm-end"></div>';
+                $html .= '<div class="form-setting col-sm-9">';
+                
+                $current_token = get_config('filter_wiris', 'auth_token');
+                
+                // If we have a token, show the Connected status and a disconnect button.
+                if (!empty($current_token)) {
+                    $html .= '<div class="alert alert-success">Status: Connected (Token: ' . s($current_token) . ')</div>';
+                    $html .= '<button type="button" id="mathtype-logout-btn" class="btn btn-danger">Disconnect MathType</button>';
                 } else {
-                    $tinyurl .= 'https://moodle.org/plugins/tiny_wiris';
+                    // If no token, show the normal login button.
+                    $html .= '<button type="button" id="mathtype-login-btn" class="btn btn-primary">';
+                    $html .= get_string('login_button_text', 'filter_wiris');
+                    $html .= '</button>';
                 }
-                // Atto is deprecated since version 5.0. Create the warning message only if Atto exists on Moodle.
-                $attourl = '';
-                $attributes = [];
-                if ($CFG->branch < 500) {
-                    $attourl .= 'https://moodle.org/plugins/atto_wiris';
-                    $warningoutput .= html_writer::link($attourl, get_string('wirispluginforatto', 'filter_wiris'), $attributes);
-                    $warningoutput .= '&nbsp;' . get_string('or', 'filter_wiris') . '&nbsp;';
-                }
-                $linkattributes = ['target' => '_blank'];
-                $warningoutput .= html_writer::link($tinyurl, get_string('wirispluginfortinymce', 'filter_wiris'), $attributes);
-                $warningoutput .= '&nbsp;' . get_string('arenotinstalled', 'filter_wiris') . '&nbsp;';
-                $warningoutput .= get_string('furtherinformation', 'filter_wiris') . '&nbsp;';
+                
+                $html .= '</div></div>';
+
+                // This is a temporary hack to inject our JavaScript directly on the settings page for easiest development testing.
+                // In a production environment, this should be moved to an AMD module.
+                $js = '
+                    require(["core/modal"], function(Modal) {
+                        
+                        // Iframe Message Listener for Login Simulation
+                        window.addEventListener("message", function(event) {
+                            if (event.data && event.data.mathtype_token) {
+                                var token = event.data.mathtype_token;
+                                var saveUrl = M.cfg.wwwroot + "/filter/wiris/save_token.php?token=" + encodeURIComponent(token);
+                                window.location.href = saveUrl;
+                            }
+                        });
+
+                        // Login Button Logic
+                        var loginBtn = document.getElementById("mathtype-login-btn");
+
+                        if (loginBtn) {
+                            loginBtn.addEventListener("click", function(e) {
+                                e.preventDefault();
+                                
+                                var dummyHtml = "data:text/html;charset=utf-8,%3Chtml%3E%3Cbody%20style%3D%22font-family%3A%20sans-serif%3B%20text-align%3A%20center%3B%20padding-top%3A%2050px%3B%22%3E%3Ch3%3EMathType%20Dummy%20Login%3C%2Fh3%3E%3Cp%3EClick%20below%20to%20simulate%20a%20successful%20login.%3C%2Fp%3E%3Cbutton%20onclick%3D%22window.parent.postMessage(%7Bmathtype_token%3A%20%27MT-VALIDATED-TOKEN-999%27%7D%2C%20%27*%27)%3B%22%20style%3D%22padding%3A%2010px%2020px%3B%20background%3A%20%23007bff%3B%20color%3A%20white%3B%20border%3A%20none%3B%20border-radius%3A%205px%3B%20cursor%3A%20pointer%3B%22%3EAuthenticate%3C%2Fbutton%3E%3C%2Fbody%3E%3C%2Fhtml%3E";
+
+                                Modal.create({
+                                    title: "MathType Login Simulation",
+                                    body: `<iframe src="${dummyHtml}" style="width: 100%; height: 300px; border: 1px solid #ccc; border-radius: 8px;"></iframe>`,
+                                    large: true,
+                                    show: true
+                                }).catch(function(error) {
+                                    console.error("Modal creation failed:", error);
+                                });
+                            });
+                        }
+
+                        // Logout Button Logic.
+                        var logoutBtn = document.getElementById("mathtype-logout-btn");
+
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener("click", function(e) {
+                                e.preventDefault();
+
+                                // We call our save_token.php but pass it NOTHING!
+                                // This overwrites the database with an empty string, locking the filter.
+                                window.location.href = M.cfg.wwwroot + "/filter/wiris/save_token.php?token=";
+                            });
+                        }
+                    });
+                ';
+                
+                $PAGE->requires->js_amd_inline($js);
+
+                return format_admin_setting($this, $this->visiblename, $html, $this->description, true, '', '', $query);
             }
         }
-        $settings->add(
-            new admin_setting_configcheckbox(
-                'filter_wiris/filter_standalone',
-                get_string(
-                    'filter_standalone',
-                    'filter_wiris'
-                ),
-                get_string(
-                    'filter_standalonedesc',
-                    'filter_wiris'
-                ),
-                false,
-                true,
-                false
-            )
-        );
     }
 
-    // If Moodle is 4.2.
-    if ($CFG->version > 2022112807) {
-        // If TinyMCE legacy is already installed.
-        if (is_dir($CFG->dirroot . '/lib/editor/tinymce/plugins/tiny_mce_wiris')) {
-            $warningoutput .= get_string('tinymceincompatibility', 'filter_wiris');
-        }
-    }
-
-    if (!empty($warningoutput)) {
-        if ($CFG->version > 2016052300) {
-            notification::warning($warningoutput);
-        } else {
-            $settings->add(new admin_setting_heading('filter_wiris_old_configuration', '', $warningoutput));
-        }
-    }
-
-    $wirisquizzes = dirname(__FILE__) . '/../../question/type/wq/';
-    $quizzesinstalled = file_exists($wirisquizzes);
-
-    if ($quizzesinstalled) {
-        $url = $CFG->wwwroot . '/admin/settings.php?section=qtypesettingwq';
-        $url = '<a href="' . $url . '">Wiris Quizzes settings</a>';
-        $settings->add(new admin_setting_heading('filter_wirisquizzesheading', $url, ''));
-    }
+    $settings->add(new admin_setting_wiris_login_button(
+        'filter_wiris/login_button',
+        get_string('login_setting_name', 'filter_wiris'),
+        get_string('login_setting_desc', 'filter_wiris'),
+        ''
+    ));
 }
