@@ -290,7 +290,7 @@ jobs:
             "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE"|"MOODLE_405_STABLE")
               TAG="@4.x_filter${{ github.event.inputs.tags }}"
               ;;
-            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main")
+            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"v5.2.0-beta")
               TAG="@5.x_filter${{ github.event.inputs.tags }}"
               ;;
             *)
