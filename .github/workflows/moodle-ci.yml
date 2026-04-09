@@ -247,7 +247,7 @@ jobs:
           moodle-plugin-ci add-plugin --branch v4.14.0 wiris/moodle-qtype_wq
 
       - name: Add Wiris Quizzes plugin using the main branch
-        if: ${{ steps.add-quizzes-tag.conclusion == 'skipped' && steps.install-plugin-quizzes.outcome != 'success' }}
+        if: ${{ steps.add-quizzes-legacy.conclusion == 'skipped' && steps.install-plugin-quizzes.outcome != 'success' }}
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-qtype_wq
 
