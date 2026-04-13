@@ -23,10 +23,10 @@ class haxe_Utf8 {
 			throw new HException('Unable to call «'.$m.'»');
 	}
 	static function encode($s) {
-		return utf8_encode($s);
+		return mb_convert_encoding($s, 'UTF-8', 'ISO-8859-1');
 	}
 	static function decode($s) {
-		return utf8_decode($s);
+		return mb_convert_encoding($s, 'ISO-8859-1', 'UTF-8');
 	}
 	static function iter($s, $chars) {
 		$len = haxe_Utf8::length($s);

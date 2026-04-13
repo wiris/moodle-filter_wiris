@@ -1,6 +1,6 @@
 <?php
 
-class sys_io_FileSeek extends Enum {
+class sys_io_FileSeek extends HxEnum {
 	public static $SeekBegin;
 	public static $SeekCur;
 	public static $SeekEnd;
