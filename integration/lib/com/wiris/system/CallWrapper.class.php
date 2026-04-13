@@ -5,8 +5,18 @@ class com_wiris_system_CallWrapper {
 		;
 	}
 	public function autoload($className) {
-		if(function_exists('__autoload')) {
-			__autoload($className);
+		$autoloadFunctions = spl_autoload_functions();
+		if (is_array($autoloadFunctions)) {
+			foreach ($autoloadFunctions as $func) {
+				if ($func !== array($this, 'autoload') && $func !== '_hx_autoload') {
+					if (is_callable($func)) {
+						call_user_func($func, $className);
+						if (class_exists($className, false)) {
+							return;
+						}
+					}
+				}
+			}
 		}
 	}
 	public function phpStop() {

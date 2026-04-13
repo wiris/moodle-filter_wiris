@@ -1,6 +1,6 @@
 <?php
 
-class sys__FileSystem_FileKind extends Enum {
+class sys__FileSystem_FileKind extends HxEnum {
 	public static $kdir;
 	public static $kfile;
 	public static function kother($k) { return new sys__FileSystem_FileKind("kother", 2, array($k)); }
