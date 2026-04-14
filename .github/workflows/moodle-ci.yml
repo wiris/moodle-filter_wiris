@@ -234,17 +234,18 @@ jobs:
           moodle-plugin-ci add-plugin --branch main wiris/moodle-tinymce_tiny_mce_wiris
 
       # 5. Install Wiris Quizzes plugin.
+      - name: Add Wiris Quizzes plugin using the v4.14.0 tag
+        id: add-quizzes-legacy
+        if: ${{ contains(fromJson('["MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE", "MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle_branch) && steps.install-plugin-quizzes.outcome != 'success' }}
+        run: |
+          moodle-plugin-ci add-plugin --branch v4.14.0 wiris/moodle-qtype_wq
+      
       - name: Add Wiris Quizzes plugin
         id: install-plugin-quizzes
         if: ${{ always() }}
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-qtype_wq
-      - name: Add Wiris Quizzes plugin using the v4.14.0 tag
-        id: add-quizzes-legacy
-        if: ${{ contains(fromJson('["MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE", "MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle_branch) && steps.install-plugin-quizzes.outcome != 'success' }}
-        run: |
-          moodle-plugin-ci add-plugin --branch v4.14.0 wiris/moodle-qtype_wq
 
       - name: Add Wiris Quizzes plugin using the main branch
         if: ${{ steps.add-quizzes-legacy.conclusion == 'skipped' && steps.install-plugin-quizzes.outcome != 'success' }}
