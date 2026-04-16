@@ -54,7 +54,7 @@ jobs:
             "MOODLE_500_STABLE",
             "MOODLE_501_STABLE",
             "main",
-            "v5.2.0-beta",
+            "v5.2.0",
           ]
         database: [pgsql]
         browser: ["chrome", "firefox"]
@@ -74,7 +74,7 @@ jobs:
             php: "7.4"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "7.4"
-          - moodle_branch: "v5.2.0-beta"
+          - moodle_branch: "v5.2.0"
             php: "7.4"
           - moodle_branch: "main"
             php: "7.4"
@@ -90,7 +90,7 @@ jobs:
             php: "8.0"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "8.0"
-          - moodle_branch: "v5.2.0-beta"
+          - moodle_branch: "v5.2.0"
             php: "8.0"
           - moodle_branch: "main"
             php: "8.0"
@@ -105,7 +105,7 @@ jobs:
             php: "8.1"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "8.1"
-          - moodle_branch: "v5.2.0-beta"
+          - moodle_branch: "v5.2.0"
             php: "8.1"
           - moodle_branch: "main"
             php: "8.1"
@@ -118,7 +118,7 @@ jobs:
             php: "8.2"
           - moodle_branch: "MOODLE_401_STABLE"
             php: "8.2"
-          - moodle_branch: "v5.2.0-beta"
+          - moodle_branch: "v5.2.0"
             php: "8.2"
           - moodle_branch: "main"
             php: "8.2"
@@ -135,7 +135,7 @@ jobs:
             php: "8.3"
           - moodle_branch: "MOODLE_403_STABLE"
             php: "8.3"
-          - moodle_branch: "v5.2.0-beta"
+          - moodle_branch: "v5.2.0"
             php: "8.3"
           - moodle_branch: "main"
             php: "8.3"
@@ -245,15 +245,21 @@ jobs:
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-tinymce_tiny_mce_wiris
 
-      # 5. Install Wiris Quizzes plugin.
+            # 5. Install Wiris Quizzes plugin.
       - name: Add Wiris Quizzes plugin
         id: install-plugin-quizzes
         if: ${{ always() }}
         continue-on-error: true
         run: |
           moodle-plugin-ci add-plugin --branch ${{ env.BRANCH_NAME }} wiris/moodle-qtype_wq
+      - name: Add Wiris Quizzes plugin using the v4.14.0 tag
+        id: add-quizzes-legacy
+        if: ${{ contains(fromJson('["MOODLE_39_STABLE", "MOODLE_311_STABLE", "MOODLE_400_STABLE", "MOODLE_401_STABLE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODLE_404_STABLE"]'), matrix.moodle_branch) && steps.install-plugin-quizzes.outcome != 'success' }}
+        run: |
+          moodle-plugin-ci add-plugin --branch v4.14.0 wiris/moodle-qtype_wq
+
       - name: Add Wiris Quizzes plugin using the main branch
-        if: ${{ steps.install-plugin-quizzes.outcome != 'success' }}
+        if: ${{ steps.add-quizzes-legacy.conclusion == 'skipped' && steps.install-plugin-quizzes.outcome != 'success' }}
         run: |
           moodle-plugin-ci add-plugin --branch main wiris/moodle-qtype_wq
 
@@ -290,7 +296,7 @@ jobs:
             "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE"|"MOODLE_405_STABLE")
               TAG="@4.x_filter${{ github.event.inputs.tags }}"
               ;;
-            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"v5.2.0-beta")
+            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"v5.2.0")
               TAG="@5.x_filter${{ github.event.inputs.tags }}"
               ;;
             *)
