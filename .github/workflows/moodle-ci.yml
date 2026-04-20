@@ -53,8 +53,8 @@ jobs:
             "MOODLE_405_STABLE",
             "MOODLE_500_STABLE",
             "MOODLE_501_STABLE",
+            "MOODLE_502_STABLE",
             "main",
-            "v5.2.0",
           ]
         database: [pgsql]
         browser: ["chrome", "firefox"]
@@ -74,7 +74,7 @@ jobs:
             php: "7.4"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "7.4"
-          - moodle_branch: "v5.2.0"
+          - moodle_branch: "MOODLE_502_STABLE"
             php: "7.4"
           - moodle_branch: "main"
             php: "7.4"
@@ -90,7 +90,7 @@ jobs:
             php: "8.0"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "8.0"
-          - moodle_branch: "v5.2.0"
+          - moodle_branch: "MOODLE_502_STABLE"
             php: "8.0"
           - moodle_branch: "main"
             php: "8.0"
@@ -105,7 +105,7 @@ jobs:
             php: "8.1"
           - moodle_branch: "MOODLE_501_STABLE"
             php: "8.1"
-          - moodle_branch: "v5.2.0"
+          - moodle_branch: "MOODLE_502_STABLE"
             php: "8.1"
           - moodle_branch: "main"
             php: "8.1"
@@ -118,7 +118,7 @@ jobs:
             php: "8.2"
           - moodle_branch: "MOODLE_401_STABLE"
             php: "8.2"
-          - moodle_branch: "v5.2.0"
+          - moodle_branch: "MOODLE_502_STABLE"
             php: "8.2"
           - moodle_branch: "main"
             php: "8.2"
@@ -135,7 +135,7 @@ jobs:
             php: "8.3"
           - moodle_branch: "MOODLE_403_STABLE"
             php: "8.3"
-          - moodle_branch: "v5.2.0"
+          - moodle_branch: "MOODLE_502_STABLE"
             php: "8.3"
           - moodle_branch: "main"
             php: "8.3"
@@ -276,7 +276,7 @@ jobs:
         run: moodle-plugin-ci phpunit ./plugin
         continue-on-error: true
 
-      # 7.1 Run Moodle code validation.
+      # 7.1 Run Moodle code validation.LE", "MOODLE_402_STABLE", "MOODLE_403_STABLE", "MOODL
       - name: Validating
         if: ${{ always() }}
         run: moodle-plugin-ci validate ./plugin
@@ -296,7 +296,7 @@ jobs:
             "MOODLE_401_STABLE"|"MOODLE_402_STABLE"|"MOODLE_403_STABLE"|"MOODLE_404_STABLE"|"MOODLE_405_STABLE")
               TAG="@4.x_filter${{ github.event.inputs.tags }}"
               ;;
-            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"v5.2.0")
+            "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"MOODLE_502_STABLE")
               TAG="@5.x_filter${{ github.event.inputs.tags }}"
               ;;
             *)
