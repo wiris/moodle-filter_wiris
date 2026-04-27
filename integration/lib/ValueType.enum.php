@@ -1,6 +1,6 @@
 <?php
 
-class ValueType extends Enum {
+class ValueType extends HxEnum {
 	public static $TBool;
 	public static function TClass($c) { return new ValueType("TClass", 6, array($c)); }
 	public static function TEnum($e) { return new ValueType("TEnum", 7, array($e)); }

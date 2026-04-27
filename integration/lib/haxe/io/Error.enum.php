@@ -1,6 +1,6 @@
 <?php
 
-class haxe_io_Error extends Enum {
+class haxe_io_Error extends HxEnum {
 	public static $Blocked;
 	public static function Custom($e) { return new haxe_io_Error("Custom", 3, array($e)); }
 	public static $OutsideBounds;

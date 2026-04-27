@@ -557,7 +557,7 @@ function _hx_string_rec($o, $s) {
 	if(is_bool($o))                return $o ? 'true' : 'false';
 	if(is_object($o)) {
 		$c = get_class($o);
-		if($o instanceof Enum) {
+		if($o instanceof HxEnum) {
 			$b = $o->tag;
 			if(!empty($o->params)) {
 				$s .= "	";
@@ -805,7 +805,7 @@ class _hx_lambda {
 	}
 }
 
-class Enum {
+class HxEnum {
 	public function __construct($tag, $index, $params = null) { $this->tag = $tag; $this->index = $index; $this->params = $params; }
 	public $tag;
 	public $index;
