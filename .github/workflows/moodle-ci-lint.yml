@@ -29,9 +29,9 @@ jobs:
       # 0.2. install a specific version of Node using
       # https://github.com/actions/setup-node
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: ${{ vars.NODE_VERSION }}
 
       # 1. Setup PHP using the matrix described on the strategy section.
       - name: Setup PHP ${{ matrix.php }}
