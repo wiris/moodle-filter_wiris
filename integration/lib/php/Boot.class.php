@@ -453,7 +453,7 @@ class _hx_list_iterator implements Iterator {
 	public function next() {
 		if($this->»h == null) return null;
 		$this->»counter++;
-		$x = $this->i»h[0];
+		$x = $this->»h[0];
 		$this->»h = $this->»h[1];
 		return $x;
 	}
