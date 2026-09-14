@@ -301,7 +301,7 @@ jobs:
               TAG="@4.5_filter${{ github.event.inputs.tags }}"
               ;;
             "MOODLE_500_STABLE"|"MOODLE_501_STABLE"|"main"|"MOODLE_502_STABLE")
-              TAG="@5.x_filter @4.5_filter${{ github.event.inputs.tags }}"
+              TAG="@5.x_filter${{ github.event.inputs.tags }}"
               ;;
             *)
               TAG="@filter${{ github.event.inputs.tags }}"
