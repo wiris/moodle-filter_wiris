@@ -19,7 +19,7 @@ Feature: Compatibility with the Convert URLs into links and images filter by Moo
     And the "urltolink" filter has maximum priority
     And I log in as "admin"
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-30 - Insert a formula with the Convert URLs into links and images filter on
     And I follow "Preferences" in the user menu
     And I follow "Editor preferences"

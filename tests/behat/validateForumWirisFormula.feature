@@ -16,7 +16,7 @@ Feature: Render in moodle forums
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
-@javascript @5.x @5.x_filter
+@javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-6 - Check MathType renders a wiris formula in moodle forums discussion
     And I am on the "Test forum name" "forum activity" page logged in as admin
     And I click on "Add discussion topic" "link"
@@ -35,7 +35,7 @@ Feature: Render in moodle forums
     And I wait until Wirisformula formula exists
     Then a Wirisformula containing "1 plus 1" should exist
 
-@javascript @5.x @5.x_filter
+@javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-6 - Check MathType renders a wiris formula in a reply of a moodle forums discussion
     And the following "mod_forum > discussions" exist:
       | user  | forum  | name               | message                |

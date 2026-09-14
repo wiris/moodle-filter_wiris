@@ -19,7 +19,7 @@ Feature: Filter Settings - Image Settings - Render Type
     And the "urltolink" filter is "off"
     And I log in as "admin"
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-12 - Add a MathML formula and check client side rendering works with Javascript library
     # set render type to "client"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
@@ -49,7 +49,7 @@ Feature: Filter Settings - Image Settings - Render Type
     Then I wait until Wirisformula formula exists
     And MathType formula in svg format is correctly displayed
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-12 - Add a MathML formula and check server side rendering works with PHP library
     # set render type to "PHP"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
