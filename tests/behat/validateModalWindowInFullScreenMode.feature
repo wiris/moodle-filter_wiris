@@ -18,7 +18,7 @@ Feature: Filter Settings - Window Settings - Full Screen mode
     And the "wiris" filter has maximum priority
     And I log in as "admin"
 
-@javascript @5.x @5.x_filter
+@javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-24 - Validate modal window is maximized when full screen mode is selected
     # set render type to "client"
     And I navigate to "Plugins > MathType by WIRIS" in site administration
