@@ -19,7 +19,7 @@ Feature: Render in moodle pages
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
- @javascript @5.x @5.x_filter
+ @javascript @5.x @5.x_filter @4.5_filter @wipwip
   Scenario: MTMOODLE-8 - Check MathType renders a wiris formula in moodle pages
     # set text editor to "tiny HTML"
     And I follow "Preferences" in the user menu

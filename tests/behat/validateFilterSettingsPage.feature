@@ -9,7 +9,7 @@ Feature: Filter settings page
     And the "wiris" filter has maximum priority
     And I log in as "admin"
 
-  @javascript @4.0 @4.0_filter @4.x @4.x_filter @5.x @5.x_filter
+  @javascript @4.0 @4.0_filter @4.x @4.x_filter @5.x @5.x_filter @4.5_filter
     Scenario: MTMOODLE-10 - Check that different categories of settings exist
     And I navigate to "Plugins > Filters" in site administration
     # And I wait "60" seconds

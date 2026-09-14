@@ -20,7 +20,7 @@ Feature: Filter Settings - Image Settings - Render in PNG
     And the MathType filter render type is set to "php"
     And I log in as "admin"
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-13 - Add a MathML formula and check MathType renders an PNG image correctly with server side rendering
     # set text editor to "Tiny HTML"
     And I follow "Preferences" in the user menu
@@ -47,7 +47,7 @@ Feature: Filter Settings - Image Settings - Render in PNG
     # check that Wirisformula is in png format
     And MathType formula in png format is correctly displayed
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-13 - Add a MathML formula and check MathType renders an PNG image correctly with client side rendering
     # set render type to "client"
     And I navigate to "Plugins > MathType by WIRIS" in site administration

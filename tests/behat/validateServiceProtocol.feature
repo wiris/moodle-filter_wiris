@@ -18,7 +18,7 @@ Feature: Filter Settings - Connection Settings - Service protocol
     And the "wiris" filter has maximum priority
     And I log in as "admin"
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-23 - Check if a Wiris formula renders with protocol 'http'
     # set text editor to "tiny"
     And I follow "Preferences" in the user menu
@@ -48,7 +48,7 @@ Feature: Filter Settings - Connection Settings - Service protocol
     # check that Wirisformula exists
     Then Wirisformula should exist
 
-  @javascript @5.x @5.x_filter
+  @javascript @5.x @5.x_filter @4.5_filter
   Scenario: MTMOODLE-23 - Check if a Wiris formula renders with protocol 'https'
     # set text editor to "tiny"
     And I follow "Preferences" in the user menu
