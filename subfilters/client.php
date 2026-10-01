@@ -60,7 +60,8 @@ class filter_wiris_client extends \core_filters\text_filter {
         // Add the Javascript Thir-party library to the page.
         $PAGE->requires->js(
             new moodle_url(
-                '/filter/wiris/render/WIRISplugins.js?viewer=image&lang=' . $lang . '&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"]'
+                '/filter/wiris/render/WIRISplugins.js?viewer=image&lang=' . $lang .
+                    '&safeXml=true&async=true&element=%23page&ignored_containers=[data-fieldtype="editor"],textarea'
             )
         );
 
