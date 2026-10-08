@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File only retained to mantain compatibility with old versions of the filter.
+ * Compatibility shim for Moodle versions before 4.5.
  *
  * @deprecated This file is no longer required in Moodle 4.5+.
  * @package    filter_wiris
@@ -25,19 +25,9 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-// Maintain compatibility with older Moodle versions but avoid fatal redeclaration errors
-// when core classes already exist. Only create aliases if the alias name isn't already
-// declared.
-if (!class_exists('core_filters\\text_filter')) {
-    if (class_exists(\moodle_text_filter::class)) {
-        class_alias(\moodle_text_filter::class, 'core_filters\\text_filter');
-    }
+// Moodle versions before 4.5 use the legacy global base class.
+if (!class_exists('core_filters\\text_filter') && class_exists(\moodle_text_filter::class)) {
+    class_alias(\moodle_text_filter::class, 'core_filters\\text_filter');
 }
 
-require_once(__DIR__ . '/classes/text_filter.php');
-
-if (!class_exists('filter_wiris')) {
-    if (class_exists(\filter_wiris\text_filter::class)) {
-        class_alias(\filter_wiris\text_filter::class, 'filter_wiris');
-    }
-}
+class_alias(\filter_wiris\text_filter::class, \filter_wiris::class);
