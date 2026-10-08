@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 // declared.
 if (!class_exists('core_filters\\text_filter')) {
     if (class_exists(\moodle_text_filter::class)) {
-        class_alias(\moodle_text_filter::class, 'core_filters\\text_filter');
+        class_alias(\moodle_text_filter::class, \core_filters\\text_filter::class);
     }
 }
 
@@ -38,6 +38,6 @@ require_once(__DIR__ . '/classes/text_filter.php');
 
 if (!class_exists('filter_wiris')) {
     if (class_exists(\filter_wiris\text_filter::class)) {
-        class_alias(\filter_wiris\text_filter::class, 'filter_wiris');
+        class_alias(\filter_wiris\text_filter::class, \filter_wiris::class);
     }
 }
